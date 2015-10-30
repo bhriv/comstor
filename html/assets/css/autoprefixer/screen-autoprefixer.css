@@ -1,0 +1,569 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* ----------------------  
+Import Resets
+---------------------- */
+@import url(../css/bootstrap/bootstrap.css);
+@import url(../css/bootstrap/bootstrap-responsive.css);
+/* Fool-proof @font-face */
+/* Based on http://coding.smashingmagazine.com/2013/02/14/setting-weights-and-styles-at-font-face-declaration/ */
+/* Test For autoprefixer browser support */
+/* line 4, ../sass/_custom.scss */
+::-webkit-input-placeholder{
+  color: #ccc;
+}
+::-moz-placeholder{
+  color: #ccc;
+}
+:-ms-input-placeholder{
+  color: #ccc;
+}
+::placeholder {
+  color: #ccc;
+}
+
+/* line 5, ../sass/_game.scss */
+div#phand, div#dhand {
+  font-weight: 700;
+}
+
+/* line 40, ../sass/_game.scss */
+#wrapper {
+  margin: 0 auto;
+  width: 1000px;
+}
+
+/* line 44, ../sass/_game.scss */
+h3 {
+  margin: 4px 0;
+  text-align: center;
+}
+
+/* line 48, ../sass/_game.scss */
+#phone {
+  background-position: -20px 0px;
+}
+
+/* line 61, ../sass/_game.scss */
+.cheatmode {
+  display: none;
+}
+
+/* line 64, ../sass/_game.scss */
+#game_logo {
+  background-image: url("../images/blackjackjs-game-logo.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 61px;
+  min-width: 240px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 9, ../sass/_mixins.scss */
+  #game_logo {
+    background-image: url("../images/blackjackjs-game-logo@2x.jpg");
+    background-size: 240px 61px;
+  }
+}
+/* line 70, ../sass/_game.scss */
+#game_logo h3, #game_logo p {
+  text-indent: -9999px;
+  color: transparent;
+}
+
+/* line 75, ../sass/_game.scss */
+#blackjackjs_logo {
+  background-image: url("../images/icon.png");
+  background-repeat: no-repeat;
+  width: 31px;
+  height: 20px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 9, ../sass/_mixins.scss */
+  #blackjackjs_logo {
+    background-image: url("../images/icon@2x.png");
+    background-size: 31px 20px;
+  }
+}
+/* line 80, ../sass/_game.scss */
+#blackjackjs_logo a {
+  color: transparent !important;
+}
+
+/* line 84, ../sass/_game.scss */
+#phone {
+  background-image: url("../images/iPhone6White.png");
+  border-radius: 5px;
+  color: #333;
+  font: 14px/17px Helvetica, Arial, Verdana, sans-serif;
+  height: 550px;
+  margin: 0 auto;
+  position: relative;
+  width: 1000px;
+  font-family: Times;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 9, ../sass/_mixins.scss */
+  #phone {
+    background-image: url("../images/iPhone6White@2x.png");
+    background-size: 1028px 590px;
+  }
+}
+/* line 94, ../sass/_game.scss */
+#phone header,
+#phone footer {
+  width: 100%;
+  background-color: #2c3e50;
+  color: #fff;
+}
+/* line 99, ../sass/_game.scss */
+#phone header a,
+#phone footer a {
+  color: #fff;
+}
+/* line 102, ../sass/_game.scss */
+#phone header ul,
+#phone footer ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  *zoom: 1;
+  margin: 0;
+  padding: 0.5em;
+}
+/* line 62, ../../../../../.gem/ruby/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/typography/lists/_horizontal-list.scss */
+#phone header ul li,
+#phone footer ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+  white-space: nowrap;
+  float: left;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+/* line 49, ../../../../../.gem/ruby/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/typography/lists/_horizontal-list.scss */
+#phone header ul li:first-child,
+#phone footer ul li:first-child {
+  padding-left: 0;
+}
+/* line 50, ../../../../../.gem/ruby/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/typography/lists/_horizontal-list.scss */
+#phone header ul li:last-child,
+#phone footer ul li:last-child {
+  padding-right: 0;
+}
+/* line 52, ../../../../../.gem/ruby/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/typography/lists/_horizontal-list.scss */
+#phone header ul li.last,
+#phone footer ul li.last {
+  padding-right: 0;
+}
+/* line 106, ../sass/_game.scss */
+#phone header ul li,
+#phone footer ul li {
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+  margin-right: 0.5em;
+}
+/* line 111, ../sass/_game.scss */
+#phone header ul li:last-child,
+#phone footer ul li:last-child {
+  float: right;
+  margin-right: 0;
+}
+/* line 118, ../sass/_game.scss */
+#phone ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* line 11, ../../../../../.gem/ruby/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/typography/lists/_bullets.scss */
+#phone ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+/* line 122, ../sass/_game.scss */
+#phone ul li {
+  margin: 0;
+  list-style: none;
+}
+/* line 11, ../../../../../.gem/ruby/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/typography/lists/_bullets.scss */
+#phone ul li li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+/* line 127, ../sass/_game.scss */
+#phone footer {
+  position: absolute;
+  bottom: 0;
+}
+/* line 131, ../sass/_game.scss */
+#phone footer ul li {
+  width: auto;
+  margin-left: 0;
+}
+/* line 134, ../sass/_game.scss */
+#phone footer ul li:nth-child(1) {
+  width: 42%;
+  margin-left: 0;
+}
+/* line 138, ../sass/_game.scss */
+#phone footer ul li:hover {
+  cursor: pointer;
+}
+
+/* line 154, ../sass/_game.scss */
+.spacer {
+  width: 10px;
+  display: block;
+}
+
+/* line 158, ../sass/_game.scss */
+#bet_holder {
+  width: 100%;
+  margin: 10px 0;
+}
+/* line 161, ../sass/_game.scss */
+#bet_holder label {
+  width: 30%;
+  line-height: 2.2em;
+  float: left;
+  color: #fff;
+}
+/* line 167, ../sass/_game.scss */
+#bet_holder input {
+  width: 50%;
+  float: right;
+  margin-bottom: 0;
+}
+
+/* line 173, ../sass/_game.scss */
+#main_game_holder {
+  background-image: url("../images/felt.jpg");
+  width: 100%;
+  max-width: 545px;
+  position: relative;
+  z-index: 0;
+  top: 123px;
+  min-height: 317px;
+  margin: auto;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 9, ../sass/_mixins.scss */
+  #main_game_holder {
+    background-image: url("../images/felt@2x.jpg");
+    background-size: 556px 321px;
+  }
+}
+
+/* line 183, ../sass/_game.scss */
+#card_holder {
+  float: left;
+  width: 58%;
+  padding: 0.5em;
+}
+
+/* line 190, ../sass/_game.scss */
+#table {
+  position: relative;
+  z-index: 0;
+}
+
+/* line 194, ../sass/_game.scss */
+#newgame {
+  margin-top: 1em;
+  position: relative;
+  left: 35%;
+  width: 100%;
+  margin: 0 auto;
+}
+/* line 200, ../sass/_game.scss */
+#newgame label {
+  display: inline-block;
+  width: auto;
+}
+/* line 203, ../sass/_game.scss */
+#newgame label input, #newgame label input[type="radio"], #newgame label input[type="checkbox"] {
+  margin: 0 0.5em 0;
+}
+
+/* line 208, ../sass/_game.scss */
+#actions {
+  text-align: center;
+  float: right;
+  padding-right: 5px;
+  max-width: 28%;
+}
+
+/* line 214, ../sass/_game.scss */
+button {
+  width: 100%;
+  margin-bottom: 3px;
+  font-size: 1em;
+  padding: 0.5em 1.5em;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 0.5em;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFDD687', endColorstr='#FFFBB423');
+  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZkZDY4NyIvPjxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjZmNkODhmIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fdd687), color-stop(70%, #fcd88f));
+  background: -webkit-linear-gradient(#fdd687, #fcd88f 70%);
+  background: linear-gradient(#fdd687, #fcd88f 70%);
+  box-shadow: #fef0d2 0 1px 0 inset;
+  border: 1px solid #fbcf76;
+  color: #444;
+  text-shadow: #fef5e1 0 1px 0;
+}
+/* line 15, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button:hover {
+  text-decoration: none;
+}
+/* line 18, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button:hover {
+  background-color: #fbcf76;
+  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIzJSIgc3RvcC1jb2xvcj0iI2ZkY2Q2ZSIvPjxzdG9wIG9mZnNldD0iNzUlIiBzdG9wLWNvbG9yPSIjZmJjZjc2Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(3%, #fdcd6e), color-stop(75%, #fbcf76));
+  background: -webkit-linear-gradient(#fdcd6e 3%, #fbcf76 75%);
+  background: linear-gradient(#fdcd6e 3%, #fbcf76 75%);
+}
+/* line 21, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button:active {
+  box-shadow: #fbca67 0 1px 2px inset;
+}
+/* line 6, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button.disabled, button[disabled] {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+  background: #fcd88f;
+  cursor: default;
+  box-shadow: none;
+}
+/* line 74, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/_sassy-buttons.sass */
+button::-moz-focus-inner {
+  padding: 0 !important;
+  margin: -1px !important;
+}
+
+/* line 220, ../sass/_game.scss */
+div#dscore {
+  position: absolute;
+  bottom: 30px;
+}
+/* line 224, ../sass/_game.scss */
+div#pscore {
+  position: absolute;
+  bottom: 15px;
+}
+
+/* line 235, ../sass/_game.scss */
+div[class*="card"] {
+  background: #fff;
+  border: 6px solid #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 1px #000;
+  display: inline-block;
+  height: 106px;
+  margin: 0 5px;
+  position: absolute;
+  right: 0;
+  width: 79px;
+}
+
+/* line 249, ../sass/_game.scss */
+#phone #main_game_holder #table #game .down {
+  background-color: #b20000 !important;
+  background-image: url("../images/card-back.png");
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 9, ../sass/_mixins.scss */
+  #phone #main_game_holder #table #game .down {
+    background-image: url("../images/card-back@2x.png");
+    background-size: 93px 121px;
+  }
+}
+
+/* line 256, ../sass/_game.scss */
+span.pos-0 {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+/* line 261, ../sass/_game.scss */
+span.pos-1 {
+  bottom: 0;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  position: absolute;
+  right: 0;
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+/* line 269, ../sass/_game.scss */
+span.rank {
+  font-size: 18px;
+}
+/* line 272, ../sass/_game.scss */
+span.suit {
+  font-size: 22px;
+}
+
+/* line 276, ../sass/_game.scss */
+.black {
+  color: #000;
+}
+
+/* line 279, ../sass/_game.scss */
+.red {
+  color: #f00;
+}
+
+/* line 282, ../sass/_game.scss */
+#result {
+  position: absolute;
+  bottom: 0;
+}
+
+/* line 302, ../sass/_game.scss */
+#alert {
+  margin: 4em auto 0;
+  opacity: 0.95;
+  position: relative;
+  text-align: center;
+  top: 40%;
+  width: 100%;
+  z-index: 5;
+}
+
+/* line 311, ../sass/_game.scss */
+div[id*="pcard"] .popover {
+  left: -95px !important;
+  display: none !important;
+}
+
+/* line 315, ../sass/_game.scss */
+div[id*="dcard"] .popover {
+  left: -95px !important;
+  display: none !important;
+}
+
+/* line 331, ../sass/_game.scss */
+.pokerchip {
+  margin: .5em;
+  font-size: 1.2em;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 5em;
+  height: 5em;
+  background: #555;
+  border-radius: 50%;
+  position: relative;
+  border: 0.5em dashed white;
+  -webkit-transition: all .5s ease;
+          transition: all .5s ease;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+/* line 348, ../sass/_game.scss */
+.pokerchip.left {
+  position: relative;
+  left: -110px;
+}
+/* line 352, ../sass/_game.scss */
+.pokerchip.red {
+  background: #dd4631;
+}
+/* line 355, ../sass/_game.scss */
+.pokerchip.blue {
+  background: #317ddd;
+}
+/* line 358, ../sass/_game.scss */
+.pokerchip.flat {
+  box-shadow: 0 0 0 0.2em white;
+}
+/* line 361, ../sass/_game.scss */
+.pokerchip.flat:hover {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+/* line 366, ../sass/_game.scss */
+.pokerchip.iso {
+  -webkit-transform: perspective(3000px) rotateX(55deg) rotateZ(-40deg);
+          transform: perspective(3000px) rotateX(55deg) rotateZ(-40deg);
+  box-shadow: -1px 1px 0 #555, -2px 2px 0 #555, -3px 3px 0 #555, -4px 4px 0 #555, -5px 5px 0 #555, -6px 6px 10px #555;
+}
+/* line 371, ../sass/_game.scss */
+.pokerchip.iso:hover {
+  -webkit-transform: perspective(3000px) rotateX(55deg) rotateZ(-40deg) translateZ(0.5em);
+          transform: perspective(3000px) rotateX(55deg) rotateZ(-40deg) translateZ(0.5em);
+}
+
+/* line 377, ../sass/_game.scss */
+body {
+  background-color: white;
+  background-image: -webkit-radial-gradient(#e5f7be 9px, rgba(0, 0, 0, 0) 10px), -webkit-repeating-radial-gradient(#e5f7be 0, #e5f7be 4px, transparent 5px, transparent 20px, #e5f7be 21px, #e5f7be 25px, transparent 26px, transparent 50px);
+  background-image: radial-gradient(#e5f7be 9px, rgba(0, 0, 0, 0) 10px), repeating-radial-gradient(#e5f7be 0, #e5f7be 4px, transparent 5px, transparent 20px, #e5f7be 21px, #e5f7be 25px, transparent 26px, transparent 50px);
+  background-size: 30px 30px, 90px 90px;
+  background-position: 0 0;
+}
+
+/* line 388, ../sass/_game.scss */
+#game_info .modal-header h3,
+#phone .modal-header h3 {
+  font-size: 1.618em;
+  line-height: 1.618em;
+}
+/* line 393, ../sass/_game.scss */
+#game_info .modal-body,
+#phone .modal-body {
+  padding: 0.5em;
+}
+/* line 396, ../sass/_game.scss */
+#game_info .modal-body p:last-child,
+#phone .modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* line 401, ../sass/_game.scss */
+#info_show {
+  display: none;
+}
+
+/* line 404, ../sass/_game.scss */
+#game_info {
+  position: absolute;
+  left: 0;
+  width: 55%;
+  z-index: 999;
+  margin: 2em 4em;
+  text-align: center;
+}
+
+/* line 414, ../sass/_game.scss */
+#main_game_holder small {
+  color: #707086;
+}
+/* line 417, ../sass/_game.scss */
+#main_game_holder ul li#blackjackjs_logo {
+  width: 32px;
+}
+
+/* line 422, ../sass/_game.scss */
+#landscape_warning {
+  display: none;
+  margin: 1em;
+}
+
+@media only screen and (min-device-width: 200px) and (max-device-width: 600px) and (orientation: portrait) {
+  /* line 440, ../sass/_game.scss */
+  #landscape_warning {
+    display: block;
+  }
+}

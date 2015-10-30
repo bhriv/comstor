@@ -1,0 +1,30 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+
+
+/* ----------------------  
+Import Resets
+---------------------- */ 
+ 
+@import "../css/bootstrap/bootstrap.css"; 
+@import "../css/bootstrap/bootstrap-responsive.css";
+
+// Sassy Buttons
+
+@import "sassy-buttons";
+
+// Compass
+@import "compass/css3/font-face";
+@import "compass/css3/text-shadow";
+@import "compass/css3/box-shadow"; 
+@import "compass/utilities";
+
+@import "susy";
+
+
+// Custom
+@import "mixins";
+@import "custom";

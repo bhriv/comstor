@@ -1,0 +1,182 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* ----------------------  
+Import Resets
+---------------------- */
+@import url(../css/bootstrap/bootstrap.css);
+@import url(../css/bootstrap/bootstrap-responsive.css);
+/* Fool-proof @font-face */
+/* Based on http://coding.smashingmagazine.com/2013/02/14/setting-weights-and-styles-at-font-face-declaration/ */
+/* Test For autoprefixer browser support */
+/* line 4, ../sass/_custom.scss */
+::placeholder {
+  color: #ccc;
+}
+
+/* line 2, ../sass/_game.scss */
+html {
+  margin: 1em;
+  background-image: url("../images/bg.png");
+  background-repeat: repeat;
+  background-position: center center;
+  background-size: cover !important;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 9, ../sass/_mixins.scss */
+  html {
+    background-image: url("../images/bg@2x.png");
+    -webkit-background-size: 372px 74px;
+    -moz-background-size: 372px 74px;
+    -o-background-size: 372px 74px;
+    background-size: 372px 74px;
+  }
+}
+
+/* line 9, ../sass/_game.scss */
+body {
+  background-color: transparent;
+}
+
+/* line 15, ../sass/_game.scss */
+header {
+  margin-bottom: 1em;
+  color: white;
+}
+
+/* line 19, ../sass/_game.scss */
+section {
+  background-color: white;
+  padding: 1em;
+}
+
+/* line 23, ../sass/_game.scss */
+#logo {
+  background-repeat: no-repeat;
+  width: 31px;
+  height: 20px;
+}
+/* line 28, ../sass/_game.scss */
+#logo a {
+  color: transparent !important;
+}
+
+/* line 33, ../sass/_game.scss */
+#logo_holder {
+  width: 100%;
+  max-width: 545px;
+  position: relative;
+  z-index: 0;
+  top: 123px;
+  min-height: 317px;
+  margin: auto;
+}
+
+/* line 44, ../sass/_game.scss */
+button {
+  width: 100%;
+  margin-bottom: 3px;
+  font-size: 1em;
+  padding: 0.5em 1.5em;
+  display: inline-block;
+  cursor: pointer;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFDD687', endColorstr='#FFFBB423');
+  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZkZDY4NyIvPjxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjZmNkODhmIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fdd687), color-stop(70%, #fcd88f));
+  background: -moz-linear-gradient(#fdd687, #fcd88f 70%);
+  background: -webkit-linear-gradient(#fdd687, #fcd88f 70%);
+  background: linear-gradient(#fdd687, #fcd88f 70%);
+  -moz-box-shadow: #fef0d2 0 1px 0 inset;
+  -webkit-box-shadow: #fef0d2 0 1px 0 inset;
+  box-shadow: #fef0d2 0 1px 0 inset;
+  border: 1px solid #fbcf76;
+  color: #444;
+  text-shadow: #fef5e1 0 1px 0;
+}
+/* line 15, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button:hover {
+  text-decoration: none;
+}
+/* line 18, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button:hover {
+  background-color: #fbcf76;
+  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIzJSIgc3RvcC1jb2xvcj0iI2ZkY2Q2ZSIvPjxzdG9wIG9mZnNldD0iNzUlIiBzdG9wLWNvbG9yPSIjZmJjZjc2Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(3%, #fdcd6e), color-stop(75%, #fbcf76));
+  background: -moz-linear-gradient(#fdcd6e 3%, #fbcf76 75%);
+  background: -webkit-linear-gradient(#fdcd6e 3%, #fbcf76 75%);
+  background: linear-gradient(#fdcd6e 3%, #fbcf76 75%);
+}
+/* line 21, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button:active {
+  -moz-box-shadow: #fbca67 0 1px 2px inset;
+  -webkit-box-shadow: #fbca67 0 1px 2px inset;
+  box-shadow: #fbca67 0 1px 2px inset;
+}
+/* line 6, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/sassy-buttons/_sassy-button-pseudo-states.sass */
+button.disabled, button[disabled] {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+  background: #fcd88f;
+  cursor: default;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+/* line 74, ../../../../../.gem/ruby/2.0.0/gems/sassy-buttons-0.2.6/stylesheets/_sassy-buttons.sass */
+button::-moz-focus-inner {
+  padding: 0 !important;
+  margin: -1px !important;
+}
+
+/* line 50, ../sass/_game.scss */
+.black {
+  color: #000;
+}
+
+/* line 53, ../sass/_game.scss */
+.red {
+  color: #f00;
+}
+
+/* line 57, ../sass/_game.scss */
+#alert {
+  margin: 4em auto 0;
+  opacity: 0.95;
+  position: relative;
+  text-align: center;
+  top: 40%;
+  width: 100%;
+  z-index: 5;
+}
+
+/* line 98, ../sass/_game.scss */
+#landscape_warning {
+  display: none;
+  margin: 1em;
+}
+
+/* line 103, ../sass/_game.scss */
+#myModal {
+  position: absolute;
+  width: 55%;
+  top: 0;
+  left: 0;
+  margin: 2em 4em;
+}
+
+/* line 110, ../sass/_game.scss */
+.modal-backdrop {
+  z-index: 0;
+}
+
+@media only screen and (min-device-width: 200px) and (max-device-width: 600px) and (orientation: portrait) {
+  /* line 115, ../sass/_game.scss */
+  #landscape_warning {
+    display: block;
+  }
+}
