@@ -23,4 +23,7 @@ $font_3: sans-serif;
 // $url_0: url(http://i.imgur.com/iZrhFim.png);
 // $url_1: url(http://i.imgur.com/Z2KLUOw.png);
 
-@import "_game";
+
+@import "../vendor/jqueryui/jquery-ui.css";
+@import "_layout";
+

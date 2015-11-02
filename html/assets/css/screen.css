@@ -10,12 +10,13 @@ Import Resets
 /* Fool-proof @font-face */
 /* Based on http://coding.smashingmagazine.com/2013/02/14/setting-weights-and-styles-at-font-face-declaration/ */
 /* Test For autoprefixer browser support */
+@import url(../vendor/jqueryui/jquery-ui.css);
 /* line 4, ../sass/_custom.scss */
 ::placeholder {
   color: #ccc;
 }
 
-/* line 2, ../sass/_game.scss */
+/* line 2, ../sass/_layout.scss */
 html {
   margin: 1em;
   background-image: url("../images/bg.png");
@@ -34,35 +35,35 @@ html {
   }
 }
 
-/* line 9, ../sass/_game.scss */
+/* line 9, ../sass/_layout.scss */
 body {
   background-color: transparent;
 }
 
-/* line 15, ../sass/_game.scss */
+/* line 15, ../sass/_layout.scss */
 header {
   margin-bottom: 1em;
   color: white;
 }
 
-/* line 19, ../sass/_game.scss */
+/* line 19, ../sass/_layout.scss */
 section {
   background-color: white;
   padding: 1em;
 }
 
-/* line 23, ../sass/_game.scss */
+/* line 23, ../sass/_layout.scss */
 #logo {
   background-repeat: no-repeat;
   width: 31px;
   height: 20px;
 }
-/* line 28, ../sass/_game.scss */
+/* line 28, ../sass/_layout.scss */
 #logo a {
   color: transparent !important;
 }
 
-/* line 33, ../sass/_game.scss */
+/* line 33, ../sass/_layout.scss */
 #logo_holder {
   width: 100%;
   max-width: 545px;
@@ -73,7 +74,7 @@ section {
   margin: auto;
 }
 
-/* line 44, ../sass/_game.scss */
+/* line 44, ../sass/_layout.scss */
 button {
   width: 100%;
   margin-bottom: 3px;
@@ -133,17 +134,17 @@ button::-moz-focus-inner {
   margin: -1px !important;
 }
 
-/* line 50, ../sass/_game.scss */
+/* line 50, ../sass/_layout.scss */
 .black {
   color: #000;
 }
 
-/* line 53, ../sass/_game.scss */
+/* line 53, ../sass/_layout.scss */
 .red {
   color: #f00;
 }
 
-/* line 57, ../sass/_game.scss */
+/* line 57, ../sass/_layout.scss */
 #alert {
   margin: 4em auto 0;
   opacity: 0.95;
@@ -154,13 +155,13 @@ button::-moz-focus-inner {
   z-index: 5;
 }
 
-/* line 98, ../sass/_game.scss */
+/* line 98, ../sass/_layout.scss */
 #landscape_warning {
   display: none;
   margin: 1em;
 }
 
-/* line 103, ../sass/_game.scss */
+/* line 103, ../sass/_layout.scss */
 #myModal {
   position: absolute;
   width: 55%;
@@ -169,14 +170,17 @@ button::-moz-focus-inner {
   margin: 2em 4em;
 }
 
-/* line 110, ../sass/_game.scss */
+/* line 110, ../sass/_layout.scss */
 .modal-backdrop {
   z-index: 0;
 }
 
 @media only screen and (min-device-width: 200px) and (max-device-width: 600px) and (orientation: portrait) {
-  /* line 115, ../sass/_game.scss */
+  /* line 115, ../sass/_layout.scss */
   #landscape_warning {
     display: block;
   }
 }
+/* Welcome to Compass. Use this file to define print styles.
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /> */

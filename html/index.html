@@ -12,6 +12,11 @@
         <link rel="stylesheet" href="assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/screen.css">
         <script src="assets/js/vendor/modernizr.min.js"></script>
+        <style>
+        label{
+            display: inline;
+        }
+        </style>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -24,7 +29,17 @@
                     <img src="/assets/images/logo@2x.png" width="103" height"20" alt=""> xAPI - powered by Lumious
                 </header>
                 <section>
-                    Main section
+                    <i class="fa fa-eye"></i> Main section
+                    <p> 
+                        <label for="start_date">Start Date</label>
+                        <input type="text" id="start_date" name="start_date">
+                        <label for="end_date">End Date</label>
+                        <input type="text" id="end_date" name="end_date">
+                    </p>
+                    <p>
+                        <button id="get_data">Get Data</button>
+                        <button class="restart">Restart</button>
+                    </p>
                 </section>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
@@ -37,6 +52,7 @@
 
         <!-- Unminified -->
         <script src="assets/js/vendor/jquery.js"></script>
+        <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
         <script src="assets/js/vendor/bootstrap.js"></script>
         <script src="assets/js/vendor/underscore.js"></script>
         <script src="assets/js/main.js"></script>
