@@ -22,6 +22,10 @@ $('#deal').on('click', function(event) {
   console.log('Deal click.');
 });
 
+$('#draw_chart').on('click', function(event) {
+  drawChart();
+});
+
     
 /*****************************************************************/
 /***************************  Debugging Functions ***************/
@@ -209,58 +213,6 @@ $(document).ready(function() {
       console.log('NEW event_metric_specific:' +event_metric_specific);
   });
 
-
-  function newChart(){
-    //Chart Data
-
-    var dates = [];
-    var data = [];
-    
-
-    var url_course_graph = 'http://akronzip.com/course/graph/30';
-
-    $.getJSON( url_course_graph, function( json ) {
-      console.log('getting chart data...');
-      console.log(json);
-
-      // get all of the keys and values
-      $.each(json, function(key, value){
-          console.log(key, value);
-          dates.push(key);
-          data.push(value);
-      });
-
-      console.log(dates); // @TODO - add dates from both data sources into single data array
-      console.log(data); //
-      console.log(compare_data); //
-
-      var canvas = document.getElementById('updating-chart'),
-      ctx = canvas.getContext('2d'),
-      startingData = {
-        labels: dates,
-        datasets: [
-            {
-                fillColor: "transparent",
-                strokeColor: "#fe5f55",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                data: data
-            },
-            {
-                fillColor: "transparent",
-                strokeColor: "#82bfd8",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                data: flurry_values
-            }
-        ]
-      },
-      latestLabel = startingData.labels[6];
-      // Reduce the animation steps for demo clarity.
-      var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
-    });
-  } // end newChart
-
 }); 
 // end Doc Ready 
 
@@ -268,83 +220,118 @@ $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
 });
 
-function extend(obj, src) {
-    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
-    return obj;
+function drawChart(){
+
 }
 
-// Reference 
-// var searchresult = findStudentByID(s,attempt_user);
+function newChart(){
+  //Chart Data
+  var dates = [];
+  var course_values = [];
+  // var compare_data = [15, 20, 50, 50, 72, 37, 43]; // replace with data from Flurry  
+  var url_course_graph = 'http://akronzip.com/course/graph/30';
 
-// function findStudentByID(arr,sid){
-//     var result = $.grep(arr, function(e){ return e.id == sid; });
-//     console.log("Student Search Result: ");
-//     console.log(result);
-//     if(result){
-//         return result;
-//     }else{
-//         return false;
-//     }
-// }
+  $.getJSON( url_course_graph, function( json ) {
+    console.log('getting chart data...');
+    console.log(json);
+
+    // get all of the keys and values
+    $.each(json, function(key, value){
+        dates.push(key);
+        course_values.push(value);
+    });
 
 
+    console.log('dates'); // @TODO - add dates from both data sources into single data array
+    console.log(dates); // @TODO - add dates from both data sources into single data array
+    console.log('course_values'); //
+    console.log(course_values); //
+    
+    var merged_dates = extend(dates,flurry_dates);
+    console.log('merged_dates');
+    console.log(merged_dates);
+
+    var canvas = document.getElementById('updating-chart'),
+    ctx = canvas.getContext('2d'),
+    startingData = {
+      labels: dates,
+      datasets: [
+          {
+              fillColor: "transparent",
+              strokeColor: "#fe5f55",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: course_values
+          },
+          {
+              fillColor: "transparent",
+              strokeColor: "#82bfd8",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: flurry_values
+          }
+      ]
+    },
+    latestLabel = startingData.labels[30];
+    // Reduce the animation steps for demo clarity.
+    var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
+  });
+} // end newChart
 /***********************************************************************/
 /************************************* Flurry API **********************/
 /***********************************************************************/
 
-  var apiAccessCode         = 'FX2FBFN9RQXW8DKJH4WB',
-      apiKey                = 'VW7Z3VDXXSK7HM6GKWZ3',
-      flurry_country_data   = [], 
-      flurry_metric_data    = [],
-      flurry_values         = [],
-      flurry_dates          = [];
+var apiAccessCode         = 'FX2FBFN9RQXW8DKJH4WB',
+    apiKey                = 'VW7Z3VDXXSK7HM6GKWZ3',
+    flurry_country_data   = [], 
+    flurry_metric_data    = [],
+    flurry_values         = [],
+    flurry_dates          = [];
+
+function newFlurryAnalytics(){
+  console.log('----- START newFlurryAnalytics -----');
+
+  var   url_metric_type           = checkMetricType(),
+        url_app_metric_specific   = checkAppMetricSpecific(),
+        url_startDate             = checkStartDate(),
+        url_endDate               = checkEndDate(),
+        url_country               = 'ALL';
+
+  var base_url_Flurry = 'http://api.flurry.com/';
+  var url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+  // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
+
+  console.log('API URL: '+url_new_Flurry);
+  $.getJSON( url_new_Flurry, function( Flurry_json ) {
+    console.log('getting url_Flurry data...');
+    console.log(Flurry_json);
+      //By using javasript json parser
+      console.log('@generatedDate:' +Flurry_json['@generatedDate']);
+      console.log('@startDate:' +Flurry_json['@startDate']);
+      console.log('@endDate:' +Flurry_json['@endDate']);
+      console.log('@metric:' +Flurry_json['@metric']);
+      console.log('@version:' +Flurry_json['@version']);
+      if (url_country == 'ALL') {
+        console.log('url_country: '+url_country);
+        flurry_country_data = Flurry_json['country'];
+        flurry_metric_data = flurry_country_data['day'];  
+      }else{
+        alert('Currently Configured to query ALL countries');
+      }
+      flurry_dates = _.pluck(flurry_metric_data,'@date');
+      flurry_values = _.pluck(flurry_metric_data,'@value');
+      console.log('FLURRY PLUCKED DATES:')
+      console.log(flurry_dates); 
+      console.log('FLURRY PLUCKED VALUES:')
+      console.log(flurry_values);
       
-  var compare_data = [15, 20, 50, 50, 72, 37, 43]; // replace with data from Flurry
+    console.log('----- END newFlurryAnalytics -----');
+  });
+  // draw data on graph
+  // extend();
+  newChart();
+}
 
-    
-
-  function newFlurryAnalytics(){
-    console.log('----- START newFlurryAnalytics -----');
-
-    var   url_metric_type           = checkMetricType(),
-          url_app_metric_specific   = checkAppMetricSpecific(),
-          url_startDate             = checkStartDate(),
-          url_endDate               = checkEndDate(),
-          url_country               = 'ALL';
-
-    var base_url_Flurry = 'http://api.flurry.com/';
-    var url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-    // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
-
-    console.log('API URL: '+url_new_Flurry);
-    $.getJSON( url_new_Flurry, function( Flurry_json ) {
-      console.log('getting url_Flurry data...');
-      console.log(Flurry_json);
-        //By using javasript json parser
-        console.log('@generatedDate:' +Flurry_json['@generatedDate']);
-        console.log('@startDate:' +Flurry_json['@startDate']);
-        console.log('@endDate:' +Flurry_json['@endDate']);
-        console.log('@metric:' +Flurry_json['@metric']);
-        console.log('@version:' +Flurry_json['@version']);
-        if (url_country == 'ALL') {
-          console.log('url_country: '+url_country);
-          flurry_country_data = Flurry_json['country'];
-          flurry_metric_data = flurry_country_data['day'];  
-        }else{
-          alert('Currently Configured to query ALL countries');
-        }
-        flurry_dates = _.pluck(flurry_metric_data,'@date');
-        flurry_values = _.pluck(flurry_metric_data,'@value');
-        console.log('FLURRY PLUCKED DATES:')
-        console.log(flurry_dates); 
-        console.log('FLURRY PLUCKED VALUES:')
-        console.log(flurry_values);
-        
-      console.log('----- END newFlurryAnalytics -----');
-    });
-    // draw data on graph
-    newChart();
-  }
 
 function getAllData(){
   var selected_course_id = 33;
@@ -401,4 +388,26 @@ function getAllData(){
       // newFlurryAnalytics();
   });
 }
+
+// Merge two arrays
+// https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
+
+function extend(obj, src) {
+    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
+    return obj;
+}
+
+// Reference 
+// var searchresult = findStudentByID(s,attempt_user);
+
+// function findStudentByID(arr,sid){
+//     var result = $.grep(arr, function(e){ return e.id == sid; });
+//     console.log("Student Search Result: ");
+//     console.log(result);
+//     if(result){
+//         return result;
+//     }else{
+//         return false;
+//     }
+// }
 
