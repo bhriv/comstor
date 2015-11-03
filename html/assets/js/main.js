@@ -22,10 +22,6 @@ $('#deal').on('click', function(event) {
   console.log('Deal click.');
 });
 
-$('#draw_chart').on('click', function(event) {
-  drawChart();
-});
-
     
 /*****************************************************************/
 /***************************  Debugging Functions ***************/
@@ -158,8 +154,12 @@ $(document).ready(function() {
     clearSession();
   });
 
-  $("#get_data").click(function() {
+  $("#newFlurryAnalytics").click(function() {
     newFlurryAnalytics();
+  });
+
+  $("#getData").click(function() {
+    getData();
   });
 
   // Date Picker Processing
@@ -220,37 +220,46 @@ $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
 });
 
-function drawChart(){
-
-}
-
-function newChart(){
-  //Chart Data
-  var dates = [];
-  var course_values = [];
-  // var compare_data = [15, 20, 50, 50, 72, 37, 43]; // replace with data from Flurry  
+function getData(){
+  console.log('----- getAllData -----')
+  
+  var dates         = [],
+      flurry_dates  = [],
+      course_values = [],
+      course_object = [],
+      flurry_values = [],
+      flurry_object = [];
+  
   var url_course_graph = 'http://akronzip.com/course/graph/30';
+  var course_data_loaded = $.getJSON(url_course_graph);
 
-  $.getJSON( url_course_graph, function( json ) {
-    console.log('getting chart data...');
-    console.log(json);
+  var url_flurry_api = constructFlurryEndpoint();
+  var flurry_data_loaded = $.getJSON( url_flurry_api);
+
+  $.when(course_data_loaded,flurry_data_loaded).done(function(course_object,flurry_object) {
+    console.log('course_data_loaded & flurry_data_loaded is DONE');
+    console.log('course_object');
+    console.log(course_object);
+    console.log('flurry_object');
+    console.log(flurry_object);
 
     // get all of the keys and values
-    $.each(json, function(key, value){
+    $.each(course_object, function(key, value){
         dates.push(key);
         course_values.push(value);
     });
 
+    console.log('dates');
+    console.log(dates);
+    console.log('course_values');
+    console.log(course_values);
 
-    console.log('dates'); // @TODO - add dates from both data sources into single data array
-    console.log(dates); // @TODO - add dates from both data sources into single data array
-    console.log('course_values'); //
-    console.log(course_values); //
-    
-    var merged_dates = extend(dates,flurry_dates);
-    console.log('merged_dates');
-    console.log(merged_dates);
+  });  
+}
 
+function newChart(){
+  //Chart Data
+  
     var canvas = document.getElementById('updating-chart'),
     ctx = canvas.getContext('2d'),
     startingData = {
@@ -275,33 +284,42 @@ function newChart(){
     latestLabel = startingData.labels[30];
     // Reduce the animation steps for demo clarity.
     var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
-  });
+  
 } // end newChart
 /***********************************************************************/
 /************************************* Flurry API **********************/
 /***********************************************************************/
 
-var apiAccessCode         = 'FX2FBFN9RQXW8DKJH4WB',
-    apiKey                = 'VW7Z3VDXXSK7HM6GKWZ3',
-    flurry_country_data   = [], 
-    flurry_metric_data    = [],
-    flurry_values         = [],
-    flurry_dates          = [];
+var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
+    apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
+    flurry_country_data       = [], 
+    flurry_metric_data        = [],
+    flurry_values             = [],
+    flurry_dates              = [],
+    url_metric_type           = '',
+    url_app_metric_specific   = '',
+    url_startDate             = '',
+    url_endDate               = '',
+    url_country               = 'ALL',
+    url_new_Flurry            = '',
+    base_url_Flurry           = 'http://api.flurry.com/';
+
+function constructFlurryEndpoint(){
+  url_metric_type           = checkMetricType(),
+  url_app_metric_specific   = checkAppMetricSpecific(),
+  url_startDate             = checkStartDate(),
+  url_endDate               = checkEndDate(),
+  url_country               = 'ALL';
+  url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+  // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
+  console.log('API URL: '+url_new_Flurry);
+  return url_new_Flurry;
+}
 
 function newFlurryAnalytics(){
   console.log('----- START newFlurryAnalytics -----');
-
-  var   url_metric_type           = checkMetricType(),
-        url_app_metric_specific   = checkAppMetricSpecific(),
-        url_startDate             = checkStartDate(),
-        url_endDate               = checkEndDate(),
-        url_country               = 'ALL';
-
-  var base_url_Flurry = 'http://api.flurry.com/';
-  var url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-  // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
-
-  console.log('API URL: '+url_new_Flurry);
+  constructFlurryEndpoint();
+  
   $.getJSON( url_new_Flurry, function( Flurry_json ) {
     console.log('getting url_Flurry data...');
     console.log(Flurry_json);
@@ -311,6 +329,7 @@ function newFlurryAnalytics(){
       console.log('@endDate:' +Flurry_json['@endDate']);
       console.log('@metric:' +Flurry_json['@metric']);
       console.log('@version:' +Flurry_json['@version']);
+
       if (url_country == 'ALL') {
         console.log('url_country: '+url_country);
         flurry_country_data = Flurry_json['country'];
@@ -327,9 +346,6 @@ function newFlurryAnalytics(){
       
     console.log('----- END newFlurryAnalytics -----');
   });
-  // draw data on graph
-  // extend();
-  newChart();
 }
 
 
