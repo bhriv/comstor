@@ -36,10 +36,116 @@
                         <label for="end_date">End Date</label>
                         <input type="text" id="end_date" name="end_date">
                     </p>
+                    <div id="metric_type">
+                        <label>Metric Type:</label>
+                        <div class="picker">
+                            <select id="basisfilter">
+                                <option value="null">
+                                    <span>- select -</span>
+                                </option>
+                                <option value="appMetrics">
+                                    <span data-criteria="appMetrics">App Metrics</span>
+                                </option>
+                                <option value="eventMetrics" disabled>
+                                    <span data-criteria="eventMetrics">Event Metrics</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="app_metric_specific">
+                        <label>App Metric:</label>
+                        <div class="picker">
+                            <select>
+                                <option value="null">
+                                    <span>- select -</span>
+                                </option>
+                                <optgroup label="Sessions">
+                                    <option value="Sessions">
+                                        <span data-criteria="Sessions">Sessions</span>
+                                    </option>
+                                    <option value="MedianSessionLength">
+                                        <span data-criteria="MedianSessionLength">Median Session Length</span>
+                                    </option>
+                                    <option value="AvgSessionLength">
+                                        <span data-criteria="AvgSessionLength">Avg Session Length</span>
+                                    </option>
+                                </optgroup>
+                                <optgroup label="Users">
+                                    <option value="ActiveUsers">
+                                        <span data-criteria="ActiveUsers">Active Users</span>
+                                    </option>
+                                    <option value="ActiveUsersByWeek">
+                                        <span data-criteria="ActiveUsersByWeek">Active Users By Week</span>
+                                    </option>
+                                    <option value="ActiveUsersByMonth">
+                                        <span data-criteria="ActiveUsersByMonth">Active Users By Month</span>
+                                    </option>
+                                    <option value="NewUsers">
+                                        <span data-criteria="NewUsers">New Users</span>
+                                    </option>
+                                    <option value="RetainedUsers">
+                                        <span data-criteria="RetainedUsers">Retained Users</span>
+                                    </option>
+                                </optgroup>
+                                    <optgroup label="Views">
+                                    <option value="PageViews">
+                                        <span data-criteria="PageViews">Page Views</span>
+                                    </option>
+                                    <option value="AvgPageViewsPerSession">
+                                        <span data-criteria="AvgPageViewsPerSession">Avg Page Views Per Session</span>
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="event_metric_specific" class="hideme">
+                        <label>Event:</label>
+                        <input type="text" id="event_name" placeholder="Type EXACT Event Name...">
+                        <label>Event Metric:</label>
+                        <div class="picker">
+                            <select>
+                                <option value="null">
+                                    <span>- select -</span>
+                                </option>
+                                <optgroup label="Sessions">
+                                    <option value="totalSessions">
+                                        <span data-criteria="totalSessions">Total Sessions</span>
+                                    </option>
+                                    <option value="totalCount">
+                                        <span data-criteria="totalCount">Total Count</span>
+                                    </option>
+                                </optgroup>
+                                <optgroup label="Users">
+                                    <option value="usersLastDay">
+                                        <span data-criteria="usersLastDay">Users Last Day</span>
+                                    </option>
+                                    <option value="usersLastWeek">
+                                        <span data-criteria="usersLastWeek">Users Last Week</span>
+                                    </option>
+                                    <option value="usersLastMonth">
+                                        <span data-criteria="usersLastMonth">Users Last Month</span>
+                                    </option>
+                                </optgroup>
+                                <optgroup label="Average Users">
+                                    <option value="usersLastDay">
+                                        <span data-criteria="aveUsersLastDay">Ave Users Last Day</span>
+                                    </option>
+                                    <option value="usersLastWeek">
+                                        <span data-criteria="aveUsersLastWeek">Ave Users Last Week</span>
+                                    </option>
+                                    <option value="usersLastMonth">
+                                        <span data-criteria="aveUsersLastMonth">Ave Users Last Month</span>
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
                     <p>
                         <button id="get_data">Get Data</button>
                         <button class="restart">Restart</button>
                     </p>
+                    <span><small><strong>Views</strong></small></span>
+                    <canvas id="updating-chart"></canvas>
                 </section>
             </div> <!-- #main -->
         </div> <!-- #main-container -->
@@ -54,6 +160,7 @@
         <script src="assets/js/vendor/jquery.js"></script>
         <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
         <script src="assets/js/vendor/bootstrap.js"></script>
+        <script src="//www.chartjs.org/assets/Chart.min.js"></script>
         <script src="assets/js/vendor/underscore.js"></script>
         <script src="assets/js/main.js"></script>
          
@@ -71,6 +178,78 @@
             // e.src='//www.google-analytics.com/analytics.js';
             // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             // ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+        <style type="text/css">
+            canvas#updating-chart{
+                width: 100%;
+                min-width: 400px;
+                height: auto;
+                margin-bottom: 3em;
+            }
+            /*hide date used for sorting*/
+            .obj-list td:nth-child(3) span:first-child{
+                display: none;
+            }
+            .video_holder .icon-eye,
+            .video_holder .icon-check{
+                min-width: 5px;
+                margin: 0;
+            }
+            body.cisco_one .video_holder img{
+                width: 50%;
+                float: left;
+                margin-right: 0.5em;
+            }
+            table .icon-arrow-combo{
+                min-width: 5px;
+                margin: 0;
+                opacity: 0.3;
+            }
+            table .icon-arrow-combo:hover{
+                cursor: pointer;
+            }
+            table.striped tr:nth-of-type(even), table table tr.stripe, table table tr.striped{
+                background-color: #f5f5f5;
+            }
+            i.icon-flash.danger{
+                color: #d71816;
+            }
+             
+            body.cisco_one #widget-alerts tbody tr.obj-list td:nth-child(2){
+                font-weight: 300;
+                text-transform: none;
+            }
+            body.cisco_one .tabs.pill .tab-nav > li > a{
+                color: #939393;
+            }
+            body.cisco_one .tabs.pill .tab-nav > li span.label{
+                color: #82bfd8;
+                border-color: #82bfd8;
+            }
+            #four_stages .widget-content{
+                padding: 1em;
+            }
+            .table_key{
+                font-size: 14px;
+                line-height: 1em;
+                margin-bottom: 1em;
+            }
+            
+            #verbsheader .label{
+                margin-right: 2px;
+            }
+        </style>
+        <script type="text/javascript">
+                
+            function pop_up(hyperlink, window_name)
+            {
+                if (!window.focus) {
+                    return true;
+                }
+                var href = (typeof(hyperlink) == 'string' ? hyperlink : hyperlink.href);
+                window.open(href, window_name, 'width=800,height=800,toolbar=no, scrollbars=yes');
+                return false;
+            }
         </script>
     </body>
 </html>
