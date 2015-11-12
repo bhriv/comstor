@@ -73,6 +73,21 @@ $('#deal').on('click', function(event) {
     console.log('event_metric_specific set: '+event_metric_specific);
   }
 
+  function refreshDashboard(){
+    console.log('-- refreshDashboard ---');
+    var a = localStorage.getItem( 'start_date' );
+    var b = localStorage.getItem( 'end_date' );
+    var c = localStorage.getItem( 'metric_type' );
+    var d = localStorage.getItem( 'app_metric_specific' );
+    // var e = localStorage.getItem( 'event_metric_specific' );
+    if (a && b && c && d) {
+      console.log('All requirements met, runDashboard executing');
+      runDashboard();
+    }else{
+      console.log('All requirements NOT met, runDashboard NOT executing');
+    }
+  }
+
 /*****************************************************************/
 /***************************  Check Variable Values *********************/
 /*****************************************************************/
@@ -144,8 +159,20 @@ $(document).ready(function() {
   $('.hideme').hide();
     
   setSessionID();
+
+  // Setup UX with Previous selections from Local Storage
+
   $('#start_date').val(checkStartDate());
   $('#end_date').val(checkEndDate());
+  
+  // auto load from Storage
+  $("#metric_type select option").filter(function() {
+      return $(this).val() == checkMetricType(); 
+  }).prop('selected', true);
+  
+  // $("#app_metric_specific select option").filter(function() {
+  //     return $(this).val() == checkAppMetricSpecific(); 
+  // }).prop('selected', true);
   
     
   // UX Functions
@@ -154,13 +181,14 @@ $(document).ready(function() {
     clearSession();
   });
 
-  $("#newFlurryAnalytics").click(function() {
-    newFlurryAnalytics();
+  $("#testFlurryAnalytics").click(function() {
+    testFlurryAnalytics();
   });
 
   $("#getData").click(function() {
     getData();
   });
+
 
   // Date Picker Processing
 
@@ -192,6 +220,14 @@ $(document).ready(function() {
 
   // UX filter event listeners to determine data query type
 
+  // $('#controller .date_changer').on('change', function() {
+  //   refreshDashboard();
+  // }); 
+
+  $('#controller select').on('change', function() {
+    refreshDashboard();
+  });
+
   $('#metric_type select').on('change', function() {
       var metric_type = $(this).val();
       console.log('metric_type: ' +metric_type);
@@ -220,15 +256,8 @@ $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
 });
 
-function getData(){
-  console.log('----- getAllData -----')
-  
-  var dates         = [],
-      flurry_dates  = [],
-      course_values = [],
-      course_object = [],
-      flurry_values = [],
-      flurry_object = [];
+function runDashboard(){
+  console.log('----- runDashboard -----')
   
   var url_course_graph = 'http://akronzip.com/course/graph/30';
   var course_data_loaded = $.getJSON(url_course_graph);
@@ -238,23 +267,95 @@ function getData(){
 
   $.when(course_data_loaded,flurry_data_loaded).done(function(course_object,flurry_object) {
     console.log('course_data_loaded & flurry_data_loaded is DONE');
-    console.log('course_object');
-    console.log(course_object);
-    console.log('flurry_object');
-    console.log(flurry_object);
+    
+    /* ---------------------- */
+    /* ------ COURSE DATA --- */
+    /* ---------------------- */
 
-    // get all of the keys and values
-    $.each(course_object, function(key, value){
-        dates.push(key);
+      console.log('course_object');
+      // flatten response object
+      course_object = course_object[0];
+      console.log(course_object);
+      // get all of the keys and values
+      $.each(course_object, function(key, value){
+        var date_timestamp = moment(key).unix();
+        dates.push(date_timestamp);
+        // dates.push(key);
         course_values.push(value);
+      });
+      console.log('DATES');
+      console.log(dates);
+      console.log('course_values');
+      console.log(course_values);
+
+    /* ---------------------- */
+    /* ------ FLURRY DATA --- */
+    /* ---------------------- */
+    
+      console.log('flurry_object');
+      // flatten response object
+      flurry_object = flurry_object[0];
+      console.log(flurry_object);
+
+      //By using javasript json parser
+      console.log('@generatedDate:' +flurry_object['@generatedDate']);
+      console.log('@startDate:' +flurry_object['@startDate']);
+      console.log('@endDate:' +flurry_object['@endDate']);
+      console.log('@metric:' +flurry_object['@metric']);
+      console.log('@version:' +flurry_object['@version']);
+
+      if (url_country == 'ALL') {
+        console.log('url_country: '+url_country);
+        flurry_country_data = flurry_object['country'];
+        flurry_metric_data = flurry_country_data['day'];  
+      }else{
+        alert('Currently Configured to query ALL countries');
+      }
+      flurry_dates = _.pluck(flurry_metric_data,'@date');
+      flurry_values = _.pluck(flurry_metric_data,'@value');
+
+      
+      console.log('FLURRY PLUCKED DATES:')
+      console.log(flurry_dates); 
+
+      var flurry_moment_dates = [];
+      $.each(flurry_dates, function(key, value){
+        var date_timestamp = moment(value).unix();
+        flurry_moment_dates.push(date_timestamp);
+      });
+      console.log('FLURRY moment DATES:')
+      console.log(flurry_moment_dates); 
+
+      console.log('FLURRY PLUCKED VALUES:')
+      console.log(flurry_values);
+    
+    /* ---------------------- */
+    /* ------ COMBINED DATA --- */
+    /* ---------------------- */
+
+    combined_dates = dates.concat(flurry_moment_dates);
+    // combined_dates = dates.concat(flurry_dates);
+    combined_dates = _.uniq(combined_dates);
+
+    console.log('combined_dates');
+    console.log(combined_dates);
+    var sorted_dates = combined_dates.sort(function(a, b) {return a - b;}); 
+    // Sort courseIDs lowest to hightest
+    // combined_dates = combined_dates.sortBy(function(o){ return new Date( o.date ) });
+    console.log('SORTED combined_dates');
+    console.log(sorted_dates);
+
+    var sorted_moment_dates = [];
+    $.each(sorted_dates, function(key, value){
+      var date_timestamp = moment(key).format('YYYY-MM-DD');
+      sorted_moment_dates.push(date_timestamp);
     });
+    // @TODO - ensure data still matches the date plotting on the graph
+    // combined_dates = sorted_moment_dates;
+    newChart();
 
-    console.log('dates');
-    console.log(dates);
-    console.log('course_values');
-    console.log(course_values);
-
-  });  
+  }); 
+  console.log('------ end runDashboard -------') ;
 }
 
 function newChart(){
@@ -263,7 +364,7 @@ function newChart(){
     var canvas = document.getElementById('updating-chart'),
     ctx = canvas.getContext('2d'),
     startingData = {
-      labels: dates,
+      labels: combined_dates,
       datasets: [
           {
               fillColor: "transparent",
@@ -281,11 +382,12 @@ function newChart(){
           }
       ]
     },
-    latestLabel = startingData.labels[30];
+    latestLabel = startingData.labels[6];
     // Reduce the animation steps for demo clarity.
     var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
   
 } // end newChart
+
 /***********************************************************************/
 /************************************* Flurry API **********************/
 /***********************************************************************/
@@ -294,8 +396,15 @@ var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
     apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
     flurry_country_data       = [], 
     flurry_metric_data        = [],
-    flurry_values             = [],
+
+    dates                     = [],
+    combined_dates            = [],
     flurry_dates              = [],
+    course_values             = [],
+    course_object             = [],
+    flurry_values             = [],
+    flurry_object             = [],
+
     url_metric_type           = '',
     url_app_metric_specific   = '',
     url_startDate             = '',
@@ -316,8 +425,8 @@ function constructFlurryEndpoint(){
   return url_new_Flurry;
 }
 
-function newFlurryAnalytics(){
-  console.log('----- START newFlurryAnalytics -----');
+function testFlurryAnalytics(){
+  console.log('----- START testFlurryAnalytics -----');
   constructFlurryEndpoint();
   
   $.getJSON( url_new_Flurry, function( Flurry_json ) {
@@ -344,7 +453,7 @@ function newFlurryAnalytics(){
       console.log('FLURRY PLUCKED VALUES:')
       console.log(flurry_values);
       
-    console.log('----- END newFlurryAnalytics -----');
+    console.log('----- END testFlurryAnalytics -----');
   });
 }
 
@@ -401,7 +510,7 @@ function getAllData(){
           student_array.push(student_id,student_firstname,student_lastname);
           console.log(student_array);
       });
-      // newFlurryAnalytics();
+      // testFlurryAnalytics();
   });
 }
 
@@ -413,6 +522,30 @@ function extend(obj, src) {
     return obj;
 }
 
+// Sort Array of Dates
+(function(){
+  if (typeof Object.defineProperty === 'function'){
+    try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
+  }
+  if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
+
+  function sb(f){
+    for (var i=this.length;i;){
+      var o = this[--i];
+      this[i] = [].concat(f.call(o,o,i),o);
+    }
+    this.sort(function(a,b){
+      for (var i=0,len=a.length;i<len;++i){
+        if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
+      }
+      return 0;
+    });
+    for (var i=this.length;i;){
+      this[--i]=this[i][this[i].length-1];
+    }
+    return this;
+  }
+})();
 // Reference 
 // var searchresult = findStudentByID(s,attempt_user);
 

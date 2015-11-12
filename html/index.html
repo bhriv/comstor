@@ -12,11 +12,7 @@
         <link rel="stylesheet" href="assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/screen.css">
         <script src="assets/js/vendor/modernizr.min.js"></script>
-        <style>
-        label{
-            display: inline;
-        }
-        </style>
+
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -28,159 +24,206 @@
                 <header>
                     <img src="/assets/images/logo@2x.png" width="103" height"20" alt=""> xAPI - powered by Lumious
                 </header>
-                <section>
-                    <i class="fa fa-eye"></i> Main section
-                    <p> 
-                        <label for="start_date">Start Date</label>
-                        <input type="text" id="start_date" name="start_date">
-                        <label for="end_date">End Date</label>
-                        <input type="text" id="end_date" name="end_date">
-                    </p>
-                    <div id="metric_type">
-                        <label>Metric Type:</label>
-                        <div class="picker">
-                            <select id="basisfilter">
-                                <option value="null">
-                                    <span>- select -</span>
-                                </option>
-                                <option value="appMetrics">
-                                    <span data-criteria="appMetrics">App Metrics</span>
-                                </option>
-                                <option value="eventMetrics" disabled>
-                                    <span data-criteria="eventMetrics">Event Metrics</span>
-                                </option>
-                            </select>
+                <section id="controller">
+                    <h3><i class="fa fa-bar-chart"></i> Custom Flurry API Data Query</h3>
+                    <div id="query_controls">
+                        <div class="picker_holder">
+                            <label for="start_date">Start Date</label><br>
+                            <input type="text" id="start_date" name="start_date" class="date_changer">
+                            
+                        </div>
+                        <div class="picker_holder">
+                            <label for="end_date">End Date</label><br>
+                            <input type="text" id="end_date" name="end_date" class="date_changer">
+                        </div>
+                        <div id="metric_type" class="picker_holder">
+                            <label>Metric Type:</label>
+                            <div class="picker">
+                                <select id="basisfilter">
+                                    <option value="null">
+                                        <span>- select -</span>
+                                    </option>
+                                    <option value="appMetrics">
+                                        <span data-criteria="appMetrics">App Metrics</span>
+                                    </option>
+                                    <option value="eventMetrics" disabled>
+                                        <span data-criteria="eventMetrics">Event Metrics</span>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="app_metric_specific" class="picker_holder">
+                            <label>App Metric:</label>
+                            <div class="picker">
+                                <select>
+                                    <option value="null">
+                                        <span>- select -</span>
+                                    </option>
+                                    <optgroup label="Sessions">
+                                        <option value="Sessions">
+                                            <span data-criteria="Sessions">Sessions</span>
+                                        </option>
+                                        <option value="MedianSessionLength">
+                                            <span data-criteria="MedianSessionLength">Median Session Length</span>
+                                        </option>
+                                        <option value="AvgSessionLength">
+                                            <span data-criteria="AvgSessionLength">Avg Session Length</span>
+                                        </option>
+                                    </optgroup>
+                                    <optgroup label="Users">
+                                        <option value="ActiveUsers">
+                                            <span data-criteria="ActiveUsers">Active Users</span>
+                                        </option>
+                                        <option value="ActiveUsersByWeek">
+                                            <span data-criteria="ActiveUsersByWeek">Active Users By Week</span>
+                                        </option>
+                                        <option value="ActiveUsersByMonth">
+                                            <span data-criteria="ActiveUsersByMonth">Active Users By Month</span>
+                                        </option>
+                                        <option value="NewUsers">
+                                            <span data-criteria="NewUsers">New Users</span>
+                                        </option>
+                                        <option value="RetainedUsers">
+                                            <span data-criteria="RetainedUsers">Retained Users</span>
+                                        </option>
+                                    </optgroup>
+                                        <optgroup label="Views">
+                                        <option value="PageViews">
+                                            <span data-criteria="PageViews">Page Views</span>
+                                        </option>
+                                        <option value="AvgPageViewsPerSession">
+                                            <span data-criteria="AvgPageViewsPerSession">Avg Page Views Per Session</span>
+                                        </option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="event_metric_specific" class="hideme">
+                            <label>Event:</label>
+                            <input type="text" id="event_name" placeholder="Type EXACT Event Name...">
+                            <label>Event Metric:</label>
+                            <div class="picker">
+                                <select>
+                                    <option value="null">
+                                        <span>- select -</span>
+                                    </option>
+                                    <optgroup label="Sessions">
+                                        <option value="totalSessions">
+                                            <span data-criteria="totalSessions">Total Sessions</span>
+                                        </option>
+                                        <option value="totalCount">
+                                            <span data-criteria="totalCount">Total Count</span>
+                                        </option>
+                                    </optgroup>
+                                    <optgroup label="Users">
+                                        <option value="usersLastDay">
+                                            <span data-criteria="usersLastDay">Users Last Day</span>
+                                        </option>
+                                        <option value="usersLastWeek">
+                                            <span data-criteria="usersLastWeek">Users Last Week</span>
+                                        </option>
+                                        <option value="usersLastMonth">
+                                            <span data-criteria="usersLastMonth">Users Last Month</span>
+                                        </option>
+                                    </optgroup>
+                                    <optgroup label="Average Users">
+                                        <option value="usersLastDay">
+                                            <span data-criteria="aveUsersLastDay">Ave Users Last Day</span>
+                                        </option>
+                                        <option value="usersLastWeek">
+                                            <span data-criteria="aveUsersLastWeek">Ave Users Last Week</span>
+                                        </option>
+                                        <option value="usersLastMonth">
+                                            <span data-criteria="aveUsersLastMonth">Ave Users Last Month</span>
+                                        </option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="query_controls">
+                            <label for=""></label><br>
+                            <!-- <button id="runDashboard">Submit</button> -->
+                            <a class="restart"><i class="fa fa-refresh"></i> Restart</a>
                         </div>
                     </div>
-                    <div id="app_metric_specific">
-                        <label>App Metric:</label>
-                        <div class="picker">
-                            <select>
-                                <option value="null">
-                                    <span>- select -</span>
-                                </option>
-                                <optgroup label="Sessions">
-                                    <option value="Sessions">
-                                        <span data-criteria="Sessions">Sessions</span>
-                                    </option>
-                                    <option value="MedianSessionLength">
-                                        <span data-criteria="MedianSessionLength">Median Session Length</span>
-                                    </option>
-                                    <option value="AvgSessionLength">
-                                        <span data-criteria="AvgSessionLength">Avg Session Length</span>
-                                    </option>
-                                </optgroup>
-                                <optgroup label="Users">
-                                    <option value="ActiveUsers">
-                                        <span data-criteria="ActiveUsers">Active Users</span>
-                                    </option>
-                                    <option value="ActiveUsersByWeek">
-                                        <span data-criteria="ActiveUsersByWeek">Active Users By Week</span>
-                                    </option>
-                                    <option value="ActiveUsersByMonth">
-                                        <span data-criteria="ActiveUsersByMonth">Active Users By Month</span>
-                                    </option>
-                                    <option value="NewUsers">
-                                        <span data-criteria="NewUsers">New Users</span>
-                                    </option>
-                                    <option value="RetainedUsers">
-                                        <span data-criteria="RetainedUsers">Retained Users</span>
-                                    </option>
-                                </optgroup>
-                                    <optgroup label="Views">
-                                    <option value="PageViews">
-                                        <span data-criteria="PageViews">Page Views</span>
-                                    </option>
-                                    <option value="AvgPageViewsPerSession">
-                                        <span data-criteria="AvgPageViewsPerSession">Avg Page Views Per Session</span>
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="event_metric_specific" class="hideme">
-                        <label>Event:</label>
-                        <input type="text" id="event_name" placeholder="Type EXACT Event Name...">
-                        <label>Event Metric:</label>
-                        <div class="picker">
-                            <select>
-                                <option value="null">
-                                    <span>- select -</span>
-                                </option>
-                                <optgroup label="Sessions">
-                                    <option value="totalSessions">
-                                        <span data-criteria="totalSessions">Total Sessions</span>
-                                    </option>
-                                    <option value="totalCount">
-                                        <span data-criteria="totalCount">Total Count</span>
-                                    </option>
-                                </optgroup>
-                                <optgroup label="Users">
-                                    <option value="usersLastDay">
-                                        <span data-criteria="usersLastDay">Users Last Day</span>
-                                    </option>
-                                    <option value="usersLastWeek">
-                                        <span data-criteria="usersLastWeek">Users Last Week</span>
-                                    </option>
-                                    <option value="usersLastMonth">
-                                        <span data-criteria="usersLastMonth">Users Last Month</span>
-                                    </option>
-                                </optgroup>
-                                <optgroup label="Average Users">
-                                    <option value="usersLastDay">
-                                        <span data-criteria="aveUsersLastDay">Ave Users Last Day</span>
-                                    </option>
-                                    <option value="usersLastWeek">
-                                        <span data-criteria="aveUsersLastWeek">Ave Users Last Week</span>
-                                    </option>
-                                    <option value="usersLastMonth">
-                                        <span data-criteria="aveUsersLastMonth">Ave Users Last Month</span>
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-                    <p>
-                        <button id="newFlurryAnalytics">newFlurryAnalytics()</button>
-                        <button id="getData">getData()</button>
-                        <button class="restart">Restart</button>
-                    </p>
-                    <span><small><strong>Views</strong></small></span>
+                    
+                    <span id="chart_key">
+                        <small>
+                            <strong>Key:</strong>: 
+                            <span class="flurry_key" style="color:#82bfd8;"><i class="fa fa-line-chart"></i> Flurry Data</span>
+                            <span class="compare_key" style="color: #fe5f55"><i class="fa fa-line-chart"></i> Course Data</span>
+                        </small>
+                    </span>
                     <canvas id="updating-chart"></canvas>
                 </section>
+
+                <section>
+                    <h2>Symfony Migration</h2>
+                    <canvas id="video_views_bar" width="500" height="500"></canvas> 
+                    <canvas id="video_view_duration" width="250" height="250"></canvas> 
+                    <table id="sortable_learner_detail" class="tablesorter striped rounded">
+                        <thead>
+                            <th><i class="icon-arrow-combo"></i>Student</th>
+                            <th><i class="icon-arrow-combo"></i>Start Time</th>
+                            <th id="modules"><i class="icon-arrow-combo"></i>Modules</th>
+                            <th id="knowledge_checks"><i class="icon-arrow-combo"></i>Knowledge Checks</th>
+                            <th><i class="icon-arrow-combo"></i><!--<span>Total</span><br><br> -->Duration</th>
+                        </thead>
+                        <tbody id="learnerdetails">
+                            <!-- populated by js -->
+                        </tbody>
+                    </table> 
+                </section>
+
             </div> <!-- #main -->
         </div> <!-- #main-container -->
 
         <div class="footer-container">
-            <!-- <footer class="wrapper">
+            <footer class="wrapper">
                 <h3>footer</h3>
-            </footer> -->
+            </footer>
         </div>
-
-        <!-- Unminified -->
-        <script src="assets/js/vendor/jquery.js"></script>
-        <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
-        <script src="assets/js/vendor/bootstrap.js"></script>
-        <script src="//www.chartjs.org/assets/Chart.min.js"></script>
-        <script src="assets/js/vendor/underscore.js"></script>
-        <script src="assets/js/main.js"></script>
-         
-        <!-- Production Ready : All vendor and custom js compiled 
-         ** BREAKS lumi.js
-
-        <script src="build/production-uglified.js"></script>
-
-        -->
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            // e.src='//www.google-analytics.com/analytics.js';
-            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            // ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
+    
         <style type="text/css">
+        label{
+            display: inline;
+        }
+        html{
+            margin: 1em 2em;
+        }
+            header{
+                text-align: center;
+                margin: 1em 0;
+            }
+            div.picker_holder{
+                margin-right: 0.5em;
+            }
+            .restart{
+                margin-left: 1em;
+            }
+            #basisfilter{
+                width: 125px;
+            }
+            #query_controls{
+                float: none;
+                clear: both;
+                min-height: 70px;
+            }
+            #chart_key{
+                display: block;
+                float: none;
+                margin-bottom: 1em;
+            }
+            button{
+                max-width: 180px;
+            }
+            input[type="text"].date_changer{
+                width: 80px;
+            }
+             div.picker_holder{
+                width: auto;
+                float: left;
+             }
             canvas#updating-chart{
                 width: 100%;
                 min-width: 400px;
@@ -240,6 +283,254 @@
                 margin-right: 2px;
             }
         </style>
+
+    <style type="text/css">
+/*Symfony Migration*/
+        .tablesorter-header-inner{
+            /*text-align: center;*/
+            line-height: 1em;
+            position: relative;
+            /*padding: 5px 0px 25px 3px;*/
+            padding: 0.5em 0 1em 0.5em;
+        }
+        .tablesorter-header-inner:last-child{
+            padding-right: 0;
+        }
+         table#sortable_learner_detail tbody tr td{
+            line-height: 1em;
+            font-size: 14px;
+        }
+        /*table#sortable_learner_detail th i,*/
+        table#sortable_learner_detail th span{
+            /*position: absolute;*/
+            top: 5px;
+            font-size: 10px;
+        }
+        th.tablesorter-header{
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+            padding: 0;
+        }
+        .progress_arrow{
+            z-index: 0;
+            position: absolute;
+            left: -4px;
+            width: 70px;
+            height: 70px;
+            /*background-color: yellow;*/
+            display: block;
+            -ms-transform: rotate(45deg); /* IE 9 */
+            -webkit-transform: rotate(45deg); /* Safari */
+            transform: rotate(45deg); /* Standard syntax */
+            border-right: 1px solid #efefef;
+            border-top: 1px solid #efefef;
+            top: 10px !important;
+        }
+        .start_ribbon{
+            /*border-left: 1px solid #e5e5e5;*/
+        }
+        tr.obj-list td,
+        tr.obj-list td:nth-child(4),
+        tr.obj-list td:nth-child(5),
+        tr.obj-list td:nth-child(6),
+        tr.obj-list td:nth-child(7){
+            padding-left: 0;
+        }
+        tr.obj-list td:first-child{
+            padding-left: 5px;
+        }
+
+        #learnerdetails .ttip:hover:before,
+        #learnerdetails .ttip:hover:after
+        {
+            left: 2.2em;
+        }
+
+        #learnerdetails .ttip:hover:after {
+            left: 1.9em;
+            top: 0.5em;
+        }
+
+        #learnerdetails .ttip:hover:before {
+            top: 1.5em;
+        }
+
+        #learnerdetails tr.expand {
+            cursor: pointer;
+        }
+
+        #learnerdetails tr.expand i {
+           font-size: 1.3em;
+        }
+
+        #learnerdetails tr.expand td.mdata ul,
+        #learnerdetails tr.expand td.kdata div {
+            background-color: #f6f9fd;
+            display: none;
+        }
+
+        #learnerdetails tr.expand td.mdata:hover,
+        #learnerdetails tr.expand td.kdata:hover {
+            background-color: #f6f9fd;
+        }
+
+        #learnerdetails tr.expand td.mdata:hover ul,
+        #learnerdetails tr.expand td.kdata:hover div {
+            display: block;
+        }
+        #learnerdetails tr.expand:hover td ul li:first-child{
+            margin-top: 1em;    
+        }
+
+        .mdata, .kdata {
+            white-space: nowrap;
+        }
+
+        .tdata span {
+            font-size: .7em;
+        }
+
+        i.green {
+            color: #8be8cb;
+        }
+
+        i.red {
+            color: #dcdcdc;
+        }
+
+    /*.progress_arrow {
+            z-index: 0;
+            position: absolute;
+            left: -287px;
+            width: 300px;
+            height: 300px;
+            display: block;
+            -ms-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+            border-right: 1px solid #e5e5e5;
+            border-top: 1px solid #e5e5e5;
+            top: -130px !important;
+        }*/
+        #sortable_learner_detail thead th:nth-child(4),
+        #sortable_learner_detail thead th:nth-child(5),
+        #sortable_learner_detail thead th:nth-child(6),
+        #sortable_learner_detail thead th:nth-child(7){
+            /*background-color: #afdfdb;*/
+        }
+        #sortable_learner_detail thead{
+            /*background-color: transparent; */
+            color: #fff;
+        }
+        #sortable_learner_detail thead th{
+            white-space: nowrap;
+            padding-right: 1em;
+        }
+        #sortable_learner_detail thead th:nth-child(1){
+            width: 12%;
+        }
+        #sortable_learner_detail thead th:nth-child(2){
+            width: 8%;   
+        }
+        #sortable_learner_detail thead th:nth-child(3){
+            width: 50%;
+        }
+        #sortable_learner_detail thead th:nth-child(4){
+            width: 20%;
+        }
+        #sortable_learner_detail thead th:nth-child(5){
+            width: 10%;
+        }
+        #sortable_learner_detail thead .icon-arrow-combo{
+            margin-right: 0.5em;
+        }
+        #modules{
+            width: 80px;
+        }
+    </style>
+
+        <!-- footer js -->
+    
+        <script type="text/javascript">
+            
+            user = {
+                email: 'ben.porcelain@gmail.com',
+                firstname: 'Joe',
+                lastname: 'Average',
+                roles: ['ROLE_USER',]
+            };
+            
+            message = {
+                                id: 0
+                            }
+
+            urls = {
+                analytics: 'http://akronzip.com/',
+                messaging: 'http://akronzip.com/',
+                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
+                settings: 'http://akronzip.com/'
+            };
+
+            fb = {
+                client_id: '',
+                redirect_url: 'http://ciscolive.lumious.co/oauth/redirect/facebook'
+            };
+        </script>
+        <!-- Unminified -->
+        <script src="assets/js/vendor/jquery.js"></script>
+        <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
+
+        <!-- From Symfony: LIBRARY -->
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/dna.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/dumper.js"></script>
+            <!-- <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script> -->
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.tablesorter.min.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery-sortable-min.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/pikaday.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/pikaday.jquery.js"></script>
+        <!-- END From Symfony -->
+
+        <script src="assets/js/vendor/bootstrap.js"></script>
+        <script src="assets/vendor/moment/moment.min.js"></script>
+        <script src="//www.chartjs.org/assets/Chart.min.js"></script>
+        <script src="assets/js/vendor/underscore.js"></script>
+        <script src="assets/js/main.js"></script>
+
+        <!-- From Symfony: CUSTOM -->
+            <script type="text/javascript" src="/assets/js/from-symfony/js/plugins.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/main.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/report_filters.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/report_students_access.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/report_students_performance.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/report_queries_questions.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/report_queries_attempts.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/report_concatenated_rows.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/analytics.js"></script>
+            <script type="text/javascript" src="/assets/js/from-symfony/js/settings.js"></script>
+        <!-- END From Symfony -->
+        
+         
+        <!-- Production Ready : All vendor and custom js compiled 
+         ** BREAKS lumi.js
+
+        <script src="build/production-uglified.js"></script>
+
+        -->
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            // e.src='//www.google-analytics.com/analytics.js';
+            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            // ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+
         <script type="text/javascript">
                 
             function pop_up(hyperlink, window_name)
@@ -254,3 +545,17 @@
         </script>
     </body>
 </html>
+
+<!-- prepare JS to migrate to Comstor and Tech2000 to Totara 
+pull main queries to be standalone out of Symfony for faster testing 
+add JS dump for bug tracing 
+run test queries for identifying issues 
+do PSD screenshots for loading table 
+add dynamic progress bar for query results loading 
+format PSD for tempate use 
+add default graphic for loading - with instructions 
+when query done hide graphic show results 
+add temp query parameter to produce limited, faster, results 
+reset selectors when key dropdown changed to ensure results are fetched 
+include required functions outside of key function 
+ -->
