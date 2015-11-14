@@ -1144,8 +1144,30 @@ function populate_data_content(){
   // var url_course_module_duration = base_url + "coursemodule/studentduration/" +moduleid +"/";
 }
 
+// flurry_reports
+
+// Show Hide Login and Signup Inner Divs in Modal
+function hide_reports(){
+  $('.report_display_switch').hide();
+}
+
+$("#show_mef_reports").click(function() {
+  hide_reports();
+  $('#mef_reports').show();
+});
+$("#show_flurry_reports").click(function() {
+  hide_reports();
+  $('#flurry_reports').show();
+});
+$("#show_ciscoone_reports").click(function() {
+  hide_reports();
+  $('#ciscoone_reports').show();
+});
+
+
 $( document ).ready(function() {
   populate_data_content();
+  $('#mef_reports').show();
 }); // end doc ready
 
 $('#plan_course_filter').on('change', function() {
