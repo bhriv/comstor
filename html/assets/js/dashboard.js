@@ -220,10 +220,6 @@ $(document).ready(function() {
 
   // UX filter event listeners to determine data query type
 
-  // $('#controller .date_changer').on('change', function() {
-  //   refreshDashboard();
-  // }); 
-
   $('#flurry_reports select').on('change', function() {
     refreshDashboard();
   });
@@ -255,6 +251,7 @@ $(document).ready(function() {
 $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
 });
+
 
 function runDashboard(){
   console.log('----- runDashboard -----')
@@ -560,7 +557,31 @@ function extend(obj, src) {
 //     }
 // }
 
-var temp_student_result = '{
+
+// flurry_reports
+
+// Show Hide Login and Signup Inner Divs in Modal
+function hide_reports(){
+  $('.report_display_switch').hide();
+}
+
+$("#show_mef_reports").click(function() {
+  hide_reports();
+  $('#mef_reports').show();
+});
+$("#show_flurry_reports").click(function() {
+  hide_reports();
+  $('#flurry_reports').show();
+});
+$("#show_ciscoone_reports").click(function() {
+  hide_reports();
+  $('#ciscoone_reports').show();
+});
+
+
+var all_students = []
+
+var student_result_id_17 = [{
   "user": {
     "id": "17",
     "username": "jbandlow",
@@ -592,8 +613,8 @@ var temp_student_result = '{
         "contextlevel": "70", 
         "contextinstanceid": "22", 
         "userid": "17",
-        "courseid": "7", 
-        "other": "a:1:{s:6:"quizid";s:1:"2";}", 
+        "courseid": "5", 
+        // "other": "a:1:{s:6:"quizid";s:1:"2";}", 
         "timecreated": "1447372654", 
         "origin": "web"
       },
@@ -608,547 +629,207 @@ var temp_student_result = '{
         "contextlevel": "70", 
         "contextinstanceid": "22", 
         "userid": "17",
-        "courseid": "7", 
+        "courseid": "5", 
         "other": "N;", 
         "timecreated": "1447372676", 
         "origin": "web"
       }
-    ],
+    ]
+  }
+}];
+
+var student_result_id_4 = [{
+  "user": {
+    "id": "4",
+    "username": "testuser2",
+    "firstname": "Bob",
+    "lastname": "Testable",
+    "email": "chris.h.devries+testuser2@gmail.com",
+    "city": "Herndon",
+    "country": "US",
+    "lang": "en",
+    "timezone": "99",
+    "firstaccess": "1372297375",
+    "lastaccess": "1375473515",
+    "lastlogin": "1372791844",
+    "currentlogin": "1375473332",
+    "lastip": "69.132.7.103",
+    "picture": "0",
+    "url": "",
+    "timecreated": "1372181144",
+    "timemodified": "1372181144",
     "posts": [
-      {
-        "id": "41",
-        "module": "notes",
-        "userid": "17",
-        "courseid": "23",
-        "groupid": "0",
-        "moduleid": "0",
-        "coursemoduleid": "0",
-        "subject": "",
-        "summary": null,
-        "content": "201x Test message saved in 'Personal Notes' section\"",
-        "uniquehash": "",
-        "rating": "0",
-        "format": "2",
-        "summaryformat": "0",
-        "attachment": null,
-        "publishstate": "draft",
-        "lastmodified": "1431028904",
-        "created": "1431028904",
-        "usermodified": "36"
-      }
+      
     ],
-    "quizattempts": [
+    "log": [
       {
-        "id": "76",
-        "quiz": "6",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "324",
-        "timestart": "1375713601",
-        "timefinish": "1375714779",
-        "timemodified": "1375714779",
-        "timecheckstate": null,
-        "sumgrades": "7.50000",
-        "needsupgradetonewqe": "0"
+        "id": "5135", 
+        "action": "viewed", 
+        "target": "course_module", 
+        "objecttable": "url", 
+        "objectid": "5", 
+        "edulevel": "2", 
+        "contextid": "109", 
+        "contextlevel": "70", 
+        "contextinstanceid": "25", 
+        "userid": "4",
+        "courseid": "4", 
+        // "other": "N;", 
+        "timecreated": "1446482426", 
+        "origin": "web"
       },
       {
-        "id": "101",
-        "quiz": "7",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "349",
-        "timestart": "1375728188",
-        "timefinish": "1375729194",
-        "timemodified": "1375729194",
-        "timecheckstate": null,
-        "sumgrades": "11.16667",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "116",
-        "quiz": "4",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "364",
-        "timestart": "1375752390",
-        "timefinish": "1375753510",
-        "timemodified": "1375753510",
-        "timecheckstate": null,
-        "sumgrades": "11.33333",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "118",
-        "quiz": "14",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "366",
-        "timestart": "1375753645",
-        "timefinish": "1375754574",
-        "timemodified": "1375754574",
-        "timecheckstate": null,
-        "sumgrades": "8.50000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "190",
-        "quiz": "8",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "438",
-        "timestart": "1375803920",
-        "timefinish": "1375804781",
-        "timemodified": "1375804781",
-        "timecheckstate": null,
-        "sumgrades": "10.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "202",
-        "quiz": "13",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "450",
-        "timestart": "1375818690",
-        "timefinish": "1375819754",
-        "timemodified": "1375819754",
-        "timecheckstate": null,
-        "sumgrades": "7.33333",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "230",
-        "quiz": "5",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "478",
-        "timestart": "1375840911",
-        "timefinish": "1375842239",
-        "timemodified": "1375842239",
-        "timecheckstate": null,
-        "sumgrades": "16.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "303",
-        "quiz": "9",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "551",
-        "timestart": "1375887920",
-        "timefinish": "1375888676",
-        "timemodified": "1375888676",
-        "timecheckstate": null,
-        "sumgrades": "7.33333",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "342",
-        "quiz": "6",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "590",
-        "timestart": "1375927423",
-        "timefinish": "1375928615",
-        "timemodified": "1375928615",
-        "timecheckstate": null,
-        "sumgrades": "10.66667",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "365",
-        "quiz": "7",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "613",
-        "timestart": "1375931267",
-        "timefinish": "0",
-        "timemodified": "1376021701",
-        "timecheckstate": null,
-        "sumgrades": null,
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "367",
-        "quiz": "12",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "615",
-        "timestart": "1375931320",
-        "timefinish": "0",
-        "timemodified": "1376021701",
-        "timecheckstate": null,
-        "sumgrades": null,
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "377",
-        "quiz": "13",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "625",
-        "timestart": "1375932915",
-        "timefinish": "1375933829",
-        "timemodified": "1375933829",
-        "timecheckstate": null,
-        "sumgrades": "11.33333",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5203",
-        "quiz": "112",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5706",
-        "timestart": "1428072585",
-        "timefinish": "1428537295",
-        "timemodified": "1428537295",
-        "timecheckstate": null,
-        "sumgrades": "14.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5275",
-        "quiz": "117",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5778",
-        "timestart": "1428427323",
-        "timefinish": "1428428611",
-        "timemodified": "1428428611",
-        "timecheckstate": null,
-        "sumgrades": "12.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5291",
-        "quiz": "118",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5794",
-        "timestart": "1428429956",
-        "timefinish": "1428431693",
-        "timemodified": "1428431693",
-        "timecheckstate": null,
-        "sumgrades": "10.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5323",
-        "quiz": "118",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "5827",
-        "timestart": "1428450915",
-        "timefinish": "1428452190",
-        "timemodified": "1428452190",
-        "timecheckstate": null,
-        "sumgrades": "14.50000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5325",
-        "quiz": "117",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "5829",
-        "timestart": "1428452261",
-        "timefinish": "1428453547",
-        "timemodified": "1428453547",
-        "timecheckstate": null,
-        "sumgrades": "13.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5363",
-        "quiz": "119",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5867",
-        "timestart": "1428506217",
-        "timefinish": "1428507424",
-        "timemodified": "1428507424",
-        "timecheckstate": null,
-        "sumgrades": "11.50000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5397",
-        "quiz": "113",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5901",
-        "timestart": "1428537404",
-        "timefinish": "1428538794",
-        "timemodified": "1428538794",
-        "timecheckstate": null,
-        "sumgrades": "12.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5402",
-        "quiz": "115",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5906",
-        "timestart": "1428539265",
-        "timefinish": "1428542050",
-        "timemodified": "1428542050",
-        "timecheckstate": null,
-        "sumgrades": "21.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5409",
-        "quiz": "116",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5913",
-        "timestart": "1428542078",
-        "timefinish": "1428542809",
-        "timemodified": "1428542809",
-        "timecheckstate": null,
-        "sumgrades": "9.91667",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5410",
-        "quiz": "116",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "5914",
-        "timestart": "1428542839",
-        "timefinish": "1428543241",
-        "timemodified": "1428543241",
-        "timecheckstate": null,
-        "sumgrades": "12.50000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5434",
-        "quiz": "121",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5938",
-        "timestart": "1428582271",
-        "timefinish": "1428583879",
-        "timemodified": "1428583879",
-        "timecheckstate": null,
-        "sumgrades": "12.83333",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5459",
-        "quiz": "120",
-        "userid": "17",
-        "attempt": "1",
-        "uniqueid": "5963",
-        "timestart": "1428603733",
-        "timefinish": "1428604408",
-        "timemodified": "1428604408",
-        "timecheckstate": null,
-        "sumgrades": "11.50000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5487",
-        "quiz": "121",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "5991",
-        "timestart": "1428624504",
-        "timefinish": "1428626109",
-        "timemodified": "1428626109",
-        "timecheckstate": null,
-        "sumgrades": "21.50000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5506",
-        "quiz": "117",
-        "userid": "17",
-        "attempt": "3",
-        "uniqueid": "6010",
-        "timestart": "1428629455",
-        "timefinish": "1428630933",
-        "timemodified": "1428630933",
-        "timecheckstate": null,
-        "sumgrades": "10.83333",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5540",
-        "quiz": "120",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "6044",
-        "timestart": "1428679981",
-        "timefinish": "1428681068",
-        "timemodified": "1428681068",
-        "timecheckstate": null,
-        "sumgrades": "16.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5542",
-        "quiz": "119",
-        "userid": "17",
-        "attempt": "2",
-        "uniqueid": "6046",
-        "timestart": "1428681185",
-        "timefinish": "1428682674",
-        "timemodified": "1428682674",
-        "timecheckstate": null,
-        "sumgrades": "20.00000",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5549",
-        "quiz": "118",
-        "userid": "17",
-        "attempt": "3",
-        "uniqueid": "6053",
-        "timestart": "1428683511",
-        "timefinish": "1428684569",
-        "timemodified": "1428684569",
-        "timecheckstate": null,
-        "sumgrades": "12.66667",
-        "needsupgradetonewqe": "0"
-      },
-      {
-        "id": "5554",
-        "quiz": "117",
-        "userid": "17",
-        "attempt": "4",
-        "uniqueid": "6058",
-        "timestart": "1428684969",
-        "timefinish": "1428685857",
-        "timemodified": "1428685857",
-        "timecheckstate": null,
-        "sumgrades": "13.50000",
-        "needsupgradetonewqe": "0"
-      }
-    ],
-    "quizgrades": [
-      {
-        "id": "28",
-        "quiz": "6",
-        "userid": "17",
-        "grade": "10.66667",
-        "timemodified": "1375928615"
-      },
-      {
-        "id": "43",
-        "quiz": "7",
-        "userid": "17",
-        "grade": "11.16667",
-        "timemodified": "1375729195"
-      },
-      {
-        "id": "65",
-        "quiz": "4",
-        "userid": "17",
-        "grade": "11.33333",
-        "timemodified": "1375753510"
-      },
-      {
-        "id": "67",
-        "quiz": "14",
-        "userid": "17",
-        "grade": "8.50000",
-        "timemodified": "1375754574"
-      },
-      {
-        "id": "109",
-        "quiz": "8",
-        "userid": "17",
-        "grade": "10.00000",
-        "timemodified": "1375804781"
-      },
-      {
-        "id": "135",
-        "quiz": "13",
-        "userid": "17",
-        "grade": "11.33333",
-        "timemodified": "1375933829"
-      },
-      {
-        "id": "147",
-        "quiz": "5",
-        "userid": "17",
-        "grade": "8.00000",
-        "timemodified": "1375842239"
-      },
-      {
-        "id": "179",
-        "quiz": "9",
-        "userid": "17",
-        "grade": "7.33333",
-        "timemodified": "1375888676"
-      },
-      {
-        "id": "2224",
-        "quiz": "117",
-        "userid": "17",
-        "grade": "13.50000",
-        "timemodified": "1428685857"
-      },
-      {
-        "id": "2245",
-        "quiz": "118",
-        "userid": "17",
-        "grade": "14.50000",
-        "timemodified": "1428684569"
-      },
-      {
-        "id": "2279",
-        "quiz": "119",
-        "userid": "17",
-        "grade": "20.00000",
-        "timemodified": "1428682675"
-      },
-      {
-        "id": "2304",
-        "quiz": "112",
-        "userid": "17",
-        "grade": "14.00000",
-        "timemodified": "1428537295"
-      },
-      {
-        "id": "2306",
-        "quiz": "113",
-        "userid": "17",
-        "grade": "6.00000",
-        "timemodified": "1428538794"
-      },
-      {
-        "id": "2309",
-        "quiz": "115",
-        "userid": "17",
-        "grade": "21.00000",
-        "timemodified": "1428542050"
-      },
-      {
-        "id": "2310",
-        "quiz": "116",
-        "userid": "17",
-        "grade": "12.50000",
-        "timemodified": "1428543241"
-      },
-      {
-        "id": "2322",
-        "quiz": "121",
-        "userid": "17",
-        "grade": "21.50000",
-        "timemodified": "1428626109"
-      },
-      {
-        "id": "2339",
-        "quiz": "120",
-        "userid": "17",
-        "grade": "16.00000",
-        "timemodified": "1428681069"
+        "id": "5236", 
+        "action": "deleted", 
+        "target": "course_module", 
+        "objecttable": "quiz", 
+        "objectid": "25", 
+        "edulevel": "1", 
+        "contextid": "109", 
+        "contextlevel": "70", 
+        "contextinstanceid": "25", 
+        "userid": "4",
+        "courseid": "4", 
+        // "other": "a:2:{s:10:"modulename";s:3:"url";s:10:"instanceid"...", 
+        "timecreated": "1446486235", 
+        "origin": "web"
       }
     ]
   }
-}';
+}];
+
+function get_totara_activity(){
+  // get each student in the course
+  // use static data - replace with Endpoint data in the future
+
+  jQuery.each(all_students, function(i, sdata) {
+
+    console.log('sdata');
+    console.log(sdata);
+    // dive deeping into the array nodes to access the data
+    var student_result = sdata;
+    student_result = student_result[0];
+    student_result = student_result['user'];
+    // get all single student data as a clean array
+    console.log(student_result);
+    // get only the activity log information
+    var activity_log =[];
+    activity_log = student_result['log'];
+
+    var activity_array = [];
+    
+    // Pull Data from Multiple Activties Endpoint 
+    jQuery.each(activity_log, function(i, adata) {
+      var a_row = '<tr>';
+      var quizdata = [];
+      var quizobject = [];
+      
+
+      console.log('activity_log DATA');
+      activity_time = adata.timecreated;
+      activity_moment = moment.unix(activity_time).format("YYYY/MM/DD hh:mm:ss");
+      activity_id = adata.id;
+      activity_name = adata.action;
+      activity_table = adata.objecttable;
+      activity_id = adata.objectid;
+      activity_course = adata.courseid;
+
+
+      
+      // @TODO - add catch for failed return - i.e. if no courese id exists
+      var course_url = base_url + 'lumiousreports/courselookup/'+activity_course;
+      var coursedata = $.getJSON(course_url);
+
+      $.when(coursedata).done(function(courseobject) {
+        if (course_name = 'undefined') {
+          course_name = '';
+        };
+        
+        var course_name = null;        
+        course_name = courseobject[0];
+        course_name = course_name.fullname;
+        console.log('COURSE NAME: '+course_name);
+        
+        var quiz_name = null; 
+        if (adata.objecttable == 'quiz_attempts') {
+         
+          console.log('activity_table SWITCH: '+activity_table);
+          var quiz_url = base_url + 'lumiousreports/quizlookup/'+adata.objectid;
+          console.log('quiz_url '+quiz_url);
+
+          var quizdata = $.getJSON(quiz_url);
+          $.when(quizdata).done(function(quizobject) {
+            console.log('DOING quizdata JSON call');
+            console.log('quizobject');
+            console.log(quizobject);
+            var quiz_data = quizobject[0];
+            console.log(quiz_data);
+            var quiz_name = quiz_data.name;
+            // quiz_name = quizobject.name;
+            // console.log('QUIZ NAME: '+quiz_name);
+            // wait for quiz name response before sending result
+            a_row  += '<th>'+adata.id+'</th>';
+            a_row  += '<th>'+student_result['firstname']+' '+student_result['lastname']+'</th>';
+            a_row  += '<th>'+adata.action+'</th>';
+            a_row  += '<th>'+adata.courseid+' '+course_name+'</th>';
+            a_row  += '<th>'+adata.objecttable+'</th>';
+            a_row  += '<th><span>(ID '+adata.objectid+')</span> '+quiz_name+'</th>';
+            a_row  += '<th><span class="hidden">'+activity_time+'</span>'+activity_moment+'</th>';
+            // add the readable data to the table rows        
+            $('#tbody_activity_result').append(a_row);
+          }); // end $.when
+        }
+        else{
+          a_row  += '<th>'+adata.id+'</th>';
+          a_row  += '<th>'+student_result['firstname']+' '+student_result['lastname']+'</th>';
+          a_row  += '<th>'+adata.action+'</th>';
+          a_row  += '<th>'+adata.courseid+' '+course_name+'</th>';
+          a_row  += '<th>'+adata.objecttable+'</th>';
+          a_row  += '<th><span>(ID '+adata.objectid+')</span></th>';
+          a_row  += '<th><span class="hidden">'+activity_time+'</span>'+activity_moment+'</th>';
+          // add the readable data to the table rows        
+          $('#tbody_activity_result').append(a_row);
+        } // end if
+        
+      }); // end $.when
+
+      a_row  += '</tr>';
+    }); // end each.activity_log
+  }); // end each.all_students
+}
+
+function get_course_name(activity_course){
+  // get the course details from endpoint, then add to the results table
+  // var course_url = base_url + 'lumiousreports/courselookup/'+activity_course;
+  // console.log('ENDPOINT activity_course '+course_url);
+
+  // var coursedata = $.getJSON(course_url);
+  // // console.log('coursedata');
+  // $.when(coursedata).done(function(courseobject) {
+  //   // console.log('courseobject');
+  //   // console.log(courseobject);
+  //   var course_name = null;        
+  //   course_name = courseobject[0];
+  //   course_name = course_name.fullname;
+  //   console.log('COURSE NAME: '+course_name);
+  //   return course_name;
+  // }); // end $.when
+}
+
+$( document ).ready(function() {
+  
+  // Setup temp test array of demo student data for new endpoint
+  // @TODO - replace with a jQuery.when(...).done(...) function once the endpoint is in place. 
+
+  all_students.push(student_result_id_4);
+  all_students.push(student_result_id_17);
+  console.log('all_students');
+  console.log(all_students);
+
+  get_totara_activity();
+
+  // $('#mef_reports').show();
+  $('#flurry_reports').show();
+}); // end doc ready
+
+

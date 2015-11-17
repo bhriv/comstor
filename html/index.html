@@ -458,7 +458,36 @@
                         </tbody>
                     </table> 
                 </section>
+<style>
+    #flurry_reports table{
+        width: 100%;
+        text-align: left;
+    }
+    #flurry_reports table thead{
+        font-weight: bold;
+    }
+    #flurry_reports table th{
+        font-weight: normal;
+    }
+</style>                
                 <section id="flurry_reports" class="report_display_switch">
+                    <h3><i class="fa fa-bar-chart"></i> Totara Activity</h3>
+
+                    <table class="tablesorter sortable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>   
+                                <th>Student</th>   
+                                <th>Action</th>
+                                <th>Course ID</th>   
+                                <th>Object Table</th>
+                                <th>Object ID</th> 
+                                <th>Date/Time</th>           
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_activity_result"></tbody>
+                    </table>
+
                     <h3><i class="fa fa-bar-chart"></i> Custom Flurry API Data Query</h3>
                     <div id="query_controls">
                         <div class="picker_holder">
@@ -1032,7 +1061,7 @@ width: 80px;
         <script src="assets/vendor/moment/moment.min.js"></script>
         <script src="//www.chartjs.org/assets/Chart.min.js"></script>
         <script src="assets/js/vendor/underscore.js"></script>
-        <script src="assets/js/main.js"></script>
+        <script src="assets/js/dashboard.js"></script>
 
         <!-- From Symfony: CUSTOM -->
             <script type="text/javascript" src="/assets/js/from-symfony/js/plugins.js"></script>
@@ -1045,7 +1074,7 @@ width: 80px;
             <script type="text/javascript" src="/assets/js/from-symfony/js/report_concatenated_rows.js"></script>
             <script type="text/javascript" src="/assets/js/from-symfony/js/analytics.js"></script>
             <script type="text/javascript" src="/assets/js/from-symfony/js/settings.js"></script>
-        <!-- END From Symfony -->
+         <!-- END From Symfony -->
         
          
         <!-- Production Ready : All vendor and custom js compiled 
