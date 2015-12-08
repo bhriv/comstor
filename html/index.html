@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/screen.css">
         <script src="assets/js/vendor/modernizr.min.js"></script>
-
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -20,604 +19,22 @@
         <![endif]-->
         
         <div class="main-container">
-            <div class="main wrapper clearfix">
-                <header>    
-                    <nav>
-                         <ul>
-                            <li><a id="show_mef_reports">Lumious Reports</a></li>
-                            <li><a id="show_ciscoone_reports"><img src="/assets/images/logo@2x.png" width="103" height"20" alt="" class="hidden"> xAPI Activity</a></li>
-                            <li><a id="show_flurry_reports"><img src="/assets/images/flurry-logo@2x.png" width="103" height"20" alt="" class="hidden"> xAPI &amp; Flurry</a></li>
-                        </ul>   
-                    </nav>
-                </header>
-                <section id="mef_reports" class="report_display_switch">
-                    <h2>Reports</h2>
-                    <div class="">
-                        <div class="field columns main-filter" id="mdl_course_categories">
-                            <label>Category:</label>
-                            <div class="picker">
-                                <select id="catfilter">
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="field columns main-filter" id="query-class">
-                            <label>Course:</label>
-                            <div class="picker">
-                                <select id="coursefilter">
-                                    <option value="null">
-                                        <span data-type="type">- select -</span>
-                                    </option> 
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="field columns main-filter" id="report-basis-criteria">
-                            <label>Report Basis:</label>
-                            <div class="picker">
-                                <select id="basisfilter">
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <option value="student_based_report">
-                                        <span data-criteria="access">Student Based Report</span>
-                                    </option>
-                                    <option value="quiz_based_report">
-                                        <span data-criteria="performance">Quiz Based Report</span>
-                                    </option>
-                                    <!-- static -->
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="student_query" class="hiddenXX">
-                            <div class="field columns main-filter" id="query-criteria">
-                                <label>Report On:</label>
-                                <div class="picker">
-                                    <select id="criteriafilter">
-                                        <option value="null">
-                                            <span>- select -</span>
-                                        </option>
-                                        <option value="performance">
-                                            <span data-criteria="performance">Performance</span>
-                                        </option>
-                                        <option value="access">
-                                            <span data-criteria="access">Access</span>
-                                        </option>
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="field columns main-filter hiddenX" id="query-show-students-access">
-                                <label>Show Students:</label>
-                                <div class="picker">
-                                    <select id="accessfilter">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                        <option value="show_all_students">
-                                            <span data-type="type">- All Students -</span>
-                                        </option>
-                                        <option value="show_students_that_have_logged_in">
-                                            <span data-show-students="">That have logged in</span>
-                                        </option> 
-                                        <option value="show_students_that_have_not_logged_in">
-                                            <span data-show-students="">That have NOT logged in yet</span>
-                                        </option> 
-                                        <option value="show_students_that_have_not_logged_in_two_days_before_start_date">
-                                            <span data-show-students="">That have NOT logged in two days before the start date</span>
-                                        </option>
-                                        <option value="show_students_that_have_not_logged_in_within_the_last_two_days">
-                                            <span data-show-students="">Have NOT logged in within the last two days</span>
-                                        </option>
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="field columns main-filter hiddenX" id="query-show-students-performance">
-                                <label>Show Students:</label>
-                                <div class="picker">
-                                    <select id="performancefilter" data-id="parentvalue">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                        <option value="concatenated_results" data-id="0">
-                                            <span data-show-students=""> All Results</span>
-                                        </option>
-                                                    <option value="show_all_students_with_all_grades_attempt_1" data-id="1">
-                                            <span data-show-students=""> -- By Attempt #1</span>
-                                        </option>
-                                        <option value="show_all_students_with_all_grades_attempt_2" data-id="2">
-                                            <span data-show-students=""> -- By Attempt #2</span>
-                                        </option>
-                                        <option value="show_all_students_with_all_grades_attempt_3" data-id="3">
-                                            <span data-show-students=""> -- By Attempt #3</span>
-                                        </option>
-                                        <option value="show_all_students_with_all_grades_attempt_4" data-id="4">
-                                            <span data-show-students=""> -- By Attempt #4</span>
-                                        </option>
-                                        <option value="show_all_students_with_all_grades_attempt_5" data-id="5">
-                                            <span data-show-students=""> -- By Attempt #5</span>
-                                        </option>
-
-                                        <option value="show_students_who_are_doing_well_on_their_prework">
-                                            <span data-show-students=""> Who are doing well on their pre-work</span>
-                                        </option>
-                                        <option value="show_students_who_are_not_doing_well_on_their_prework">
-                                            <span data-show-students=""> Who are NOT doing well on their pre-work</span>
-                                        </option>
-                                        <option value="show_students_who_are_doing_well_on_their_homework">
-                                            <span data-show-students=""> Who are doing well on their homework</span>
-                                        </option>
-                                        <option value="show_students_who_are_not_doing_well_on_their_homework">
-                                            <span data-show-students=""> Who are NOT doing well on their homework</span>
-                                        </option>
-                                        <option value="show_students_who_are_not_going_to_pass">
-                                            <span data-show-students=""> Who are NOT going to pass</span>
-                                        </option>
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end #student_query -->
-                                    
-                        <div id="quiz_query" class="hiddenX">
-                                        
-                            <div class="field columns main-filter" id="query-criteria">
-                                <label>Quiz:</label>
-                                <div class="picker">
-                                    <select id="quizfilter">
-                                        <option value="null">
-                                            <span data-mdlquiz="type">- Select -</span>
-                                        </option> 
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="field columns main-filter hidden" id="report-type">
-                                <label>Type of Report:</label>
-                                <div class="picker">
-                                    <select id="typefilter">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                        <option value="student-report">
-                                            <span data-type="type">Student Report</span>
-                                        </option>
-                                        <option value="question-report">
-                                            <span data-type="type">Question Report</span>
-                                        </option>
-                                        <option value="subject-report">
-                                            <span data-type="type">Subject Report</span>
-                                        </option>
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="field columns main-filter hidden" id="query-show-students-report">
-                                <label>Show Students:</label>
-                                <div class="picker">
-                                    <select id="studentfilter">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                        <option value="">
-                                            <span data-show-students="">Who have completed the quiz</span>
-                                        </option>
-                                        <option value="">
-                                            <span data-show-students="">Who have NOT completed the quiz</span>
-                                        </option>
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="field columns main-filter hidden" id="query-show-questions-report">
-                                <label>Show Questions:</label>
-                                <div class="picker">
-                                    <select id="questionfilter">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                        <option value="show_all_single_question_data">
-                                            <span data-show-students=""> Show all single question data</span>
-                                        </option>
-                                        <option value="show_questions_that_the_majority_of_students_pass">
-                                            <span data-show-students=""> That the majority of students pass</span>
-                                        </option>
-                                        <option value="show_questions_that_the_majority_of_students_do_not_pass">
-                                            <span data-show-students=""> That the majority of students do NOT pass</span>
-                                        </option>
-                                        
-                                                   
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="field columns main-filter hidden" id="query-show-subjects-report">
-                                <label>Show Subjects:</label>
-                                <div class="picker">
-                                    <select id="subjectfilter">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                        <option value="">
-                                            <span data-show-students=""> That the majority of students pass</span>
-                                        </option>
-                                        <option value="">
-                                            <span data-show-students=""> That the majority of students do NOT pass</span>
-                                        </option>
-                                        
-                                        <option value="">
-                                            <span data-show-students=""> That students spend the MOST time on</span>
-                                        </option>
-                                        <option value="">
-                                            <span data-show-students=""> That students spend the LEAST time on</span>
-                                        </option>
-                                        
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end #quiz_query -->
-                    
-                
-                        <div class="row"></div>
-
-                    
-                        <div class="static">
-                              <table id="concatenated-results" class="tablesorter sortable" style="display:none;">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>   
-                                        <th>Student</th>   
-                                        <th>Last Access</th>
-                                        <th>First Access</th>
-                                        <th>Stress</th>   
-                                                        <th>Actions</th>
-                                        <th>Quiz Attempt Details</th>             
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_quiz_result"></tbody>
-                            </table>
-                        </div>
-
-
-                        <ul class="widget-grid full-width" id="report_results_holder">
-                            <li id="widget-quiz-reports-performance" style="display:none;">
-                                <h2 class="yellow">Results<a href="#" class="toggle" gumby-trigger="#widget-quiz-reports .widget-content"><i class="icon-minus-squared"></i></a></h2>
-                                <div class="widget-content">
-                                    <div class="row widget">
-                                        <div id="student-list-performance" class="sixteen columns detail">
-                                            <!-- populated by js -->
-                                            <table id="sortable" class="tablesorter">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>STUDENT <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>ACTION <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-
-                                                        <th>LAST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>FIRST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-
-                                                        <th>QUIZ ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>ATTEMPT <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>GRADE %<i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbody_quiz_result">
-                                                    <!-- Filled by Javascript Dynamically -->
-                                                    <tr id="results-body-performance" class="dna-template" data-class="~~STATUS~~">
-                                                        <td><span class="student-id">~~ID~~</span></td>
-                                <td class="user-details">
-                                    <span class="student-firstname">~~FIRSTNAME~~</span>
-                                    <span class="student-lastname">~~LASTNAME~~</span>
-                                    <span class="student-email">~~EMAIL~~</span>
-                                </td>
-                                <td class="dna-nucleotide user-actions" data-firstname="~~FIRSTNAME~~">
-                                    <p><a href="quiz-reports#" class="switch" gumby-trigger="#modal-challenge">Challenge</a></p>
-                                    <p><a href="quiz-reports#" class="switch" gumby-trigger="#modal-remediation">Remediation</a></p>
-                                    <p><a href="quiz-reports#" class="switch" gumby-trigger="#modal-remediation">Badge</a></p>
-                                </td>
-                                                        <td>
-                                    <span class="hidden">~~LASTACCESS~~</span>
-                                    <span>~~LASTACCESSFORMATTEDDATE~~</span>
-                                </td>
-                                <td>
-                                    <span class="hidden">~~FIRSTACCESS~~</span>
-                                    <span>~~FIRSTACCESSFORMATTEDDATE~~</span>
-                                </td>
-
-                                                        <td>
-                                    <span>~~QID~~</span>
-                                </td>
-                                <td>
-                                    <span>~~QATTEMPT~~</span>
-                                </td>
-                                <td>~~QPERCENTAGE~~</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li id="widget-quiz-reports" style="display:none;">
-                                <h2 class="yellow">Results<a href="#" class="toggle" gumby-trigger="#widget-quiz-reports .widget-content"><i class="icon-minus-squared"></i></a></h2>
-                                <div class="widget-content">
-                                    <div class="row widget">
-                                        <div id="student-list" class="sixteen columns detail">
-                                            <!-- populated by js -->
-                                            <table id="sortable" class="tablesorter">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>STUDENT <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>ACTION <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-
-                                                        <th>LAST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>FIRST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-
-                                                        <th>STRESS <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                <th>COMMENTS <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbody_quiz_result">
-                                                    <!-- Filled by Javascript Dynamically -->
-                                                    <tr id="results-body-access" class="dna-template" data-class="~~STATUS~~">
-                                                        <td><span class="student-id">~~ID~~</span></td>
-                                <td class="user-details">
-                                    <span class="student-firstname">~~FIRSTNAME~~</span>
-                                    <span class="student-lastname">~~LASTNAME~~</span>
-                                    <span class="student-email">~~EMAIL~~</span>
-                                </td>
-                                <td class="dna-nucleotide user-actions" data-firstname="~~FIRSTNAME~~">
-                                    <p><a href="quiz-reports#" class="switch" gumby-trigger="#modal-challenge">Challenge</a></p>
-                                    <p><a href="quiz-reports#" class="switch" gumby-trigger="#modal-remediation">Remediation</a></p>
-                                    <p><a href="quiz-reports#" class="switch" gumby-trigger="#modal-remediation">Badge</a></p>
-                                </td>
-                                                        <td>
-                                    <span class="hidden">~~LASTACCESS~~</span>
-                                    <span>~~LASTACCESSFORMATTEDDATE~~</span>
-                                </td>
-                                <td>
-                                    <span class="hidden">~~FIRSTACCESS~~</span>
-                                    <span>~~FIRSTACCESSFORMATTEDDATE~~</span>
-                                </td>
-
-                                                        <td>~~STUDENTSTRESS~~</td>
-                                <td>~~STUDENTINSTRUCTORCOMMENTS~~</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li id="widget-question-reports" style="display:none;">
-                                <h2 class="yellow">Results<a href="#" class="toggle" gumby-trigger="#widget-quiz-reports .widget-content"><i class="icon-minus-squared"></i></a></h2>
-                                <div class="widget-content">
-                                    <div class="row widget">
-                                        <div id="question-list" class="sixteen columns detail">
-                                            <!-- populated by js -->
-                                            <table id="sortable" class="tablesorter">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                                        <th><small>TOTAL</small><br>ATTEMPTS <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                                        <th>AVE GRADE <i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                                        <th>QUESTION CONTENT<i class="icon-down-dir"></i><i class="icon-up-dir"></i></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbody_quiz_result">
-                                                    <!-- Filled by Javascript Dynamically -->
-                                                    <tr id="results-body-questions" class="dna-template" data-class="~~STATUS~~">
-                                                        <td><span class="student-id">~~ID~~</span></td>
-                                                        <td class="user-total-attempts">~~TOTALATTEMPTS~~</td>
-                                                        <td class="user-ave-grade">~~AVERAGEGRADE~~</td>
-                                                        <td class="user-question-content">~~QUESTIONCONTENT~~</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="loading" id="loading_gif" style="display: none;">
-                            <img src="/images/b8163ca_loading_1.gif" alt="Loading..." />
-                        </div>
-                    </div>
-                </section>
-                <!-- flurry_reports -->
-                <section id="ciscoone_reports" class="report_display_switch">
-                    <h2>Symfony Migration</h2>
-                    <canvas id="video_views_bar" width="500" height="500"></canvas> 
-                    <canvas id="video_view_duration" width="250" height="250"></canvas> 
-                    <table id="sortable_learner_detail" class="tablesorter striped rounded">
-                        <thead>
-                            <th><i class="icon-arrow-combo"></i>Student</th>
-                            <th><i class="icon-arrow-combo"></i>Start Time</th>
-                            <th id="modules"><i class="icon-arrow-combo"></i>Modules</th>
-                            <th id="knowledge_checks"><i class="icon-arrow-combo"></i>Knowledge Checks</th>
-                            <th><i class="icon-arrow-combo"></i><!--<span>Total</span><br><br> -->Duration</th>
-                        </thead>
-                        <tbody id="learnerdetails">
-                            <!-- populated by js -->
-                        </tbody>
-                    </table> 
-                </section>
-<style>
-    #flurry_reports table{
-        width: 100%;
-        text-align: left;
-    }
-    #flurry_reports table thead{
-        font-weight: bold;
-    }
-    #flurry_reports table th{
-        font-weight: normal;
-    }
-</style>                
+            <div class="main wrapper clearfix">             
                 <section id="flurry_reports" class="report_display_switch">
-                    <h3><i class="fa fa-bar-chart"></i> Totara Activity</h3>
-
-                    <table class="tablesorter sortable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>   
-                                <th>Student</th>   
-                                <th>Action</th>
-                                <th>Course ID</th>   
-                                <th>Object Table</th>
-                                <th>Object ID</th> 
-                                <th>Date/Time</th>           
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_activity_result"></tbody>
-                    </table>
-
-                    <h3><i class="fa fa-bar-chart"></i> Custom Flurry API Data Query</h3>
-                    <div id="query_controls">
-                        <div class="picker_holder">
-                            <label for="start_date">Start Date</label><br>
-                            <input type="text" id="start_date" name="start_date" class="date_changer">
-                            
-                        </div>
-                        <div class="picker_holder">
-                            <label for="end_date">End Date</label><br>
-                            <input type="text" id="end_date" name="end_date" class="date_changer">
-                        </div>
-                        <div id="metric_type" class="picker_holder">
-                            <label>Metric Type:</label>
-                            <div class="picker">
-                                <select id="basisfilter">
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <option value="appMetrics">
-                                        <span data-criteria="appMetrics">App Metrics</span>
-                                    </option>
-                                    <option value="eventMetrics" disabled>
-                                        <span data-criteria="eventMetrics">Event Metrics</span>
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="app_metric_specific" class="picker_holder">
-                            <label>App Metric:</label>
-                            <div class="picker">
-                                <select>
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <optgroup label="Sessions">
-                                        <option value="Sessions">
-                                            <span data-criteria="Sessions">Sessions</span>
-                                        </option>
-                                        <option value="MedianSessionLength">
-                                            <span data-criteria="MedianSessionLength">Median Session Length</span>
-                                        </option>
-                                        <option value="AvgSessionLength">
-                                            <span data-criteria="AvgSessionLength">Avg Session Length</span>
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Users">
-                                        <option value="ActiveUsers">
-                                            <span data-criteria="ActiveUsers">Active Users</span>
-                                        </option>
-                                        <option value="ActiveUsersByWeek">
-                                            <span data-criteria="ActiveUsersByWeek">Active Users By Week</span>
-                                        </option>
-                                        <option value="ActiveUsersByMonth">
-                                            <span data-criteria="ActiveUsersByMonth">Active Users By Month</span>
-                                        </option>
-                                        <option value="NewUsers">
-                                            <span data-criteria="NewUsers">New Users</span>
-                                        </option>
-                                        <option value="RetainedUsers">
-                                            <span data-criteria="RetainedUsers">Retained Users</span>
-                                        </option>
-                                    </optgroup>
-                                        <optgroup label="Views">
-                                        <option value="PageViews">
-                                            <span data-criteria="PageViews">Page Views</span>
-                                        </option>
-                                        <option value="AvgPageViewsPerSession">
-                                            <span data-criteria="AvgPageViewsPerSession">Avg Page Views Per Session</span>
-                                        </option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="event_metric_specific" class="hideme">
-                            <label>Event:</label>
-                            <input type="text" id="event_name" placeholder="Type EXACT Event Name...">
-                            <label>Event Metric:</label>
-                            <div class="picker">
-                                <select>
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <optgroup label="Sessions">
-                                        <option value="totalSessions">
-                                            <span data-criteria="totalSessions">Total Sessions</span>
-                                        </option>
-                                        <option value="totalCount">
-                                            <span data-criteria="totalCount">Total Count</span>
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Users">
-                                        <option value="usersLastDay">
-                                            <span data-criteria="usersLastDay">Users Last Day</span>
-                                        </option>
-                                        <option value="usersLastWeek">
-                                            <span data-criteria="usersLastWeek">Users Last Week</span>
-                                        </option>
-                                        <option value="usersLastMonth">
-                                            <span data-criteria="usersLastMonth">Users Last Month</span>
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Average Users">
-                                        <option value="usersLastDay">
-                                            <span data-criteria="aveUsersLastDay">Ave Users Last Day</span>
-                                        </option>
-                                        <option value="usersLastWeek">
-                                            <span data-criteria="aveUsersLastWeek">Ave Users Last Week</span>
-                                        </option>
-                                        <option value="usersLastMonth">
-                                            <span data-criteria="aveUsersLastMonth">Ave Users Last Month</span>
-                                        </option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="query_controls">
-                            <label for=""></label><br>
-                            <!-- <button id="runDashboard">Submit</button> -->
-                            <a class="restart"><i class="fa fa-refresh"></i> Restart</a>
-                        </div>
+                    <div id="all_apps_overview">
+                        <h5>All Apps</h5>
+                        <span id="work_in_progress">work_in_progress()</span>
+                        <i class="fa fa-apple"></i>
+                        <i class="fa fa-android"></i>
+                        <i class="fa fa-chart"></i>
+                        <i class="fa fa-file"></i>
+                        <i class="fa fa-calendar"></i>
+                        <i class="fa fa-key"></i>
+                        <i class="fa fa-external-link"></i>
+                        <ul class="all_apps">
+                            <!-- populated by js -->
+                        </ul>
                     </div>
-                    
-                    <span id="chart_key">
-                        <small>
-                            <strong>Key:</strong>: 
-                            <span class="flurry_key" style="color:#82bfd8;"><i class="fa fa-line-chart"></i> Flurry Data</span>
-                            <span class="compare_key" style="color: #fe5f55"><i class="fa fa-line-chart"></i> Course Data</span>
-                        </small>
-                    </span>
-                    <canvas id="updating-chart"></canvas>
                 </section>
 
             </div> <!-- #main -->
@@ -628,390 +45,8 @@
                 <h3>footer</h3>
             </footer>
         </div>
+      
         
-
-<style type="text/css">
-header nav ul li{
-    width: auto;
-    display: inline;
-}
-.main-filter{
-    display: inline-block;
-    float: left;
-}
-.main-filter select{
-    width: auto;
-}
-.report_display_switch{
-display: none;
-}
-table thead th, table tbody td, table tr td{
-  padding: 10px 5px;
-}
-table tr td, table tbody tr td{
-  line-height: 1em;
-}
-table tbody tr:nth-child(odd){
-  background-color: #f5f5f5;
-}
-table tr td:first-child{
-  font-weight: normal;
-}
-div.quiz_result_holder span{
-  font-size: 14px;
-  line-height: 1.5em;
-}
-div.quiz_result_holder span .student-stress{
-  font-size: 12px !important;
-}
-
-span.quiz_details{
-  display: block;
-  float: none;
-  letter-spacing: -0.02em;
-}
-
-.student_email,
-.last_access{
-  display: block;
-  margin-top: 10px;
-  font-weight: 300;
-  font-size: 14px;
-  text-transform: none;
-}
-.last_access{
-  margin-top: 0;
-}
-.last_access small{
-  color: #000;
-}
-
-.label.null_label {
-  background: #f06e6e;
-  border: 1px solid #f06e6e;
-}
-th.tablesorter-header:hover{
-  cursor: pointer;
-}
-td.student_details{
-  font-weight: 600;
-  line-height: 1em;
-  font-size: 16px;
-  text-transform: capitalize;
-}
-td.student_details .instructor_comments{
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 1em;
-}
-.student_name{
-  line-height: 1.5em;
-  text-transform: capitalize;
-}
-.attempt_object{
-  margin-right: 5px;
-}
-.quiz_result_holder{
-  margin-bottom: 0.5em;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid #e5e5e5;
-}
-.quiz_result_holder:last-child{
-  padding-bottom: 0;
-  margin-bottom: 0;
-  border-bottom: none;
-}
-.wrap{
-  display: block;
-}
-  ol li{
-    list-style: decimal !important;
-  }
-  ul ul,
-  ol ul
-  {
-    margin-top: 0;
-
-  }
-  ol li:before{
-    content: "- ";
-  }
-  li.page_item{
-    margin-bottom: 2em;
-  }
-  li.page_item_has_children.page_item{
-    margin-top: 2em;
-  }
-  ul li.page_item{
-    margin-bottom: 0;
-  }
-  ul.children li.page_item_has_children{
-    margin-top: 0;
-  }
-
-label{
-display: inline;
-}
-html{
-margin: 1em 2em;
-}
-header{
-text-align: center;
-margin: 1em 0;
-}
-div.picker_holder{
-margin-right: 0.5em;
-}
-.restart{
-margin-left: 1em;
-}
-#basisfilter{
-width: 125px;
-}
-#query_controls{
-float: none;
-clear: both;
-min-height: 70px;
-}
-#chart_key{
-display: block;
-float: none;
-margin-bottom: 1em;
-}
-button{
-max-width: 180px;
-}
-input[type="text"].date_changer{
-width: 80px;
-}
-div.picker_holder{
-width: auto;
-float: left;
-}
-canvas#updating-chart{
-width: 100%;
-min-width: 400px;
-height: auto;
-margin-bottom: 3em;
-}
-/*hide date used for sorting*/
-.obj-list td:nth-child(3) span:first-child{
-display: none;
-}
-.video_holder .icon-eye,
-.video_holder .icon-check{
-min-width: 5px;
-margin: 0;
-}
-body.cisco_one .video_holder img{
-width: 50%;
-float: left;
-margin-right: 0.5em;
-}
-table .icon-arrow-combo{
-min-width: 5px;
-margin: 0;
-opacity: 0.3;
-}
-table .icon-arrow-combo:hover{
-cursor: pointer;
-}
-table.striped tr:nth-of-type(even), table table tr.stripe, table table tr.striped{
-background-color: #f5f5f5;
-}
-i.icon-flash.danger{
-color: #d71816;
-}
-
-body.cisco_one #widget-alerts tbody tr.obj-list td:nth-child(2){
-font-weight: 300;
-text-transform: none;
-}
-body.cisco_one .tabs.pill .tab-nav > li > a{
-color: #939393;
-}
-body.cisco_one .tabs.pill .tab-nav > li span.label{
-color: #82bfd8;
-border-color: #82bfd8;
-}
-#four_stages .widget-content{
-padding: 1em;
-}
-.table_key{
-font-size: 14px;
-line-height: 1em;
-margin-bottom: 1em;
-}
-
-#verbsheader .label{
-margin-right: 2px;
-}
-
-/*Symfony Migration*/
-.tablesorter-header-inner{
-/*text-align: center;*/
-line-height: 1em;
-position: relative;
-/*padding: 5px 0px 25px 3px;*/
-padding: 0.5em 0 1em 0.5em;
-}
-.tablesorter-header-inner:last-child{
-padding-right: 0;
-}
-table#sortable_learner_detail tbody tr td{
-line-height: 1em;
-font-size: 14px;
-}
-/*table#sortable_learner_detail th i,*/
-table#sortable_learner_detail th span{
-/*position: absolute;*/
-top: 5px;
-font-size: 10px;
-}
-th.tablesorter-header{
-position: relative;
-overflow: hidden;
-z-index: 0;
-padding: 0;
-}
-.progress_arrow{
-z-index: 0;
-position: absolute;
-left: -4px;
-width: 70px;
-height: 70px;
-/*background-color: yellow;*/
-display: block;
--ms-transform: rotate(45deg); /* IE 9 */
--webkit-transform: rotate(45deg); /* Safari */
-transform: rotate(45deg); /* Standard syntax */
-border-right: 1px solid #efefef;
-border-top: 1px solid #efefef;
-top: 10px !important;
-}
-.start_ribbon{
-/*border-left: 1px solid #e5e5e5;*/
-}
-tr.obj-list td,
-tr.obj-list td:nth-child(4),
-tr.obj-list td:nth-child(5),
-tr.obj-list td:nth-child(6),
-tr.obj-list td:nth-child(7){
-padding-left: 0;
-}
-tr.obj-list td:first-child{
-padding-left: 5px;
-}
-
-#learnerdetails .ttip:hover:before,
-#learnerdetails .ttip:hover:after
-{
-left: 2.2em;
-}
-
-#learnerdetails .ttip:hover:after {
-left: 1.9em;
-top: 0.5em;
-}
-
-#learnerdetails .ttip:hover:before {
-top: 1.5em;
-}
-
-#learnerdetails tr.expand {
-cursor: pointer;
-}
-
-#learnerdetails tr.expand i {
-font-size: 1.3em;
-}
-
-#learnerdetails tr.expand td.mdata ul,
-#learnerdetails tr.expand td.kdata div {
-background-color: #f6f9fd;
-display: none;
-}
-
-#learnerdetails tr.expand td.mdata:hover,
-#learnerdetails tr.expand td.kdata:hover {
-background-color: #f6f9fd;
-}
-
-#learnerdetails tr.expand td.mdata:hover ul,
-#learnerdetails tr.expand td.kdata:hover div {
-display: block;
-}
-#learnerdetails tr.expand:hover td ul li:first-child{
-margin-top: 1em;    
-}
-
-.mdata, .kdata {
-white-space: nowrap;
-}
-
-.tdata span {
-font-size: .7em;
-}
-
-i.green {
-color: #8be8cb;
-}
-
-i.red {
-color: #dcdcdc;
-}
-
-/*.progress_arrow {
-z-index: 0;
-position: absolute;
-left: -287px;
-width: 300px;
-height: 300px;
-display: block;
--ms-transform: rotate(45deg);
--webkit-transform: rotate(45deg);
-transform: rotate(45deg);
-border-right: 1px solid #e5e5e5;
-border-top: 1px solid #e5e5e5;
-top: -130px !important;
-}*/
-#sortable_learner_detail thead th:nth-child(4),
-#sortable_learner_detail thead th:nth-child(5),
-#sortable_learner_detail thead th:nth-child(6),
-#sortable_learner_detail thead th:nth-child(7){
-/*background-color: #afdfdb;*/
-}
-#sortable_learner_detail thead{
-/*background-color: transparent; */
-color: #fff;
-}
-#sortable_learner_detail thead th{
-white-space: nowrap;
-padding-right: 1em;
-}
-#sortable_learner_detail thead th:nth-child(1){
-width: 12%;
-}
-#sortable_learner_detail thead th:nth-child(2){
-width: 8%;   
-}
-#sortable_learner_detail thead th:nth-child(3){
-width: 50%;
-}
-#sortable_learner_detail thead th:nth-child(4){
-width: 20%;
-}
-#sortable_learner_detail thead th:nth-child(5){
-width: 10%;
-}
-#sortable_learner_detail thead .icon-arrow-combo{
-margin-right: 0.5em;
-}
-#modules{
-width: 80px;
-}
-    </style>
-
         <!-- footer js -->
     
         <script type="text/javascript">
@@ -1034,46 +69,44 @@ width: 80px;
                 settings: 'http://akronzip.com/'
             };
 
-            fb = {
-                client_id: '',
-                redirect_url: 'http://ciscolive.lumious.co/oauth/redirect/facebook'
-            };
         </script>
         <!-- Unminified -->
         <script src="assets/js/vendor/jquery.js"></script>
         <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
 
         <!-- From Symfony: LIBRARY -->
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/dna.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/dumper.js"></script>
-            <!-- <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script> -->
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.tablesorter.min.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/jquery-sortable-min.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/pikaday.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/libs/pikaday.jquery.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/dna.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/dumper.js"></script>
+            <!-- <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script> -->
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.tablesorter.min.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery-sortable-min.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/pikaday.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/libs/pikaday.jquery.js"></script>
         <!-- END From Symfony -->
 
         <script src="assets/js/vendor/bootstrap.js"></script>
         <script src="assets/vendor/moment/moment.min.js"></script>
+
         <script src="//www.chartjs.org/assets/Chart.min.js"></script>
+
         <script src="assets/js/vendor/underscore.js"></script>
         <script src="assets/js/dashboard.js"></script>
 
         <!-- From Symfony: CUSTOM -->
-            <script type="text/javascript" src="/assets/js/from-symfony/js/plugins.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/main.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/report_filters.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/report_students_access.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/report_students_performance.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/report_queries_questions.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/report_queries_attempts.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/report_concatenated_rows.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/analytics.js"></script>
-            <script type="text/javascript" src="/assets/js/from-symfony/js/settings.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/plugins.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/main.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/report_filters.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/report_students_access.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/report_students_performance.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/report_queries_questions.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/report_queries_attempts.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/report_concatenated_rows.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/analytics.js"></script>
+            <script type="text/javascript" src="assets/js/from-symfony/js/settings.js"></script>
          <!-- END From Symfony -->
         
          
@@ -1094,16 +127,37 @@ width: 80px;
         </script>
 
         <script type="text/javascript">
-                
-            function pop_up(hyperlink, window_name)
-            {
-                if (!window.focus) {
-                    return true;
+
+                $( document ).ready(function() {
+                  console.log('Document Ready: Custom Functions Start...')
+                  
+                  getFlurryAllAppsInfo();
+
+                  // getFlurryAppInfo();
+                  
+                  // Setup temp test array of demo student data for new endpoint
+                  // @TODO - replace with a jQuery.when(...).done(...) function once the endpoint is in place. 
+
+                  all_students.push(student_result_id_4);
+                  all_students.push(student_result_id_17);
+                  console.log('all_students');
+                  console.log(all_students);
+
+                  get_totara_activity();
+
+                  // $('#mef_reports').show();
+                  $('#flurry_reports').show();
+                }); // end doc ready
+
+                function pop_up(hyperlink, window_name)
+                {
+                    if (!window.focus) {
+                        return true;
+                    }
+                    var href = (typeof(hyperlink) == 'string' ? hyperlink : hyperlink.href);
+                    window.open(href, window_name, 'width=800,height=800,toolbar=no, scrollbars=yes');
+                    return false;
                 }
-                var href = (typeof(hyperlink) == 'string' ? hyperlink : hyperlink.href);
-                window.open(href, window_name, 'width=800,height=800,toolbar=no, scrollbars=yes');
-                return false;
-            }
         </script>
     </body>
 </html>

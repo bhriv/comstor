@@ -1,5 +1,32 @@
 // Main.js non-minified
 
+// FIND parameters in URL string
+// http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+var urlParams;
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+})();
+console.log('**************** urlParams ************');
+console.log(urlParams);
+// console.log('apiKey +': urlParams["apiKey"]);
+console.log('apiKey from URL: '+urlParams['apiKey']);
+var this_page_apiKey = urlParams['apiKey'];
+localStorage.setItem( 'apiKey',this_page_apiKey);
+
+
+function get_apiKey_from_storage(){
+  var apiKey_from_storage = localStorage.getItem( 'apiKey');
+  console.log('function - get apiKey from STORAGE: '+apiKey_from_storage);
+  return apiKey_from_storage;
+}
 // ===========================
 // Force Login for some Links - use for testing simple functions such as 'Document Ready' state etc.
 // ===========================
@@ -141,6 +168,7 @@ $('#deal').on('click', function(event) {
     localStorage.setItem( 'session_id','');
     localStorage.setItem( 'start_date','');
     localStorage.setItem( 'end_date','');
+    localStorage.setItem( 'apiKey','');
     console.log('CLEARED:');
   }
   
@@ -154,7 +182,7 @@ $('#deal').on('click', function(event) {
 
 $(document).ready(function() {
 
-  console.log('Document ready');
+  console.log('Document ready: Session Start Functions');
 
   $('.hideme').hide();
     
@@ -190,6 +218,13 @@ $(document).ready(function() {
   });
 
 
+  $("ul.all_apps").click(function() {
+    alert('click');
+    var this_link = $("ul.app_overview li").find("a.link_to_analytics");
+    window.location.href = this_link;
+  });
+
+
   // Date Picker Processing
 
   $(function() {
@@ -214,6 +249,7 @@ $(document).ready(function() {
         console.log('NEW end_date: ' +selectedDate);
       }
     });
+
   });
   // end Date Picker
 
@@ -245,8 +281,7 @@ $(document).ready(function() {
       console.log('NEW event_metric_specific:' +event_metric_specific);
   });
 
-}); 
-// end Doc Ready 
+}); // end Doc Ready 
 
 $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
@@ -390,7 +425,8 @@ function newChart(){
 /***********************************************************************/
 
 var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
-    apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
+    // apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
+    apiKey                    = get_apiKey_from_storage(),
     flurry_country_data       = [], 
     flurry_metric_data        = [],
 
@@ -421,6 +457,7 @@ function constructFlurryEndpoint(){
   console.log('API URL: '+url_new_Flurry);
   return url_new_Flurry;
 }
+
 
 function testFlurryAnalytics(){
   console.log('----- START testFlurryAnalytics -----');
@@ -454,6 +491,107 @@ function testFlurryAnalytics(){
   });
 }
 
+function constructFlurryAppInfoEndpoint(){
+  url_app_metric_specific = 'getApplication';
+  // construct endpoint URL with api access code and api key
+  url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey;
+  return url_new_Flurry;
+}
+
+function getFlurryAppInfo(){
+  // get the app details from Flurry endpoint, then add to the app_overview div
+  console.log('----- START getFlurryAppInfo -----');
+  
+  $.getJSON( constructFlurryAppInfoEndpoint(), function( Flurry_json ) {
+    console.log('getting url_Flurry data...');
+    console.log(Flurry_json);
+      //By using javasript json parser
+      // console.log('@category:' +Flurry_json['@category']);
+      // console.log('@createdDate:' +Flurry_json['@createdDate']);
+      // console.log('@name:' +Flurry_json['@name']);
+      // console.log('@platform:' +Flurry_json['@platform']);
+      // console.log('@generatedDate:' +Flurry_json['@generatedDate']);
+      // console.log('@version:' +Flurry_json['@version']);
+      // console.log('version:');
+      // console.log(Flurry_json['version']);
+      var app_versions = Flurry_json['version'];
+      // loop through the version history and pass all version names to a list
+      jQuery.each(app_versions, function(i, vdata) {
+        console.log('app_versions DATA');
+        console.log(vdata);
+        var v_createdDate = vdata['@createdDate'];
+        var v_name = vdata['@name'];
+        var v_version = '<strong>Created:</strong> ' +v_createdDate+ ' <strong>Version Name:</strong> ' +v_name;
+        //console.log('v_version: '+v_version);
+        var v_history = '<li>'+v_version+'</li>';
+        
+        $('ul.app_version_history').append(v_history);
+      });
+      
+      $('span.app_category').html(Flurry_json['@category']);
+      $('span.app_createdDate').html(Flurry_json['@createdDate']);
+      $('span.app_name').html(Flurry_json['@name']);
+      $('span.app_platform').html(Flurry_json['@platform']);
+      $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
+    console.log('----- END getFlurryAppInfo -----');
+  });
+}
+
+function constructFlurryAllAppsInfoEndpoint(){
+  url_app_metric_specific = 'getAllApplications';
+  // construct endpoint URL with api access code and api key
+  url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode;
+  return url_new_Flurry;
+}
+
+function getFlurryAllAppsInfo(){
+  // get the app details from Flurry endpoint, then add to the app_overview div
+  console.log('----- START getFlurryAllAppsInfo -----');
+  $.getJSON( constructFlurryAllAppsInfoEndpoint(), function( Flurry_json ) {
+    console.log('getting url_Flurry data...');
+    console.log(Flurry_json);
+      //By using javasript json parser
+
+      // {"@companyName":"Tech 2000, Inc.","@generatedDate":"11/18/15 4:05 PM","@version":"1.0","application":[{"@apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name":"The SELL Closer App D - Android"},
+      console.log('@companyName:' +Flurry_json['@companyName']);
+      console.log('@generatedDate:' +Flurry_json['@generatedDate']);
+      console.log('@version:' +Flurry_json['@version']);
+      console.log('application:');
+      console.log(Flurry_json['application']);
+
+      var all_app_versions = Flurry_json['application'];
+
+      // loop through the version history and pass all version names to a list
+      jQuery.each(all_app_versions, function(i, vdata) {
+        console.log('app_versions DATA');
+        // @apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name"
+        console.log(vdata);
+        
+        var this_url = window.location.href;
+
+        var v_name = vdata['@name'];
+        var v_platform = vdata['@platform'];
+        var v_createdDate = vdata['@createdDate'];
+        var v_apiKey = vdata['@apiKey'];
+        var v_analytics_link = this_url+'analytics.html?apiKey='+v_apiKey;
+        var v_app_data = '<li><h5><a class="link_to_analytics" href="'+v_analytics_link+'" target="blank"><i class="fa fa-file"></i> ' +v_name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></li><li><strong><i class="fa fa-apple"></i> Platform: </strong> ' +v_platform+ '</li><li><strong><i class="fa fa-calendar"></i> Created: </strong> ' +v_createdDate+ '</li><li><strong><i class="fa fa-key"></i> API Key: </strong> ' +v_apiKey +'</li><li style="display:none;"><strong><a href="'+v_analytics_link+'" target="blank"><i class="fa fa-external-link"></i> '+v_analytics_link+'</a></strong></li>';
+        //console.log('v_version: '+v_version);
+        var v_all_apps = '<li><ul class="app_overview">'+v_app_data+'</ul></li>';
+        
+        $('ul.all_apps').append(v_all_apps);
+      });
+      
+      // $('span.app_category').html(Flurry_json['@category']);
+      // $('span.app_createdDate').html(Flurry_json['@createdDate']);
+      // $('span.app_name').html(Flurry_json['@name']);
+      // $('span.app_platform').html(Flurry_json['@platform']);
+      // $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
+    console.log('----- END getFlurryAllAppsInfo -----');
+  });
+}
+
+
+// TOTARA Data Function
 
 function getAllData(){
   var selected_course_id = 33;
@@ -543,20 +681,6 @@ function extend(obj, src) {
     return this;
   }
 })();
-// Reference 
-// var searchresult = findStudentByID(s,attempt_user);
-
-// function findStudentByID(arr,sid){
-//     var result = $.grep(arr, function(e){ return e.id == sid; });
-//     console.log("Student Search Result: ");
-//     console.log(result);
-//     if(result){
-//         return result;
-//     }else{
-//         return false;
-//     }
-// }
-
 
 // flurry_reports
 
@@ -578,8 +702,48 @@ $("#show_ciscoone_reports").click(function() {
   $('#ciscoone_reports').show();
 });
 
+$("#get_course_data").click(function() {
+  get_course_data();
+});
+$("#work_in_progress").click(function() {
+  work_in_progress();
+});
+
 
 var all_students = []
+var student_17object = [];
+var student_4object = [];
+
+var student_result_id_17;
+var student_result_id_4;
+
+// var student_17_url = 'http://www.privacyvector.com/api/lumiousreports/studentdata/17';
+var student_17_url = 'http://www.akronzip.com/lumiousreports/studentdata/17';
+var student_4_url = 'http://www.privacyvector.com/api/lumiousreports/studentdata/4';
+
+$("#pull_student_data").click(function() {
+  alert('show_all_students_activity CLICK');
+  // pull_student_data();
+  show_all_students_activity();
+});
+
+function pull_student_data(){
+
+  console.log('pull_student_data FUNCITON');
+  console.log('student_17_url: '+student_17_url);
+  console.log('student_4_url: '+student_4_url);
+
+  $.when(student_17_url,student_4_url).done(function(student_17object, student_4object) {
+    console.log('getting url_Student data...');
+    all_students.push(student_17object);
+    console.log(student_4object);
+    console.log(student_17object);
+  });
+}
+
+
+// console.log('##### student_result_id_17 ##### ');
+// console.log(student_result_id_17);
 
 var student_result_id_17 = [{
   "user": {
@@ -798,6 +962,12 @@ function get_totara_activity(){
   }); // end each.all_students
 }
 
+
+/*****************************************************************/
+/*************** CACHING and PROCESSING **************************/
+/*****************************************************************/
+
+
 function get_course_name(activity_course){
   // get the course details from endpoint, then add to the results table
   // var course_url = base_url + 'lumiousreports/courselookup/'+activity_course;
@@ -816,20 +986,396 @@ function get_course_name(activity_course){
   // }); // end $.when
 }
 
-$( document ).ready(function() {
+var course_data = [];
+
+function temp_set_course_data(){
+
+  var course_data = [
+                      {
+                        "id": "1",
+                        "category": "0",
+                        "fullname": "Comstor LMS",
+                        "shortname": "comstor",
+                        "startdate": "0"
+                      },
+                      {
+                        "id": "2",
+                        "category": "1",
+                        "fullname": "Test course ",
+                        "shortname": "test_course",
+                        "startdate": "1439938800"
+                      },
+                      {
+                        "id": "4",
+                        "category": "25",
+                        "fullname": "Collaboration Course",
+                        "shortname": "Collab",
+                        "startdate": "1444107600"
+                      },
+                      {
+                        "id": "5",
+                        "category": "26",
+                        "fullname": "Twitter Content",
+                        "shortname": "TWITTER",
+                        "startdate": "1444345200"
+                      },
+                      {
+                        "id": "6",
+                        "category": "21",
+                        "fullname": "Test course",
+                        "shortname": "Tes",
+                        "startdate": "1444777200"
+                      },
+                      {
+                        "id": "7",
+                        "category": "27",
+                        "fullname": "Testing",
+                        "shortname": "TEST",
+                        "startdate": "1445036400"
+                      },
+                      {
+                        "id": "8",
+                        "category": "28",
+                        "fullname": "Data Center 1:1",
+                        "shortname": "DC11",
+                        "startdate": "1446681600"
+                      },
+                      {
+                        "id": "9",
+                        "category": "21",
+                        "fullname": "Test Course 42 - Comstor Testing",
+                        "shortname": "Test Course",
+                        "startdate": "1447372800"
+                      }
+                    ];
+  console.log('course_data');                  
+  console.log(course_data);                  
+  var data = JSON.stringify(course_data);
+  localStorage.setItem( 'session_course_data_array',data);
   
-  // Setup temp test array of demo student data for new endpoint
-  // @TODO - replace with a jQuery.when(...).done(...) function once the endpoint is in place. 
+  console.log('*********** END temp_set_course_data *****************')
+}
 
-  all_students.push(student_result_id_4);
-  all_students.push(student_result_id_17);
-  console.log('all_students');
-  console.log(all_students);
+var course_constructed_array = [];
 
-  get_totara_activity();
 
-  // $('#mef_reports').show();
-  $('#flurry_reports').show();
-}); // end doc ready
+function get_course_data(c_temp){
+  console.log('c_temp: '+c_temp);
+  // localStorage.setItem( 'activewidgets', JSON.stringify(activewidgets) );
+  // var storedactivewidgets = JSON.parse(localStorage.getItem( 'activewidgets'));
+  temp_set_course_data();
+  // @TODO - pull from actual query
+  
+  var session_course_data_array = localStorage.getItem( 'session_course_data_array');
+  console.log('session_course_data_array');
+  console.log(session_course_data_array);
 
+  var query_course_id = c_temp;
+  var arr = JSON.parse(session_course_data_array);
+  console.log('CCCCCCCCC');
+  console.log(arr);
+
+  var course_data_from_array = findCourseByID(arr, query_course_id);
+  console.log('course_data_from_array');
+  console.log(course_data_from_array);
+
+  
+  if (course_data_from_array == false) {
+    console.log('FALSE satisfied - get data from endpoint');
+    // hit endpoint
+    // get data
+    // save to session array data
+  }else{
+    var d = course_data_from_array[0];
+    console.log(' ID: '+d["id"] +
+                ' SHORTNAME: '+d.shortname +
+                ' FULLNAME: '+d.fullname +
+                ' CATEGORY: '+d.category +
+                ' STARTDATE: '+d.startdate);
+    course_constructed_array.push(d);
+    console.log('course_constructed_array');
+    console.log(course_constructed_array);
+    var courses = JSON.stringify(course_constructed_array);
+    localStorage.setItem( 'courses', courses );
+    var t = localStorage.getItem('courses');
+    var s = JSON.parse(localStorage.getItem( 'courses'));
+    console.log('courses - storage retrieval: ');
+    console.log(s);
+  }
+  // use course data to generate table row
+  generate_table_row();
+}
+
+function work_in_progress(){
+  // testing for sending a course ID, avoiding hitting the endpoints if possible, 
+  // check local storage to see if course details are already saved in session
+  // use local details if possible
+  // if ID not found, hit the endpoint, store the details
+  // get the details, use to update the table / dom
+  get_course_data(4);
+  get_course_data(99);
+  get_course_data(5);
+  get_course_data(6);
+  get_course_data(68);
+  get_course_data(7);
+}
+
+// 
+
+function findCourseByID(arr,query_course_id){
+    // given a course ID
+    // check course data array
+    // var stored_course_data = getSession('course_array');
+    // if ID found in session array, return data
+    var result = $.grep(arr, function(e){ return e.id == query_course_id; });
+    console.log("Local Course Session Search Result: ");
+    console.log(result);
+    if(result){
+        return result;
+    }else{
+        return false;
+    }
+}
+
+function generate_table_row(){
+  // pull exising DOM population elements from query
+  alert('generate_table_row FIRED');
+}
+
+
+// Doc ready functions moved to index.html
+
+/* =======================================
+    Show All Students in Selected Course - no filter
+* ======================================= */
+
+function show_all_students_activity(){
+
+  console.log('===XXXXXXXXXXXXXXXXXXXXXXXXXX    BEGIN  show_all_students_activity   XXXXXXXXXXXXXXXXXXXXXXXXXXX====');
+
+  // POPULATE DATA to RESULTS TABLE
+  // var selected_course_id = checkLocalStorage('current_course');
+  var selected_course_id = 2;
+
+  // console.log('LOCAL STORAGE current_course ' +selected_course_id);
+  
+  // ajax URLs
+  url_course_students = 'http://www.privacyvector.com/api/lumiousreports/students/'+selected_course_id;
+  url_student_data = 'http://www.privacyvector.com/api/lumiousreports/studentdata/';
+
+  // store results from these static URLs as objects to use with promises
+  var students = $.getJSON(url_course_students);
+
+  // declare variables for student object
+  var student_id = null;
+  var student_firstname = null;
+  var student_lastname = null;
+  var student_email = null;
+  var student_username = null;
+  var student_firstaccess = null;
+  var student_lastaccess = null;
+
+  // wait for student ajax request to complete before we proceed
+  $.when(students).done(function(studentobject) {
+
+    // dig down to the responseText object
+    //var s = $.parseJSON(studentobject[1]);
+
+    console.info("Student Data for Course " + selected_course_id);
+    console.info(studentobject);
+
+    // loop through the student object
+    jQuery.each(studentobject, function(i, sdata) {
+            
+        student_id = sdata.id;
+        student_firstname = sdata.firstname;
+        student_lastname = sdata.lastname;
+        student_email = sdata.email;
+        student_username = sdata.username;
+        student_firstaccess = sdata.firstaccess;
+        student_lastaccess = sdata.lastaccess;
+
+        console.log("Checking data for Student ID: " + student_id);
+
+        var student_stress = 'not_set';
+        var student_instructor_comments = 'not_set';
+        var student_instructor_comments_trimmed = 'not_set';
+        var firstaccess_dateVal = student_firstaccess;
+
+        // Format Date
+        if (firstaccess_dateVal == 0) {
+            var firstaccess_formatted_date = 'Never';
+        }else{
+            var firstaccess_formatted_date = moment.unix(firstaccess_dateVal).format('MMMM Do YYYY, h:mm:ss a');    
+        };                      
+        var lastaccess_dateVal = student_lastaccess;
+        if (lastaccess_dateVal == 0) {
+            var lastaccess_formatted_date = 'Never';
+        }else{
+            var lastaccess_formatted_date = moment.unix(lastaccess_dateVal).format('MMMM Do YYYY, h:mm:ss a');  
+        };
+
+        // ajax call to get student data details
+        var studentdata = $.getJSON(url_student_data + student_id);
+
+        // Store Details in DNA table values
+        sdata['ID'] = student_id;
+        sdata['FIRSTNAME'] = student_firstname;
+        sdata['LASTNAME'] = student_lastname;
+        sdata['EMAIL'] = student_email;
+        sdata['USERNAME'] = student_username;
+        sdata['FIRSTACCESS'] = student_firstaccess;
+        sdata['FIRSTACCESSFORMATTEDDATE'] = firstaccess_formatted_date;
+        sdata['LASTACCESS'] = student_lastaccess;
+        sdata['LASTACCESSFORMATTEDDATE'] = lastaccess_formatted_date;
+
+        // when ajax call is done
+        $.when(studentdata).done(function(studentdataobject) {
+
+            console.log("student data details: ");
+            console.log(studentdataobject);
+
+            // Student Notes Content - get array values, manipulate to clean up and use as comments and stress level
+            var student_posts = studentdataobject.user["posts"];
+            
+            console.log(student_posts);
+
+            // ensure the posts object contains usable data
+            if(student_posts != undefined){
+                $.each(student_posts, function (index, x) {
+                  console.log('comment content: ' +x.content + ' publishstate: ' + x.publishstate );
+                  student_instructor_comments = x.content;
+                  student_instructor_comments_trimmed = student_instructor_comments.trim(); // remove whitespace
+                  student_instructor_comments_trimmed = student_instructor_comments.substr(2); // remove first 2 digits for stress level
+                  student_stress = student_instructor_comments.substring(0, 2); // take first 2 digits, use as stress setting
+                  console.log('Stress content: ' +student_stress + ' student_instructor_comments_trimmed: ' + student_instructor_comments_trimmed );
+                  
+                  // Add Labels to stress levels
+                  if ( student_stress == '20' || student_stress == 'Be' || student_stress == 'Jo' ) {
+                      // If entry is a default entry then update the text 
+                      sdata['STUDENTSTRESS'] = '<span class="content_not_available">N/A</span>';
+                      sdata['STUDENTINSTRUCTORCOMMENTS'] = '<span class="content_not_available">No Comment</span>';
+                      
+                  }else{
+                      // Pass the stress levels html to the data object for dna with the correct label wrapping
+                      if (student_stress >= 7) {student_stress = '<span class="student-stress danger label">'+student_stress+'</span>';};
+                      if (student_stress < 7) {student_stress = '<span class="student-stress warning label">'+student_stress+'</span>';};
+                      if (student_stress < 4) {student_stress = '<span class="student-stress success label">'+student_stress+'</span>';};
+                      sdata['STUDENTSTRESS'] = student_stress;
+                      sdata['STUDENTINSTRUCTORCOMMENTS'] = student_instructor_comments_trimmed;
+                  }
+                  console.log(student_stress);
+                  console.log(student_instructor_comments_trimmed);
+              });
+            } // if(student_posts != undefined){
+           
+
+            var activity_log =[];
+            activity_log = studentdataobject.user["logstore"];;
+            console.log(' ^^^^ activity_log ^^^^^^^');
+            console.log(activity_log);
+
+            var activity_array = [];
+            
+            // Pull Data from Multiple Activties Endpoint 
+            jQuery.each(activity_log, function(i, adata) {
+              var a_row = '<tr>';
+              var quizdata = [];
+              var quizobject = [];
+              
+
+              console.log('activity_log DATA');
+              activity_time = adata.timecreated;
+              activity_moment = moment.unix(activity_time).format("YYYY/MM/DD hh:mm:ss");
+              activity_id = adata.id;
+              activity_name = adata.action;
+              activity_table = adata.objecttable;
+              activity_id = adata.objectid;
+              activity_course = adata.courseid;
+
+
+              
+              // @TODO - add catch for failed return - i.e. if no courese id exists
+              // @TODO - add new base_url for privacyvector
+
+              // EXAMPLE http://www.privacyvector.com/api/lumiousreports/courselookup/4
+              
+              // var course_url = base_url + 'lumiousreports/courselookup/'+activity_course;
+              var course_url = 'http://www.privacyvector.com/api/lumiousreports/courselookup/'+activity_course;
+              var coursedata = $.getJSON(course_url);
+
+              $.when(coursedata).done(function(courseobject) {
+                if (course_name = 'undefined') {
+                  course_name = '';
+                };
+                
+                var course_name = null;        
+                course_name = courseobject[0];
+                course_name = course_name.fullname;
+                console.log('COURSE NAME: '+course_name);
+                
+                var quiz_name = null; 
+                if (adata.objecttable == 'quiz_attempts') {
+                 
+                  console.log('activity_table SWITCH: '+activity_table);
+                  var quiz_url = base_url + 'lumiousreports/quizlookup/'+adata.objectid;
+                  console.log('quiz_url '+quiz_url);
+
+                  var quizdata = $.getJSON(quiz_url);
+                  $.when(quizdata).done(function(quizobject) {
+                    console.log('DOING quizdata JSON call');
+                    console.log('quizobject');
+                    console.log(quizobject);
+                    var quiz_data = quizobject[0];
+                    console.log(quiz_data);
+                    var quiz_name = quiz_data.name;
+                    // quiz_name = quizobject.name;
+                    // console.log('QUIZ NAME: '+quiz_name);
+                    // wait for quiz name response before sending result
+                    a_row  += '<th>'+adata.id+'</th>';
+                    a_row  += '<th>'+student_firstname+' '+student_lastname+'</th>';
+                    a_row  += '<th>'+adata.action+'</th>';
+                    a_row  += '<th>'+adata.courseid+' '+course_name+'</th>';
+                    a_row  += '<th>'+adata.objecttable+'</th>';
+                    a_row  += '<th><span>(ID '+adata.objectid+')</span> '+quiz_name+'</th>';
+                    a_row  += '<th><span class="hidden">'+activity_time+'</span>'+activity_moment+'</th>';
+                    // add the readable data to the table rows        
+                    $('#tbody_activity_result').append(a_row);
+                  }); // end $.when
+                }
+                else{
+                  a_row  += '<th>'+adata.id+'</th>';
+                  a_row  += '<th>'+student_result['firstname']+' '+student_result['lastname']+'</th>';
+                  a_row  += '<th>'+adata.action+'</th>';
+                  a_row  += '<th>'+adata.courseid+' '+course_name+'</th>';
+                  a_row  += '<th>'+adata.objecttable+'</th>';
+                  a_row  += '<th><span>(ID '+adata.objectid+')</span></th>';
+                  a_row  += '<th><span class="hidden">'+activity_time+'</span>'+activity_moment+'</th>';
+                  // add the readable data to the table rows        
+                  $('#tbody_activity_result').append(a_row);
+                } // end if
+                
+              }); // end $.when
+
+              a_row  += '</tr>';
+            }); // end each.activity_log
+        }); // END $.when(studentdata).d
+    }); // jQuery.each(studentobject,
+    // $('#loading_gif').hide();
+  });
+  console.log('===XXXXXXXXXXXXXXXXXXXXXXXXXX    END show_all_students_activity    XXXXXXXXXXXXXXXXXXXXXXXXXXX====');
+}
+
+
+ // Mon 23, Tues 24
+  // build function to test course data array
+  // setup local arrays for faster processing
+  // test local storage data arrays
+  // setup needle in a haystack function
+  // process course ID, test to see if in array
+  // return array data for use in chart
+  // if data not found, pull data from endpoint. 
+  // recheck in array? or process directly?
+  // dig down into array 
+  // pull name, id, fullname, 
 
