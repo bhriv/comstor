@@ -1,7 +1,14 @@
 // Main.js non-minified
 
-// FIND parameters in URL string
-// http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+
+/*****************************************************************/
+/****************** FIND parameters in URL string ****************/
+/*****************************************************************/
+/*
+   Populate a JSON object of all URL query string parameters
+   Reference Resource: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+*/
+
 var urlParams;
 (window.onpopstate = function () {
     var match,
@@ -21,12 +28,14 @@ console.log('apiKey from URL: '+urlParams['apiKey']);
 var this_page_apiKey = urlParams['apiKey'];
 localStorage.setItem( 'apiKey',this_page_apiKey);
 
-
+// Return API Key from Storage
 function get_apiKey_from_storage(){
   var apiKey_from_storage = localStorage.getItem( 'apiKey');
   console.log('function - get apiKey from STORAGE: '+apiKey_from_storage);
   return apiKey_from_storage;
 }
+
+
 // ===========================
 // Force Login for some Links - use for testing simple functions such as 'Document Ready' state etc.
 // ===========================
@@ -44,9 +53,9 @@ $('#actions .action').on('click', function(event) {
   trackAction(event);    
 });
 
-$('#deal').on('click', function(event) {
-  localStorage.setItem('hand_is_ended','false');
-  console.log('Deal click.');
+$('#process_ended').on('click', function(event) {
+  localStorage.setItem('process_ended','false');
+  console.log('process_ended click.');
 });
 
     
@@ -100,20 +109,6 @@ $('#deal').on('click', function(event) {
     console.log('event_metric_specific set: '+event_metric_specific);
   }
 
-  function refreshDashboard(){
-    console.log('-- refreshDashboard ---');
-    var a = localStorage.getItem( 'start_date' );
-    var b = localStorage.getItem( 'end_date' );
-    var c = localStorage.getItem( 'metric_type' );
-    var d = localStorage.getItem( 'app_metric_specific' );
-    // var e = localStorage.getItem( 'event_metric_specific' );
-    if (a && b && c && d) {
-      console.log('All requirements met, runDashboard executing');
-      runDashboard();
-    }else{
-      console.log('All requirements NOT met, runDashboard NOT executing');
-    }
-  }
 
 /*****************************************************************/
 /***************************  Check Variable Values *********************/
@@ -170,7 +165,7 @@ $('#deal').on('click', function(event) {
     localStorage.setItem( 'end_date','');
     localStorage.setItem( 'apiKey','');
     console.log('CLEARED:');
-  }
+  }  
   
 // Get Stored Data
 
@@ -178,15 +173,30 @@ $('#deal').on('click', function(event) {
     // getActorFromEndpoint();
   });
 
-// Document Ready Functions
+/*******************************************************/
+/**************  Document Ready Functions  **************/
+/*******************************************************/
 
 $(document).ready(function() {
-
+  
+  // Setup basic app needs
   console.log('Document ready: Session Start Functions');
-
   $('.hideme').hide();
-    
+  
+  // Set an ID for this Session to ensure uniqueness
   setSessionID();
+
+  // UX Functions Dependent on Doc Ready State
+
+  $(".restart").click(function() {
+    clearSession();
+  });
+  $("#testFlurryAnalytics").click(function() {
+    testFlurryAnalytics();
+  });
+  $("#getData").click(function() {
+    getData();
+  });
 
   // Setup UX with Previous selections from Local Storage
 
@@ -202,30 +212,16 @@ $(document).ready(function() {
   //     return $(this).val() == checkAppMetricSpecific(); 
   // }).prop('selected', true);
   
-    
-  // UX Functions
-
-  $(".restart").click(function() {
-    clearSession();
-  });
-
-  $("#testFlurryAnalytics").click(function() {
-    testFlurryAnalytics();
-  });
-
-  $("#getData").click(function() {
-    getData();
-  });
+  // $("ul.all_apps").click(function() {
+  //   // alert('click');
+  //   var this_link = $("ul.app_overview li").find("a.link_to_analytics");
+  //   window.location.href = this_link;
+  // });
 
 
-  $("ul.all_apps").click(function() {
-    alert('click');
-    var this_link = $("ul.app_overview li").find("a.link_to_analytics");
-    window.location.href = this_link;
-  });
-
-
-  // Date Picker Processing
+/*****************************************************************/
+/**************** Date Picker Processing Functions  **************/
+/*****************************************************************/
 
   $(function() {
     $( "#start_date" ).datepicker({
@@ -254,8 +250,10 @@ $(document).ready(function() {
   // end Date Picker
 
 
-  // UX filter event listeners to determine data query type
-
+/*************************************************************************************/
+/************** UX filter event listeners to determine data query type **************/
+/*********************************************************************************/
+  // 
   $('#flurry_reports select').on('change', function() {
     refreshDashboard();
   });
@@ -281,15 +279,89 @@ $(document).ready(function() {
       console.log('NEW event_metric_specific:' +event_metric_specific);
   });
 
-}); // end Doc Ready 
+}); 
+// end Doc Ready 
+
+/**********************************************************/
+/************** Plugin Default Settings   **************/
+/*****************************************************/
 
 $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd'
 });
 
 
-function runDashboard(){
-  console.log('----- runDashboard -----')
+/*******************************************************/
+/**************  RUN APP - build Dashboard  **************/
+/*******************************************************/
+
+function refreshDashboard(){
+  console.log('-- refreshDashboard ---');
+  var a = localStorage.getItem( 'start_date' );
+  var b = localStorage.getItem( 'end_date' );
+  var c = localStorage.getItem( 'metric_type' );
+  var d = localStorage.getItem( 'app_metric_specific' );
+  // var e = localStorage.getItem( 'event_metric_specific' );
+  if (a && b && c && d) {
+    console.log('All requirements met, runDashboard executing');
+    // runDashboard();
+    // buildCombinedDataChart();
+    buildFlurryChart();
+  }else{
+    console.log('All requirements NOT met, runDashboard NOT executing');
+  }
+}
+
+function buildFlurryChart(){
+  console.log('----- buildFlurryChart -----')
+  
+  var url_flurry_api = constructFlurryEndpoint();
+  var flurry_data_loaded = $.getJSON( url_flurry_api);
+
+  $.when(flurry_data_loaded).done(function(flurry_object) {
+    console.log('flurry_data_loaded is DONE');
+    console.log('flurry_object');
+    // flatten response object
+    console.log(flurry_object);
+    // flurry_object = flurry_object[0];
+    // console.log(flurry_object);
+
+    //By using javasript json parser
+    console.log('@generatedDate:' +flurry_object['@generatedDate']);
+    console.log('@startDate:' +flurry_object['@startDate']);
+    console.log('@endDate:' +flurry_object['@endDate']);
+    console.log('@metric:' +flurry_object['@metric']);
+    console.log('@version:' +flurry_object['@version']);
+
+    if (url_country == 'ALL') {
+      console.log('url_country: '+url_country);
+      flurry_country_data = flurry_object['country'];
+      flurry_metric_data = flurry_country_data['day'];  
+    }else{
+      alert('Currently Configured to query ALL countries');
+    }
+    flurry_dates = _.pluck(flurry_metric_data,'@date');
+    flurry_values = _.pluck(flurry_metric_data,'@value');
+    // console.log('FLURRY PLUCKED DATES:');
+    // console.log(flurry_dates); 
+    var flurry_moment_dates = [];
+    $.each(flurry_dates, function(key, value){
+      var date_timestamp = moment(value).unix();
+      flurry_moment_dates.push(date_timestamp);
+    });
+    // flurry_dates = flurry_moment_dates;
+    // console.log('FLURRY moment DATES:');
+    // console.log(flurry_moment_dates); 
+    // console.log('FLURRY PLUCKED VALUES:');
+    // console.log(flurry_values);
+    newFlurryChart();
+
+  }); 
+  console.log('------ end buildFlurryChart -------') ;
+}
+
+function buildCombinedDataChart(){
+  console.log('----- buildCombinedDataChart -----')
   
   var url_course_graph = 'http://akronzip.com/course/graph/30';
   var course_data_loaded = $.getJSON(url_course_graph);
@@ -384,13 +456,167 @@ function runDashboard(){
     });
     // @TODO - ensure data still matches the date plotting on the graph
     // combined_dates = sorted_moment_dates;
-    newChart();
+    newCombinedChart();
 
   }); 
-  console.log('------ end runDashboard -------') ;
+  console.log('------ end buildCombinedDataChart -------') ;
 }
 
-function newChart(){
+
+  /*****************************************************************/
+  /**************** Date Picker Processing Functions  **************/
+  /*****************************************************************/
+
+  
+// Flurry Chart New Users
+
+function newUsersPerWeek(){
+  console.log('----- newUsersPerWeek -----')
+  // var metric = 'newUsers';
+  var url_flurry_api = constructFlurryEndpoint();
+  var url_group_by = 'weeks';
+  url_flurry_api = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country + '&groupBy=' +url_group_by;
+  // console.log('Grouped By API URL: '+url_flurry_api);
+  var flurry_data_loaded = $.getJSON( url_flurry_api);
+
+  $.when(flurry_data_loaded).done(function(flurry_object) {
+
+    if (url_country == 'ALL') {
+      console.log('url_country: '+url_country);
+      flurry_country_data = flurry_object['country'];
+      flurry_metric_data = flurry_country_data['day'];  
+    }else{
+      alert('Currently Configured to query ALL countries');
+    }
+    flurry_dates = _.pluck(flurry_metric_data,'@date');
+    flurry_values = _.pluck(flurry_metric_data,'@value');
+
+    var chart_id = 'newUsersPerWeek';
+    newFlurryChart(chart_id);
+  }); 
+  console.log('------ end newUsersPerWeek -------') ;
+}
+
+// widget-NewUsers
+
+  $("nav#analytics_triggers ul li ul li a").click(function(event) {
+    event.stopPropagation();
+    var id = $(this).attr('id');
+    id = id.slice(0, -1);
+    alert(id);
+    var app_metric_specific = id;
+    setAppMetricSpecific(app_metric_specific);
+    getChartData(id);
+  });
+
+  // $("#widget-NewUsers span").click(function(event) {
+  //   event.stopPropagation();
+  //   var id = 'NewUsers';
+  //   var period = $(this).attr('class');
+  //   alert(id);
+  //   alert(period);
+  //   var app_metric_specific = id;
+  //   setAppMetricSpecific(app_metric_specific);
+  //   getChartData(id,period);
+  // });
+  // $("#widget-ActiveUsers span").click(function(event) {
+  //   event.stopPropagation();
+  //   var id = 'ActiveUsers';
+  //   var period = $(this).attr('class');
+  //   alert(id);
+  //   alert(period);
+  //   var app_metric_specific = id;
+  //   setAppMetricSpecific(app_metric_specific);
+  //   getChartData(id,period);
+  // });
+  $("#graphs-holder li h2 span").click(function(event) {
+    event.stopPropagation();
+    var id = $(this).attr('id');
+    id = id.slice(0, -1);
+    var period = $(this).attr('class');
+    alert(id);
+    alert(period);
+    var app_metric_specific = id;
+    setAppMetricSpecific(app_metric_specific);
+    getChartData(id,period);
+  });
+  // $("#widget-RetainedUsers span").click(function(event) {
+  //   event.stopPropagation();
+  //   var id = 'RetainedUsers';
+  //   var period = $(this).attr('class');
+  //   alert(id);
+  //   alert(period);
+  //   var app_metric_specific = id;
+  //   setAppMetricSpecific(app_metric_specific);
+  //   getChartData(id,period);
+  // });
+
+
+function getChartData(id,period){
+  console.log('----- getChartData -----')
+
+  // GROUP DATA BY WEEK
+    var url_flurry_api = constructFlurryEndpoint();
+    var url_group_by = period;
+    url_flurry_api = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+    if (period != undefined) {
+      url_flurry_api = url_flurry_api + '&groupBy=' +url_group_by;
+    };
+    console.log('Grouped By API URL: '+url_flurry_api);
+    var flurry_data_loaded = $.getJSON( url_flurry_api);
+
+    $.when(flurry_data_loaded).done(function(flurry_object) {
+
+      if (url_country == 'ALL') {
+        console.log('url_country: '+url_country);
+        flurry_country_data = flurry_object['country'];
+        flurry_metric_data = flurry_country_data['day'];  
+      }else{
+        alert('Currently Configured to query ALL countries');
+      }
+      flurry_dates = _.pluck(flurry_metric_data,'@date');
+      flurry_values = _.pluck(flurry_metric_data,'@value');
+
+      // var chart_id = 'newUsersPerWeek';
+      var chart_id = id;
+      newFlurryChart(chart_id);
+    }); 
+
+  console.log('------ end getChartData -------') ;
+}
+
+/*******************************************************/
+/**************  Build Flurry Chart  **************/
+/*******************************************************/
+
+function newFlurryChart(chart_id){
+  //Chart Data
+  var canvas_id = 'flurry-chart-' +chart_id;
+    var canvas = document.getElementById(canvas_id),
+    ctx = canvas.getContext('2d'),
+    startingData = {
+      labels: flurry_dates,
+      datasets: [
+          {
+              fillColor: "transparent",
+              strokeColor: "#fe5f55",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: flurry_values
+          }
+      ]
+    },
+    latestLabel = startingData.labels[6];
+    // Reduce the animation steps for demo clarity.
+    var myLiveChart = new Chart(ctx).Line(startingData);
+} // end newCombinedChart
+
+
+/*******************************************************/
+/**************  Build Chart Display Variations  **************/
+/*******************************************************/
+
+function newCombinedChart(){
   //Chart Data
   
     var canvas = document.getElementById('updating-chart'),
@@ -417,8 +643,7 @@ function newChart(){
     latestLabel = startingData.labels[6];
     // Reduce the animation steps for demo clarity.
     var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
-  
-} // end newChart
+} // end newCombinedChart
 
 /***********************************************************************/
 /************************************* Flurry API **********************/
@@ -433,6 +658,7 @@ var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
     dates                     = [],
     combined_dates            = [],
     flurry_dates              = [],
+    flurry_moment_dates              = [],
     course_values             = [],
     course_object             = [],
     flurry_values             = [],
@@ -460,9 +686,14 @@ function constructFlurryEndpoint(){
 
 
 function testFlurryAnalytics(){
-  console.log('----- START testFlurryAnalytics -----');
-  constructFlurryEndpoint();
+  console.log('----- START testFlurryAnalytics WEEKS GROUPING-----');
   
+  constructFlurryEndpoint();
+  var url_group_by = 'weeks';
+  url_new_Flurry = url_new_Flurry + '&groupBy=' +url_group_by;
+  console.log('url_new_Flurry with url_group_by');
+  console.log(url_new_Flurry);
+
   $.getJSON( url_new_Flurry, function( Flurry_json ) {
     console.log('getting url_Flurry data...');
     console.log(Flurry_json);
