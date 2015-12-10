@@ -166,16 +166,199 @@ $('#process_ended').on('click', function(event) {
     localStorage.setItem( 'apiKey','');
     console.log('CLEARED:');
   }  
-  
-// Get Stored Data
 
+
+
+
+/**********************************************************/
+/********* Helper Functions - Commonly Useful   *********/
+/*****************************************************/
+
+  // Merge two arrays
+  // https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
+
+  function extend(obj, src) {
+      Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
+      return obj;
+  }
+
+  // Sort Array of Dates
+  (function(){
+    if (typeof Object.defineProperty === 'function'){
+      try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
+    }
+    if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
+
+    function sb(f){
+      for (var i=this.length;i;){
+        var o = this[--i];
+        this[i] = [].concat(f.call(o,o,i),o);
+      }
+      this.sort(function(a,b){
+        for (var i=0,len=a.length;i<len;++i){
+          if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
+        }
+        return 0;
+      });
+      for (var i=this.length;i;){
+        this[--i]=this[i][this[i].length-1];
+      }
+      return this;
+    }
+  })();
+  
+  // Get Stored Data Example
   $('#getactor').on('click', function(event) {
     // getActorFromEndpoint();
   });
 
+
+
+/***********************************************************************/
+/*************************** Setup Flurry API **********************/
+/***********************************************************************/
+
+var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
+    // apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
+    apiKey                    = get_apiKey_from_storage(),
+    flurry_country_data       = [], 
+    flurry_metric_data        = [],
+
+    dates                     = [],
+    combined_dates            = [],
+    flurry_dates              = [],
+    flurry_moment_dates              = [],
+    course_values             = [],
+    course_object             = [],
+    flurry_values             = [],
+    flurry_object             = [],
+
+    url_metric_type           = '',
+    url_app_metric_specific   = '',
+    url_startDate             = '',
+    url_endDate               = '',
+    url_country               = 'ALL',
+    url_new_Flurry            = '',
+    base_url_Flurry           = 'http://api.flurry.com/';
+
+function constructFlurryEndpoint(){
+  url_metric_type           = checkMetricType(),
+  url_app_metric_specific   = checkAppMetricSpecific(),
+  url_startDate             = checkStartDate(),
+  url_endDate               = checkEndDate(),
+  url_country               = 'ALL';
+  url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+  // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
+  console.log('API URL: '+url_new_Flurry);
+  return url_new_Flurry;
+}
+
+function constructFlurryAppInfoEndpoint(){
+  url_app_metric_specific = 'getApplication';
+  // construct endpoint URL with api access code and api key
+  url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey;
+  return url_new_Flurry;
+}
+
+function getFlurryAppInfo(){
+  // get the app details from Flurry endpoint, then add to the app_overview div
+  console.log('----- START getFlurryAppInfo -----');
+  
+  $.getJSON( constructFlurryAppInfoEndpoint(), function( Flurry_json ) {
+    console.log('getting url_Flurry data...');
+    console.log(Flurry_json);
+      //By using javasript json parser
+      // console.log('@category:' +Flurry_json['@category']);
+      // console.log('@createdDate:' +Flurry_json['@createdDate']);
+      // console.log('@name:' +Flurry_json['@name']);
+      // console.log('@platform:' +Flurry_json['@platform']);
+      // console.log('@generatedDate:' +Flurry_json['@generatedDate']);
+      // console.log('@version:' +Flurry_json['@version']);
+      // console.log('version:');
+      // console.log(Flurry_json['version']);
+      var app_versions = Flurry_json['version'];
+      // loop through the version history and pass all version names to a list
+      jQuery.each(app_versions, function(i, vdata) {
+        console.log('app_versions DATA');
+        console.log(vdata);
+        var v_createdDate = vdata['@createdDate'];
+        var v_name = vdata['@name'];
+        var v_version = '<strong>Version Name:</strong> ' +v_name +'  <strong>Created:</strong> ' +v_createdDate;
+        //console.log('v_version: '+v_version);
+        var v_history = '<li>'+v_version+'</li>';
+        
+        $('ul.app_version_history').append(v_history);
+      });
+      
+      $('span.app_category').html(Flurry_json['@category']);
+      $('span.app_createdDate').html(Flurry_json['@createdDate']);
+      $('span.app_name').html(Flurry_json['@name']);
+      $('span.app_platform').html(Flurry_json['@platform']);
+      $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
+    console.log('----- END getFlurryAppInfo -----');
+  });
+}
+
+function constructFlurryAllAppsInfoEndpoint(){
+  url_app_metric_specific = 'getAllApplications';
+  // construct endpoint URL with api access code and api key
+  url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode;
+  return url_new_Flurry;
+}
+
+function getFlurryAllAppsInfo(){
+  // get the app details from Flurry endpoint, then add to the app_overview div
+  console.log('----- START getFlurryAllAppsInfo -----');
+  $.getJSON( constructFlurryAllAppsInfoEndpoint(), function( Flurry_json ) {
+    console.log('getting url_Flurry data...');
+    console.log(Flurry_json);
+      //By using javasript json parser
+
+      // {"@companyName":"Tech 2000, Inc.","@generatedDate":"11/18/15 4:05 PM","@version":"1.0","application":[{"@apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name":"The SELL Closer App D - Android"},
+      console.log('@companyName:' +Flurry_json['@companyName']);
+      console.log('@generatedDate:' +Flurry_json['@generatedDate']);
+      console.log('@version:' +Flurry_json['@version']);
+      console.log('application:');
+      console.log(Flurry_json['application']);
+
+      var all_app_versions = Flurry_json['application'];
+
+      // loop through the version history and pass all version names to a list
+      jQuery.each(all_app_versions, function(i, vdata) {
+        console.log('app_versions DATA');
+        // @apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name"
+        console.log(vdata);
+        
+        var this_url = window.location.href;
+
+        var v_name = vdata['@name'];
+        var v_platform = vdata['@platform'];
+        var v_createdDate = vdata['@createdDate'];
+        var v_apiKey = vdata['@apiKey'];
+        var v_analytics_link = this_url+'analytics.html?apiKey='+v_apiKey;
+        var v_app_data = '<li><h5><a class="link_to_analytics" href="'+v_analytics_link+'" target="blank"><i class="fa fa-file"></i> ' +v_name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></li><li><strong><i class="fa fa-apple"></i> Platform: </strong> ' +v_platform+ '</li><li><strong><i class="fa fa-calendar"></i> Created: </strong> ' +v_createdDate+ '</li><li><strong><i class="fa fa-key"></i> API Key: </strong> ' +v_apiKey +'</li><li style="display:none;"><strong><a href="'+v_analytics_link+'" target="blank"><i class="fa fa-external-link"></i> '+v_analytics_link+'</a></strong></li>';
+        //console.log('v_version: '+v_version);
+        var v_all_apps = '<li><ul class="app_overview">'+v_app_data+'</ul></li>';
+        
+        $('ul.all_apps').append(v_all_apps);
+      });
+      
+      // $('span.app_category').html(Flurry_json['@category']);
+      // $('span.app_createdDate').html(Flurry_json['@createdDate']);
+      // $('span.app_name').html(Flurry_json['@name']);
+      // $('span.app_platform').html(Flurry_json['@platform']);
+      // $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
+    console.log('----- END getFlurryAllAppsInfo -----');
+  });
+}
+
+
+
 /*******************************************************/
 /**************  Document Ready Functions  **************/
 /*******************************************************/
+
+// UX Functions Dependent on Doc Ready State
 
 $(document).ready(function() {
   
@@ -185,8 +368,6 @@ $(document).ready(function() {
   
   // Set an ID for this Session to ensure uniqueness
   setSessionID();
-
-  // UX Functions Dependent on Doc Ready State
 
   $(".restart").click(function() {
     clearSession();
@@ -198,8 +379,12 @@ $(document).ready(function() {
     getData();
   });
 
-  // Setup UX with Previous selections from Local Storage
+  $("#analytics_triggers li a").click(function() {
+    $('#analytics_triggers li a').removeClass('active');
+    $(this).addClass(' active');
+  });
 
+  // Setup UX with Previous selections from Local Storage
   $('#start_date').val(checkStartDate());
   $('#end_date').val(checkEndDate());
   
@@ -279,8 +464,14 @@ $(document).ready(function() {
       console.log('NEW event_metric_specific:' +event_metric_specific);
   });
 
+  $('#graphs-holder li h2 span.days').addClass('active');
+
+  $('#graphs-holder li .widget-content').addClass('active');
+  $('#graphs-holder li#widget-NewUsers .widget-content').removeClass('active');
+
 }); 
 // end Doc Ready 
+
 
 /**********************************************************/
 /************** Plugin Default Settings   **************/
@@ -311,6 +502,242 @@ function refreshDashboard(){
     console.log('All requirements NOT met, runDashboard NOT executing');
   }
 }
+
+
+/*****************************************************************/
+/**************** Trigger Events to Build Charts  **************/
+/*****************************************************************/
+
+// Example: a#NewUsers_ 
+$("span.chart_trigger").click(function(event) {
+  event.stopPropagation();
+  var id = $(this).attr('id');
+  id = id.slice(0, -1);
+  
+  $('#graphs-holder li .widget-content').addClass('active');
+  var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+  $(current_widget).removeClass('active');
+
+  var app_metric_specific = id;
+  setAppMetricSpecific(app_metric_specific);
+  getChartData(id);
+  var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+  $(c).addClass('active');
+});
+
+// Example: span.months_
+$("#graphs-holder li h2 span").click(function(event) {
+  event.stopPropagation();
+  var id = $(this).attr('id');
+  id = id.slice(0, -1);
+  var period = $(this).attr('class');
+  // alert(id);
+  // alert(period);
+  $('#graphs-holder li .widget-content').addClass('active');
+  var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+  $(current_widget).removeClass('active');
+
+  var app_metric_specific = id;
+  setAppMetricSpecific(app_metric_specific);
+  getChartData(id,period);
+  $('#graphs-holder li h2 span').removeClass('active');
+  $(this).addClass('active');
+});
+
+// Pull App Stats when triggered
+function showFlurryAppStats() {
+  getFlurryAppInfo();
+  $('#widget-app-overview .widget-content').removeClass('active');
+  $('#widget-app-version-history .widget-content').removeClass('active');
+}
+
+
+/*****************************************************************/
+/**************** Construct Flurry Chart DATA  **************/
+/*****************************************************************/
+
+function getChartData(id,period){
+  console.log('----- getChartData -----');
+  
+  console.log('period: '+period);
+  if (period == undefined) {
+    period = 'days';
+    console.log('period updated: '+period);
+  }else{
+    console.log('period NOT updated: '+period);
+  }
+  if (id == undefined) {
+    id = 'ActiveUsers';
+    console.log('id updated: '+id);
+  }else{
+    console.log('id NOT updated: '+id);
+  }
+  
+
+  // GROUP DATA by Period
+    var url_flurry_api = constructFlurryEndpoint();
+    var url_group_by = period;
+
+    url_flurry_api = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+    if (period != undefined) {
+      url_flurry_api = url_flurry_api + '&groupBy=' +url_group_by;
+    };
+    console.log('Grouped By API URL: '+url_flurry_api);
+    var flurry_data_loaded = $.getJSON( url_flurry_api);
+
+    $.when(flurry_data_loaded).done(function(flurry_object) {
+
+      if (url_country == 'ALL') {
+        console.log('url_country: '+url_country);
+        flurry_country_data = flurry_object['country'];
+        flurry_metric_data = flurry_country_data['day'];  
+      }else{
+        alert('Currently Configured to query ALL countries');
+      }
+      flurry_dates = _.pluck(flurry_metric_data,'@date');
+      flurry_values = _.pluck(flurry_metric_data,'@value');
+      console.log('flurry_values: ');
+      console.log(flurry_values);
+
+      var current_val = _.last(flurry_values);
+      var previous_val = flurry_values.reverse()[1];
+
+      var growth_val = parseInt((current_val - previous_val) / current_val * 100);
+      console.log('growth_val: '+growth_val);
+      var growth_class = 'default';
+      if (growth_val < 0) { growth_class = 'danger'; };
+      if (growth_val > 0) { growth_class = 'success'; };
+      console.log('growth_class: '+growth_class);
+      var growth_factor = growth_val + '%';
+      
+      console.log('period inside loop: '+period);
+      if (period == 'days') {
+          period_label = 'Change<br>Today';
+          growth_change_current = 'Today';
+          growth_change_previous = 'Yesterday';
+      };
+      if (period == 'weeks') {
+        period_label = 'Change This<br>Week';
+        growth_change_current = 'This Week';
+        growth_change_previous = 'Last Week';
+      };
+      if (period == 'months') {
+        period_label = 'Change This<br>Month';
+        growth_change_current = 'This Month';
+        growth_change_previous = 'Last Month';
+      };
+
+      console.log('period_label: '+period_label);
+
+      $('#widget-overview .current_val .number').html(current_val);
+      $('#widget-overview .current_val .period').html(growth_change_current);
+      $('#widget-overview .previous_val .number').html(previous_val);
+      $('#widget-overview .previous_val .period').html(growth_change_previous);
+      
+      
+      $('#overview_stats .period').html(period_label);
+      $('#overview_stats .growth_factor span').text(growth_factor);
+      $('#overview_stats .growth_factor .badge').addClass(growth_class);
+
+
+      // var chart_id = 'newUsersPerWeek';
+      var chart_id = id;
+      if (chart_id == 'RetainedUsers') {
+        newFlurryBarChart(chart_id);
+      }else{
+        newFlurryChart(chart_id);  
+      }
+    }); 
+
+  console.log('------ end getChartData -------') ;
+}
+
+
+/*******************************************************/
+/******  Build and Display  Flurry Chart  **************/
+/*******************************************************/
+
+function newFlurryChart(chart_id){
+  //Chart Data
+  var canvas_id = 'flurry-chart-' +chart_id;
+    var canvas = document.getElementById(canvas_id),
+    ctx = canvas.getContext('2d'),
+    startingData = {
+      labels: flurry_dates,
+      datasets: [
+          {
+              fillColor: "transparent",
+              strokeColor: "#fe5f55",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: flurry_values
+          }
+      ]
+    },
+    latestLabel = startingData.labels[6];
+    // Reduce the animation steps for demo clarity.
+    var myLiveChart = new Chart(ctx).Line(startingData);
+} // end newCombinedChart
+
+function newFlurryBarChart(chart_id){
+  //Chart Data
+  var canvas_id = 'flurry-chart-' +chart_id;
+    var canvas = document.getElementById(canvas_id),
+    ctx = canvas.getContext('2d'),
+    startingData = {
+      labels: flurry_dates,
+      datasets: [
+          {
+              fillColor: "#5b90bf",
+              strokeColor: "#5b90bf",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: flurry_values
+          }
+      ]
+    },
+    latestLabel = startingData.labels[6];
+    // Reduce the animation steps for demo clarity.
+    var myLiveChart = new Chart(ctx).Bar(startingData);
+} // end newCombinedChart
+
+
+/*******************************************************/
+/**********  Build Chart Display Variations  **************/
+/*******************************************************/
+
+function newCombinedChart(){
+  //Chart Data
+  
+    var canvas = document.getElementById('updating-chart'),
+    ctx = canvas.getContext('2d'),
+    startingData = {
+      labels: combined_dates,
+      datasets: [
+          {
+              fillColor: "transparent",
+              strokeColor: "#fe5f55",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: course_values
+          },
+          {
+              fillColor: "transparent",
+              strokeColor: "#82bfd8",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: flurry_values
+          }
+      ]
+    },
+    latestLabel = startingData.labels[6];
+    // Reduce the animation steps for demo clarity.
+    var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
+} // end newCombinedChart
+
+
+
+// Testing Functions - used for the initial build to test code. Replaced by specific functions
 
 function buildFlurryChart(){
   console.log('----- buildFlurryChart -----')
@@ -462,14 +889,7 @@ function buildCombinedDataChart(){
   console.log('------ end buildCombinedDataChart -------') ;
 }
 
-
-  /*****************************************************************/
-  /**************** Date Picker Processing Functions  **************/
-  /*****************************************************************/
-
-  
-// Flurry Chart New Users
-
+// Specific Example for Flurry Chart New Users
 function newUsersPerWeek(){
   console.log('----- newUsersPerWeek -----')
   // var metric = 'newUsers';
@@ -495,193 +915,6 @@ function newUsersPerWeek(){
     newFlurryChart(chart_id);
   }); 
   console.log('------ end newUsersPerWeek -------') ;
-}
-
-// widget-NewUsers
-
-  $("nav#analytics_triggers ul li ul li a").click(function(event) {
-    event.stopPropagation();
-    var id = $(this).attr('id');
-    id = id.slice(0, -1);
-    alert(id);
-    var app_metric_specific = id;
-    setAppMetricSpecific(app_metric_specific);
-    getChartData(id);
-  });
-
-  // $("#widget-NewUsers span").click(function(event) {
-  //   event.stopPropagation();
-  //   var id = 'NewUsers';
-  //   var period = $(this).attr('class');
-  //   alert(id);
-  //   alert(period);
-  //   var app_metric_specific = id;
-  //   setAppMetricSpecific(app_metric_specific);
-  //   getChartData(id,period);
-  // });
-  // $("#widget-ActiveUsers span").click(function(event) {
-  //   event.stopPropagation();
-  //   var id = 'ActiveUsers';
-  //   var period = $(this).attr('class');
-  //   alert(id);
-  //   alert(period);
-  //   var app_metric_specific = id;
-  //   setAppMetricSpecific(app_metric_specific);
-  //   getChartData(id,period);
-  // });
-  $("#graphs-holder li h2 span").click(function(event) {
-    event.stopPropagation();
-    var id = $(this).attr('id');
-    id = id.slice(0, -1);
-    var period = $(this).attr('class');
-    alert(id);
-    alert(period);
-    var app_metric_specific = id;
-    setAppMetricSpecific(app_metric_specific);
-    getChartData(id,period);
-  });
-  // $("#widget-RetainedUsers span").click(function(event) {
-  //   event.stopPropagation();
-  //   var id = 'RetainedUsers';
-  //   var period = $(this).attr('class');
-  //   alert(id);
-  //   alert(period);
-  //   var app_metric_specific = id;
-  //   setAppMetricSpecific(app_metric_specific);
-  //   getChartData(id,period);
-  // });
-
-
-function getChartData(id,period){
-  console.log('----- getChartData -----')
-
-  // GROUP DATA BY WEEK
-    var url_flurry_api = constructFlurryEndpoint();
-    var url_group_by = period;
-    url_flurry_api = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-    if (period != undefined) {
-      url_flurry_api = url_flurry_api + '&groupBy=' +url_group_by;
-    };
-    console.log('Grouped By API URL: '+url_flurry_api);
-    var flurry_data_loaded = $.getJSON( url_flurry_api);
-
-    $.when(flurry_data_loaded).done(function(flurry_object) {
-
-      if (url_country == 'ALL') {
-        console.log('url_country: '+url_country);
-        flurry_country_data = flurry_object['country'];
-        flurry_metric_data = flurry_country_data['day'];  
-      }else{
-        alert('Currently Configured to query ALL countries');
-      }
-      flurry_dates = _.pluck(flurry_metric_data,'@date');
-      flurry_values = _.pluck(flurry_metric_data,'@value');
-
-      // var chart_id = 'newUsersPerWeek';
-      var chart_id = id;
-      newFlurryChart(chart_id);
-    }); 
-
-  console.log('------ end getChartData -------') ;
-}
-
-/*******************************************************/
-/**************  Build Flurry Chart  **************/
-/*******************************************************/
-
-function newFlurryChart(chart_id){
-  //Chart Data
-  var canvas_id = 'flurry-chart-' +chart_id;
-    var canvas = document.getElementById(canvas_id),
-    ctx = canvas.getContext('2d'),
-    startingData = {
-      labels: flurry_dates,
-      datasets: [
-          {
-              fillColor: "transparent",
-              strokeColor: "#fe5f55",
-              pointColor: "rgba(220,220,220,1)",
-              pointStrokeColor: "#fff",
-              data: flurry_values
-          }
-      ]
-    },
-    latestLabel = startingData.labels[6];
-    // Reduce the animation steps for demo clarity.
-    var myLiveChart = new Chart(ctx).Line(startingData);
-} // end newCombinedChart
-
-
-/*******************************************************/
-/**************  Build Chart Display Variations  **************/
-/*******************************************************/
-
-function newCombinedChart(){
-  //Chart Data
-  
-    var canvas = document.getElementById('updating-chart'),
-    ctx = canvas.getContext('2d'),
-    startingData = {
-      labels: combined_dates,
-      datasets: [
-          {
-              fillColor: "transparent",
-              strokeColor: "#fe5f55",
-              pointColor: "rgba(220,220,220,1)",
-              pointStrokeColor: "#fff",
-              data: course_values
-          },
-          {
-              fillColor: "transparent",
-              strokeColor: "#82bfd8",
-              pointColor: "rgba(220,220,220,1)",
-              pointStrokeColor: "#fff",
-              data: flurry_values
-          }
-      ]
-    },
-    latestLabel = startingData.labels[6];
-    // Reduce the animation steps for demo clarity.
-    var myLiveChart = new Chart(ctx).Line(startingData, {animationSteps: 15});
-} // end newCombinedChart
-
-/***********************************************************************/
-/************************************* Flurry API **********************/
-/***********************************************************************/
-
-var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
-    // apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
-    apiKey                    = get_apiKey_from_storage(),
-    flurry_country_data       = [], 
-    flurry_metric_data        = [],
-
-    dates                     = [],
-    combined_dates            = [],
-    flurry_dates              = [],
-    flurry_moment_dates              = [],
-    course_values             = [],
-    course_object             = [],
-    flurry_values             = [],
-    flurry_object             = [],
-
-    url_metric_type           = '',
-    url_app_metric_specific   = '',
-    url_startDate             = '',
-    url_endDate               = '',
-    url_country               = 'ALL',
-    url_new_Flurry            = '',
-    base_url_Flurry           = 'http://api.flurry.com/';
-
-function constructFlurryEndpoint(){
-  url_metric_type           = checkMetricType(),
-  url_app_metric_specific   = checkAppMetricSpecific(),
-  url_startDate             = checkStartDate(),
-  url_endDate               = checkEndDate(),
-  url_country               = 'ALL';
-  url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-  // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
-  console.log('API URL: '+url_new_Flurry);
-  return url_new_Flurry;
 }
 
 
@@ -722,107 +955,19 @@ function testFlurryAnalytics(){
   });
 }
 
-function constructFlurryAppInfoEndpoint(){
-  url_app_metric_specific = 'getApplication';
-  // construct endpoint URL with api access code and api key
-  url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey;
-  return url_new_Flurry;
-}
-
-function getFlurryAppInfo(){
-  // get the app details from Flurry endpoint, then add to the app_overview div
-  console.log('----- START getFlurryAppInfo -----');
-  
-  $.getJSON( constructFlurryAppInfoEndpoint(), function( Flurry_json ) {
-    console.log('getting url_Flurry data...');
-    console.log(Flurry_json);
-      //By using javasript json parser
-      // console.log('@category:' +Flurry_json['@category']);
-      // console.log('@createdDate:' +Flurry_json['@createdDate']);
-      // console.log('@name:' +Flurry_json['@name']);
-      // console.log('@platform:' +Flurry_json['@platform']);
-      // console.log('@generatedDate:' +Flurry_json['@generatedDate']);
-      // console.log('@version:' +Flurry_json['@version']);
-      // console.log('version:');
-      // console.log(Flurry_json['version']);
-      var app_versions = Flurry_json['version'];
-      // loop through the version history and pass all version names to a list
-      jQuery.each(app_versions, function(i, vdata) {
-        console.log('app_versions DATA');
-        console.log(vdata);
-        var v_createdDate = vdata['@createdDate'];
-        var v_name = vdata['@name'];
-        var v_version = '<strong>Created:</strong> ' +v_createdDate+ ' <strong>Version Name:</strong> ' +v_name;
-        //console.log('v_version: '+v_version);
-        var v_history = '<li>'+v_version+'</li>';
-        
-        $('ul.app_version_history').append(v_history);
-      });
-      
-      $('span.app_category').html(Flurry_json['@category']);
-      $('span.app_createdDate').html(Flurry_json['@createdDate']);
-      $('span.app_name').html(Flurry_json['@name']);
-      $('span.app_platform').html(Flurry_json['@platform']);
-      $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
-    console.log('----- END getFlurryAppInfo -----');
-  });
-}
-
-function constructFlurryAllAppsInfoEndpoint(){
-  url_app_metric_specific = 'getAllApplications';
-  // construct endpoint URL with api access code and api key
-  url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode;
-  return url_new_Flurry;
-}
-
-function getFlurryAllAppsInfo(){
-  // get the app details from Flurry endpoint, then add to the app_overview div
-  console.log('----- START getFlurryAllAppsInfo -----');
-  $.getJSON( constructFlurryAllAppsInfoEndpoint(), function( Flurry_json ) {
-    console.log('getting url_Flurry data...');
-    console.log(Flurry_json);
-      //By using javasript json parser
-
-      // {"@companyName":"Tech 2000, Inc.","@generatedDate":"11/18/15 4:05 PM","@version":"1.0","application":[{"@apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name":"The SELL Closer App D - Android"},
-      console.log('@companyName:' +Flurry_json['@companyName']);
-      console.log('@generatedDate:' +Flurry_json['@generatedDate']);
-      console.log('@version:' +Flurry_json['@version']);
-      console.log('application:');
-      console.log(Flurry_json['application']);
-
-      var all_app_versions = Flurry_json['application'];
-
-      // loop through the version history and pass all version names to a list
-      jQuery.each(all_app_versions, function(i, vdata) {
-        console.log('app_versions DATA');
-        // @apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name"
-        console.log(vdata);
-        
-        var this_url = window.location.href;
-
-        var v_name = vdata['@name'];
-        var v_platform = vdata['@platform'];
-        var v_createdDate = vdata['@createdDate'];
-        var v_apiKey = vdata['@apiKey'];
-        var v_analytics_link = this_url+'analytics.html?apiKey='+v_apiKey;
-        var v_app_data = '<li><h5><a class="link_to_analytics" href="'+v_analytics_link+'" target="blank"><i class="fa fa-file"></i> ' +v_name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></li><li><strong><i class="fa fa-apple"></i> Platform: </strong> ' +v_platform+ '</li><li><strong><i class="fa fa-calendar"></i> Created: </strong> ' +v_createdDate+ '</li><li><strong><i class="fa fa-key"></i> API Key: </strong> ' +v_apiKey +'</li><li style="display:none;"><strong><a href="'+v_analytics_link+'" target="blank"><i class="fa fa-external-link"></i> '+v_analytics_link+'</a></strong></li>';
-        //console.log('v_version: '+v_version);
-        var v_all_apps = '<li><ul class="app_overview">'+v_app_data+'</ul></li>';
-        
-        $('ul.all_apps').append(v_all_apps);
-      });
-      
-      // $('span.app_category').html(Flurry_json['@category']);
-      // $('span.app_createdDate').html(Flurry_json['@createdDate']);
-      // $('span.app_name').html(Flurry_json['@name']);
-      // $('span.app_platform').html(Flurry_json['@platform']);
-      // $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
-    console.log('----- END getFlurryAllAppsInfo -----');
-  });
-}
 
 
-// TOTARA Data Function
+
+
+
+
+
+/*****************************************************************/
+/**************** // TOTARA Data Function  **************/
+/*****************************************************************/
+
+
+
 
 function getAllData(){
   var selected_course_id = 33;
@@ -880,38 +1025,6 @@ function getAllData(){
   });
 }
 
-// Merge two arrays
-// https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
-
-function extend(obj, src) {
-    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
-    return obj;
-}
-
-// Sort Array of Dates
-(function(){
-  if (typeof Object.defineProperty === 'function'){
-    try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
-  }
-  if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
-
-  function sb(f){
-    for (var i=this.length;i;){
-      var o = this[--i];
-      this[i] = [].concat(f.call(o,o,i),o);
-    }
-    this.sort(function(a,b){
-      for (var i=0,len=a.length;i<len;++i){
-        if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
-      }
-      return 0;
-    });
-    for (var i=this.length;i;){
-      this[--i]=this[i][this[i].length-1];
-    }
-    return this;
-  }
-})();
 
 // flurry_reports
 
