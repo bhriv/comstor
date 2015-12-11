@@ -121,25 +121,38 @@ $('#process_ended').on('click', function(event) {
   
   function checkStartDate(){
     var start_date = localStorage.getItem( 'start_date' );
-    console.log('STORAGE start_date: '+start_date)
+    console.log('STORAGE start_date: '+start_date);
+    if (start_date == null) {
+      start_date = '2015-01-01';
+    };
     return start_date;
   }
 
   function checkEndDate(){
     var end_date = localStorage.getItem( 'end_date' );
-    console.log('STORAGE end_date: '+end_date)
+    console.log('STORAGE end_date: '+end_date);
+    if (end_date == null) {
+      end_date = '2015-12-10';
+    };
     return end_date;
   }
 
   function checkMetricType(){
     var metric_type = localStorage.getItem( 'metric_type' );
+    if (metric_type == null) {
+      metric_type = 'appMetrics';
+    };
     console.log('STORAGE metric_type: '+metric_type)
     return metric_type;
   }
 
   function checkAppMetricSpecific(){
     var app_metric_specific = localStorage.getItem( 'app_metric_specific' );
-    console.log('STORAGE app_metric_specific: '+app_metric_specific)
+    console.log('STORAGE app_metric_specific: '+app_metric_specific);
+    if (app_metric_specific == null) {
+      app_metric_specific = 'ActiveUsers';
+    };
+
     return app_metric_specific;
   }
 
@@ -754,6 +767,7 @@ function newFlurryBarChart(chart_id){
 
 var event_labels = [];
 var event_data = [];
+
 function getCustomEventSummaryData(){
   var type = 'Summary';
   var url_flurry_api = constructFlurryEventEndpoint(type);
@@ -783,7 +797,6 @@ function getCustomEventSummaryData(){
         // var flurry_events_flat = flurry_events[0];
         var eventName = flurry_object['@eventName'];
         var eventNameTrimmed = eventName.replace(/\s/g, '');
-
         var avgUsersLastDay = flurry_object['@avgUsersLastDay'];
         var avgUsersLastWeek = flurry_object['@avgUsersLastWeek'];
         var avgUsersLastMonth = flurry_object['@avgUsersLastMonth'];
@@ -793,46 +806,64 @@ function getCustomEventSummaryData(){
         var usersLastWeek = flurry_object['@usersLastWeek'];
         var usersLastMonth = flurry_object['@usersLastMonth'];
         
-        var event_chart_labels = [];
-        var event_chart_data = [];
+        // Construct Rows for the tabel with the data available
+        var a_row = '<tr>';
+            a_row  += '<th>'+eventName+'</th>';
+            a_row  += '<th>'+totalCount+'</th>';
+            a_row  += '<th>'+totalSessions+'</th>';
+            a_row  += '<th>'+usersLastDay+'</th>';
+            a_row  += '<th>'+usersLastWeek+'</th>';
+            a_row  += '<th>'+usersLastMonth+'</th>';
+            a_row  += '<th>'+avgUsersLastDay+'</th>';
+            a_row  += '<th>'+avgUsersLastWeek+'</th>';
+            a_row  += '<th>'+avgUsersLastMonth+'</th>';
+          a_row  += '</tr>';
         
-        event_chart_labels.push('avgUsersLastDay','avgUsersLastWeek','avgUsersLastMonth');
-        event_chart_data.push(avgUsersLastDay,avgUsersLastWeek,avgUsersLastMonth);
+        // add the readable data to the table rows        
+        $('#widget-Summary tbody').append(a_row);
 
-        console.log('eventName: '+eventName);
-        console.log('eventNameTrimmed: '+eventNameTrimmed);
-        console.log('avgUsersLastDay: '+avgUsersLastDay);
-        console.log('avgUsersLastWeek: '+avgUsersLastWeek);
-        console.log('avgUsersLastMonth: '+avgUsersLastMonth);
-        console.log('totalCount: '+totalCount);
-        console.log('totalSessions: '+totalSessions);
-        console.log('usersLastDay: '+usersLastDay);
-        console.log('usersLastWeek: '+usersLastWeek);
-        console.log('usersLastMonth: '+usersLastMonth);
+        // Draw Chart with Labels and Data for the Summary
+        // var event_chart_labels = [];
+        // var event_chart_data = [];
+        
+        // event_chart_labels.push('avgUsersLastDay','avgUsersLastWeek','avgUsersLastMonth');
+        // event_chart_data.push(avgUsersLastDay,avgUsersLastWeek,avgUsersLastMonth);
 
-        var event_chart_id = 'flurry-chart-'+eventNameTrimmed;
-        console.log('event_chart_id: '+event_chart_id);
+        // console.log('eventName: '+eventName);
+        // console.log('eventNameTrimmed: '+eventNameTrimmed);
+        // console.log('avgUsersLastDay: '+avgUsersLastDay);
+        // console.log('avgUsersLastWeek: '+avgUsersLastWeek);
+        // console.log('avgUsersLastMonth: '+avgUsersLastMonth);
+        // console.log('totalCount: '+totalCount);
+        // console.log('totalSessions: '+totalSessions);
+        // console.log('usersLastDay: '+usersLastDay);
+        // console.log('usersLastWeek: '+usersLastWeek);
+        // console.log('usersLastMonth: '+usersLastMonth);
 
-        var canvas = document.getElementById(event_chart_id),
-        ctx = canvas.getContext('2d'),
-        startingData = {
-          labels: event_chart_labels,
-          datasets: [
-              {
-                  fillColor: "#fe5f55",
-                  strokeColor: "#fe5f55",
-                  pointColor: "rgba(220,220,220,1)",
-                  pointStrokeColor: "#fff",
-                  data: event_chart_data
-              }
-          ]
-        },
-        latestLabel = startingData.labels[6];
-        var myLiveChart = new Chart(ctx).Bar(startingData, {animationSteps: 15});
+        // var event_chart_id = 'flurry-chart-'+eventNameTrimmed;
+        // console.log('event_chart_id: '+event_chart_id);
 
-      });
-    }); 
+        // var canvas = document.getElementById(event_chart_id),
+        // ctx = canvas.getContext('2d'),
+        // startingData = {
+        //   labels: event_chart_labels,
+        //   datasets: [
+        //       {
+        //           fillColor: "#fe5f55",
+        //           strokeColor: "#fe5f55",
+        //           pointColor: "rgba(220,220,220,1)",
+        //           pointStrokeColor: "#fff",
+        //           data: event_chart_data
+        //       }
+        //   ]
+        // },
+        // latestLabel = startingData.labels[6];
+        // var myLiveChart = new Chart(ctx).Bar(startingData, {animationSteps: 15});
+
+      }); // end each
+    }); // end when
 }
+
 function constructFlurryEventEndpoint(type){
   console.log('...doing constructFlurryEventEndpoint()');
   url_metric_type           = 'eventMetrics',

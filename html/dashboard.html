@@ -37,12 +37,9 @@
         <link href="assets/from-symfony/css/style.css" rel="stylesheet">
         <link href="assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
 
-        <script src="assets/from-symfony/js/libs/respond.js" type="text/javascript">
-        </script>
-        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript">
-        </script>
-        <script src="assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript">
-        </script>
+        <script src="assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
+        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
+        <script src="assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
         <script type="text/javascript">
             user = {
                 email: 'ben.porcelain@gmail.com',
@@ -351,11 +348,17 @@
                         color: #fff;
                         font-size: 10px;
                     }
-                    .tablesorter-header-inner {
+                   /* .tablesorter-header-inner {
                         line-height: 1em;
                         padding: 0.5em 0 0.5em 0.5em;
                         text-align: center;
                         font-size: 12px;
+                    }*/
+                    .widget-grid li div.widget-content table th{
+                        padding: 0.5em;
+                    }
+                    .widget-grid li div.widget-content table thead th{
+                        padding: 0;
                     }
                     #graphs-holder ul li .tablesorter-header-inner{
                         padding: 4px 0 4px 4px;
@@ -396,6 +399,7 @@
                         <li>
                             <small><strong>Interactions</strong></small>
                             <ul>
+                                <li><span id="Summary_" class="chart_trigger"><a>Summary <i class="icon-play"></i></a></span></li>
                                 <li><span id="ModuleViewed_" class="chart_trigger"><a>Module Viewed <i class="icon-play"></i></a></span></li>
                                 <li><span id="CourseViewed_" class="chart_trigger"><a>Course Viewed <i class="icon-play"></i></a></span></li>
                                 <li><span id="ModuleRated_" class="chart_trigger"><a>Module Rated <i class="icon-play"></i></a></span></li>
@@ -419,14 +423,14 @@
                                 <!-- status bar -->
                                 <div class="status-bar" style="padding-top:0;">
                                     <div id="" class="row" style="margin-bottom:1em;">
-                                        <!-- <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a> -->
+                                        <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a>
                                         <div class="picker_holder">
                                             <label for="start_date">Start Date</label>
-                                            <input class="date_changer" id="start_date" name="start_date" type="text">
+                                            <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
                                         </div>
                                         <div class="picker_holder">
                                             <label for="end_date">End Date</label>
-                                            <input class="date_changer" id="end_date" name="end_date" type="text">
+                                            <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
                                         </div>
                                         <div class="picker_holder hideme" id="metric_type">
                                             <label>Metric Type:</label>
@@ -634,12 +638,35 @@
                                         </div>
                                     </li> -->
 
+                                    <li id="widget-Summary">
+                                        <h2 class="yellow">
+                                            Summary <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> 
+                                            <a class="toggle" gumby-trigger="#widget-Summary .widget-content"><i class="icon-minus-squared"></i></a>
+                                        </h2>
+                                        <div class="widget-content">
+                                            <table class="tablesorter sortable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Event<br>Name</th>   
+                                                        <th>Total<br>Count</th>   
+                                                        <th>Total<br>Sessions</th>
+                                                        <th>Users <span class="clearfix">Last Day</span></th>   
+                                                        <th>Users <span class="clearfix">Last Week</span></th>   
+                                                        <th>Users <span class="clearfix">Last Month</span></th>   
+                                                        <th>Avg.Users <span class="clearfix">Last Day</span></th>   
+                                                        <th>Avg.Users <span class="clearfix">Last Week</span></th>   
+                                                        <th>Avg.Users <span class="clearfix">Last Month</span></th>   
+                                                    </tr>
+                                                </thead>
+                                                <tbody id=""></tbody>
+                                            </table>
+                                            <canvas id="flurry-chart-Summary" class="flurry_chart"></canvas>            
+                                        </div>
+                                    </li>
+
                                     <li id="widget-ModuleViewed">
                                         <h2 class="yellow">
                                             Module Viewed <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleViewed .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <!-- <span id="PageViewsM" class="months">Months</span> 
-                                            <span id="PageViewsW" class="weeks">Weeks</span> 
-                                            <span id="PageViewsD" class="days">Days</span> --> 
                                         </h2>
                                         <div class="widget-content">
                                             <table class="tablesorter sortable">
@@ -759,10 +786,27 @@
                                 <tbody id="tbody_activity_result"></tbody>
                             </table> -->
                             </section>
+                            <!-- \"@endDate":"2015-12-08",
+//    "@startDate":"2015-01-01",
+//    "@type":"Summary",
+//    "@generatedDate":"12/10/15 8:32 AM",
+//    "@version":"1.0",
+//    "event":[  
+//       {  
+//          "@avgUsersLastDay":"0",
+//          "@avgUsersLastMonth":"1",
+//          "@avgUsersLastWeek":"0",
+//          "@eventName":"PDF Downloaded",
+//          "@totalCount":"34",
+//          "@totalSessions":"18",
+//          "@usersLastDay":"0",
+//          "@usersLastMonth":"6",
+//          "@usersLastWeek":"7"
+//       }, -->
                             <section class="pill tabs" id="four_stages" style="display:none;">
                                 <ul class="tab-nav">
                                     <li class="active">
-                                        <a href="#" onclick="populate_data_content()"><span class="light label">1</span> Report</a>
+                                        <a href="#" onclick="populate_data_content()"><span class="light label">1</span> Interactions Summary</a>
                                     </li>
                                     <li>
                                         <a href="#"><span class="light label">2</span> All Data</a>
@@ -774,19 +818,14 @@
                                 <div class="tab-content active">
                                     <div class="widget-content" style="min-height: 500px;">
                                         <div class="row graph_holder" id="video_view_stats">
-                                            <canvas height="250" id="video_views_bar" width="250"></canvas>
+                                            <!-- <canvas height="250" id="video_views_bar" width="250"></canvas> -->
                                             <ul>
                                                 <li>
-                                                    <h5>
-                                                        Architectural Overview Report
-                                                    </h5>
+                                                    <h5>@eventName</h5>
                                                 </li>
-                                                <li>Total Times Video Launched: <span id="view_total_launches"></span>
-                                                </li>
-                                                <li>Total Abandoned Or Stalled Usages: <span id="total_abandoned_or_stalled"></span>
-                                                </li>
-                                                <li>Total Unique Users: <span id="total_unique_users"></span>
-                                                </li>
+                                                <li>Total Times Video Launched: <span id="view_total_launches"></span></li>
+                                                <li>Total Abandoned Or Stalled Usages: <span id="total_abandoned_or_stalled"></span></li>
+                                                <li>Total Unique Users: <span id="total_unique_users"></span></li>
                                                 <li>Total instance Learning Module Consumed:
                                                     <ul>
                                                         <li>traditional model: <small>(coming soon...)</small>
@@ -1042,21 +1081,16 @@
         <script src="assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript">
         </script> <!-- END From Symfony -->
          
-        <script src="assets/js/vendor/bootstrap.js">
-        </script> 
-        <script src="assets/vendor/moment/moment.min.js">
-        </script> 
-        <script src="http://www.chartjs.org/assets/Chart.min.js">
-        </script> 
-        <script src="assets/js/vendor/underscore.js">
-        </script> 
-        <script src="assets/js/dashboard.js">
-        </script> <!-- From Symfony: CUSTOM -->
+        <script src="assets/js/vendor/bootstrap.js"></script> 
+        <script src="assets/vendor/moment/moment.min.js"></script> 
+        <script src="assets/vendor/chart/Chart.min.js"></script> 
+        <script src="assets/js/vendor/underscore.js"></script> 
+        <script src="assets/js/dashboard.js"></script> 
+
+        <!-- From Symfony: CUSTOM -->
          
-        <script src="assets/js/from-symfony/js/plugins.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/main.js" type="text/javascript">
-        </script> 
+        <script src="assets/js/from-symfony/js/plugins.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/main.js" type="text/javascript"></script> 
     <!-- MEF REPORT FILTERS 
         <script src="assets/js/from-symfony/js/report_filters.js" type="text/javascript">
         </script> 
