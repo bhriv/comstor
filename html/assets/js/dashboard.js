@@ -531,11 +531,32 @@ $("span.chart_trigger").click(function(event) {
   var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
   $(current_widget).removeClass('active');
 
-  var app_metric_specific = id;
-  setAppMetricSpecific(app_metric_specific);
-  getChartData(id);
-  var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
-  $(c).addClass('active');
+
+  if(id == 'Summary'){
+    var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+    $(c).addClass('active');
+    getCustomEventSummaryData();
+  }
+  if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
+    buildCustomEventDataTables(id);
+  }
+  // if(id == 'CourseViewed'){
+  //   courseViewedData();
+  // }
+  // if(id == 'ModuleRated'){
+  //   moduleRatedData();
+  // }
+  // if(id == 'PDFDownloaded'){
+  //   PDFDownloadedData();
+  // }
+  
+  if(id != 'Summary' && id != 'ModuleViewed' && id != 'CourseViewed' && id != 'ModuleRated' && id != 'PDFDownloaded' ){
+    var app_metric_specific = id;
+    setAppMetricSpecific(app_metric_specific);
+    getChartData(id);
+    var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+    $(c).addClass('active');
+  }
 });
 
 // Example: span.months_
@@ -590,13 +611,14 @@ function getChartData(id,period){
     console.log('id NOT updated: '+id);
   }
   var stats_label = '';
-  if (id == 'NewUsers'){ stats_label = 'New Users';}
-  if (id == 'RetainedUsers') { stats_label = 'Retained Users';}
-  if (id == 'Sessions') { stats_label = 'Sessions';}
-  if (id == 'MedianSessionLength') { stats_label = 'Med. Session<br>Length';}
-  if (id == 'AvgSessionLength') { stats_label = 'Ave. Session<br>Length';}
-  if (id == 'PageViews') { stats_label = 'Page Views';}
-
+  var data_query_label = '';
+  if (id == 'NewUsers'){ stats_label = 'New Users'; data_query_label = 'New Users';}
+  if (id == 'RetainedUsers') { stats_label = 'Retained Users';  data_query_label = 'Retained Users';}
+  if (id == 'Sessions') { stats_label = 'Sessions'; data_query_label = 'Sessions';}
+  if (id == 'MedianSessionLength') { stats_label = 'Med. Session<br>Length';  data_query_label = 'Med. Session Length (sec)';}
+  if (id == 'AvgSessionLength') { stats_label = 'Ave. Session<br>Length'; data_query_label = 'Avg. Session Length (sec)';}
+  if (id == 'PageViews') { stats_label = 'Page Views'; data_query_label = 'Page Views';}
+  $("span#data_query").text(data_query_label);
   // GROUP DATA by Period
 
     var url_flurry_api = constructFlurryEndpoint();
@@ -675,7 +697,6 @@ function getChartData(id,period){
       $('#widget-overview .previous_val .number').html(previous_val);
       $('#widget-overview .previous_val .period').html(growth_change_previous);
       
-      
       $('#overview_stats .period').html(period_label);
       $('#overview_stats .growth_factor span').text(growth_factor);
       $('#overview_stats .growth_factor .badge').addClass(growth_class);
@@ -747,23 +768,6 @@ function newFlurryBarChart(chart_id){
 /**********  CUSTOM EVENT DISPLAYS  **************/
 /*******************************************************/
 
-// "@endDate":"2015-12-08",
-//    "@startDate":"2015-01-01",
-//    "@type":"Summary",
-//    "@generatedDate":"12/10/15 8:32 AM",
-//    "@version":"1.0",
-//    "event":[  
-//       {  
-//          "@avgUsersLastDay":"0",
-//          "@avgUsersLastMonth":"1",
-//          "@avgUsersLastWeek":"0",
-//          "@eventName":"PDF Downloaded",
-//          "@totalCount":"34",
-//          "@totalSessions":"18",
-//          "@usersLastDay":"0",
-//          "@usersLastMonth":"6",
-//          "@usersLastWeek":"7"
-//       },
 
 var event_labels = [];
 var event_data = [];
@@ -790,13 +794,14 @@ function getCustomEventSummaryData(){
       console.log(flurry_events);
 
       $.each(flurry_events, function(key, flurry_object){
-        // event_labels.push(key);
-        // event_data.push(value);
+        
         console.log('key: '+key);
-        // console.log('value: '+value);
-        // var flurry_events_flat = flurry_events[0];
+
         var eventName = flurry_object['@eventName'];
         var eventNameTrimmed = eventName.replace(/\s/g, '');
+        var eventNameSpace = eventName.replace(/\s/g, '%20');
+        if (eventName == 'CourseViewed') { eventName = 'Course Viewed'};
+        if (eventName == 'ModuleViewed') { eventName = 'Module Viewed'};
         var avgUsersLastDay = flurry_object['@avgUsersLastDay'];
         var avgUsersLastWeek = flurry_object['@avgUsersLastWeek'];
         var avgUsersLastMonth = flurry_object['@avgUsersLastMonth'];
@@ -822,46 +827,162 @@ function getCustomEventSummaryData(){
         // add the readable data to the table rows        
         $('#widget-Summary tbody').append(a_row);
 
-        // Draw Chart with Labels and Data for the Summary
-        // var event_chart_labels = [];
-        // var event_chart_data = [];
-        
-        // event_chart_labels.push('avgUsersLastDay','avgUsersLastWeek','avgUsersLastMonth');
-        // event_chart_data.push(avgUsersLastDay,avgUsersLastWeek,avgUsersLastMonth);
-
-        // console.log('eventName: '+eventName);
-        // console.log('eventNameTrimmed: '+eventNameTrimmed);
-        // console.log('avgUsersLastDay: '+avgUsersLastDay);
-        // console.log('avgUsersLastWeek: '+avgUsersLastWeek);
-        // console.log('avgUsersLastMonth: '+avgUsersLastMonth);
-        // console.log('totalCount: '+totalCount);
-        // console.log('totalSessions: '+totalSessions);
-        // console.log('usersLastDay: '+usersLastDay);
-        // console.log('usersLastWeek: '+usersLastWeek);
-        // console.log('usersLastMonth: '+usersLastMonth);
-
-        // var event_chart_id = 'flurry-chart-'+eventNameTrimmed;
-        // console.log('event_chart_id: '+event_chart_id);
-
-        // var canvas = document.getElementById(event_chart_id),
-        // ctx = canvas.getContext('2d'),
-        // startingData = {
-        //   labels: event_chart_labels,
-        //   datasets: [
-        //       {
-        //           fillColor: "#fe5f55",
-        //           strokeColor: "#fe5f55",
-        //           pointColor: "rgba(220,220,220,1)",
-        //           pointStrokeColor: "#fff",
-        //           data: event_chart_data
-        //       }
-        //   ]
-        // },
-        // latestLabel = startingData.labels[6];
-        // var myLiveChart = new Chart(ctx).Bar(startingData, {animationSteps: 15});
+        // Build Chart Data with Labels and Data for the Summary
+        event_labels.push(eventName);
+        event_data.push(totalCount);
 
       }); // end each
+        
+        console.log('event_data');
+        console.log(event_data);
+        var shortest_view_in_module = 66;
+        var longest_view_in_module = 24;
+        var average_viewing_length_in_module = 31;
+
+        var Summary = document.getElementById("flurry-chart-Summary"),
+        ctx_Summary = Summary.getContext('2d');
+
+        var Summary_Options = {
+            //Boolean - Whether we should show a stroke on each segment
+            segmentShowStroke : true,
+            segmentStrokeColor : "#eee",
+            segmentStrokeWidth : 2,
+            percentageInnerCutout : 50, // This is 0 for Pie charts
+            animationSteps : 100,
+            animationEasing : "easeOut",
+            animateRotate : true,
+            animateScale : true
+        };
+
+        // array of view duration and random color
+        var Summary_Data = [
+            {
+                label: event_labels[0],
+                value: event_data[0],
+                color: "#878BB6"
+            },
+            {
+                label: event_labels[1],
+                value : event_data[1],
+                color : "#4ACAB4"
+            },
+            {
+                label: event_labels[2],
+                value : event_data[2],
+                color : "#fdd687"
+            },
+            {
+                label: event_labels[3],
+                value : event_data[3],
+                color : "#fff687"
+            }
+        ];
+        var myLiveChart_Summary = new Chart(ctx_Summary).Doughnut(Summary_Data,Summary_Options);
     }); // end when
+}
+
+function buildCustomEventDataTables(id){
+  var eventNameTrimmed = id.replace(/\s/g, '');
+  var eventName = id;
+  if (id == 'PDFDownloaded') { eventName = 'PDF%20Downloaded'};
+  if (id == 'ModuleRated') { eventName = 'Module%20Rated'};
+  // console.log('eventNameSpace: '+id);
+  var url_flurry_event_api = 'http://api.flurry.com/eventMetrics/Event?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-12-08&eventName='+eventName;
+  
+  var flurry_event_data_loaded = $.getJSON( url_flurry_event_api);
+  $.when(flurry_event_data_loaded).done(function(flurry_event_object) {
+    console.log(flurry_event_object);
+    var flurry_event_name = flurry_event_object['@eventName'];
+    var flurry_event_day = flurry_event_object['day'];
+    var flurry_event_parameters = flurry_event_object['parameters'];
+    console.log('flurry_event_name' +flurry_event_name);
+    console.log('flurry_event_day');
+    console.log(flurry_event_day);
+    console.log('flurry_event_parameters');
+    console.log(flurry_event_parameters);
+    // process daily data
+    
+    $.each(flurry_event_day, function(key, flurry_object){
+      var eventTotalCount = flurry_object['@totalCount'];
+      // only store days where event occurred  
+      if (eventTotalCount != "0") {
+        var date = flurry_object['@date'];
+        var totalCount = flurry_object['@totalCount'];
+        var totalSessions = flurry_object['@totalSessions'];
+        var uniqueUsers = flurry_object['@uniqueUsers'];
+        
+        // Construct Rows for the tabel with the data available
+        var a_row = '<tr>';
+            a_row  += '<th>'+date+'</th>';
+            a_row  += '<th>'+totalSessions+'</th>';
+            a_row  += '<th>'+totalCount+'</th>';
+            a_row  += '<th>'+uniqueUsers+'</th>';
+          a_row  += '</tr>';
+        
+        // add the readable data to the table rows 
+        var widget_c = '#widget-'+eventNameTrimmed +' table.summary tbody';       
+        $(widget_c).append(a_row);
+      }
+    });  // end each event day
+
+    if (id == 'ModuleViewed' || id == 'CourseViewed' || id == 'ModuleRated' || id == 'PDFDownloaded') {
+      var ModuleViewed_labels = [];
+      var ModuleViewed_data = [];
+      // dig into object
+      var flurry_event_parameters_key = flurry_event_parameters["key"];
+      console.log('flurry_event_parameters_key');
+      console.log(flurry_event_parameters_key);
+
+      $.each(flurry_event_parameters_key, function(key, flurry_object){
+        console.log('flurry_object NAME');
+        console.log(flurry_object['@name']);
+
+        var flurry_parameter_values = flurry_object['value'];
+        console.log('flurry_parameter_values');
+        console.log(flurry_parameter_values);
+        // var flurry_event_parameters_value = flurry_event_parameters["value"];
+        $.each(flurry_parameter_values, function(key, flurry_object){
+          
+          var name = flurry_object['@name'];
+          var totalCount = flurry_object['@totalCount'];
+          ModuleViewed_labels.push(name);
+          ModuleViewed_data.push(totalCount);
+          // console.log('name: '+name);
+          // console.log('totalCount: '+totalCount);
+          // Construct Rows for the tabel with the data available
+          var a_row = '<tr>';
+              a_row  += '<th>'+name+'</th>';
+              a_row  += '<th>'+totalCount+'</th>';
+            a_row  += '</tr>';
+          
+          // add the readable data to the table rows 
+          var widget_c = '#widget-'+id +' .byID tbody';       
+          $(widget_c).append(a_row);
+        });  // end each value
+
+      //Chart Data
+      var canvas_id = 'flurry-chart-' +id;
+        var canvas = document.getElementById(canvas_id),
+        ctx = canvas.getContext('2d'),
+        startingData = {
+          labels: ModuleViewed_labels,
+          datasets: [
+              {
+                  fillColor: "#5b90bf",
+                  strokeColor: "#5b90bf",
+                  pointColor: "rgba(220,220,220,1)",
+                  pointStrokeColor: "#fff",
+                  data: ModuleViewed_data
+              }
+          ]
+        },
+        latestLabel = startingData.labels[6];
+        // Reduce the animation steps for demo clarity.
+        var myLiveChart = new Chart(ctx).Bar(startingData);
+      });  // end each event day
+    } // endif
+    // Log 
+  }); 
 }
 
 function constructFlurryEventEndpoint(type){

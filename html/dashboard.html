@@ -369,6 +369,12 @@
                         clear: both;
                         font-size: 9px;
                     }
+                    .widget-grid li div.widget-content table thead{
+                        background-color: #7ea2aa;
+                    }
+                    .widget-grid li h2.yellow{
+                        background-color: #ffc145;
+                    }
                 </style>
                 <nav id="analytics_triggers">
                     <ul>
@@ -423,7 +429,7 @@
                                 <!-- status bar -->
                                 <div class="status-bar" style="padding-top:0;">
                                     <div id="" class="row" style="margin-bottom:1em;">
-                                        <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a>
+                                        <!-- <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a> -->
                                         <div class="picker_holder">
                                             <label for="start_date">Start Date</label>
                                             <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
@@ -669,100 +675,124 @@
                                             Module Viewed <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleViewed .widget-content"><i class="icon-minus-squared"></i></a>
                                         </h2>
                                         <div class="widget-content">
-                                            <table class="tablesorter sortable">
+                                            <label>Summary</label>
+                                            <table class="tablesorter sortable summary">
                                                 <thead>
                                                     <tr>
+                                                        <th>Date</th>   
                                                         <th>Total<br>Count</th>   
                                                         <th>Total<br>Sessions</th>
-                                                        <th>Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Users <span class="clearfix">Last Month</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Month</span></th>   
+                                                        <th>Unique Users</th>   
                                                     </tr>
                                                 </thead>
-                                                <tbody id=""></tbody>
+                                                <tbody></tbody>
                                             </table>
+                                            <label>Comparison</label>
                                             <canvas id="flurry-chart-ModuleViewed" class="flurry_chart"></canvas>            
+                                            <label>Details</label>
+                                            <table class="tablesorter sortable byID">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID or Name</th>      
+                                                        <th>Total Count</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                            
                                         </div>
                                     </li>
                                     <li id="widget-CourseViewed" class="">
                                         <h2 class="yellow">
                                             Course Viewed <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-CourseViewed .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <!-- <span id="PageViewsM" class="months">Months</span> 
-                                            <span id="PageViewsW" class="weeks">Weeks</span> 
-                                            <span id="PageViewsD" class="days">Days</span> --> 
                                         </h2>
                                         <div class="widget-content">
-                                            <table class="tablesorter sortable">
+                                            <label>Summary</label>
+                                            <table class="tablesorter sortable summary">
                                                 <thead>
                                                     <tr>
+                                                        <th>Date</th>   
                                                         <th>Total<br>Count</th>   
                                                         <th>Total<br>Sessions</th>
-                                                        <th>Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Users <span class="clearfix">Last Month</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Month</span></th>   
+                                                        <th>Unique Users</th>   
                                                     </tr>
                                                 </thead>
-                                                <tbody id=""></tbody>
+                                                <tbody></tbody>
                                             </table>
+                                            <label>Comparison</label>
                                             <canvas id="flurry-chart-CourseViewed" class="flurry_chart"></canvas>            
+                                            <label>Details</label>
+                                            <table class="tablesorter sortable byID">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID or Name</th>     
+                                                        <th>Total Count</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>           
                                         </div>
                                     </li>
                                     <li id="widget-ModuleRated" class="">
                                         <h2 class="yellow">
                                             Module Rated <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleRated .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <!-- <span id="PageViewsM" class="months">Months</span> 
-                                            <span id="PageViewsW" class="weeks">Weeks</span> 
-                                            <span id="PageViewsD" class="days">Days</span> --> 
                                         </h2>
                                         <div class="widget-content">
-                                            <table class="tablesorter sortable">
+                                            <label>Summary</label>
+                                            <table class="tablesorter sortable summary">
                                                 <thead>
                                                     <tr>
+                                                        <th>Date</th>   
                                                         <th>Total<br>Count</th>   
-                                                        <th>Total<br>Sessions</th>  
-                                                        <th>Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Users <span class="clearfix">Last Month</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Month</span></th>   
+                                                        <th>Total<br>Sessions</th>
+                                                        <th>Unique Users</th>   
                                                     </tr>
                                                 </thead>
-                                                <tbody id=""></tbody>
+                                                <tbody></tbody>
                                             </table>
+                                            <label>Comparison</label>
                                             <canvas id="flurry-chart-ModuleRated" class="flurry_chart"></canvas>            
+                                            <label>Details</label>
+                                            <table class="tablesorter sortable byID">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID or Name</th>      
+                                                        <th>Total Count</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table> 
                                         </div>
                                     </li>
                                     <li id="widget-PDFDownloaded" class="">
                                         <h2 class="yellow">
                                             PDF Downloaded <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-PDFDownloaded .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <!-- <span id="PageViewsM" class="months">Months</span> 
-                                            <span id="PageViewsW" class="weeks">Weeks</span> 
-                                            <span id="PageViewsD" class="days">Days</span> --> 
                                         </h2>
                                         <div class="widget-content">
-                                            <table class="tablesorter sortable">
+                                            <label>Summary</label>
+                                            <table class="tablesorter sortable summary">
                                                 <thead>
                                                     <tr>
+                                                        <th>Date</th>   
                                                         <th>Total<br>Count</th>   
                                                         <th>Total<br>Sessions</th>
-                                                        <th>Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Users <span class="clearfix">Last Month</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Month</span></th>   
+                                                        <th>Unique Users</th>   
                                                     </tr>
                                                 </thead>
-                                                <tbody id=""></tbody>
+                                                <tbody></tbody>
                                             </table>
+                                            <label>Comparison</label>
                                             <canvas id="flurry-chart-PDFDownloaded" class="flurry_chart"></canvas>            
+                                            <label>Details</label>
+                                            <table class="tablesorter sortable byID">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID or Name</th>   
+                                                        <th>Total Count</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>           
                                         </div>
                                     </li>
                                     
@@ -924,7 +954,7 @@
                             <ul class="widget-grid full-width">
                                 <li data-type="video" id="widget-overview">
                                     <h2 style="background-color:#b6dbac;">
-                                        Analytics Overview <a class="toggle" gumby-trigger="#widget-overview .widget-content"><i class="icon-minus-squared"></i></a>
+                                        Overview: <span id="data_query"></span> <a class="toggle" gumby-trigger="#widget-overview .widget-content"><i class="icon-minus-squared"></i></a>
                                     </h2>
                                     <div class="widget-content">
                                         <div class="clearfix">

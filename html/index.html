@@ -1,56 +1,55 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!DOCTYPE html xmlns:fb="http://ogp.me/ns/fb#">
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!-- Consider adding an manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en" itemscope itemtype="http://schema.org/Product"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
+        <!-- Use the .htaccess and remove these lines to avoid edge case issues. More info: h5bp.com/b/378 -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Lumious Reports</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="humans.txt">
+        <!-- Facebook Metadata /-->
+        <meta property="fb:page_id" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:description" content=""/>
+        <meta property="og:title" content=""/>
+        <!-- Google+ Metadata /-->
+        <meta itemprop="name" content="">
+        <meta itemprop="description" content="">
+        <meta itemprop="image" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		
+		<title>Lumious Login</title>
+		<!-- FONTS provided in sass files
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
+
         <link rel="stylesheet" href="assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/screen.css">
-        <script src="assets/js/vendor/modernizr.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
-        <div class="main-container">
-            <div class="main wrapper clearfix">             
-                <section id="flurry_reports" class="report_display_switch">
-                    <div id="all_apps_overview">
-                        <h5>All Apps</h5>
-                        <span id="work_in_progress">work_in_progress()</span>
-                        <i class="fa fa-apple"></i>
-                        <i class="fa fa-android"></i>
-                        <i class="fa fa-chart"></i>
-                        <i class="fa fa-file"></i>
-                        <i class="fa fa-calendar"></i>
-                        <i class="fa fa-key"></i>
-                        <i class="fa fa-external-link"></i>
-                        <ul class="all_apps">
-                            <!-- populated by js -->
-                        </ul>
-                    </div>
-                </section>
+        -->
 
-            </div> <!-- #main -->
-        </div> <!-- #main-container -->
+		<link rel="shortcut icon" href="css/favicon.css" type="image/x-icon" />
+		
+		<link rel="stylesheet" href="assets/css/screen.css">
 
-        <div class="footer-container">
-            <footer class="wrapper">
-                <h3>footer</h3>
-            </footer>
-        </div>
-      
-        
-        <!-- footer js -->
-    
+        <link rel="stylesheet" href="assets/from-symfony/css/gumby.css" />
+
+        <link rel="stylesheet" href="assets/from-symfony/css/pikaday.css" />
+        <link rel="stylesheet" href="assets/from-symfony/css/jquery.fileupload.css" />
+        <link rel="stylesheet" href="assets/from-symfony/css/style.css" />
+        <link rel="stylesheet" href="assets/from-symfony/css/gumby_with_autoprefixer.css" />
+        <!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
+		
+
+        <script type="text/javascript" src="assets/from-symfony/js/libs/respond.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js"></script>
+
+		<script src="assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
+
         <script type="text/javascript">
-            
             user = {
                 email: 'ben.porcelain@gmail.com',
                 firstname: 'Joe',
@@ -69,109 +68,257 @@
                 settings: 'http://akronzip.com/'
             };
 
+            fb = {
+                client_id: '',
+                redirect_url: 'http://ciscolive.lumious.co/oauth/redirect/facebook'
+            };
         </script>
-        <!-- Unminified -->
-        <script src="assets/js/vendor/jquery.js"></script>
-        <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
+    </head>
 
-        <!-- From Symfony: LIBRARY -->
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/dna.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/dumper.js"></script>
-            <!-- <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script> -->
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.tablesorter.min.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery-sortable-min.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/pikaday.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/libs/pikaday.jquery.js"></script>
-        <!-- END From Symfony -->
+    <body class="login">
+        <header id="site_header">
+            <div class="row">
+                <div class="sixteen columns">
+                    <a href="/"><div class="logo"></div></a>
+                    <a href="mailto:cchurchwell@t2000inc.com?subject=Comstor%20Lumious%20Access%20Request&body=Please%20setup%20a%20my%Comstor%20Lumious%account%access">
+                    	<div class="medium success btn">Request Access</div>
+                    </a>
+                    <!-- <div class="medium success btn"><a href="/oauth/login/check-lumious">Login</a></div> -->
+                </div>
+        </header>
 
-        <script src="assets/js/vendor/bootstrap.js"></script>
-        <script src="assets/vendor/moment/moment.min.js"></script>
+        <div class="row" id="root">
+            <!-- main content column -->
+            <div class="thirteen columns main-content">
+                <div class="row content">
+                    <!-- flash messages --><!-- / flash messages -->
+			        <div class="row" id="login-form-container">
+						<div class="centered six columns">
+							<form id="login-form" action="/login_check" method="POST">
+				                <input type="hidden" name="" value="" />
+								<h3>Log In to Your Account</h3>
+								<ul>
+									<li>
+										<div class="danger alert" >Hello</div>
+									</li>
+									<li class="field">
+									  <input class="input" name="_username" type="email" placeholder="Email Address" value=""/>
+									</li>
+									<li class="field">
+									  <input class="input" name="_password" type="password" placeholder="Password" />
+									</li>
+									<li class="field">
+									    <div class="medium success btn">
+									    	<a href="dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3">
+									    		<!-- <input type="submit" value="Login" /> -->
+									    		Login
+									    	</a>
+									    </div>
+									</li>
+									
+									<li class="utility">
+										<a href="mailto:cchurchwell@t2000inc.com?subject=Comstor%20Lumious%20Password%20Reset%20Request&body=Please%20reset%20my%Comstor%20Lumious%account%password" class="">
+											Forgot your password?
+										</a> | <a href="/create-account" class="create-account">Create an account</a>  <!--| <a href="#" class="join-course">Join a Course</a>-->
+									</li>
+									<li class="logomark">
+										<img src="assets/from-symfony/images/lumious-logomark.png" alt="Lumious Logo" />
+									</li>
+								</ul>
+							</form>
+						</div>
+					</div>
+					<div class="row" id="forgot-form-container">
+						<div class="centered six columns">
+							<form id="forgot-form" action="/resetting/send-email" method="POST">
+								<h3>Forgot your password?</h3>
+								<ul>
+									<li>
+										<div class="danger alert" id="forgot-status-message"></div>
+									</li>
+									<li class="field">
+									  <input class="input" name="email" type="email" placeholder="Email Address" />
+									</li>
+									<li class="field">
+									    <div class="medium success btn"><input type="submit" value="Reset" /></div>
+									</li>
+									<li class="utility">
+										<a href="#" class="back-to-login">&lt; Back to login</a>
+									</li>
+									<li class="logomark">
+										<img src="assets/from-symfony/images/lumious-logomark.png" alt="Lumious Logo" />
+									</li>
+								</ul>
+							</form>
+						</div>
+					</div>
 
-        <script src="//www.chartjs.org/assets/Chart.min.js"></script>
+					<div class="row" id="join-course-container">
+						<div class="centered six columns">
+							<form id="join-form">
+								<h3>Join your course</h3>
+								<p>To join a course, you need a course code from your instructor. If you do not have a course code, please ask your instructor.</p>
+								<ul>
+									<li>
+										<div class="danger alert" id="join-status-message"></div>
+									</li>
+									<li class="field">
+									  <input class="input" name="coursecode" type="text" placeholder="Course Code" />
+									  <small>example: 000:11111:01673</small>
+									</li>
+									<li class="field">
+									    <div class="medium success btn"><input type="submit" value="Join!" /></div>
+									</li>
+									<li class="utility">
+										<p><a href="#" class="request-access">I need to request access</a></p>
+										<p><a href="#" class="back-to-login">&lt; Back to login</a></p>
+									</li>
+									<li class="logomark">
+										<img src="assets/from-symfony/images/lumious-logomark.png" alt="Lumious Logo" />
+									</li>
+									<li class="disclaimer">
+										<p>By signing up, you agree to the Lumious <a href="#">Terms of use</a> &amp; <a href="#">Privacy Policy</a>.</p>
+									</li>
+								</ul>
+							</form>
+						</div>
+					</div>
+				</div>
+            </div>
+            <!-- / main content -->
+        </div>
+        <!-- / #root -->
+        <footer id="footer">
+            <ul class="menu centered">
+			    <li><a href="/feedback"><i class="icon-comment"></i>Feedback</a></li>
+			    <li><a href="/help"><i class="icon-help-circled"></i>Help</a></li>
+			    <li><a href="/support"><i class="icon-mail"></i>Support</a></li>
+			    <li><a href="/contact"><i class="icon-mail"></i>Contact</a></li>
+			</ul>
+        </footer>
+        <!-- footer js -->
+        <!-- Grab Google CDN's jQuery, fall back to local if offline -->
+		<!-- 2.0 for modern browsers, 1.10 for .oldie -->
+		<script>
+		    // var oldieCheck = Boolean(document.getElementsByTagName('html')[0].className.match(/\soldie\s/g));
+		    // if(!oldieCheck) {
+		    //     document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"><\/script>');
+		    // } else {
+		    //     document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"><\/script>');
+		    // }
+		</script>
 
-        <script src="assets/js/vendor/underscore.js"></script>
-        <script src="assets/js/dashboard.js"></script>
+		<script>
+		    // if(!window.jQuery) {
+		    //     if(!oldieCheck) {
+		    //         document.write('<script src="assets/from-symfony/js/libs/jquery-2.0.2.min.js"><\/script>');
+		    //     } else {
+		    //         document.write('<script src="assets/from-symfony/js/libs/jquery-1.10.1.min.js"><\/script>');
+		    //     }
+		    // }
+		    document.write('<script src="assets/from-symfony/js/libs/jquery-2.0.2.min.js"><\/script>');
+		</script>
 
-        <!-- From Symfony: CUSTOM -->
-            <script type="text/javascript" src="assets/js/from-symfony/js/plugins.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/main.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/report_filters.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/report_students_access.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/report_students_performance.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/report_queries_questions.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/report_queries_attempts.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/report_concatenated_rows.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/analytics.js"></script>
-            <script type="text/javascript" src="assets/js/from-symfony/js/settings.js"></script>
-         <!-- END From Symfony -->
-        
-         
-        <!-- Production Ready : All vendor and custom js compiled 
-         ** BREAKS lumi.js
 
-        <script src="build/production-uglified.js"></script>
+		<!--    <script src="https://www.highcharts.com/samples/data/maps/world.js"></script>
+		<script src="//cdn.ckeditor.com/4.4.3/basic/ckeditor.js"></script>
+		<script src="//cdn.ckeditor.com/4.4.3/basic/adapters/jquery.js"></script>
+		 -->  
+		<script src="assets/vendor/chart/Chart.min.js"></script> 
+		<!--    
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.checkbox.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.fixed.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.navbar.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.radiobtn.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.retina.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.skiplink.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.tabs.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.toggleswitch.js"></script>
+		-->
+		<script type="text/javascript" src="assets/from-symfony/js/libs/ui/jquery.validation.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/ui/masonry.pkgd.min.js"></script>
+		<!--
+		<script type="text/javascript" src="assets/from-symfony/js/gumby.init.js"></script>
+		-->
+		<script type="text/javascript" src="assets/from-symfony/js/libs/retina.min.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/dna.js"></script>
 
-        -->
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            // e.src='//www.google-analytics.com/analytics.js';
-            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            // ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/dumper.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery.ui.widget.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery-ui-1.10.3.min.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/underscore.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery.selectBoxIt.min.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/plugins.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery.tablesorter.min.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery.tablesorter.pager.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery.tablesorter.widgets.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/jquery-sortable-min.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/moment.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/pikaday.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/pikaday.jquery.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/upload/jquery.iframe-transport.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/upload/jquery.fileupload.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/main.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/report_filters.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/report_students_access.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/report_students_performance.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/report_queries_questions.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/report_queries_attempts.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/report_concatenated_rows.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/analytics.js"></script>
+		<!--
+		<script type="text/javascript" src="assets/from-symfony/js/messaging.js"></script> -->
+		<script type="text/javascript" src="assets/from-symfony/js/settings.js"></script>
+		<script type="text/javascript" src="assets/from-symfony/js/libs/fp_js_validator.js"></script>
 
-        <script type="text/javascript">
+		<script type="text/javascript">
+		$(document).ready(function() {
+		       $( "#tbody_activity td.timestamp" ).each(function( index ) {
+		            var dateString = $(this).text();
+		            dateString = moment(dateString).format('MMMM Do YYYY, h:mm:ss a');
+		            console.log( index + ": " + dateString );
+		            $(this).text(dateString);
+		        });
 
-                $( document ).ready(function() {
-                  console.log('Document Ready: Custom Functions Start...')
-                  
-                  getFlurryAllAppsInfo();
+		       $( "#tbody_activity td.level-verb" ).each(function( index ) {
+		            var textstring = $(this).text();
 
-                  // getFlurryAppInfo();
-                  
-                  // Setup temp test array of demo student data for new endpoint
-                  // @TODO - replace with a jQuery.when(...).done(...) function once the endpoint is in place. 
+		            if (textstring.toLowerCase().indexOf("arrange") >= 0){
+		                $(this).addClass(' category-knowledge');    
+		            }
+		            // };
+		        });
+		       // $( "div" ).data( "level" ) === "knowledge";
+		});
+		</script>
+	    
+	    <script type="text/javascript">
+	        $(document).ready(function () {
+	          $('.accordion-tabs-minimal').each(function(index) {
+	            $(this).children('li').first().children('a').addClass('is-active').next().addClass('is-open').show();
+	          });
+	          $('.accordion-tabs-minimal').on('click', 'li > a.tab-link', function(event) {
+	            if (!$(this).hasClass('is-active')) {
+	              event.preventDefault();
+	              var accordionTabs = $(this).closest('.accordion-tabs-minimal');
+	              accordionTabs.find('.is-open').removeClass('is-open').hide();
 
-                  all_students.push(student_result_id_4);
-                  all_students.push(student_result_id_17);
-                  console.log('all_students');
-                  console.log(all_students);
-
-                  get_totara_activity();
-
-                  // $('#mef_reports').show();
-                  $('#flurry_reports').show();
-                }); // end doc ready
-
-                function pop_up(hyperlink, window_name)
-                {
-                    if (!window.focus) {
-                        return true;
-                    }
-                    var href = (typeof(hyperlink) == 'string' ? hyperlink : hyperlink.href);
-                    window.open(href, window_name, 'width=800,height=800,toolbar=no, scrollbars=yes');
-                    return false;
-                }
-        </script>
-    </body>
+	              $(this).next().toggleClass('is-open').toggle();
+	              accordionTabs.find('.is-active').removeClass('is-active');
+	              $(this).addClass('is-active');
+	            } else {
+	              event.preventDefault();
+	            }
+	          });
+	        });
+	    </script>
+        <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+           chromium.org/developers/how-tos/chrome-frame-getting-started -->
+        <!--[if lt IE 7 ]>
+        <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+        <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+	</body>
 </html>
-
-<!-- prepare JS to migrate to Comstor and Tech2000 to Totara 
-pull main queries to be standalone out of Symfony for faster testing 
-add JS dump for bug tracing 
-run test queries for identifying issues 
-do PSD screenshots for loading table 
-add dynamic progress bar for query results loading 
-format PSD for tempate use 
-add default graphic for loading - with instructions 
-when query done hide graphic show results 
-add temp query parameter to produce limited, faster, results 
-reset selectors when key dropdown changed to ensure results are fetched 
-include required functions outside of key function 
- -->
