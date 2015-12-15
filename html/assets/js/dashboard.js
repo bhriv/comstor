@@ -1602,19 +1602,16 @@ function get_totara_activity(){
 /*****************************************************************/
 
 
-
-
 function getStoredSessionData(data_name){
-  // example: 
-  // localStorage.setItem( 'session_course_data_array',data);
+  // Example:  localStorage.setItem( 'session_course_data_array',data);
   var d = localStorage.getItem(data_name);
-  console.log('Return Data from storage for getStoredSessionData(name): '+data_name);
+  console.log('Return Data from storage for getStoredSessionData('+data_name+')');
   // console.log(d);
   return d;
 }
 
+// TEMP DATA for testing without internet connection
 var course_data = [];
-
 function temp_set_course_data(){
 
   var course_data = [
@@ -1686,13 +1683,14 @@ function temp_set_course_data(){
 var course_constructed_array = [];
 
 function get_course_data(course_ID){
-  console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
+  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
   console.log('%c PROCESSING CURRENT COURSE ID: '+course_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
 
-  temp_set_course_data();
+  // temp_set_course_data();
   // @TODO - pull from actual query
   
-  var data_name = 'session_course_data_array';
+  var data_name = 'courses';
+  // var data_name = 'session_course_data_array'; // TEMP data
   var session_course_data_array = getStoredSessionData(data_name);
 
   var arr = JSON.parse(session_course_data_array);
@@ -1700,32 +1698,35 @@ function get_course_data(course_ID){
   var course_data_from_array = findCourseByID(arr, course_ID);
   console.log('course_data_from_array FOR: '+course_ID);
   console.log(course_data_from_array);
-
   
   if (course_data_from_array == false) {
     console.log('FALSE satisfied - get data from endpoint for Course: '+course_ID);
-    var d = getCourseDataFromEndpoint(course_ID);
-    // hit endpoint
-    // get data
-    // save to session array data
+    // hit endpoint, get data, save to session array data
+    getCourseDataFromEndpoint(course_ID);
   }
   else{
+    console.log('TRUE satisfied - get data "courses" object in localStorage for course ID: '+course_ID+'. Endpoint WILL NOT be hit again. ');
     var d = course_data_from_array[0];
-    console.log(' ID: '+d["id"] +
-                ' SHORTNAME: '+d.shortname +
-                ' FULLNAME: '+d.fullname +
-                ' CATEGORY: '+d.category +
-                ' STARTDATE: '+d.startdate);
-    course_constructed_array.push(d);
-    console.log('course_constructed_array');
-    console.log(course_constructed_array);
-    var courses = JSON.stringify(course_constructed_array);
-    localStorage.setItem( 'courses', courses );
+    if (d != undefined) {
+      console.log('%c FUNCTION processCourseData('+d["id"]+') ', 'background: #9933ff; color: #fff');
+      console.log(' ID: '+d["id"] +
+                  ' SHORTNAME: '+d.shortname +
+                  ' FULLNAME: '+d.fullname +
+                  ' CATEGORY: '+d.category +
+                  ' STARTDATE: '+d.startdate);
+      course_constructed_array.push(d);
+      // console.log('"courses" constructed_array...before JSON.stringify ');
+      // console.log(course_constructed_array);
+      var courses = JSON.stringify(course_constructed_array);
+      localStorage.setItem( 'courses', courses );
 
-    var t = localStorage.getItem('courses');
-    var s = JSON.parse(localStorage.getItem( 'courses'));
-    console.log('courses storage retrieval now includes data for Course ID: '+course_ID);
-    console.log(s);
+      var t = localStorage.getItem('courses');
+      var s = JSON.parse(localStorage.getItem( 'courses'));
+      // console.log('courses storage retrieval now includes data for Course ID: '+d["id"]);
+      console.log(s);
+    }else{
+      alert('There was an error retrieving information for Course ID: '+course_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
+    }
   }
   // use course data to generate table row
   generate_table_row();
@@ -1741,28 +1742,56 @@ function getCourseDataFromEndpoint(course_ID){
   // console.log('coursedata: ');
   // console.log(coursedata);
   $.when(coursedata).done(function(course_data_from_array) {
-    var d = course_data_from_array[0];
-    console.log('course_data_from_array: ');
-    console.log(d);
-    // @TODO - DRY principals..create non-duplicating code
-    console.log(' ID: '+d["id"] +
-                ' SHORTNAME: '+d.shortname +
-                ' FULLNAME: '+d.fullname +
-                ' CATEGORY: '+d.category +
-                ' STARTDATE: '+d.startdate);
-    course_constructed_array.push(d);
-    console.log('course_constructed_array');
-    console.log(course_constructed_array);
-    var courses = JSON.stringify(course_constructed_array);
-    localStorage.setItem( 'courses', courses );
 
-    var t = localStorage.getItem('courses');
-    var s = JSON.parse(localStorage.getItem( 'courses'));
-    console.log('courses storage retrieval now includes data for Course ID: '+course_ID);
-    console.log(s);
-    return d;
+    // @TODO - DRY - eliminate duplicate code
+    var d = course_data_from_array[0];
+    
+    console.log('d');
+    console.log(d);
+    if (d != undefined) {
+      console.log('%c FUNCTION processCourseData('+d["id"]+') ', 'background: #9933ff; color: #fff');
+      console.log(' ID: '+d["id"] +
+                  ' SHORTNAME: '+d.shortname +
+                  ' FULLNAME: '+d.fullname +
+                  ' CATEGORY: '+d.category +
+                  ' STARTDATE: '+d.startdate);
+      course_constructed_array.push(d);
+      console.log('"courses" constructed_array...before JSON.stringify ');
+      console.log(course_constructed_array);
+      var courses = JSON.stringify(course_constructed_array);
+      localStorage.setItem( 'courses', courses );
+
+      var t = localStorage.getItem('courses');
+      var s = JSON.parse(localStorage.getItem( 'courses'));
+      console.log('"courses" array in storage retrieval now includes data for Course ID: '+d["id"]);
+      console.log(s);
+      return d;
+    }else{
+      alert('There was an error retrieving information for Course ID: '+course_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
+    }
   }); // end $.when
 }
+
+// function processCourseData(d){
+
+//   console.log('%c FUNCTION processCourseData('+d["id"]+') ', 'background: #9933ff; color: #fff');
+//   console.log(' ID: '+d["id"] +
+//               ' SHORTNAME: '+d.shortname +
+//               ' FULLNAME: '+d.fullname +
+//               ' CATEGORY: '+d.category +
+//               ' STARTDATE: '+d.startdate);
+//   course_constructed_array.push(d);
+//   console.log('"courses" constructed_array...before JSON.stringify ');
+//   console.log(course_constructed_array);
+//   var courses = JSON.stringify(course_constructed_array);
+//   localStorage.setItem( 'courses', courses );
+
+//   var t = localStorage.getItem('courses');
+//   var s = JSON.parse(localStorage.getItem( 'courses'));
+//   // console.log('courses storage retrieval now includes data for Course ID: '+d["id"]);
+//   console.log(s);
+// }
+
 
 function work_in_progress(){
   // testing for sending a course ID, avoiding hitting the endpoints if possible, 
@@ -1773,11 +1802,14 @@ function work_in_progress(){
   get_course_data(4);
   // get_course_data(99); // Fail Test
   get_course_data(5);
-  get_course_data(6);
+  // get_course_data(6);
   // get_course_data(68); // Fail Test
   get_course_data(7);
   get_course_data(8); // True Hit Endpoint Test
   get_course_data(9); // True Hit Endpoint Test
+  get_course_data(4); // True Hit Endpoint Test
+  // console.log('%c DOUBLE TEST FOR 9 ', 'background: #ff0000; color: #000');
+  // get_course_data(9); // True Hit Endpoint Test
 }
 
 // 
