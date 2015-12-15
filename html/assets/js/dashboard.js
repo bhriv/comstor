@@ -36,9 +36,10 @@ function get_apiKey_from_storage(){
 }
 
 
-// ===========================
-// Force Login for some Links - use for testing simple functions such as 'Document Ready' state etc.
-// ===========================
+/*****************************************************************/
+/*************** Force Login for some Links **********************/
+/*****************************************************************/
+// - use for testing simple functions such as 'Document Ready' state etc.
 
 function you_must_login(){
   alert('Please Log In.')
@@ -63,168 +64,203 @@ $('#process_ended').on('click', function(event) {
 /***************************  Debugging Functions ***************/
 /*****************************************************************/
 
-  function cheatModeToggle(){
-    $('.cheatmode').toggle();
-  }
+function cheatModeToggle(){
+  $('.cheatmode').toggle();
+}
 
 /*****************************************************************/
 /***********************  Set Local Storage Values **************/
 /*****************************************************************/
 
-  function saveLastAction(event){
-    localStorage.setItem( 'last_action', event );
-  }
+function saveLastAction(event){
+  localStorage.setItem( 'last_action', event );
+}
 
-  function setSessionID(){
-    // create new random ID
-    var session_id = Math.random().toString(36).substr(2, 7);
-    localStorage.setItem( 'session_id', session_id );
-    console.log('session_id set: '+session_id);
-  }
+function setSessionID(){
+  // create new random ID
+  var session_id = Math.random().toString(36).substr(2, 7);
+  localStorage.setItem( 'session_id', session_id );
+  console.log('session_id set: '+session_id);
+}
 
-  function setStartDate(){
-    var start_date = $('#start_date').val();
-    localStorage.setItem( 'start_date', start_date );
-    console.log('start_date set: '+start_date);
-  }
+function setStartDate(){
+  var start_date = $('#start_date').val();
+  localStorage.setItem( 'start_date', start_date );
+  console.log('start_date set: '+start_date);
+}
 
-  function setEndDate(){
-    var end_date = $('#end_date').val();
-    localStorage.setItem( 'end_date', end_date );
-    console.log('end_date set: '+end_date);
-  }
+function setEndDate(){
+  var end_date = $('#end_date').val();
+  localStorage.setItem( 'end_date', end_date );
+  console.log('end_date set: '+end_date);
+}
 
-  function setMetricType(metric_type){
-    localStorage.setItem( 'metric_type', metric_type );
-    console.log('metric_type set: '+metric_type);
-  }
+function setMetricType(metric_type){
+  localStorage.setItem( 'metric_type', metric_type );
+  console.log('metric_type set: '+metric_type);
+}
 
-  function setAppMetricSpecific(app_metric_specific){
-    localStorage.setItem( 'app_metric_specific', app_metric_specific );
-    console.log('app_metric_specific set: '+app_metric_specific);
-  }
+function setAppMetricSpecific(app_metric_specific){
+  localStorage.setItem( 'app_metric_specific', app_metric_specific );
+  console.log('app_metric_specific set: '+app_metric_specific);
+}
 
-  function setEventMetricSpecific(event_metric_specific){
-    localStorage.setItem( 'event_metric_specific', event_metric_specific );
-    console.log('event_metric_specific set: '+event_metric_specific);
-  }
+function setEventMetricSpecific(event_metric_specific){
+  localStorage.setItem( 'event_metric_specific', event_metric_specific );
+  console.log('event_metric_specific set: '+event_metric_specific);
+}
 
 
 /*****************************************************************/
 /***************************  Check Variable Values *********************/
 /*****************************************************************/
 
-  function checkUserSessionID(){
-    var my_session_id = localStorage.getItem( 'session_id' );
-    return my_session_id;
-  }
-  
-  function checkStartDate(){
-    var start_date = localStorage.getItem( 'start_date' );
-    console.log('STORAGE start_date: '+start_date);
-    if (start_date == null) {
-      start_date = '2015-01-01';
-    };
-    return start_date;
-  }
+function checkUserSessionID(){
+  var my_session_id = localStorage.getItem( 'session_id' );
+  return my_session_id;
+}
 
-  function checkEndDate(){
-    var end_date = localStorage.getItem( 'end_date' );
-    console.log('STORAGE end_date: '+end_date);
-    if (end_date == null) {
-      end_date = '2015-12-10';
-    };
-    return end_date;
-  }
+function checkStartDate(){
+  var start_date = localStorage.getItem( 'start_date' );
+  console.log('STORAGE start_date: '+start_date);
+  if (start_date == null) {
+    start_date = '2015-01-01';
+  };
+  return start_date;
+}
 
-  function checkMetricType(){
-    var metric_type = localStorage.getItem( 'metric_type' );
-    if (metric_type == null) {
-      metric_type = 'appMetrics';
-    };
-    console.log('STORAGE metric_type: '+metric_type)
-    return metric_type;
-  }
+function checkEndDate(){
+  var end_date = localStorage.getItem( 'end_date' );
+  console.log('STORAGE end_date: '+end_date);
+  if (end_date == null) {
+    end_date = '2015-12-10';
+  };
+  return end_date;
+}
 
-  function checkAppMetricSpecific(){
-    var app_metric_specific = localStorage.getItem( 'app_metric_specific' );
-    console.log('STORAGE app_metric_specific: '+app_metric_specific);
-    if (app_metric_specific == null) {
-      app_metric_specific = 'ActiveUsers';
-    };
+function checkMetricType(){
+  var metric_type = localStorage.getItem( 'metric_type' );
+  if (metric_type == null) {
+    metric_type = 'appMetrics';
+  };
+  console.log('STORAGE metric_type: '+metric_type)
+  return metric_type;
+}
 
-    return app_metric_specific;
-  }
+function checkAppMetricSpecific(){
+  var app_metric_specific = localStorage.getItem( 'app_metric_specific' );
+  console.log('STORAGE app_metric_specific: '+app_metric_specific);
+  if (app_metric_specific == null) {
+    app_metric_specific = 'ActiveUsers';
+  };
 
-  function checkEventMetricSpecific(){
-    var event_metric_specific = localStorage.getItem( 'event_metric_specific' );
-    console.log('STORAGE event_metric_specific: '+event_metric_specific)
-    return event_metric_specific;
-  }
+  return app_metric_specific;
+}
 
+function checkEventMetricSpecific(){
+  var event_metric_specific = localStorage.getItem( 'event_metric_specific' );
+  console.log('STORAGE event_metric_specific: '+event_metric_specific)
+  return event_metric_specific;
+}
+
+// Get Stored Data Example
+$('#getactor').on('click', function(event) {
+  // getActorFromEndpoint();
+});
 
 /*****************************************************************/
 /***************************  General **************************/
 /*****************************************************************/
 
-  function startSession(){
-    // Clear stored session_id
-    setSessionID();
-  }
+function startSession(){
+  // Clear stored session_id
+  setSessionID();
+}
 
-  function clearSession(){
-    localStorage.setItem( 'session_id','');
-    localStorage.setItem( 'start_date','');
-    localStorage.setItem( 'end_date','');
-    localStorage.setItem( 'apiKey','');
-    console.log('CLEARED:');
-  }  
-
-
+function clearSession(){
+  localStorage.setItem( 'session_id','');
+  localStorage.setItem( 'start_date','');
+  localStorage.setItem( 'end_date','');
+  localStorage.setItem( 'apiKey','');
+  console.log('CLEARED:');
+}  
 
 
 /**********************************************************/
 /********* Helper Functions - Commonly Useful   *********/
 /*****************************************************/
 
-  // Merge two arrays
-  // https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
+// Merge two arrays
+// https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
 
-  function extend(obj, src) {
-      Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
-      return obj;
+function extend(obj, src) {
+    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
+    return obj;
+}
+
+// Sort Array of Dates
+(function(){
+  if (typeof Object.defineProperty === 'function'){
+    try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
   }
+  if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
 
-  // Sort Array of Dates
-  (function(){
-    if (typeof Object.defineProperty === 'function'){
-      try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
+  function sb(f){
+    for (var i=this.length;i;){
+      var o = this[--i];
+      this[i] = [].concat(f.call(o,o,i),o);
     }
-    if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
+    this.sort(function(a,b){
+      for (var i=0,len=a.length;i<len;++i){
+        if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
+      }
+      return 0;
+    });
+    for (var i=this.length;i;){
+      this[--i]=this[i][this[i].length-1];
+    }
+    return this;
+  }
+})();
 
-    function sb(f){
-      for (var i=this.length;i;){
-        var o = this[--i];
-        this[i] = [].concat(f.call(o,o,i),o);
+
+/*****************************************************************/
+/**************** Date Picker Processing Functions  **************/
+/*****************************************************************/
+
+  $(function() {
+    $( "#start_date" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      onClose: function( selectedDate ) {
+        $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
+        localStorage.setItem( 'start_date', selectedDate );
+        console.log('NEW start_date: ' +selectedDate);
       }
-      this.sort(function(a,b){
-        for (var i=0,len=a.length;i<len;++i){
-          if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
-        }
-        return 0;
-      });
-      for (var i=this.length;i;){
-        this[--i]=this[i][this[i].length-1];
+    });
+    $( "#end_date" ).datepicker({
+      formatDate: "yyyy-mm-dd",
+      // defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      onClose: function( selectedDate ) {
+        $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
+        localStorage.setItem( 'end_date', selectedDate );
+        console.log('NEW end_date: ' +selectedDate);
       }
-      return this;
-    }
-  })();
-  
-  // Get Stored Data Example
-  $('#getactor').on('click', function(event) {
-    // getActorFromEndpoint();
+    });
   });
+  // end Date Picker
 
+  
+/**********************************************************/
+/************** Plugin Default Settings   **************/
+/*****************************************************/
+
+$.datepicker.setDefaults({
+    dateFormat: 'yy-mm-dd'
+});
 
 
 /***********************************************************************/
@@ -312,6 +348,7 @@ function getFlurryAppInfo(){
   });
 }
 
+// Construct Endpoing to get all Company App Details
 function constructFlurryAllAppsInfoEndpoint(){
   url_app_metric_specific = 'getAllApplications';
   // construct endpoint URL with api access code and api key
@@ -319,15 +356,14 @@ function constructFlurryAllAppsInfoEndpoint(){
   return url_new_Flurry;
 }
 
+// Pull all Company App Details
 function getFlurryAllAppsInfo(){
   // get the app details from Flurry endpoint, then add to the app_overview div
   console.log('----- START getFlurryAllAppsInfo -----');
   $.getJSON( constructFlurryAllAppsInfoEndpoint(), function( Flurry_json ) {
     console.log('getting url_Flurry data...');
     console.log(Flurry_json);
-      //By using javasript json parser
-
-      // {"@companyName":"Tech 2000, Inc.","@generatedDate":"11/18/15 4:05 PM","@version":"1.0","application":[{"@apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name":"The SELL Closer App D - Android"},
+      // Parse using javasript json parser
       console.log('@companyName:' +Flurry_json['@companyName']);
       console.log('@generatedDate:' +Flurry_json['@generatedDate']);
       console.log('@version:' +Flurry_json['@version']);
@@ -343,7 +379,6 @@ function getFlurryAllAppsInfo(){
         console.log(vdata);
         
         var this_url = window.location.href;
-
         var v_name = vdata['@name'];
         var v_platform = vdata['@platform'];
         var v_createdDate = vdata['@createdDate'];
@@ -352,19 +387,12 @@ function getFlurryAllAppsInfo(){
         var v_app_data = '<li><h5><a class="link_to_analytics" href="'+v_analytics_link+'" target="blank"><i class="fa fa-file"></i> ' +v_name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></li><li><strong><i class="fa fa-apple"></i> Platform: </strong> ' +v_platform+ '</li><li><strong><i class="fa fa-calendar"></i> Created: </strong> ' +v_createdDate+ '</li><li><strong><i class="fa fa-key"></i> API Key: </strong> ' +v_apiKey +'</li><li style="display:none;"><strong><a href="'+v_analytics_link+'" target="blank"><i class="fa fa-external-link"></i> '+v_analytics_link+'</a></strong></li>';
         //console.log('v_version: '+v_version);
         var v_all_apps = '<li><ul class="app_overview">'+v_app_data+'</ul></li>';
-        
+        // Display all apps in a list
         $('ul.all_apps').append(v_all_apps);
       });
-      
-      // $('span.app_category').html(Flurry_json['@category']);
-      // $('span.app_createdDate').html(Flurry_json['@createdDate']);
-      // $('span.app_name').html(Flurry_json['@name']);
-      // $('span.app_platform').html(Flurry_json['@platform']);
-      // $('span.app_generatedDate').html(Flurry_json['@generatedDate']);
     console.log('----- END getFlurryAllAppsInfo -----');
   });
 }
-
 
 
 /*******************************************************/
@@ -417,41 +445,10 @@ $(document).ready(function() {
   // });
 
 
-/*****************************************************************/
-/**************** Date Picker Processing Functions  **************/
-/*****************************************************************/
-
-  $(function() {
-    $( "#start_date" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      onClose: function( selectedDate ) {
-        $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
-        localStorage.setItem( 'start_date', selectedDate );
-        console.log('NEW start_date: ' +selectedDate);
-      }
-    });
-    $( "#end_date" ).datepicker({
-      formatDate: "yyyy-mm-dd",
-      // defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      onClose: function( selectedDate ) {
-        $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
-        localStorage.setItem( 'end_date', selectedDate );
-        console.log('NEW end_date: ' +selectedDate);
-      }
-    });
-
-  });
-  // end Date Picker
-
-
 /*************************************************************************************/
 /************** UX filter event listeners to determine data query type **************/
 /*********************************************************************************/
-  // 
+  
   $('#flurry_reports select').on('change', function() {
     refreshDashboard();
   });
@@ -484,15 +481,6 @@ $(document).ready(function() {
 
 }); 
 // end Doc Ready 
-
-
-/**********************************************************/
-/************** Plugin Default Settings   **************/
-/*****************************************************/
-
-$.datepicker.setDefaults({
-    dateFormat: 'yy-mm-dd'
-});
 
 
 /*******************************************************/
@@ -540,15 +528,6 @@ $("span.chart_trigger").click(function(event) {
   if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
     buildCustomEventDataTables(id);
   }
-  // if(id == 'CourseViewed'){
-  //   courseViewedData();
-  // }
-  // if(id == 'ModuleRated'){
-  //   moduleRatedData();
-  // }
-  // if(id == 'PDFDownloaded'){
-  //   PDFDownloadedData();
-  // }
   
   if(id != 'Summary' && id != 'ModuleViewed' && id != 'CourseViewed' && id != 'ModuleRated' && id != 'PDFDownloaded' ){
     var app_metric_specific = id;
@@ -619,6 +598,7 @@ function getChartData(id,period){
   if (id == 'AvgSessionLength') { stats_label = 'Ave. Session<br>Length'; data_query_label = 'Avg. Session Length (sec)';}
   if (id == 'PageViews') { stats_label = 'Page Views'; data_query_label = 'Page Views';}
   $("span#data_query").text(data_query_label);
+
   // GROUP DATA by Period
 
     var url_flurry_api = constructFlurryEndpoint();
@@ -700,7 +680,6 @@ function getChartData(id,period){
       $('#overview_stats .period').html(period_label);
       $('#overview_stats .growth_factor span').text(growth_factor);
       $('#overview_stats .growth_factor .badge').addClass(growth_class);
-
 
       // var chart_id = 'newUsersPerWeek';
       var chart_id = id;
@@ -888,8 +867,8 @@ function buildCustomEventDataTables(id){
   if (id == 'ModuleRated') { eventName = 'Module%20Rated'};
   // console.log('eventNameSpace: '+id);
   var url_flurry_event_api = 'http://api.flurry.com/eventMetrics/Event?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-12-08&eventName='+eventName;
-  
   var flurry_event_data_loaded = $.getJSON( url_flurry_event_api);
+
   $.when(flurry_event_data_loaded).done(function(flurry_event_object) {
     console.log(flurry_event_object);
     var flurry_event_name = flurry_event_object['@eventName'];
@@ -1186,6 +1165,11 @@ function buildCombinedDataChart(){
   console.log('------ end buildCombinedDataChart -------') ;
 }
 
+
+/*****************************************************************/
+/**************** Specific Testing Functions - not used in app  **************/
+/*****************************************************************/
+
 // Specific Example for Flurry Chart New Users
 function newUsersPerWeek(){
   console.log('----- newUsersPerWeek -----')
@@ -1382,6 +1366,15 @@ function pull_student_data(){
   });
 }
 
+/*
+- use temp student object
+test local storage object
+pull student data for 2 users
+store in stringify cache
+extract cached data
+populate test DOM
+
+*/
 
 // console.log('##### student_result_id_17 ##### ');
 // console.log(student_result_id_17);
@@ -1609,22 +1602,15 @@ function get_totara_activity(){
 /*****************************************************************/
 
 
-function get_course_name(activity_course){
-  // get the course details from endpoint, then add to the results table
-  // var course_url = base_url + 'lumiousreports/courselookup/'+activity_course;
-  // console.log('ENDPOINT activity_course '+course_url);
 
-  // var coursedata = $.getJSON(course_url);
-  // // console.log('coursedata');
-  // $.when(coursedata).done(function(courseobject) {
-  //   // console.log('courseobject');
-  //   // console.log(courseobject);
-  //   var course_name = null;        
-  //   course_name = courseobject[0];
-  //   course_name = course_name.fullname;
-  //   console.log('COURSE NAME: '+course_name);
-  //   return course_name;
-  // }); // end $.when
+
+function getStoredSessionData(data_name){
+  // example: 
+  // localStorage.setItem( 'session_course_data_array',data);
+  var d = localStorage.getItem(data_name);
+  console.log('Return Data from storage for getStoredSessionData(name): '+data_name);
+  // console.log(d);
+  return d;
 }
 
 var course_data = [];
@@ -1673,60 +1659,57 @@ function temp_set_course_data(){
                         "fullname": "Testing",
                         "shortname": "TEST",
                         "startdate": "1445036400"
-                      },
-                      {
-                        "id": "8",
-                        "category": "28",
-                        "fullname": "Data Center 1:1",
-                        "shortname": "DC11",
-                        "startdate": "1446681600"
-                      },
-                      {
-                        "id": "9",
-                        "category": "21",
-                        "fullname": "Test Course 42 - Comstor Testing",
-                        "shortname": "Test Course",
-                        "startdate": "1447372800"
                       }
+                      // {
+                      //   "id": "8",
+                      //   "category": "28",
+                      //   "fullname": "Data Center 1:1",
+                      //   "shortname": "DC11",
+                      //   "startdate": "1446681600"
+                      // },
+                      // {
+                      //   "id": "9",
+                      //   "category": "21",
+                      //   "fullname": "Test Course 42 - Comstor Testing",
+                      //   "shortname": "Test Course",
+                      //   "startdate": "1447372800"
+                      // }
                     ];
-  console.log('course_data');                  
-  console.log(course_data);                  
+  // console.log('FULL course_data object');                  
+  // console.log(course_data);                  
   var data = JSON.stringify(course_data);
   localStorage.setItem( 'session_course_data_array',data);
   
-  console.log('*********** END temp_set_course_data *****************')
+  // console.log('*********** END temp_set_course_data *****************')
 }
 
 var course_constructed_array = [];
 
+function get_course_data(course_ID){
+  console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
+  console.log('%c PROCESSING CURRENT COURSE ID: '+course_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
 
-function get_course_data(c_temp){
-  console.log('c_temp: '+c_temp);
-  // localStorage.setItem( 'activewidgets', JSON.stringify(activewidgets) );
-  // var storedactivewidgets = JSON.parse(localStorage.getItem( 'activewidgets'));
   temp_set_course_data();
   // @TODO - pull from actual query
   
-  var session_course_data_array = localStorage.getItem( 'session_course_data_array');
-  console.log('session_course_data_array');
-  console.log(session_course_data_array);
+  var data_name = 'session_course_data_array';
+  var session_course_data_array = getStoredSessionData(data_name);
 
-  var query_course_id = c_temp;
   var arr = JSON.parse(session_course_data_array);
-  console.log('CCCCCCCCC');
-  console.log(arr);
-
-  var course_data_from_array = findCourseByID(arr, query_course_id);
-  console.log('course_data_from_array');
+  // console.log(arr);
+  var course_data_from_array = findCourseByID(arr, course_ID);
+  console.log('course_data_from_array FOR: '+course_ID);
   console.log(course_data_from_array);
 
   
   if (course_data_from_array == false) {
-    console.log('FALSE satisfied - get data from endpoint');
+    console.log('FALSE satisfied - get data from endpoint for Course: '+course_ID);
+    var d = getCourseDataFromEndpoint(course_ID);
     // hit endpoint
     // get data
     // save to session array data
-  }else{
+  }
+  else{
     var d = course_data_from_array[0];
     console.log(' ID: '+d["id"] +
                 ' SHORTNAME: '+d.shortname +
@@ -1738,13 +1721,47 @@ function get_course_data(c_temp){
     console.log(course_constructed_array);
     var courses = JSON.stringify(course_constructed_array);
     localStorage.setItem( 'courses', courses );
+
     var t = localStorage.getItem('courses');
     var s = JSON.parse(localStorage.getItem( 'courses'));
-    console.log('courses - storage retrieval: ');
+    console.log('courses storage retrieval now includes data for Course ID: '+course_ID);
     console.log(s);
   }
   // use course data to generate table row
   generate_table_row();
+}
+
+function getCourseDataFromEndpoint(course_ID){
+  // get the course details from endpoint, then add to the results table
+  console.log('%c FUNCTION getCourseDataFromEndpoint('+course_ID+') ', 'background: #d7d7d7; color: #000');
+  var course_url = base_url + 'lumiousreports/courselookup/'+course_ID;
+  console.log('ENDPOINT url '+course_url);
+
+  var coursedata = $.getJSON(course_url);
+  // console.log('coursedata: ');
+  // console.log(coursedata);
+  $.when(coursedata).done(function(course_data_from_array) {
+    var d = course_data_from_array[0];
+    console.log('course_data_from_array: ');
+    console.log(d);
+    // @TODO - DRY principals..create non-duplicating code
+    console.log(' ID: '+d["id"] +
+                ' SHORTNAME: '+d.shortname +
+                ' FULLNAME: '+d.fullname +
+                ' CATEGORY: '+d.category +
+                ' STARTDATE: '+d.startdate);
+    course_constructed_array.push(d);
+    console.log('course_constructed_array');
+    console.log(course_constructed_array);
+    var courses = JSON.stringify(course_constructed_array);
+    localStorage.setItem( 'courses', courses );
+
+    var t = localStorage.getItem('courses');
+    var s = JSON.parse(localStorage.getItem( 'courses'));
+    console.log('courses storage retrieval now includes data for Course ID: '+course_ID);
+    console.log(s);
+    return d;
+  }); // end $.when
 }
 
 function work_in_progress(){
@@ -1754,22 +1771,25 @@ function work_in_progress(){
   // if ID not found, hit the endpoint, store the details
   // get the details, use to update the table / dom
   get_course_data(4);
-  get_course_data(99);
+  // get_course_data(99); // Fail Test
   get_course_data(5);
   get_course_data(6);
-  get_course_data(68);
+  // get_course_data(68); // Fail Test
   get_course_data(7);
+  get_course_data(8); // True Hit Endpoint Test
+  get_course_data(9); // True Hit Endpoint Test
 }
 
 // 
 
 function findCourseByID(arr,query_course_id){
+  console.log('%c Function findCourseByID() Executing', 'background: #222; color: #bada55');
     // given a course ID
     // check course data array
     // var stored_course_data = getSession('course_array');
     // if ID found in session array, return data
     var result = $.grep(arr, function(e){ return e.id == query_course_id; });
-    console.log("Local Course Session Search Result: ");
+    console.log("Local Course Session Search Result for ID: "+query_course_id);
     console.log(result);
     if(result){
         return result;
@@ -1780,7 +1800,7 @@ function findCourseByID(arr,query_course_id){
 
 function generate_table_row(){
   // pull exising DOM population elements from query
-  alert('generate_table_row FIRED');
+  // alert('generate_table_row FIRED');
 }
 
 
@@ -2007,16 +2027,4 @@ function show_all_students_activity(){
   console.log('===XXXXXXXXXXXXXXXXXXXXXXXXXX    END show_all_students_activity    XXXXXXXXXXXXXXXXXXXXXXXXXXX====');
 }
 
-
- // Mon 23, Tues 24
-  // build function to test course data array
-  // setup local arrays for faster processing
-  // test local storage data arrays
-  // setup needle in a haystack function
-  // process course ID, test to see if in array
-  // return array data for use in chart
-  // if data not found, pull data from endpoint. 
-  // recheck in array? or process directly?
-  // dig down into array 
-  // pull name, id, fullname, 
 

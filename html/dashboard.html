@@ -1157,39 +1157,46 @@
         </script> 
         <script type="text/javascript">
                 
-                $( document ).ready(function() {
-                  console.log('Document Ready: Custom Functions Start...')
-                  
-                  // getFlurryAllAppsInfo();
-                  // testFlurryAnalytics();
-                  // getCustomEventSummaryData();
+            $( document ).ready(function() {
+                  console.error();
+                  console.warn();
 
-                /************** Load Actve Users   **************/
+                  console.log('%c Document Ready: Custom Functions Start...', 'background: #00cc00; color: #000; padding: 2px 300px');
+                  
+                /************** Testing Functions   **************/
+                
+                // getFlurryAppInfo();
+                // getFlurryAllAppsInfo();
+                // testFlurryAnalytics();
+                // getCustomEventSummaryData();
+                // localStorage.setItem( 'session_course_data_array','');
+                // temp_set_course_data();
+                work_in_progress();
+
+                // all_students.push(student_result_id_4);
+                // all_students.push(student_result_id_17);
+                // console.log('all_students');
+                // console.log(all_students);
+
+                //get_totara_activity();
+
+                // $('#mef_reports').show();
+
+
+
+                /************** PRODUCTIONS Functions   **************/
+
+                  /************** Load Actve Users   **************/
                     // var id = 'ActiveUsers';
                     var id = 'NewUsers';
                     var app_metric_specific = id;
                     setAppMetricSpecific(app_metric_specific);
                     getChartData(id);
-                /************** end - Load Actve Users   **************/ 
+                /************** end - Load Actve Users   *********/ 
 
-                  
-                /************** Populate Sidebar Widget with App Versions   **************/
-                    // getFlurryAppInfo();
-                /************** end - Populate Sidebar Widget with App Versions   **************/
+                $('#flurry_reports').show();
 
-                  // Setup temp test array of demo student data for new endpoint
-                  // @TODO - replace with a jQuery.when(...).done(...) function once the endpoint is in place. 
-
-                  // all_students.push(student_result_id_4);
-                  // all_students.push(student_result_id_17);
-                  // console.log('all_students');
-                  // console.log(all_students);
-
-                  //get_totara_activity();
-
-                  // $('#mef_reports').show();
-                  $('#flurry_reports').show();
-                }); // end doc ready
+            }); // end doc ready
 
 
                 function pop_up(hyperlink, window_name)
