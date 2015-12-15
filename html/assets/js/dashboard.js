@@ -1,6 +1,44 @@
 // Main.js non-minified
 
 
+/**********************************************************/
+/********* Helper Functions - Commonly Useful   *********/
+/*****************************************************/
+
+// Merge two arrays
+// https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
+
+function extend(obj, src) {
+    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
+    return obj;
+}
+
+// Sort Array of Dates
+(function(){
+  if (typeof Object.defineProperty === 'function'){
+    try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
+  }
+  if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
+
+  function sb(f){
+    for (var i=this.length;i;){
+      var o = this[--i];
+      this[i] = [].concat(f.call(o,o,i),o);
+    }
+    this.sort(function(a,b){
+      for (var i=0,len=a.length;i<len;++i){
+        if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
+      }
+      return 0;
+    });
+    for (var i=this.length;i;){
+      this[--i]=this[i][this[i].length-1];
+    }
+    return this;
+  }
+})();
+
+
 /*****************************************************************/
 /****************** FIND parameters in URL string ****************/
 /*****************************************************************/
@@ -36,6 +74,70 @@ function get_apiKey_from_storage(){
 }
 
 
+/* =======================================
+    Find a Needle in a Haystack
+* ======================================= */
+
+// given a data object (arr) and a value (query_course_id), check to see if the value is within the data.
+// if value found found in data object, return the data for the matching ID
+// Usage: If a Students ID (value) is found within a Course (arr), return the Student data so the Student ID and name can be displayed
+
+function findCourseByID(arr,query_course_id){
+  console.log('%c Function findCourseByID() Executing', 'background: #222; color: #bada55');
+    var result = $.grep(arr, function(e){ return e.id == query_course_id; });
+    console.log("Local Course Session Search Result for ID: "+query_course_id);
+    console.log(result);
+    if(result){
+        return result;
+    }else{
+        return false;
+    }
+}
+
+/*****************************************************************/
+/**************** Plugin Functions  **************/
+/*****************************************************************/
+
+
+/*****************************************************************/
+// Date Picker Processing Functions 
+/*****************************************************************/
+
+$(function() {
+  $( "#start_date" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths: 3,
+    onClose: function( selectedDate ) {
+      $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
+      localStorage.setItem( 'start_date', selectedDate );
+      console.log('NEW start_date: ' +selectedDate);
+    }
+  });
+  $( "#end_date" ).datepicker({
+    formatDate: "yyyy-mm-dd",
+    // defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths: 3,
+    onClose: function( selectedDate ) {
+      $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
+      localStorage.setItem( 'end_date', selectedDate );
+      console.log('NEW end_date: ' +selectedDate);
+    }
+  });
+});
+// end Date Picker
+
+  
+/**********************************************************/
+/************** Plugin Default Settings   **************/
+/*****************************************************/
+
+$.datepicker.setDefaults({
+    dateFormat: 'yy-mm-dd'
+});
+
+
 /*****************************************************************/
 /*************** Force Login for some Links **********************/
 /*****************************************************************/
@@ -45,21 +147,6 @@ function you_must_login(){
   alert('Please Log In.')
 }
 
-
-/*****************************************************************/
-/*************************** UX Actions *****************************/
-/*****************************************************************/
-
-$('#actions .action').on('click', function(event) {
-  trackAction(event);    
-});
-
-$('#process_ended').on('click', function(event) {
-  localStorage.setItem('process_ended','false');
-  console.log('process_ended click.');
-});
-
-    
 /*****************************************************************/
 /***************************  Debugging Functions ***************/
 /*****************************************************************/
@@ -67,6 +154,34 @@ $('#process_ended').on('click', function(event) {
 function cheatModeToggle(){
   $('.cheatmode').toggle();
 }
+
+    
+
+
+/*****************************************************************/
+/********** Work With Local Storage Session Data *****************/
+/*****************************************************************/
+
+function startSession(){
+  // Clear stored session_id
+  setSessionID();
+}
+
+function clearSession(){
+  localStorage.setItem( 'session_id','');
+  localStorage.setItem( 'start_date','');
+  localStorage.setItem( 'end_date','');
+  localStorage.setItem( 'apiKey','');
+  console.log('CLEARED:');
+}  
+
+function getStoredSessionData(data_name){
+  console.log('%c FUNCTION getStoredSessionData('+data_name+')','background: #e7e7e7; color: #ddd;' );
+  var d = localStorage.getItem(data_name);
+  return d;
+  // Example:  localStorage.setItem( 'session_course_data_array',data);
+}
+
 
 /*****************************************************************/
 /***********************  Set Local Storage Values **************/
@@ -163,103 +278,23 @@ function checkEventMetricSpecific(){
   return event_metric_specific;
 }
 
+
+/*****************************************************************/
+/*************************** UX Actions *****************************/
+/*****************************************************************/
+
+$('#actions .action').on('click', function(event) {
+  trackAction(event);    
+});
+
+$('#process_ended').on('click', function(event) {
+  localStorage.setItem('process_ended','false');
+  console.log('process_ended click.');
+});
+
 // Get Stored Data Example
 $('#getactor').on('click', function(event) {
   // getActorFromEndpoint();
-});
-
-/*****************************************************************/
-/***************************  General **************************/
-/*****************************************************************/
-
-function startSession(){
-  // Clear stored session_id
-  setSessionID();
-}
-
-function clearSession(){
-  localStorage.setItem( 'session_id','');
-  localStorage.setItem( 'start_date','');
-  localStorage.setItem( 'end_date','');
-  localStorage.setItem( 'apiKey','');
-  console.log('CLEARED:');
-}  
-
-
-/**********************************************************/
-/********* Helper Functions - Commonly Useful   *********/
-/*****************************************************/
-
-// Merge two arrays
-// https://plainjs.com/javascript/utilities/merge-two-javascript-objects-19/
-
-function extend(obj, src) {
-    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
-    return obj;
-}
-
-// Sort Array of Dates
-(function(){
-  if (typeof Object.defineProperty === 'function'){
-    try{Object.defineProperty(Array.prototype,'sortBy',{value:sb}); }catch(e){}
-  }
-  if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
-
-  function sb(f){
-    for (var i=this.length;i;){
-      var o = this[--i];
-      this[i] = [].concat(f.call(o,o,i),o);
-    }
-    this.sort(function(a,b){
-      for (var i=0,len=a.length;i<len;++i){
-        if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
-      }
-      return 0;
-    });
-    for (var i=this.length;i;){
-      this[--i]=this[i][this[i].length-1];
-    }
-    return this;
-  }
-})();
-
-
-/*****************************************************************/
-/**************** Date Picker Processing Functions  **************/
-/*****************************************************************/
-
-  $(function() {
-    $( "#start_date" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      onClose: function( selectedDate ) {
-        $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
-        localStorage.setItem( 'start_date', selectedDate );
-        console.log('NEW start_date: ' +selectedDate);
-      }
-    });
-    $( "#end_date" ).datepicker({
-      formatDate: "yyyy-mm-dd",
-      // defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      onClose: function( selectedDate ) {
-        $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
-        localStorage.setItem( 'end_date', selectedDate );
-        console.log('NEW end_date: ' +selectedDate);
-      }
-    });
-  });
-  // end Date Picker
-
-  
-/**********************************************************/
-/************** Plugin Default Settings   **************/
-/*****************************************************/
-
-$.datepicker.setDefaults({
-    dateFormat: 'yy-mm-dd'
 });
 
 
@@ -320,11 +355,6 @@ function getFlurryAppInfo(){
       // console.log('@category:' +Flurry_json['@category']);
       // console.log('@createdDate:' +Flurry_json['@createdDate']);
       // console.log('@name:' +Flurry_json['@name']);
-      // console.log('@platform:' +Flurry_json['@platform']);
-      // console.log('@generatedDate:' +Flurry_json['@generatedDate']);
-      // console.log('@version:' +Flurry_json['@version']);
-      // console.log('version:');
-      // console.log(Flurry_json['version']);
       var app_versions = Flurry_json['version'];
       // loop through the version history and pass all version names to a list
       jQuery.each(app_versions, function(i, vdata) {
@@ -410,45 +440,18 @@ $(document).ready(function() {
   // Set an ID for this Session to ensure uniqueness
   setSessionID();
 
-  $(".restart").click(function() {
-    clearSession();
-  });
-  $("#testFlurryAnalytics").click(function() {
-    testFlurryAnalytics();
-  });
-  $("#getData").click(function() {
-    getData();
-  });
-
-  $("#analytics_triggers li a").click(function() {
-    $('#analytics_triggers li a').removeClass('active');
-    $(this).addClass(' active');
-  });
+  // Set default widget displays
+  $('#graphs-holder li h2 span.days').addClass('active');
+  $('#graphs-holder li .widget-content').addClass('active');
+  $('#graphs-holder li#widget-NewUsers .widget-content').removeClass('active');
 
   // Setup UX with Previous selections from Local Storage
   $('#start_date').val(checkStartDate());
   $('#end_date').val(checkEndDate());
   
-  // auto load from Storage
-  $("#metric_type select option").filter(function() {
-      return $(this).val() == checkMetricType(); 
-  }).prop('selected', true);
-  
-  // $("#app_metric_specific select option").filter(function() {
-  //     return $(this).val() == checkAppMetricSpecific(); 
-  // }).prop('selected', true);
-  
-  // $("ul.all_apps").click(function() {
-  //   // alert('click');
-  //   var this_link = $("ul.app_overview li").find("a.link_to_analytics");
-  //   window.location.href = this_link;
-  // });
+  //  UX filter event listeners to determine data query type **************/
 
-
-/*************************************************************************************/
-/************** UX filter event listeners to determine data query type **************/
-/*********************************************************************************/
-  
+  // Dropdown Select Actions
   $('#flurry_reports select').on('change', function() {
     refreshDashboard();
   });
@@ -474,10 +477,85 @@ $(document).ready(function() {
       console.log('NEW event_metric_specific:' +event_metric_specific);
   });
 
-  $('#graphs-holder li h2 span.days').addClass('active');
+  // autoload Select option from localStorage
+  $("#metric_type select option").filter(function() {
+      return $(this).val() == checkMetricType(); 
+  }).prop('selected', true);
+  
 
-  $('#graphs-holder li .widget-content').addClass('active');
-  $('#graphs-holder li#widget-NewUsers .widget-content').removeClass('active');
+  /**********************************************/
+  /************** UX Interactions **************/
+  /**********************************************/
+
+  $(".restart").click(function() {
+    clearSession();
+  });
+  $("#testFlurryAnalytics").click(function() {
+    testFlurryAnalytics();
+  });
+  $("#getData").click(function() {
+    getData();
+  });
+
+  $("#analytics_triggers li a").click(function() {
+    $('#analytics_triggers li a').removeClass('active');
+    $(this).addClass(' active');
+  });
+
+  /*****************************************************************/
+  /**************** Trigger Events to Build Charts  **************/
+  /*****************************************************************/
+
+  // Example: a#NewUsers_ 
+  $("span.chart_trigger").click(function(event) {
+    event.stopPropagation();
+    var id = $(this).attr('id');
+    id = id.slice(0, -1);
+    
+    $('#graphs-holder li .widget-content').addClass('active');
+    var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+    $(current_widget).removeClass('active');
+
+
+    if(id == 'Summary'){
+      var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+      $(c).addClass('active');
+      getCustomEventSummaryData();
+    }
+    if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
+      buildCustomEventDataTables(id);
+    }
+    
+    if(id != 'Summary' && id != 'ModuleViewed' && id != 'CourseViewed' && id != 'ModuleRated' && id != 'PDFDownloaded' ){
+      var app_metric_specific = id;
+      setAppMetricSpecific(app_metric_specific);
+      getChartData(id);
+      var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+      $(c).addClass('active');
+    }
+  });
+
+  // Example: span.months_
+  $("#graphs-holder li h2 span").click(function(event) {
+    event.stopPropagation();
+    var id = $(this).attr('id');
+    id = id.slice(0, -1);
+    var period = $(this).attr('class');
+    // add active classes to subnav to match switch
+    var nav_trigger = 'nav ul li span#'+id+'_ a';
+    $('#analytics_triggers nav ul li span a').removeClass('active');
+    $(nav_trigger).addClass('active');
+
+    $('#graphs-holder li .widget-content').addClass('active');
+    var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+    $(current_widget).removeClass('active');
+
+    var app_metric_specific = id;
+    setAppMetricSpecific(app_metric_specific);
+    getChartData(id,period);
+    $('#graphs-holder li h2 span').removeClass('active');
+    $(this).addClass('active');
+  });
 
 }); 
 // end Doc Ready 
@@ -503,62 +581,6 @@ function refreshDashboard(){
     console.log('All requirements NOT met, runDashboard NOT executing');
   }
 }
-
-
-/*****************************************************************/
-/**************** Trigger Events to Build Charts  **************/
-/*****************************************************************/
-
-// Example: a#NewUsers_ 
-$("span.chart_trigger").click(function(event) {
-  event.stopPropagation();
-  var id = $(this).attr('id');
-  id = id.slice(0, -1);
-  
-  $('#graphs-holder li .widget-content').addClass('active');
-  var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
-  $(current_widget).removeClass('active');
-
-
-  if(id == 'Summary'){
-    var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
-    $(c).addClass('active');
-    getCustomEventSummaryData();
-  }
-  if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
-    buildCustomEventDataTables(id);
-  }
-  
-  if(id != 'Summary' && id != 'ModuleViewed' && id != 'CourseViewed' && id != 'ModuleRated' && id != 'PDFDownloaded' ){
-    var app_metric_specific = id;
-    setAppMetricSpecific(app_metric_specific);
-    getChartData(id);
-    var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
-    $(c).addClass('active');
-  }
-});
-
-// Example: span.months_
-$("#graphs-holder li h2 span").click(function(event) {
-  event.stopPropagation();
-  var id = $(this).attr('id');
-  id = id.slice(0, -1);
-  var period = $(this).attr('class');
-  // add active classes to subnav to match switch
-  var nav_trigger = 'nav ul li span#'+id+'_ a';
-  $('#analytics_triggers nav ul li span a').removeClass('active');
-  $(nav_trigger).addClass('active');
-
-  $('#graphs-holder li .widget-content').addClass('active');
-  var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
-  $(current_widget).removeClass('active');
-
-  var app_metric_specific = id;
-  setAppMetricSpecific(app_metric_specific);
-  getChartData(id,period);
-  $('#graphs-holder li h2 span').removeClass('active');
-  $(this).addClass('active');
-});
 
 
 // Pull App Stats when triggered
@@ -1239,10 +1261,6 @@ function testFlurryAnalytics(){
 
 
 
-
-
-
-
 /*****************************************************************/
 /**************** // TOTARA Data Function  **************/
 /*****************************************************************/
@@ -1532,7 +1550,6 @@ function get_totara_activity(){
       activity_id = adata.objectid;
       activity_course = adata.courseid;
 
-
       
       // @TODO - add catch for failed return - i.e. if no courese id exists
       var course_url = base_url + 'lumiousreports/courselookup/'+activity_course;
@@ -1601,14 +1618,6 @@ function get_totara_activity(){
 /*************** CACHING and PROCESSING **************************/
 /*****************************************************************/
 
-
-function getStoredSessionData(data_name){
-  // Example:  localStorage.setItem( 'session_course_data_array',data);
-  var d = localStorage.getItem(data_name);
-  console.log('Return Data from storage for getStoredSessionData('+data_name+')');
-  // console.log(d);
-  return d;
-}
 
 // TEMP DATA for testing without internet connection
 var course_data = [];
@@ -1680,22 +1689,17 @@ function temp_set_course_data(){
   // console.log('*********** END temp_set_course_data *****************')
 }
 
-var course_constructed_array = [];
+
 
 function get_course_data(course_ID){
-  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
   console.log('%c PROCESSING CURRENT COURSE ID: '+course_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
+  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
   // temp_set_course_data();
   var data_name = 'courses';
   // var data_name = 'session_course_data_array'; // TEMP data
   var session_course_data_array = getStoredSessionData(data_name);
-
   var arr = JSON.parse(session_course_data_array);
-  // console.log(arr);
   var course_data_from_array = findCourseByID(arr, course_ID);
-  // console.log('course_data_from_array FOR: '+course_ID);
-  // console.log(course_data_from_array);
-  
   if (course_data_from_array == false) {
     console.log('FALSE satisfied - get data from endpoint for Course: '+course_ID);
     // hit endpoint, get data, save to session array data
@@ -1710,8 +1714,6 @@ function get_course_data(course_ID){
       alert('There was an error retrieving information for Course ID: '+course_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
     }
   }
-  // use course data to generate table row
-  generate_table_row();
 }
 
 function getCourseDataFromEndpoint(course_ID){
@@ -1719,7 +1721,6 @@ function getCourseDataFromEndpoint(course_ID){
   console.log('%c FUNCTION getCourseDataFromEndpoint('+course_ID+') ', 'background: #d7d7d7; color: #000');
   var course_url = base_url + 'lumiousreports/courselookup/'+course_ID;
   console.log('ENDPOINT url '+course_url);
-
   var coursedata = $.getJSON(course_url);
   $.when(coursedata).done(function(course_data_from_array) {
     var d = course_data_from_array[0];
@@ -1732,71 +1733,80 @@ function getCourseDataFromEndpoint(course_ID){
   }); // end $.when
 }
 
+
+
 function processCourseData(d){
-  
   console.log('%c FUNCTION processCourseData('+d["id"]+') ', 'background: #9933ff; color: #fff');
-  // Specify What to do with the data
-  console.log(' ID: '+d["id"] +
-              ' SHORTNAME: '+d.shortname +
-              ' FULLNAME: '+d.fullname +
-              ' CATEGORY: '+d.category +
-              ' STARTDATE: '+d.startdate);
+  var course_constructed_array = [];
   course_constructed_array.push(d);
-  // console.log('"courses" constructed_array...before JSON.stringify ');
-  // console.log(course_constructed_array);
   var courses = JSON.stringify(course_constructed_array);
   localStorage.setItem( 'courses', courses );
-  var t = localStorage.getItem('courses');
+  // var t = localStorage.getItem('courses');
   var s = JSON.parse(localStorage.getItem( 'courses'));
-  // console.log('courses storage retrieval now includes data for Course ID: '+d["id"]);
+  console.log('"courses" storage retrieval now includes data for Course ID: '+d["id"]);
   console.log(s);
+  // Do something with the data
+  displayCourseData(d);
+}
+
+function displayCourseData(d){
+  console.log('%c FUNCTION displayCourseData() ', 'background: #ff6666; color: #fff');
+  // Specify What to do with the data
+  console.log(' ID: '+d["id"] +
+          ' SHORTNAME: '+d.shortname +
+          ' FULLNAME: '+d.fullname +
+          ' CATEGORY: '+d.category +
+          ' STARTDATE: '+d.startdate);
+  // add to table rows
 }
 
 
+function getAllCategoryCourseDataFromEndpoint(category_ID){
+  // get the course details from endpoint, then add to the results table
+  console.log('%c FUNCTION getAllCategoryCourseDataFromEndpoint('+category_ID+') ', 'background: #ff9900; color: #000');
+  var category_url = base_url + 'lumiousreports/course/'+category_ID;
+  console.log('ENDPOINT url '+category_url);
+  var category_data_from_array = [];
+  var categorydata = $.getJSON(category_url);
+  $.when(categorydata).done(function(category_data_from_array) {
+    jQuery.each(category_data_from_array, function(i, cdata) {
+      // Process all courses within the category
+      var d = category_data_from_array[0];
+      if (d != undefined) {
+        var course_ID = cdata.id;
+        console.log('Category COURSE ID: '+course_ID);
+        get_course_data(course_ID);
+      }
+    }); // end $.each
+  }); // end $.when
+}
+
 function work_in_progress(){
-  // testing for sending a course ID, avoiding hitting the endpoints if possible, 
-  // check local storage to see if course details are already saved in session
-  // use local details if possible
-  // if ID not found, hit the endpoint, store the details
-  // get the details, use to update the table / dom
-  get_course_data(4);
-  // get_course_data(99); // Fail Test
-  get_course_data(5);
-  // get_course_data(6);
-  // get_course_data(68); // Fail Test
-  get_course_data(7);
-  get_course_data(8); // True Hit Endpoint Test
-  get_course_data(9); // True Hit Endpoint Test
-  get_course_data(4); // True Hit Endpoint Test
+  
+  // http://www.akronzip.com/lumiousreports/course/4
+  getAllCategoryCourseDataFromEndpoint(4);
+  // get all course ID's from endpoint
+  // run get course data for each
+
+  // get_course_data(4);
+  // // get_course_data(99); // Fail Test
+  // get_course_data(5);
+  // // get_course_data(6);
+  // // get_course_data(68); // Fail Test
+  // get_course_data(7);
+  // get_course_data(8); // True Hit Endpoint Test
+  // get_course_data(9); // True Hit Endpoint Test
+  // get_course_data(4); // True Hit Endpoint Test
   // console.log('%c DOUBLE TEST FOR 9 ', 'background: #ff0000; color: #000');
   // get_course_data(9); // True Hit Endpoint Test
 }
 
-// 
-
-function findCourseByID(arr,query_course_id){
-  console.log('%c Function findCourseByID() Executing', 'background: #222; color: #bada55');
-    // given a course ID
-    // check course data array
-    // var stored_course_data = getSession('course_array');
-    // if ID found in session array, return data
-    var result = $.grep(arr, function(e){ return e.id == query_course_id; });
-    console.log("Local Course Session Search Result for ID: "+query_course_id);
-    console.log(result);
-    if(result){
-        return result;
-    }else{
-        return false;
-    }
-}
 
 function generate_table_row(){
   // pull exising DOM population elements from query
   // alert('generate_table_row FIRED');
 }
 
-
-// Doc ready functions moved to index.html
 
 /* =======================================
     Show All Students in Selected Course - no filter
