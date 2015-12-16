@@ -78,14 +78,14 @@ function get_apiKey_from_storage(){
     Find a Needle in a Haystack
 * ======================================= */
 
-// given a data object (arr) and a value (query_course_id), check to see if the value is within the data.
+// given a data object (arr) and a value (query_item_id), check to see if the value is within the data.
 // if value found found in data object, return the data for the matching ID
 // Usage: If a Students ID (value) is found within a Course (arr), return the Student data so the Student ID and name can be displayed
 
-function findCourseByID(arr,query_course_id){
-  console.log('%c Function findCourseByID() Executing', 'background: #222; color: #bada55');
-    var result = $.grep(arr, function(e){ return e.id == query_course_id; });
-    console.log("Local Course Session Search Result for ID: "+query_course_id);
+function findItemByID(arr,query_item_id){
+  console.log('%c Function findItemByID() Executing', 'background: #222; color: #bada55');
+    var result = $.grep(arr, function(e){ return e.id == query_item_id; });
+    console.log("localSession Search Result for Item ID: "+query_item_id);
     console.log(result);
     if(result){
         return result;
@@ -176,10 +176,10 @@ function clearSession(){
 }  
 
 function getStoredSessionData(data_name){
-  console.log('%c FUNCTION getStoredSessionData('+data_name+')','background: #e7e7e7; color: #ddd;' );
+  console.log('%c FUNCTION getStoredSessionData('+data_name+')','background: #e7e7e7; color: #000;' );
   var d = localStorage.getItem(data_name);
   return d;
-  // Example:  localStorage.setItem( 'session_course_data_array',data);
+  // Example:  localStorage.setItem( 'session_item_data_array',data);
 }
 
 
@@ -1261,6 +1261,229 @@ function testFlurryAnalytics(){
 
 
 
+/*****************************************************************************/
+/************* PROCESSING COURSE DATA with CACHING **************************/
+/*****************************************************************************/
+
+
+// Simple loader to determine what feature is being worked on currently.
+function work_in_progress(){
+  
+  // http://www.akronzip.com/lumiousreports/course/4
+  var item_ID = 4;
+  var item_TYPE = 'category';
+  getAllItemDataFromEndpoint(item_ID,item_TYPE);
+  // getAllCategoryCourseDataFromEndpoint(client_category);
+  // get all course ID's from endpoint
+  // run get course data for each
+
+  // get_item_data(4);
+  // // get_item_data(99); // Fail Test
+  // get_item_data(5);
+  // // get_item_data(6);
+  // // get_item_data(68); // Fail Test
+  // get_item_data(7);
+  // get_item_data(8); // True Hit Endpoint Test
+  // get_item_data(9); // True Hit Endpoint Test
+  // get_item_data(4); // True Hit Endpoint Test
+  // console.log('%c DOUBLE TEST FOR 9 ', 'background: #ff0000; color: #000');
+  // get_item_data(9); // True Hit Endpoint Test
+
+  /************** Testing Functions   **************/
+                
+    // getFlurryAppInfo();
+    // getFlurryAllAppsInfo();
+    // testFlurryAnalytics();
+    // getCustomEventSummaryData();
+    // localStorage.setItem( 'session_item_data_array','');
+    // temp_set_course_data();
+    // all_students.push(student_result_id_4);
+    // all_students.push(student_result_id_17);
+    // console.log('all_students');
+    // console.log(all_students);
+
+    //get_totara_activity();
+
+    // $('#mef_reports').show();
+    
+}
+
+// Given an ID (such as specifying a category of client courses), get all IDs within the item_TYPE, then process all course data
+function getAllItemDataFromEndpoint(item_ID, item_TYPE){
+  // get the course details from endpoint, then add to the results table
+  console.log('%c FUNCTION getAllItemDataFromEndpoint('+item_ID+', '+item_TYPE+') ', 'background: #ff9900; color: #000');
+  // console.log('item_TYPE: '+item_TYPE);
+  if (item_TYPE == 'category') {
+    var item_url = base_url + 'lumiousreports/course/'+item_ID;
+    var this_item_TYPE = 'course';
+  };
+  // var category_url = base_url + 'lumiousreports/course/'+item_ID;
+  console.log('ENDPOINT url '+item_url);
+  var item_data_from_array = [];
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    jQuery.each(item_data_from_array, function(i, cdata) {
+      // Process all courses within the category
+      var d = item_data_from_array[0];
+      if (d != undefined) {
+        var this_item_ID = cdata.id;
+        console.log('%c item_TYPE '+item_TYPE+', ID: '+this_item_ID, 'background: #DDD; color: #000');
+        get_item_data(this_item_ID,this_item_TYPE);
+      }
+    }); // end $.each
+  }); // end $.when
+}
+
+
+// Given the Course ID determine if the specific data can be loaded from localStorage. If not, hit the endpoint.
+function get_item_data(item_ID, item_TYPE){
+  console.log('%c PROCESSING CURRENT ITEM ID: '+item_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
+  console.log('%c item_TYPE: '+item_TYPE +', item_ID:'+item_ID, 'background: #DDD; color: #000');
+  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
+  // temp_set_course_data();
+  if (item_TYPE == 'course') {
+    var data_name = 'courses';  
+  };
+  
+  var session_item_data_array = getStoredSessionData(data_name);
+  var arr = JSON.parse(session_item_data_array);
+  // Check to see if the data for this item_ID is already stored in the localSession data for this item_TYPE
+  var course_data_from_array = findItemByID(arr, item_ID);
+  if (course_data_from_array == false) {
+    console.log('FALSE satisfied - get data from endpoint for '+item_TYPE+': '+item_ID);
+    // hit endpoint, get data, save to session array data
+    getItemDataFromEndpoint(item_ID,item_TYPE);
+  }
+  else{
+    console.log('TRUE satisfied - get data "courses" object in localStorage for '+item_TYPE+' ID: '+item_ID+'. Endpoint WILL NOT be hit again. ');
+    var d = course_data_from_array[0];
+    if (d != undefined) {
+      processItemData(d,item_TYPE);
+    }else{
+      alert('There was an error retrieving information for '+item_TYPE+' ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
+    }
+  }
+}
+
+// Get the Course Data from the Endpoint
+function getItemDataFromEndpoint(item_ID, item_TYPE){
+  // get the course details from endpoint, then add to the results table
+  console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+') ', 'background: #d7d7d7; color: #000');
+  var item_url = base_url + 'lumiousreports/courselookup/'+item_ID;
+  console.log('ENDPOINT url '+item_url);
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      processItemData(d,item_TYPE);
+      return d;
+    }else{
+      alert('There was an error retrieving information for Course ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
+    }
+  }); // end $.when
+}
+
+
+// Given a data object process the data, add the data to a localStorage object for future use, do something with the data
+function processItemData(d,item_TYPE){
+  console.log('%c FUNCTION processItemData('+d["id"]+','+item_TYPE+') ', 'background: #9933ff; color: #fff');
+  
+  var item_storage_name = item_TYPE;
+  if (item_storage_name == 'course') {
+    item_storage_name = 'courses';
+  };
+  var item_constructed_array = [];
+  item_constructed_array.push(d);
+  var item_storage_data = JSON.stringify(item_constructed_array);
+  localStorage.setItem( item_storage_name, item_storage_data );
+  // var t = localStorage.getItem('courses');
+  var s = JSON.parse(localStorage.getItem( item_storage_name));
+  console.log('"'+item_storage_name+'" storage retrieval now includes data for '+item_TYPE+' ID: '+d["id"]);
+  console.log(s);
+  // Do something with the data
+  displayCourseData(d,item_TYPE);
+}
+
+// Given a data object, modify and/or display the data in the UI
+function displayCourseData(d,item_TYPE){
+  console.log('%c FUNCTION displayCourseData() ', 'background: #ff6666; color: #fff');
+  // Specify What to do with the data
+  if (item_TYPE == 'course') {
+    console.log(' FOR COURSE DATA display in console');
+    console.log(' ID: '+d["id"] +
+          ' SHORTNAME: '+d.shortname +
+          ' FULLNAME: '+d.fullname +
+          ' CATEGORY: '+d.category +
+          ' STARTDATE: '+d.startdate);
+  };
+  // add to table rows
+}
+
+// TEMP DATA for testing without internet connection
+var course_data = [];
+function temp_set_course_data(){
+
+  var course_data = [
+    {
+      "id": "1",
+      "category": "0",
+      "fullname": "Comstor LMS",
+      "shortname": "comstor",
+      "startdate": "0"
+    },
+    {
+      "id": "2",
+      "category": "1",
+      "fullname": "Test course ",
+      "shortname": "test_course",
+      "startdate": "1439938800"
+    },
+    {
+      "id": "4",
+      "category": "25",
+      "fullname": "Collaboration Course",
+      "shortname": "Collab",
+      "startdate": "1444107600"
+    },
+    {
+      "id": "5",
+      "category": "26",
+      "fullname": "Twitter Content",
+      "shortname": "TWITTER",
+      "startdate": "1444345200"
+    },
+    {
+      "id": "6",
+      "category": "21",
+      "fullname": "Test course",
+      "shortname": "Tes",
+      "startdate": "1444777200"
+    },
+    {
+      "id": "7",
+      "category": "27",
+      "fullname": "Testing",
+      "shortname": "TEST",
+      "startdate": "1445036400"
+    }
+  ];
+  // console.log('FULL course_data object');                  
+  // console.log(course_data);                  
+  var data = JSON.stringify(course_data);
+  localStorage.setItem( 'session_item_data_array',data);
+  // console.log('*********** END temp_set_course_data *****************')
+}
+
+
+
+
+function generate_table_row(){
+  // pull exising DOM population elements from query
+  // alert('generate_table_row FIRED');
+}
+
+
+
 /*****************************************************************/
 /**************** // TOTARA Data Function  **************/
 /*****************************************************************/
@@ -1345,8 +1568,8 @@ $("#show_ciscoone_reports").click(function() {
   $('#ciscoone_reports').show();
 });
 
-$("#get_course_data").click(function() {
-  get_course_data();
+$("#get_item_data").click(function() {
+  get_item_data();
 });
 $("#work_in_progress").click(function() {
   work_in_progress();
@@ -1612,201 +1835,6 @@ function get_totara_activity(){
     }); // end each.activity_log
   }); // end each.all_students
 }
-
-
-/*****************************************************************/
-/*************** CACHING and PROCESSING **************************/
-/*****************************************************************/
-
-
-// TEMP DATA for testing without internet connection
-var course_data = [];
-function temp_set_course_data(){
-
-  var course_data = [
-                      {
-                        "id": "1",
-                        "category": "0",
-                        "fullname": "Comstor LMS",
-                        "shortname": "comstor",
-                        "startdate": "0"
-                      },
-                      {
-                        "id": "2",
-                        "category": "1",
-                        "fullname": "Test course ",
-                        "shortname": "test_course",
-                        "startdate": "1439938800"
-                      },
-                      {
-                        "id": "4",
-                        "category": "25",
-                        "fullname": "Collaboration Course",
-                        "shortname": "Collab",
-                        "startdate": "1444107600"
-                      },
-                      {
-                        "id": "5",
-                        "category": "26",
-                        "fullname": "Twitter Content",
-                        "shortname": "TWITTER",
-                        "startdate": "1444345200"
-                      },
-                      {
-                        "id": "6",
-                        "category": "21",
-                        "fullname": "Test course",
-                        "shortname": "Tes",
-                        "startdate": "1444777200"
-                      },
-                      {
-                        "id": "7",
-                        "category": "27",
-                        "fullname": "Testing",
-                        "shortname": "TEST",
-                        "startdate": "1445036400"
-                      }
-                      // {
-                      //   "id": "8",
-                      //   "category": "28",
-                      //   "fullname": "Data Center 1:1",
-                      //   "shortname": "DC11",
-                      //   "startdate": "1446681600"
-                      // },
-                      // {
-                      //   "id": "9",
-                      //   "category": "21",
-                      //   "fullname": "Test Course 42 - Comstor Testing",
-                      //   "shortname": "Test Course",
-                      //   "startdate": "1447372800"
-                      // }
-                    ];
-  // console.log('FULL course_data object');                  
-  // console.log(course_data);                  
-  var data = JSON.stringify(course_data);
-  localStorage.setItem( 'session_course_data_array',data);
-  
-  // console.log('*********** END temp_set_course_data *****************')
-}
-
-
-
-function get_course_data(course_ID){
-  console.log('%c PROCESSING CURRENT COURSE ID: '+course_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
-  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
-  // temp_set_course_data();
-  var data_name = 'courses';
-  // var data_name = 'session_course_data_array'; // TEMP data
-  var session_course_data_array = getStoredSessionData(data_name);
-  var arr = JSON.parse(session_course_data_array);
-  var course_data_from_array = findCourseByID(arr, course_ID);
-  if (course_data_from_array == false) {
-    console.log('FALSE satisfied - get data from endpoint for Course: '+course_ID);
-    // hit endpoint, get data, save to session array data
-    getCourseDataFromEndpoint(course_ID);
-  }
-  else{
-    console.log('TRUE satisfied - get data "courses" object in localStorage for course ID: '+course_ID+'. Endpoint WILL NOT be hit again. ');
-    var d = course_data_from_array[0];
-    if (d != undefined) {
-      processCourseData(d);
-    }else{
-      alert('There was an error retrieving information for Course ID: '+course_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
-    }
-  }
-}
-
-function getCourseDataFromEndpoint(course_ID){
-  // get the course details from endpoint, then add to the results table
-  console.log('%c FUNCTION getCourseDataFromEndpoint('+course_ID+') ', 'background: #d7d7d7; color: #000');
-  var course_url = base_url + 'lumiousreports/courselookup/'+course_ID;
-  console.log('ENDPOINT url '+course_url);
-  var coursedata = $.getJSON(course_url);
-  $.when(coursedata).done(function(course_data_from_array) {
-    var d = course_data_from_array[0];
-    if (d != undefined) {
-      processCourseData(d);
-      return d;
-    }else{
-      alert('There was an error retrieving information for Course ID: '+course_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
-    }
-  }); // end $.when
-}
-
-
-
-function processCourseData(d){
-  console.log('%c FUNCTION processCourseData('+d["id"]+') ', 'background: #9933ff; color: #fff');
-  var course_constructed_array = [];
-  course_constructed_array.push(d);
-  var courses = JSON.stringify(course_constructed_array);
-  localStorage.setItem( 'courses', courses );
-  // var t = localStorage.getItem('courses');
-  var s = JSON.parse(localStorage.getItem( 'courses'));
-  console.log('"courses" storage retrieval now includes data for Course ID: '+d["id"]);
-  console.log(s);
-  // Do something with the data
-  displayCourseData(d);
-}
-
-function displayCourseData(d){
-  console.log('%c FUNCTION displayCourseData() ', 'background: #ff6666; color: #fff');
-  // Specify What to do with the data
-  console.log(' ID: '+d["id"] +
-          ' SHORTNAME: '+d.shortname +
-          ' FULLNAME: '+d.fullname +
-          ' CATEGORY: '+d.category +
-          ' STARTDATE: '+d.startdate);
-  // add to table rows
-}
-
-
-function getAllCategoryCourseDataFromEndpoint(category_ID){
-  // get the course details from endpoint, then add to the results table
-  console.log('%c FUNCTION getAllCategoryCourseDataFromEndpoint('+category_ID+') ', 'background: #ff9900; color: #000');
-  var category_url = base_url + 'lumiousreports/course/'+category_ID;
-  console.log('ENDPOINT url '+category_url);
-  var category_data_from_array = [];
-  var categorydata = $.getJSON(category_url);
-  $.when(categorydata).done(function(category_data_from_array) {
-    jQuery.each(category_data_from_array, function(i, cdata) {
-      // Process all courses within the category
-      var d = category_data_from_array[0];
-      if (d != undefined) {
-        var course_ID = cdata.id;
-        console.log('Category COURSE ID: '+course_ID);
-        get_course_data(course_ID);
-      }
-    }); // end $.each
-  }); // end $.when
-}
-
-function work_in_progress(){
-  
-  // http://www.akronzip.com/lumiousreports/course/4
-  getAllCategoryCourseDataFromEndpoint(4);
-  // get all course ID's from endpoint
-  // run get course data for each
-
-  // get_course_data(4);
-  // // get_course_data(99); // Fail Test
-  // get_course_data(5);
-  // // get_course_data(6);
-  // // get_course_data(68); // Fail Test
-  // get_course_data(7);
-  // get_course_data(8); // True Hit Endpoint Test
-  // get_course_data(9); // True Hit Endpoint Test
-  // get_course_data(4); // True Hit Endpoint Test
-  // console.log('%c DOUBLE TEST FOR 9 ', 'background: #ff0000; color: #000');
-  // get_course_data(9); // True Hit Endpoint Test
-}
-
-
-function generate_table_row(){
-  // pull exising DOM population elements from query
-  // alert('generate_table_row FIRED');
-}
-
 
 /* =======================================
     Show All Students in Selected Course - no filter
