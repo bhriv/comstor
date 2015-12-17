@@ -84,6 +84,7 @@ function get_apiKey_from_storage(){
 
 function findItemByID(arr,query_item_id){
   console.log('%c Function findItemByID() Executing', 'background: #222; color: #bada55');
+  if (arr != null) {
     var result = $.grep(arr, function(e){ return e.id == query_item_id; });
     console.log("localSession Search Result for Item ID: "+query_item_id);
     console.log(result);
@@ -92,6 +93,11 @@ function findItemByID(arr,query_item_id){
     }else{
         return false;
     }
+  }else{
+    console.log('%c ERROR: arr is null', 'background: #ff0000; color: #fff');
+    return false;
+  }
+    
 }
 
 /*****************************************************************/
@@ -1269,9 +1275,12 @@ function testFlurryAnalytics(){
 // Simple loader to determine what feature is being worked on currently.
 function work_in_progress(){
   
-  // http://www.akronzip.com/lumiousreports/course/4
-  var item_ID = 4;
-  var item_TYPE = 'category';
+  // http://www.akronzip.com/lumiousreports/course/4 (gives all courses with Category 4)
+  
+  var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
+  // var item_ID = 22; var item_TYPE = 'quiz'; 
+  // var item_ID = 25; var item_TYPE = 'students';
+
   getAllItemDataFromEndpoint(item_ID,item_TYPE);
   // getAllCategoryCourseDataFromEndpoint(client_category);
   // get all course ID's from endpoint
@@ -1308,116 +1317,162 @@ function work_in_progress(){
     
 }
 
-// Given an ID (such as specifying a category of client courses), get all IDs within the item_TYPE, then process all course data
-function getAllItemDataFromEndpoint(item_ID, item_TYPE){
-  // get the course details from endpoint, then add to the results table
-  console.log('%c FUNCTION getAllItemDataFromEndpoint('+item_ID+', '+item_TYPE+') ', 'background: #ff9900; color: #000');
-  // console.log('item_TYPE: '+item_TYPE);
-  if (item_TYPE == 'category') {
-    var item_url = base_url + 'lumiousreports/course/'+item_ID;
-    var this_item_TYPE = 'course';
-  };
-  // var category_url = base_url + 'lumiousreports/course/'+item_ID;
-  console.log('ENDPOINT url '+item_url);
-  var item_data_from_array = [];
-  var itemdata = $.getJSON(item_url);
-  $.when(itemdata).done(function(item_data_from_array) {
-    jQuery.each(item_data_from_array, function(i, cdata) {
-      // Process all courses within the category
+// (function () { // protected function for base_url definition change
+
+  
+  // Given an ID (such as specifying a category of client courses), get all IDs within the item_TYPE, then process all course data
+  function getAllItemDataFromEndpoint(item_ID, item_TYPE){
+    // get the course details from endpoint, then add to the results table
+    console.log('%c FUNCTION getAllItemDataFromEndpoint('+item_ID+', '+item_TYPE+') ', 'background: #ff9900; color: #000');
+    base_url = urls.reports;
+    console.log('%c new base_url = '+base_url, 'background: #ddd; color: #fff');
+    // var item_url = base_url + 'lumiousreports/'+item_TYPE+'/'+item_ID;
+    if (item_TYPE == 'student') {
+      var item_url = base_url + item_TYPE+'s/'+item_ID;
+    }else{
+      var item_url = base_url + item_TYPE+'/'+item_ID;
+    }
+    console.log('ENDPOINT url '+item_url);
+    var item_data_from_array = [];
+    var itemdata = $.getJSON(item_url);
+    $.when(itemdata).done(function(item_data_from_array) {
+      jQuery.each(item_data_from_array, function(i, cdata) {
+        // Process all courses within the category
+        var d = item_data_from_array[0];
+        if (d != undefined) {
+          var this_item_ID = cdata.id;
+          console.log('%c item_TYPE '+item_TYPE+', ID: '+this_item_ID, 'background: #DDD; color: #000');
+          get_item_data(this_item_ID,item_TYPE);
+        }
+      }); // end $.each
+    }); // end $.when
+  }
+
+
+  // Given the Course ID determine if the specific data can be loaded from localStorage. If not, hit the endpoint.
+  function get_item_data(item_ID, item_TYPE){
+    console.log('%c PROCESSING CURRENT ITEM ID: '+item_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
+    console.log('%c item_TYPE: '+item_TYPE +', item_ID:'+item_ID, 'background: #DDD; color: #000');
+    // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
+    // temp_set_course_data();
+    if (item_TYPE == 'course') {
+      var data_name = 'courses';  
+    };
+    if (item_TYPE == 'quiz') {
+      var data_name = 'quizzes';  
+    };
+    if (item_TYPE == 'student') {
+      var data_name = 'student';  
+    };
+    
+    var session_item_data_array = getStoredSessionData(data_name);
+    var arr = JSON.parse(session_item_data_array);
+    // Check to see if the data for this item_ID is already stored in the localSession data for this item_TYPE
+    var course_data_from_array = findItemByID(arr, item_ID);
+    // IF the item is not found, or if the arr is null or doesn't exist yet, hit the endpoint
+    if (course_data_from_array == null || course_data_from_array == false) {
+      console.log('FALSE satisfied - get data from endpoint for '+item_TYPE+': '+item_ID);
+      // hit endpoint, get data, save to session array data
+      getItemDataFromEndpoint(item_ID,item_TYPE);
+    }
+    else{
+      console.log('TRUE satisfied - get data "courses" object in localStorage for '+item_TYPE+' ID: '+item_ID+'. Endpoint WILL NOT be hit again. ');
+      var d = course_data_from_array[0];
+      if (d != undefined) {
+        processItemData(d,item_TYPE);
+      }else{
+        alert('There was an error retrieving information for '+item_TYPE+' ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
+      }
+    }
+  }
+
+  // Get the Course Data from the Endpoint
+  function getItemDataFromEndpoint(item_ID, item_TYPE){
+    // get the course details from endpoint, then add to the results table
+    console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+') ', 'background: #d7d7d7; color: #000');
+    base_url = urls.reports;
+    console.log('%c new base_url = '+base_url, 'background: #ddd; color: #fff');
+
+    if (item_TYPE == 'students') {
+      item_TYPE = 'student';
+      var item_url = base_url +item_TYPE+'data/'+item_ID;
+    }else{
+      var item_url = base_url +item_TYPE+'lookup/'+item_ID;  
+    }
+    console.log('ENDPOINT url '+item_url);
+    var itemdata = $.getJSON(item_url);
+    $.when(itemdata).done(function(item_data_from_array) {
       var d = item_data_from_array[0];
       if (d != undefined) {
-        var this_item_ID = cdata.id;
-        console.log('%c item_TYPE '+item_TYPE+', ID: '+this_item_ID, 'background: #DDD; color: #000');
-        get_item_data(this_item_ID,this_item_TYPE);
+        processItemData(d,item_TYPE);
+        return d;
+      }else{
+        alert('There was an error retrieving information for Course ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
       }
-    }); // end $.each
-  }); // end $.when
-}
-
-
-// Given the Course ID determine if the specific data can be loaded from localStorage. If not, hit the endpoint.
-function get_item_data(item_ID, item_TYPE){
-  console.log('%c PROCESSING CURRENT ITEM ID: '+item_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
-  console.log('%c item_TYPE: '+item_TYPE +', item_ID:'+item_ID, 'background: #DDD; color: #000');
-  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
-  // temp_set_course_data();
-  if (item_TYPE == 'course') {
-    var data_name = 'courses';  
-  };
-  
-  var session_item_data_array = getStoredSessionData(data_name);
-  var arr = JSON.parse(session_item_data_array);
-  // Check to see if the data for this item_ID is already stored in the localSession data for this item_TYPE
-  var course_data_from_array = findItemByID(arr, item_ID);
-  if (course_data_from_array == false) {
-    console.log('FALSE satisfied - get data from endpoint for '+item_TYPE+': '+item_ID);
-    // hit endpoint, get data, save to session array data
-    getItemDataFromEndpoint(item_ID,item_TYPE);
+    }); // end $.when
   }
-  else{
-    console.log('TRUE satisfied - get data "courses" object in localStorage for '+item_TYPE+' ID: '+item_ID+'. Endpoint WILL NOT be hit again. ');
-    var d = course_data_from_array[0];
-    if (d != undefined) {
-      processItemData(d,item_TYPE);
-    }else{
-      alert('There was an error retrieving information for '+item_TYPE+' ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
-    }
+
+
+  // Given a data object process the data, add the data to a localStorage object for future use, do something with the data
+  function processItemData(d,item_TYPE){
+    console.log('%c FUNCTION processItemData('+d["id"]+','+item_TYPE+') ', 'background: #9933ff; color: #fff');
+    
+    var item_storage_name = item_TYPE;
+    if (item_storage_name == 'course') {
+      item_storage_name = 'courses';
+    };
+    if (item_storage_name == 'quiz') {
+      item_storage_name = 'quizzes';
+    };
+    if (item_storage_name == 'student') {
+      item_storage_name = 'students';
+    };
+    var item_constructed_array = [];
+    item_constructed_array.push(d);
+    var item_storage_data = JSON.stringify(item_constructed_array);
+    localStorage.setItem( item_storage_name, item_storage_data );
+    // var t = localStorage.getItem('courses');
+    var s = JSON.parse(localStorage.getItem( item_storage_name));
+    console.log('"'+item_storage_name+'" storage retrieval now includes data for '+item_TYPE+' ID: '+d["id"]);
+    console.log(s);
+    // Do something with the data
+    displayItemData(d,item_TYPE);
   }
-}
 
-// Get the Course Data from the Endpoint
-function getItemDataFromEndpoint(item_ID, item_TYPE){
-  // get the course details from endpoint, then add to the results table
-  console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+') ', 'background: #d7d7d7; color: #000');
-  var item_url = base_url + 'lumiousreports/courselookup/'+item_ID;
-  console.log('ENDPOINT url '+item_url);
-  var itemdata = $.getJSON(item_url);
-  $.when(itemdata).done(function(item_data_from_array) {
-    var d = item_data_from_array[0];
-    if (d != undefined) {
-      processItemData(d,item_TYPE);
-      return d;
-    }else{
-      alert('There was an error retrieving information for Course ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
-    }
-  }); // end $.when
-}
+  // Given a data object, modify and/or display the data in the UI
+  function displayItemData(d,item_TYPE){
+    console.log('%c FUNCTION displayItemData(d,'+item_TYPE+') ', 'background: #ff6666; color: #fff');
+    // Specify What to do with the data
+    if (item_TYPE == 'course') {
+      console.log(' COURSE DATA display......');
+      console.log(' ID: '+d["id"] +
+            ' SHORTNAME: '+d.shortname +
+            ' FULLNAME: '+d.fullname +
+            ' CATEGORY: '+d.category +
+            ' STARTDATE: '+d.startdate);
+    };
+    if (item_TYPE == 'quiz') {
+      console.log(' QUIZ DATA display...');
+      console.log(' ID: '+d["id"] +
+            ' COURSE: '+d.course +
+            ' NAME: '+d.name +
+            ' SUMGRADES: '+d.sumgrades +
+            ' GRADE: '+d.grade);
+    };
+    if (item_TYPE == 'student') {
+      console.log(' STUDENT DATA display...');
+      console.log(' ID: '+d["id"] +
+            ' EMAIL: '+d.email +
+            ' firstname: '+d.firstname +
+            ' lastname: '+d.lastname +
+            ' firstaccess: '+d.firstaccess +
+            ' lastaccess: '+d.lastaccess);
+    };
+    // add to table rows
+  }
+// }()); // end protected function
 
 
-// Given a data object process the data, add the data to a localStorage object for future use, do something with the data
-function processItemData(d,item_TYPE){
-  console.log('%c FUNCTION processItemData('+d["id"]+','+item_TYPE+') ', 'background: #9933ff; color: #fff');
-  
-  var item_storage_name = item_TYPE;
-  if (item_storage_name == 'course') {
-    item_storage_name = 'courses';
-  };
-  var item_constructed_array = [];
-  item_constructed_array.push(d);
-  var item_storage_data = JSON.stringify(item_constructed_array);
-  localStorage.setItem( item_storage_name, item_storage_data );
-  // var t = localStorage.getItem('courses');
-  var s = JSON.parse(localStorage.getItem( item_storage_name));
-  console.log('"'+item_storage_name+'" storage retrieval now includes data for '+item_TYPE+' ID: '+d["id"]);
-  console.log(s);
-  // Do something with the data
-  displayCourseData(d,item_TYPE);
-}
-
-// Given a data object, modify and/or display the data in the UI
-function displayCourseData(d,item_TYPE){
-  console.log('%c FUNCTION displayCourseData() ', 'background: #ff6666; color: #fff');
-  // Specify What to do with the data
-  if (item_TYPE == 'course') {
-    console.log(' FOR COURSE DATA display in console');
-    console.log(' ID: '+d["id"] +
-          ' SHORTNAME: '+d.shortname +
-          ' FULLNAME: '+d.fullname +
-          ' CATEGORY: '+d.category +
-          ' STARTDATE: '+d.startdate);
-  };
-  // add to table rows
-}
 
 // TEMP DATA for testing without internet connection
 var course_data = [];
@@ -2057,4 +2112,41 @@ function show_all_students_activity(){
   console.log('===XXXXXXXXXXXXXXXXXXXXXXXXXX    END show_all_students_activity    XXXXXXXXXXXXXXXXXXXXXXXXXXX====');
 }
 
+/*
+  - endpoints used:
+  
+  http://www.privacyvector.com/api/lumiousreports/course/1 (all courses in Category = 1)
+  http://www.privacyvector.com/api/lumiousreports/students/2 (all students in Course ID = 2)
+  http://www.privacyvector.com/api/lumiousreports/quiz/2 (all quizzes in Course ID = 2)
+  http://www.privacyvector.com/api/lumiousreports/quizattempts/2 (all quizzes attempt of Quiz ID = 2), http://www.akronzip.com/lumiousreports/quizattempts/2
 
+  http://www.privacyvector.com/api/lumiousreports/courselookup/1
+  http://www.privacyvector.com/api/lumiousreports/studentdata/4
+  http://www.privacyvector.com/api/lumiousreports/quizlookup/1
+
+*/
+
+/*
+  - authentication endpoint
+  {
+    "userid": "17",
+    "email": "ben@me.com",
+    "password": "39#2da0r13",
+    "group": "Comstor",
+    "role": "administrator",
+    "timeauthorized": "1447371335"
+  },
+*/
+
+/*
+  - verify data in the Totara Dasboard
+  http://comstor.learningconsole.com/login/
+
+  DATA HOME:
+  http://comstor.learningconsole.com/course/management.php?categoryid=1
+
+  DATA FEED for DATA HOME:
+  http://www.privacyvector.com/api/lumiousreports/course/1
+
+  
+*/
