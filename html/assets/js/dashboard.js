@@ -84,7 +84,14 @@ function get_apiKey_from_storage(){
 
 function findItemByID(arr,query_item_id){
   console.log('%c Function findItemByID() Executing', 'background: #222; color: #bada55');
-  if (arr != null) {
+  // console.log('query_item_id ='+query_item_id);
+  // console.log('arr');
+  // console.log(arr);
+  if (arr = null) {
+    console.log('%c ERROR: arr is null', 'background: #ff0000; color: #fff');
+    return false;
+  };
+  if (arr != null && query_item_id != null && query_item_id != undefined) {
     var result = $.grep(arr, function(e){ return e.id == query_item_id; });
     console.log("localSession Search Result for Item ID: "+query_item_id);
     console.log(result);
@@ -94,7 +101,7 @@ function findItemByID(arr,query_item_id){
         return false;
     }
   }else{
-    console.log('%c ERROR: arr is null', 'background: #ff0000; color: #fff');
+    console.log('%c ERROR: a required parameter for findItemByID is missing. FALSE will be returned.', 'background: #ff0000; color: #fff');
     return false;
   }
     
@@ -1277,9 +1284,10 @@ function work_in_progress(){
   
   // http://www.akronzip.com/lumiousreports/course/4 (gives all courses with Category 4)
   
-  var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
+  // var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
   // var item_ID = 22; var item_TYPE = 'quiz'; 
-  // var item_ID = 25; var item_TYPE = 'students';
+  var item_ID = 2; var item_TYPE = 'students'; //var item_ID = 25; var item_TYPE = 'students';
+  
 
   getAllItemDataFromEndpoint(item_ID,item_TYPE);
   // getAllCategoryCourseDataFromEndpoint(client_category);
@@ -1325,14 +1333,8 @@ function work_in_progress(){
     // get the course details from endpoint, then add to the results table
     console.log('%c FUNCTION getAllItemDataFromEndpoint('+item_ID+', '+item_TYPE+') ', 'background: #ff9900; color: #000');
     base_url = urls.reports;
-    console.log('%c new base_url = '+base_url, 'background: #ddd; color: #fff');
-    // var item_url = base_url + 'lumiousreports/'+item_TYPE+'/'+item_ID;
-    if (item_TYPE == 'student') {
-      var item_url = base_url + item_TYPE+'s/'+item_ID;
-    }else{
-      var item_url = base_url + item_TYPE+'/'+item_ID;
-    }
-    console.log('ENDPOINT url '+item_url);
+    var item_url = base_url + item_TYPE+'/'+item_ID;
+    console.log('%c ENDPOINT url '+item_url, 'background: #ddd; color: #fff');
     var item_data_from_array = [];
     var itemdata = $.getJSON(item_url);
     $.when(itemdata).done(function(item_data_from_array) {
@@ -1354,30 +1356,41 @@ function work_in_progress(){
     console.log('%c PROCESSING CURRENT ITEM ID: '+item_ID, 'background: #FF0000; color: #fff; padding: 2px 100px;');
     console.log('%c item_TYPE: '+item_TYPE +', item_ID:'+item_ID, 'background: #DDD; color: #000');
     // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
-    // temp_set_course_data();
+    // temp_set_item_data();
     if (item_TYPE == 'course') {
       var data_name = 'courses';  
     };
     if (item_TYPE == 'quiz') {
       var data_name = 'quizzes';  
     };
-    if (item_TYPE == 'student') {
-      var data_name = 'student';  
+    if (item_TYPE == 'students') {
+      var data_name = 'students';  
     };
     
     var session_item_data_array = getStoredSessionData(data_name);
+    var arr = null;
     var arr = JSON.parse(session_item_data_array);
+    
+    // if (arr = null) {
+      console.log('item_ID -----------');
+      console.log(item_ID);
+
+      console.log('arr -----------');
+      console.log(arr);
+    // };
     // Check to see if the data for this item_ID is already stored in the localSession data for this item_TYPE
-    var course_data_from_array = findItemByID(arr, item_ID);
+    var item_data_from_array = findItemByID(arr, item_ID);
+    // item_data_from_array = null;
+
     // IF the item is not found, or if the arr is null or doesn't exist yet, hit the endpoint
-    if (course_data_from_array == null || course_data_from_array == false) {
+    if (item_data_from_array == null || item_data_from_array == false) {
       console.log('FALSE satisfied - get data from endpoint for '+item_TYPE+': '+item_ID);
       // hit endpoint, get data, save to session array data
       getItemDataFromEndpoint(item_ID,item_TYPE);
     }
     else{
       console.log('TRUE satisfied - get data "courses" object in localStorage for '+item_TYPE+' ID: '+item_ID+'. Endpoint WILL NOT be hit again. ');
-      var d = course_data_from_array[0];
+      var d = item_data_from_array[0];
       if (d != undefined) {
         processItemData(d,item_TYPE);
       }else{
@@ -1389,54 +1402,90 @@ function work_in_progress(){
   // Get the Course Data from the Endpoint
   function getItemDataFromEndpoint(item_ID, item_TYPE){
     // get the course details from endpoint, then add to the results table
-    console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+') ', 'background: #d7d7d7; color: #000');
+    console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'background: #d7d7d7; color: #000');
     base_url = urls.reports;
-    console.log('%c new base_url = '+base_url, 'background: #ddd; color: #fff');
 
     if (item_TYPE == 'students') {
-      item_TYPE = 'student';
-      var item_url = base_url +item_TYPE+'data/'+item_ID;
+      var item_url = base_url + 'studentdata/'+item_ID;
     }else{
       var item_url = base_url +item_TYPE+'lookup/'+item_ID;  
     }
-    console.log('ENDPOINT url '+item_url);
+    console.log('%c check ENDPOINT url '+item_url, 'background: #ddd; color: #fff');
+    
     var itemdata = $.getJSON(item_url);
     $.when(itemdata).done(function(item_data_from_array) {
-      var d = item_data_from_array[0];
+      console.log('%c DOING LOOP', 'background: #ff0000;');
+      if (item_TYPE == 'students') {
+        var d = item_data_from_array["user"];  
+      }else{
+        var d = item_data_from_array[0];
+      }
+      // console.log('d');
+      console.log(d);
       if (d != undefined) {
         processItemData(d,item_TYPE);
         return d;
       }else{
-        alert('There was an error retrieving information for Course ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this course.')
+        alert('There was an error retrieving information '+item_TYPE+': '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
       }
     }); // end $.when
   }
 
-
+var item_constructed_array = [];
   // Given a data object process the data, add the data to a localStorage object for future use, do something with the data
   function processItemData(d,item_TYPE){
     console.log('%c FUNCTION processItemData('+d["id"]+','+item_TYPE+') ', 'background: #9933ff; color: #fff');
-    
     var item_storage_name = item_TYPE;
-    if (item_storage_name == 'course') {
-      item_storage_name = 'courses';
-    };
-    if (item_storage_name == 'quiz') {
-      item_storage_name = 'quizzes';
-    };
-    if (item_storage_name == 'student') {
-      item_storage_name = 'students';
-    };
-    var item_constructed_array = [];
-    item_constructed_array.push(d);
+    if (item_storage_name == 'course')    {item_storage_name = 'courses';};
+    if (item_storage_name == 'quiz')      {item_storage_name = 'quizzes';};
+    if (item_storage_name == 'students')  { item_storage_name = 'students';
+      // For 'student's Filter the size of logstore in students array
+      var data_filtered_logstore = filterLogstoreData(d);
+      item_constructed_array.push(data_filtered_logstore);
+    }
+    else{
+      item_constructed_array.push(d);
+    }
     var item_storage_data = JSON.stringify(item_constructed_array);
     localStorage.setItem( item_storage_name, item_storage_data );
-    // var t = localStorage.getItem('courses');
     var s = JSON.parse(localStorage.getItem( item_storage_name));
     console.log('"'+item_storage_name+'" storage retrieval now includes data for '+item_TYPE+' ID: '+d["id"]);
     console.log(s);
     // Do something with the data
     displayItemData(d,item_TYPE);
+  }
+
+  function filterLogstoreData(d){
+    console.log('%c FUNCTION filterLogstoreData(d) ', 'background: #ff6666; color: #fff');
+    // get student data
+      // remove the logstore array from the student array
+    if (d.logstore != undefined) {
+      
+      var recent_activity = [];
+      var recent_logstore = [];
+      var data_with_recent_activity = [];
+      
+      recent_activity = _.last(d.logstore,10);
+      console.log('recent_activity');
+      console.log(recent_activity);
+
+      jQuery.each(recent_activity, function(i, ldata) {
+        var timecreated_int = Number(ldata.timecreated);
+        recent_logstore.push(timecreated_int);
+        var activity_moment = moment.unix(ldata.timecreated).format("YYYY/MM/DD hh:mm:ss");
+        console.log('%c '+d.firstname+' TIME:'+activity_moment+ ' '+ldata.action+ ' course ID:' +ldata.courseid, 'background: #00ccff; color: #fff;')
+      }); // end $.each
+
+      console.log('recent_logstore');
+      console.log(recent_logstore);
+
+      var data_without_logstore = _.omit(d,'logstore');
+      console.log('data_without_logstore: ');
+      console.log(data_without_logstore);
+      return data_without_logstore;
+    }else{
+      console.log('d.logstore is undefined');
+    }
   }
 
   // Given a data object, modify and/or display the data in the UI
@@ -1459,20 +1508,52 @@ function work_in_progress(){
             ' SUMGRADES: '+d.sumgrades +
             ' GRADE: '+d.grade);
     };
-    if (item_TYPE == 'student') {
+    if (item_TYPE == 'students') {
       console.log(' STUDENT DATA display...');
-      console.log(' ID: '+d["id"] +
-            ' EMAIL: '+d.email +
-            ' firstname: '+d.firstname +
-            ' lastname: '+d.lastname +
-            ' firstaccess: '+d.firstaccess +
-            ' lastaccess: '+d.lastaccess);
+      console.log(
+            'ID: '          +d["id"] +
+            ' EMAIL: '      +d.email +
+            ' firstname: '  +d.firstname +
+            ' lastname: '   +d.lastname +
+            ' firstaccess:' +d.firstaccess +
+            ' lastaccess: ' +d.lastaccess);
+            // ' logstore: '   +d.logstore);
     };
     // add to table rows
   }
 // }()); // end protected function
 
+/*
+  For each student activity in single student log,
+  pull data for logstor
+  setup switching to only process relevant items
+  add test loop counter for faster debugging
+  get course ID
+  pass to Item Processing
+  view results
 
+  // only test the activity of viewing courses
+  if(adata.action == "viewed" && adata.target == "course")
+  {
+      "userid": "4",
+      "action": "viewed",
+      "target": "course",
+      "objecttable": null,
+      "objectid": null,
+      "courseid": "1",
+      "timecreated": "1440434141"
+    },
+
+    // DATA NAMES
+    activity_action = adata.action;
+    activity_target = adata.target;
+    activity_timecreated = adata.timecreated;
+    activity_moment = moment.unix(activity_time).format("YYYY/MM/DD hh:mm:ss");
+    activity_table = adata.objecttable;
+    activity_id = adata.objectid;
+    activity_course = adata.courseid;
+    activity_user_id = adata.id;
+*/
 
 // TEMP DATA for testing without internet connection
 var course_data = [];
@@ -2123,6 +2204,8 @@ function show_all_students_activity(){
   http://www.privacyvector.com/api/lumiousreports/courselookup/1
   http://www.privacyvector.com/api/lumiousreports/studentdata/4
   http://www.privacyvector.com/api/lumiousreports/quizlookup/1
+
+  http://www.privacyvector.com/api/lumiousreports/coursecategories/
 
 */
 
