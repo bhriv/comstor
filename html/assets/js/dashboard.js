@@ -1375,8 +1375,16 @@ function findItemByID(arr,item_ID,item_TYPE){
     }
     else if (item_TYPE == 'courses') {
       console.log('checking courses');
-      if (arr[i].id == item_ID) {
+      if (arr[i][0].id == item_ID) {
           found = true;
+          console.log('found: '+found);
+          return { // return array of data including labels for access
+              id: arr[i][0].id,
+              category: arr[i][0].category,
+              fullname: arr[i][0].fullname,
+              shortname: arr[i][0].shortname,
+              startdate: arr[i][0].startdate
+          };
           break;
       }
     }
@@ -1404,8 +1412,16 @@ function findItemByID(arr,item_ID,item_TYPE){
     }
     else if (item_TYPE == 'students') {
       console.log('checking students');
-      if (arr[i].id == item_ID) {
+      if (arr[i][0]["user"].id == item_ID) {
           found = true;
+          return { // return array of data including labels for access
+              id: arr[i][0]["user"].id,
+              email: arr[i][0]["user"].email,
+              firstname: arr[i][0]["user"].firstname,
+              lastname: arr[i][0]["user"].lastname,
+              lastaccess: arr[i][0]["user"].lastaccess,
+              firstaccess: arr[i][0]["user"].firstaccess
+          };
           break;
       }
     }
@@ -1512,7 +1528,7 @@ function findItemByID(arr,item_ID,item_TYPE){
   }
 
   // Get the Course Data from the Endpoint
-  function getItemDataFromEndpoint(item_ID, item_TYPE,item_ACTION){
+  function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
     // get the course details from endpoint, then add to the results table
     console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'background: #d7d7d7; color: #000');
     base_url = urls.reports;
@@ -1553,7 +1569,7 @@ function findItemByID(arr,item_ID,item_TYPE){
     console.log(d);
     console.log('d - incoming to processItemData');
     if (item_TYPE == 'course')    {
-      // item_storage_name = 'courses';
+      item_storage_name = 'courses';
       // var item_storage_data = JSON.stringify(d);
       localStorage.setItem( 'courses', JSON.stringify(d) );
       console.log('%c Data Stored in "courses" localStorage', 'background: #ff0000; color: #fff');
