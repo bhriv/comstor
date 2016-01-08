@@ -417,6 +417,7 @@
                         </li>
                         <li><small><strong>Learning Analytics</strong></small></li>
                         <a onclick="work_in_progress();">TEST: work_in_progress();</a>
+                        <a class="get_item_data">TEST: get_item_data();</a>
                     </ul>
                 </nav>
             </div><!-- / navbar column -->
@@ -1117,7 +1118,14 @@
         <script src="assets/vendor/moment/moment.min.js"></script> 
         <script src="assets/vendor/chart/Chart.min.js"></script> 
         <script src="assets/js/vendor/underscore.js"></script> 
+
+        <!-- CUSTOM -->   
+        <script src="assets/js/useful.js"></script> 
+        <script src="assets/js/local-storage.js"></script> 
         <script src="assets/js/dashboard.js"></script> 
+        <script src="assets/js/flurry.js"></script> 
+        <script src="assets/js/testing-only.js"></script> 
+        <script src="assets/js/totara.js"></script> 
 
         <!-- From Symfony: CUSTOM -->
          
@@ -1157,135 +1165,5 @@
             // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             // ga('create','UA-XXXXX-X');ga('send','pageview');
         </script> 
-        <script type="text/javascript">
-                
-            $( document ).ready(function() {
-                  console.error();
-                  console.warn();
-
-                  console.log('%c Document Ready: Custom Functions Start...', 'background: #00cc00; color: #000; padding: 2px 300px');
-
-                /*
-                    // test_arr = student_result_id_17[0];
-                    // test_arr = test_arr["user"];
-                    // console.log(test_arr);
-                    
-                    // var test_ID = 17;
-                    // var TESTfindItemByID = findItemByID(test_arr,test_ID);
-
-                    // work_in_progress();
-                    
-                    var all_students = [];
-                    all_students.push(student_result_id_17);
-                    all_students.push(student_result_id_4);
-                    console.log('find 17');
-                    // for json storage items must stringify and parse
-                    findItemByID(all_students,'17','all_students');
-                    // WORKS
-
-                    var all_courses = [];
-                    all_courses.push(course_1);
-                    all_courses.push(course_2);
-                    console.log('find course id 2');
-                    // for json storage items must stringify and parse
-                    var c = findItemByID(all_courses,'1','all_courses');
-                    console.log('c result');
-                    console.log(c);
-                    // WORKS
-
-                    
-                    var item_storage_data = JSON.stringify(all_students);
-                    // item_storage_data = item_storage_data[1];
-                    localStorage.setItem( 'all_students',item_storage_data);
-                    var string_arr = checkStorageItem('all_students');
-                    var arr = JSON.parse(string_arr); 
-                    // findItemByID(all_students,'4','all_students');
-                    console.log('find 4');
-                    // ID 4 search in all_students array from storage returns all the student data
-                    var s = findItemByID(arr,'4','all_students');
-                    console.log('s result');
-                    console.log(s);
-                    
-                */
-                getItemDataFromEndpoint("3","course","get_startdate");
-
-                /************** PRODUCTIONS Functions   **************/
-
-                  /************** Load Actve Users   **************/
-                    // var id = 'ActiveUsers';
-                    var id = 'NewUsers';
-                    var app_metric_specific = id;
-                    setAppMetricSpecific(app_metric_specific);
-                    getChartData(id);
-                /************** end - Load Actve Users   *********/ 
-
-                $('#flurry_reports').show();
-
-            }); // end doc ready
-
-
-                function pop_up(hyperlink, window_name)
-                {
-                    if (!window.focus) {
-                        return true;
-                    }
-                    var href = (typeof(hyperlink) == 'string' ? hyperlink : hyperlink.href);
-                    window.open(href, window_name, 'width=800,height=800,toolbar=no, scrollbars=yes');
-                    return false;
-                }
-        </script> 
-        <script type="text/javascript">
-        $(document).ready(function() {
-        $( "#tbody_activity td.timestamp" ).each(function( index ) {
-            var dateString = $(this).text();
-            dateString = moment(dateString).format('MMMM Do YYYY, h:mm:ss a');
-            console.log( index + ": " + dateString );
-            $(this).text(dateString);
-        });
-
-        $( "#tbody_activity td.level-verb" ).each(function( index ) {
-            var textstring = $(this).text();
-
-            if (textstring.toLowerCase().indexOf("arrange") >= 0){
-                $(this).addClass(' category-knowledge');    
-            }
-            // };
-        });
-        // $( "div" ).data( "level" ) === "knowledge";
-
-        });
-        </script> 
-        <script type="text/javascript">
-        $(document).ready(function () {
-          $('.accordion-tabs-minimal').each(function(index) {
-            $(this).children('li').first().children('a').addClass('is-active').next().addClass('is-open').show();
-          });
-          $('.accordion-tabs-minimal').on('click', 'li > a.tab-link', function(event) {
-            if (!$(this).hasClass('is-active')) {
-              event.preventDefault();
-              var accordionTabs = $(this).closest('.accordion-tabs-minimal');
-              accordionTabs.find('.is-open').removeClass('is-open').hide();
-
-              $(this).next().toggleClass('is-open').toggle();
-              accordionTabs.find('.is-active').removeClass('is-active');
-              $(this).addClass('is-active');
-            } else {
-              event.preventDefault();
-            }
-          });
-        });
-        </script><!-- prepare JS to migrate to Comstor and Tech2000 to Totara 
-pull main queries to be standalone out of Symfony for faster testing 
-add JS dump for bug tracing 
-run test queries for identifying issues 
-do PSD screenshots for loading table 
-add dynamic progress bar for query results loading 
-format PSD for tempate use 
-add default graphic for loading - with instructions 
-when query done hide graphic show results 
-add temp query parameter to produce limited, faster, results 
-reset selectors when key dropdown changed to ensure results are fetched 
-include required functions outside of key function 
- -->
     </body>
 </html>
