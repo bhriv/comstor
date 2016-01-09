@@ -1,6 +1,31 @@
 /*****************************************************************/
 /******************** Testing Only Functions  *********************/
 /*****************************************************************/
+
+user = {
+    email: 'ben.porcelain@gmail.com',
+    firstname: 'Joe',
+    lastname: 'Average',
+    roles: ['ROLE_USER',]
+};
+
+message = {
+                    id: 0
+                }
+
+urls = { 
+    analytics: 'http://akronzip.com/',
+    messaging: 'http://akronzip.com/',
+    attachment: 'http://playground.learningconsole.com/lumiousattachment/',
+    settings: 'http://akronzip.com/',
+    reports: 'http://www.privacyvector.com/api/lumiousreports/'
+};
+
+fb = {
+    client_id: '',
+    redirect_url: 'http://ciscolive.lumious.co/oauth/redirect/facebook'
+};
+
 /*
 // test_arr = student_result_id_17[0];
 // test_arr = test_arr["user"];

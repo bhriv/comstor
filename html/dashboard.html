@@ -40,171 +40,32 @@
         <script src="assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
         <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
         <script src="assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            user = {
-                email: 'ben.porcelain@gmail.com',
-                firstname: 'Joe',
-                lastname: 'Average',
-                roles: ['ROLE_USER',]
-            };
-            
-            message = {
-                                id: 0
-                            }
-
-            urls = { 
-                analytics: 'http://akronzip.com/',
-                messaging: 'http://akronzip.com/',
-                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
-                settings: 'http://akronzip.com/',
-                reports: 'http://www.privacyvector.com/api/lumiousreports/'
-            };
-
-            fb = {
-                client_id: '',
-                redirect_url: 'http://ciscolive.lumious.co/oauth/redirect/facebook'
-            };
-        </script>
+        <!-- Unminified -->
+        <script src="assets/js/vendor/jquery.js"></script> 
+        <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
+        <script src="assets/js/console-class.js"></script> 
+        <!-- Dev Only -->
+        <script src="assets/js/testing-only.js"></script>
+        <!-- 
+            <script src="assets/js/REPLACE-WITH-PHP/build-layout.js"></script>
+        -->
     </head>
     <body class="cisco_one">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <header id="site_header">
-            <div class="row">
-                <div class="sixteen columns">
-                    <a href="/">
-                    <div class="logo"></div></a>
-                    <div class="user-profile">
-                        <a class="toggle" href="#"><i class="icon-user"></i> <i class="icon-down-dir"></i></a>
-                        <div class="drawer" id="user-options">
-                            <ul>
-                                <li class="username">Logged in as: Admin
-                                </li>
-                                <li>
-                                    <a href="/profile/">My Profile</a>
-                                </li>
-                                <li>
-                                    <a class="switch" href="#">My Courses</a>
-                                </li>
-                                <li>
-                                    <a href="/profile/change-password">Change Password</a>
-                                </li>
-                                <li>
-                                    <a href="/logout">Sign Out</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="mobile-nav">
-                        <a class="toggle" href="#"><i class="icon-menu"></i></a>
-                        <div class="drawer" id="mobile-menu">
-                            <ul>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a class="" href="/home"><i class="icon-play"></i>Manager Dashboard</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/home/alerts"><i class="icon-play"></i>Alerts</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/home/trending"><i class="icon-play"></i>Trending</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/home/activity-feed"><i class="icon-play"></i>Activity Feed</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/social-media-radar">Social Media Radar <i class="icon-play"></i></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="/users"><i class="icon-play"></i>Users</a>
-                                </li>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a class="" href="/messages/home"><i class="icon-play"></i>Inbox</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/messages/sent"><i class="icon-play"></i>Sent</a>
-                                        </li><!--<li><a href="#" class="">Unread <i class="icon-play"></i></a></li>
-                                    <li><a href="#" class="switch " gumby-trigger="#messagecats">+ Category <i class="icon-play"></i></a></li>-->
-                                        <li>
-                                            <a class="" href="/messages/notifications"><i class="icon-play"></i>Notifications</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="/help"><i class="icon-play"></i>Help</a>
-                                </li>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a class="" href="/stats/home"><i class="icon-play"></i>Stats Home</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/stats/sources"><i class="icon-play"></i>Sources</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/stats/course-performance"><i class="icon-play"></i>Course Performance</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/stats/settings"><i class="icon-play"></i>Settings</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a class="" href="/settings"><i class="icon-play"></i>Settings Overview</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/people"><i class="icon-play"></i>People</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/permissions"><i class="icon-play"></i>Permissions</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/roles"><i class="icon-play"></i>Roles</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/groups"><i class="icon-play"></i>Groups</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/lrs"><i class="icon-play"></i>LRS</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/courses"><i class="icon-play"></i>Courses</a>
-                                        </li>
-                                        <li>
-                                            <a class="" href="/settings/curriculum"><i class="icon-play"></i>Curriculum</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a href="/profile/"><i class="icon-play"></i>My Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="icon-play"></i>My Courses</a>
-                                        </li>
-                                        <li>
-                                            <a href="/profile/change-password"><i class="icon-play"></i>Change Password</a>
-                                        </li>
-                                        <li>
-                                            <a href="/logout"><i class="icon-play"></i>Sign Out</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <!-- <?php //include_once('header') ?> -->
+        <!-- HEADER populated with js REPLACE with PHP functions-->
+        <div id="header_loaded"></div>
+        <script>
+            $( "#header_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/header.php", function( response, status, xhr ) {
+              var msg = "Loading header: ";
+              if ( status == "error" )   {cc( msg + xhr.status + " " + xhr.statusText,'error' );}
+              if ( status == "success" ) {cc( msg + xhr.status + " " + xhr.statusText,'ready' );}
+            });
+        </script>
+
+    
         <div class="row" id="root">
             <!-- navbar column -->
             <div class="one columns nav-bar">
@@ -212,7 +73,7 @@
                     <ul>
                         <!-- <li class=""><a href="/home" class="ttip" data-tooltip="Manager Dashboard"><i class="icon-home"></i></a></li>-->
                         <li class="">
-                            <a class="ttip" data-tooltip="Manager Dashboard" href="/home"><i class="icon-home"></i></a>
+                            <a class="ttip" data-tooltip="Dashboard Home" href="/home"><i class="icon-home"></i></a>
                         </li>
                         <li class=" active">
                             <a class="ttip" data-tooltip="Reports" href="/reports"><i class="icon-shuffle"></i></a>
@@ -1063,12 +924,8 @@
                 </li>
             </ul>
         </footer><!-- footer js -->
-        <!-- Unminified -->
-        <script src="assets/js/vendor/jquery.js">
-        </script> 
-        <script src="assets/vendor/jqueryui/jquery-ui.js">
-        </script> <!-- From Symfony: LIBRARY -->
 
+        <!-- From Symfony: LIBRARY -->
 
         <!--    <script src="https://www.highcharts.com/samples/data/maps/world.js"></script> 
         <script src="//cdn.ckeditor.com/4.4.3/basic/ckeditor.js"></script>
@@ -1089,67 +946,59 @@
         <script type="text/javascript" src="assets/js/from-symfony/js/libs/gumby.init.js"></script>
         <script type="text/javascript" src="assets/js/from-symfony/js/libs/retina.min.js"></script>
          
-        <script src="assets/js/from-symfony/js/libs/dna.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/dumper.js" type="text/javascript">
-        </script> 
+        <script src="assets/js/from-symfony/js/libs/dna.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/dumper.js" type="text/javascript"></script> 
         <!--
         <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script>
     -->
          
-        <script src="assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.min.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery-sortable-min.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/pikaday.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript">
-        </script> <!-- END From Symfony -->
+        <script src="assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.min.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/jquery-sortable-min.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/pikaday.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript"></script> 
+        <!-- END From Symfony -->
          
+        <!-- CUSTOM -->  
         <script src="assets/js/vendor/bootstrap.js"></script> 
         <script src="assets/vendor/moment/moment.min.js"></script> 
         <script src="assets/vendor/chart/Chart.min.js"></script> 
         <script src="assets/js/vendor/underscore.js"></script> 
 
-        <!-- CUSTOM -->   
+        <!-- CUSTOM - Common scripts -->   
         <script src="assets/js/useful.js"></script> 
         <script src="assets/js/local-storage.js"></script> 
+        
+        
+        <!-- Route Based Script Loading (js implementation) --> 
+        <script src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
+        <!--
         <script src="assets/js/dashboard.js"></script> 
         <script src="assets/js/flurry.js"></script> 
-        <script src="assets/js/testing-only.js"></script> 
         <script src="assets/js/totara.js"></script> 
+        -->
 
         <!-- From Symfony: CUSTOM -->
          
         <script src="assets/js/from-symfony/js/plugins.js" type="text/javascript"></script> 
         <script src="assets/js/from-symfony/js/main.js" type="text/javascript"></script> 
+
     <!-- MEF REPORT FILTERS -->
-        <script src="assets/js/from-symfony/js/report_filters.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/report_students_access.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/report_students_performance.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/report_queries_questions.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/report_queries_attempts.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/report_concatenated_rows.js" type="text/javascript">
-        </script> 
+        <script src="assets/js/from-symfony/js/report_filters.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/report_students_access.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/report_students_performance.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/report_queries_questions.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/report_queries_attempts.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/report_concatenated_rows.js" type="text/javascript"></script> 
     
-        <script src="assets/js/from-symfony/js/analytics.js" type="text/javascript">
-        </script> 
-        <script src="assets/js/from-symfony/js/settings.js" type="text/javascript">
-        </script> <!-- END From Symfony -->
-         <!-- Production Ready : All vendor and custom js compiled 
+        <script src="assets/js/from-symfony/js/analytics.js" type="text/javascript"></script> 
+        <script src="assets/js/from-symfony/js/settings.js" type="text/javascript"></script> 
+        <!-- END From Symfony -->
+        
+        <!-- Production Ready : All vendor and custom js compiled 
          ** BREAKS lumi.js
 
         <script src="build/production-uglified.js"></script>

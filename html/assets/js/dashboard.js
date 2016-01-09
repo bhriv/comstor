@@ -11,9 +11,6 @@ $(document).ready(function() {
   
   // Setup basic app needs
   // cc('Document Ready','ready');
-  console.error();
-  console.warn();
-  console.log('%c Document Ready: Custom Functions Start...', 'background: #00cc00; color: #000; padding: 2px 300px');
   $('.hideme').hide();
   
   // Set an ID for this Session to ensure uniqueness
