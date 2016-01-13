@@ -9,8 +9,10 @@ Import Resets
 @import url(../css/bootstrap/bootstrap-responsive.css);
 /* Fool-proof @font-face */
 /* Based on http://coding.smashingmagazine.com/2013/02/14/setting-weights-and-styles-at-font-face-declaration/ */
-/* Test For autoprefixer browser support */
 @import url(../vendor/jqueryui/jquery-ui.css);
+@import url(../from-symfony/css/pikaday.css);
+@import url(../from-symfony/css/jquery.fileupload.css);
+/* Test For autoprefixer browser support */
 /* line 4, ../sass/_custom.scss */
 ::placeholder {
   color: #ccc;
