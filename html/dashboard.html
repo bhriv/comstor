@@ -24,17 +24,15 @@
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
         <title>
             Dashboard - Comstor Lumious
-        </title><!-- FONTS provided in sass files
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
-
-        <link rel="stylesheet" href="assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
-        -->
+        </title>
+        
         <link href="css/favicon.css" rel="shortcut icon" type="image/x-icon">
         <link href="assets/css/screen.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/gumby.css" rel="stylesheet">
+        
+        <!-- <link href="assets/from-symfony/css/gumby.css" rel="stylesheet"> -->
         <link href="assets/from-symfony/css/pikaday.css" rel="stylesheet">
         <link href="assets/from-symfony/css/jquery.fileupload.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/style.css" rel="stylesheet">
+        <!-- <link href="assets/from-symfony/css/style.css" rel="stylesheet"> -->
         <link href="assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
 
         <script src="assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
@@ -46,9 +44,15 @@
         <script src="assets/js/console-class.js"></script> 
         <!-- Dev Only -->
         <script src="assets/js/testing-only.js"></script>
-        <!-- 
-            <script src="assets/js/REPLACE-WITH-PHP/build-layout.js"></script>
-        -->
+        <script>
+            urls = { 
+                analytics: 'http://akronzip.com/',
+                messaging: 'http://akronzip.com/',
+                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
+                settings: 'http://akronzip.com/',
+                reports: 'http://www.privacyvector.com/api/lumiousreports/'
+            };
+        </script>
     </head>
     <body class="cisco_one">
         <!--[if lt IE 7]>
@@ -58,851 +62,58 @@
         <!-- HEADER populated with js REPLACE with PHP functions-->
         <div id="header_loaded"></div>
         <script>
-            $( "#header_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/header.php", function( response, status, xhr ) {
-              var msg = "Loading header: ";
-              if ( status == "error" )   {cc( msg + xhr.status + " " + xhr.statusText,'error' );}
-              if ( status == "success" ) {cc( msg + xhr.status + " " + xhr.statusText,'ready' );}
-            });
+            cc('Loading header partial','ready');
+            $( "#header_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/header.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
         </script>
 
     
         <div class="row" id="root">
             <!-- navbar column -->
-            <div class="one columns nav-bar">
-                <nav class="top-nav">
-                    <ul>
-                        <!-- <li class=""><a href="/home" class="ttip" data-tooltip="Manager Dashboard"><i class="icon-home"></i></a></li>-->
-                        <li class="">
-                            <a class="ttip" data-tooltip="Dashboard Home" href="/home"><i class="icon-home"></i></a>
-                        </li>
-                        <li class=" active">
-                            <a class="ttip" data-tooltip="Reports" href="/reports"><i class="icon-shuffle"></i></a>
-                        </li>
-                        <li class="">
-                            <a class="ttip" data-tooltip="Messages" href="/messages/home"><i class="icon-chat"></i></a>
-                        </li>
-                        <li class="">
-                            <a class="ttip" data-tooltip="Settings" href="/profile/"><i class="icon-cog"></i></a>
-                        </li>
-                        <li class="">
-                            <a class="ttip" data-tooltip="Stats" href="/stats/home"><i class="icon-chart-bar"></i></a>
-                        </li>
-                        <li class="">
-                            <a class="ttip" data-tooltip="Users" href="/users"><i class="icon-users"></i></a>
-                        </li>
-                        <li class="">
-                            <a class="ttip" data-tooltip="Videos" href="/videos"><i class="icon-video"></i></a>
-                        </li>
-                        <li class="">
-                            <a class="ttip" data-tooltip="Help" href="/help"><i class="icon-help-circled"></i></a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="two columns subnav-bar">
-                <style>
-                    #root .subnav-bar ul{
-                        margin-top: 0;
-                    }
-                    #root .subnav-bar ul li h2{
-                        margin-bottom: 0;
-                    }
-                    #root .subnav-bar ul li h2 i{
-                        margin-top: 0.6em;
-                    }
-                    #root .nav-bar nav ul li a i,
-                    #root .subnav-bar nav ul li a i
-                    {
-                        background-image: none;
-                        padding-top: 5px;
-                    }
-                    #root .subnav-bar ul li ul li {
-                        margin-bottom: 0;
-                        font-size: 14px;
-                        text-transform: capitalize;
-                    }
-                    #root .subnav-bar ul li a .icon-play{
-                        visibility: hidden;
-                        margin-top: 0;
-                    }
-                    #root .subnav-bar ul li a.active .icon-play{
-                        visibility: visible;
-                    }
-                    input[type="text"].date_changer{
-                        width: 90px;
-                    }
-                    input[type="text"].date_changer:hover{
-                        cursor: pointer;
-                    }
-                    #graphs-holder.widget-grid li h2{
-                        text-align: left;
-                        text-transform: none;
-                    }
-                    #graphs-holder.widget-grid li h2 span {
-                        float: right;
-                        padding: 2px 6px;
-                        border: 1px solid #e5e5e5;
-                        border-radius: 3px;
-                        font-size: 80%;
-                        margin-right: 4px;
-                    }
-                    #analytics_triggers li a:hover{
-                        cursor: pointer;
-                    }
-                    #widget-overview ul li span.period{
-                       text-transform: capitalize;
-                        font-size: 11px;
-                        line-height: 1.1em; 
-                    }
-                    #overview_stats span.period{
-                        
-                    }
-                    #graphs-holder li h2 span:hover{
-                        cursor: pointer;
-                    }
-                    #graphs-holder li h2 span.active{
-                        background-color: bisque;
-                        color: gray;
-                    }
-                    header#site_header .logo{
-                        float: left;
-                    }
-                    #root .nav-bar nav ul li{
-                        text-align: left;
-                        padding-left: 10px;
-                    }
-                    #app_overview{
-                        min-height: 145px !important;
-                    }
-                    #app_version_history{
-                        min-height: 400px;
-                    }
-                    #app_version_history,
-                    #app_overview ul{
-                        margin: 0;
-                    }
-                    #app_version_history li,
-                    #app_overview ul li{
-                        margin-bottom: 0;
-                        font-size: 16px;
-                        line-height: 1.5em;
-                        font-weight: bold;
-                    }
-                    #app_version_history li span,
-                    #app_overview ul li span{
-                        font-weight: normal;
-                    }
-                    #overview_stats .badge.default{
-                        color: #fff;
-                    }
-                    i.icon-info{
-                        border-radius: 50%;
-                        border: 1px solid #fff;
-                        padding: 0.5em;
-                        position: relative;
-                        top: 2px;
-                    }
-                    .icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before {
-                        top: 0;
-                        position: absolute;
-                        left: 38%;
-                        top: 6%;
-                        color: #fff;
-                        font-size: 10px;
-                    }
-                   /* .tablesorter-header-inner {
-                        line-height: 1em;
-                        padding: 0.5em 0 0.5em 0.5em;
-                        text-align: center;
-                        font-size: 12px;
-                    }*/
-                    .widget-grid li div.widget-content table th{
-                        padding: 0.5em;
-                    }
-                    .widget-grid li div.widget-content table thead th{
-                        padding: 0;
-                    }
-                    #graphs-holder ul li .tablesorter-header-inner{
-                        padding: 4px 0 4px 4px;
-                        text-align: center;
-                    }
-                    .tablesorter-header-inner span.clearfix{
-                        display: block;
-                        clear: both;
-                        font-size: 9px;
-                    }
-                    .widget-grid li div.widget-content table thead{
-                        background-color: #7ea2aa;
-                    }
-                    .widget-grid li h2.yellow{
-                        background-color: #ffc145;
-                    }
-                </style>
-                <nav id="analytics_triggers">
-                    <ul>
-                        <li><h2>Reports <i class="icon-play"></i></h2></li>
+            <!-- PARENT MENU populated with js REPLACE with PHP functions-->
+            <div id="parent_menu_loaded"></div>
+            <script>
+                cc('Loading parent menu partial','ready');
+                $( "#parent_menu_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/NAVIGATION/parent.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+            </script>
 
-                        <li><small><strong>Mobile Analytics</strong></small></li>
-                        <li>
-                            <small><strong>Users</strong></small>
-                            <ul>
-                                <li><span id="NewUsers_" class="chart_trigger"><a class="active">New Users <i class="icon-play"></i></a></span></li>
-                                <li><span id="RetainedUsers_" class="chart_trigger"><a>Retained Users <i class="icon-play"></i></a></span></li>
-                                <li><span id="ActiveUsers_" class="chart_trigger"><a>Active Users <i class="icon-play"></i></a></span></li>
-                                <!-- <li><span id="ReturnRate_" class="chart_trigger"><a>Return Rate <i class="icon-play"></i></a></span></li> -->
-                            </ul>
-                        </li>
-
-                        <li>
-                            <small><strong>Sessions</strong></small>
-                            <ul>
-                                <li><span id="Sessions_" class="chart_trigger"><a>Sessions <i class="icon-play"></i></a></span></li>
-                                <li><span id="MedianSessionLength_" class="chart_trigger"><a>Median Session Length <i class="icon-play"></i></a></span></li>
-                                <li><span id="AvgSessionLength_" class="chart_trigger"><a>Ave. Session Length <i class="icon-play"></i></a></span></li>
-                                <li><span id="PageViews_" class="chart_trigger"><a>Page Views <i class="icon-play"></i></a></span></li>
-                            </ul>
-                        </li>
-                        
-
-                        <li>
-                            <small><strong>Interactions</strong></small>
-                            <ul>
-                                <li><span id="Summary_" class="chart_trigger"><a>Summary <i class="icon-play"></i></a></span></li>
-                                <li><span id="ModuleViewed_" class="chart_trigger"><a>Module Viewed <i class="icon-play"></i></a></span></li>
-                                <li><span id="CourseViewed_" class="chart_trigger"><a>Course Viewed <i class="icon-play"></i></a></span></li>
-                                <li><span id="ModuleRated_" class="chart_trigger"><a>Module Rated <i class="icon-play"></i></a></span></li>
-                                <li><span id="PDFDownloaded_" class="chart_trigger"><a>PDF Downloaded <i class="icon-play"></i></a></span></li>
-                                <!-- <li><span id="ItemBookmarked_" class="chart_trigger"><a>Item Bookmarked <i class="icon-play"></i></a></span></li> -->
-                                <!-- <li><span id="TwitterHandleEnabled_" class="chart_trigger"><a>Twitter Handle Enabled <i class="icon-play"></i></a></span></li> -->
-                            </ul>
-                        </li>
-                        <li><small><strong>Learning Analytics</strong></small></li>
-                        <a onclick="work_in_progress();">TEST: work_in_progress();</a>
-                        <a class="get_item_data">TEST: get_item_data();</a>
-                    </ul>
-                </nav>
-            </div><!-- / navbar column -->
+            <!-- CHILD MENU populated with js REPLACE with PHP functions-->
+            <div id="child_menu_loaded"></div>
+            <script>
+                cc('Loading child menu partial','ready');
+                $( "#child_menu_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/NAVIGATION/child.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+            </script>
+            
             <!-- main content column -->
             <div class="thirteen columns main-content">
                 <div class="row content">
                     <!-- flash messages -->
                     <!-- / flash messages -->
-                    <div id="">
-                        <div class="row ten columns">
-                            <section class="report_display_switch" id="flurry_reports">
-                                <!-- status bar -->
-                                <div class="status-bar" style="padding-top:0;">
-                                    <div id="" class="row" style="margin-bottom:1em;">
-                                        <!-- <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a> -->
-                                        <div class="picker_holder">
-                                            <label for="start_date">Start Date</label>
-                                            <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
-                                        </div>
-                                        <div class="picker_holder">
-                                            <label for="end_date">End Date</label>
-                                            <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
-                                        </div>
-                                        <div class="picker_holder hideme" id="metric_type">
-                                            <label>Metric Type:</label>
-                                            <div class="picker">
-                                                <select id="basisfilter">
-                                                    <option value="null">
-                                                        - select -
-                                                    </option>
-                                                    <option value="appMetrics">
-                                                        App Metrics
-                                                    </option>
-                                                    <option disabled value="eventMetrics">
-                                                        Event Metrics
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="picker_holder hideme" id="app_metric_specific" >
-                                            <label>App Metric:</label>
-                                            <div class="picker">
-                                                <select>
-                                                    <option value="null">
-                                                        - select -
-                                                    </option>
-                                                    <optgroup label="Sessions">
-                                                        <option value="Sessions">
-                                                            Sessions
-                                                        </option>
-                                                        <option value="MedianSessionLength">
-                                                            Median Session Length
-                                                        </option>
-                                                        <option value="AvgSessionLength">
-                                                            Avg Session Length
-                                                        </option>
-                                                    </optgroup>
-                                                    <optgroup label="Users">
-                                                        <option value="ActiveUsers">
-                                                            Active Users
-                                                        </option>
-                                                        <option value="ActiveUsersByWeek">
-                                                            Active Users By Week
-                                                        </option>
-                                                        <option value="ActiveUsersByMonth">
-                                                            Active Users By Month
-                                                        </option>
-                                                        <option value="NewUsers">
-                                                            New Users
-                                                        </option>
-                                                        <option value="RetainedUsers">
-                                                            Retained Users
-                                                        </option>
-                                                    </optgroup>
-                                                    <optgroup label="Views">
-                                                        <option value="PageViews">
-                                                            Page Views
-                                                        </option>
-                                                        <option value="AvgPageViewsPerSession">
-                                                            Avg Page Views Per Session
-                                                        </option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="hideme" id="event_metric_specific">
-                                            <label>Event:</label> <input id="event_name" placeholder="Type EXACT Event Name..." type="text"> <label>Event Metric:</label>
-                                            <div class="picker">
-                                                <select>
-                                                    <option value="null">
-                                                        - select -
-                                                    </option>
-                                                    <optgroup label="Sessions">
-                                                        <option value="totalSessions">
-                                                            Total Sessions
-                                                        </option>
-                                                        <option value="totalCount">
-                                                            Total Count
-                                                        </option>
-                                                    </optgroup>
-                                                    <optgroup label="Users">
-                                                        <option value="usersLastDay">
-                                                            Users Last Day
-                                                        </option>
-                                                        <option value="usersLastWeek">
-                                                            Users Last Week
-                                                        </option>
-                                                        <option value="usersLastMonth">
-                                                            Users Last Month
-                                                        </option>
-                                                    </optgroup>
-                                                    <optgroup label="Average Users">
-                                                        <option value="usersLastDay">
-                                                            Ave Users Last Day
-                                                        </option>
-                                                        <option value="usersLastWeek">
-                                                            Ave Users Last Week
-                                                        </option>
-                                                        <option value="usersLastMonth">
-                                                            Ave Users Last Month
-                                                        </option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                   <!--  <div class="query_controls">
-                                        <label for=""></label><br>
-                                        <button id="runDashboard">Submit</button>
-                                         <a class="restart"><i class="fa fa-refresh"></i> Restart</a>
-                                         <a id="testFlurryAnalytics"><i class="fa fa-refresh"></i> testFlurryAnalytics()</a>
-                                    </div> -->
-                                </div>
-                                <!-- <span id="chart_key"><small><strong>Key:</strong>: <span class="flurry_key" style="color:#82bfd8;"><i class="fa fa-line-chart"></i> Flurry Data</span> <span class="compare_key" style="color: #fe5f55"><i class="fa fa-line-chart"></i> Course Data</span></small></span> -->
-
-                                <ul id="graphs-holder" class="widget-grid full-width">
-                                    <li id="widget-NewUsers">
-                                        <h2 class="yellow">
-                                            New Users <a class="ttip" data-tooltip="Total number of unique users who used the application for the first time in the chosen period (days/weeks/months)."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-NewUsers .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="NewUsersM" class="months">Months</span> 
-                                            <span id="NewUsersW" class="weeks">Weeks</span> 
-                                            <span id="NewUsersD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-NewUsers" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-                                    <li id="widget-RetainedUsers">
-                                        <h2 class="yellow">
-                                            Retained Users <a class="ttip" data-tooltip="Total number of users who remain active users of the application for chosen period (days/weeks/months)."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-RetainedUsers .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="RetainedUsersM" class="months">Months</span> 
-                                            <span id="RetainedUsersW" class="weeks">Weeks</span> 
-                                            <span id="RetainedUsersD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-RetainedUsers" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-                                    <li id="widget-ActiveUsers">
-                                        <h2 class="yellow">
-                                            Active Users <a class="ttip" data-tooltip="Total number of unique users who accessed the application per day."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ActiveUsers .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="ActiveUsersM" class="months">Months</span> 
-                                            <span id="ActiveUsersW" class="weeks">Weeks</span> 
-                                            <span id="ActiveUsersD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-ActiveUsers" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-
-                                    <li id="widget-Sessions">
-                                        <h2 class="yellow">
-                                            Sessions <a class="ttip" data-tooltip="The total number of times users accessed the application per in chosen period (days/weeks/months)."><i class="icon-info"></i></a>  <a class="toggle" gumby-trigger="#widget-Sessions .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="SessionsM" class="months">Months</span> 
-                                            <span id="SessionsW" class="weeks">Weeks</span> 
-                                            <span id="SessionsD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-Sessions" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-
-                                    <li id="widget-MedianSessionLength">
-                                        <h2 class="yellow">
-                                            Median Session Length <a class="ttip" data-tooltip="Median length of a user in chosen period (days/weeks/months)."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-MedianSessionLength .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="MedianSessionLengthM" class="months">Months</span> 
-                                            <span id="MedianSessionLengthW" class="weeks">Weeks</span> 
-                                            <span id="MedianSessionLengthD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-MedianSessionLength" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-
-                                    <li id="widget-AvgSessionLength">
-                                        <h2 class="yellow">
-                                            Ave. Session Length <a class="ttip" data-tooltip="Average length of a user in chosen period (days/weeks/months)."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-AvgSessionLength .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="AvgSessionLengthM" class="months">Months</span> 
-                                            <span id="AvgSessionLengthW" class="weeks">Weeks</span> 
-                                            <span id="AvgSessionLengthD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-AvgSessionLength" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-
-                                    <li id="widget-PageViews">
-                                        <h2 class="yellow">
-                                            Page Views <a class="ttip" data-tooltip="Total number of page views in chosen period (days/weeks/months)."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-PageViews .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="PageViewsM" class="months">Months</span> 
-                                            <span id="PageViewsW" class="weeks">Weeks</span> 
-                                            <span id="PageViewsD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-PageViews" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-
-                                  <!--   <li id="widget-Interactions">
-                                        <h2 class="yellow">
-                                            Interactions <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-Interactions .widget-content"><i class="icon-minus-squared"></i></a>
-                                            <span id="PageViewsM" class="months">Months</span> 
-                                            <span id="PageViewsW" class="weeks">Weeks</span> 
-                                            <span id="PageViewsD" class="days">Days</span> 
-                                        </h2>
-                                        <div class="widget-content">
-                                            <canvas id="flurry-chart-Interactions" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li> -->
-
-                                    <li id="widget-Summary">
-                                        <h2 class="yellow">
-                                            Summary <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> 
-                                            <a class="toggle" gumby-trigger="#widget-Summary .widget-content"><i class="icon-minus-squared"></i></a>
-                                        </h2>
-                                        <div class="widget-content">
-                                            <table class="tablesorter sortable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Event<br>Name</th>   
-                                                        <th>Total<br>Count</th>   
-                                                        <th>Total<br>Sessions</th>
-                                                        <th>Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Users <span class="clearfix">Last Month</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Day</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Week</span></th>   
-                                                        <th>Avg.Users <span class="clearfix">Last Month</span></th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody id=""></tbody>
-                                            </table>
-                                            <canvas id="flurry-chart-Summary" class="flurry_chart"></canvas>            
-                                        </div>
-                                    </li>
-
-                                    <li id="widget-ModuleViewed">
-                                        <h2 class="yellow">
-                                            Module Viewed <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleViewed .widget-content"><i class="icon-minus-squared"></i></a>
-                                        </h2>
-                                        <div class="widget-content">
-                                            <label>Summary</label>
-                                            <table class="tablesorter sortable summary">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date</th>   
-                                                        <th>Total<br>Count</th>   
-                                                        <th>Total<br>Sessions</th>
-                                                        <th>Unique Users</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                            <label>Comparison</label>
-                                            <canvas id="flurry-chart-ModuleViewed" class="flurry_chart"></canvas>            
-                                            <label>Details</label>
-                                            <table class="tablesorter sortable byID">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID or Name</th>      
-                                                        <th>Total Count</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                            
-                                        </div>
-                                    </li>
-                                    <li id="widget-CourseViewed" class="">
-                                        <h2 class="yellow">
-                                            Course Viewed <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-CourseViewed .widget-content"><i class="icon-minus-squared"></i></a>
-                                        </h2>
-                                        <div class="widget-content">
-                                            <label>Summary</label>
-                                            <table class="tablesorter sortable summary">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date</th>   
-                                                        <th>Total<br>Count</th>   
-                                                        <th>Total<br>Sessions</th>
-                                                        <th>Unique Users</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                            <label>Comparison</label>
-                                            <canvas id="flurry-chart-CourseViewed" class="flurry_chart"></canvas>            
-                                            <label>Details</label>
-                                            <table class="tablesorter sortable byID">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID or Name</th>     
-                                                        <th>Total Count</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>           
-                                        </div>
-                                    </li>
-                                    <li id="widget-ModuleRated" class="">
-                                        <h2 class="yellow">
-                                            Module Rated <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleRated .widget-content"><i class="icon-minus-squared"></i></a>
-                                        </h2>
-                                        <div class="widget-content">
-                                            <label>Summary</label>
-                                            <table class="tablesorter sortable summary">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date</th>   
-                                                        <th>Total<br>Count</th>   
-                                                        <th>Total<br>Sessions</th>
-                                                        <th>Unique Users</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                            <label>Comparison</label>
-                                            <canvas id="flurry-chart-ModuleRated" class="flurry_chart"></canvas>            
-                                            <label>Details</label>
-                                            <table class="tablesorter sortable byID">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID or Name</th>      
-                                                        <th>Total Count</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table> 
-                                        </div>
-                                    </li>
-                                    <li id="widget-PDFDownloaded" class="">
-                                        <h2 class="yellow">
-                                            PDF Downloaded <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-PDFDownloaded .widget-content"><i class="icon-minus-squared"></i></a>
-                                        </h2>
-                                        <div class="widget-content">
-                                            <label>Summary</label>
-                                            <table class="tablesorter sortable summary">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date</th>   
-                                                        <th>Total<br>Count</th>   
-                                                        <th>Total<br>Sessions</th>
-                                                        <th>Unique Users</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                            <label>Comparison</label>
-                                            <canvas id="flurry-chart-PDFDownloaded" class="flurry_chart"></canvas>            
-                                            <label>Details</label>
-                                            <table class="tablesorter sortable byID">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID or Name</th>   
-                                                        <th>Total Count</th>   
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>           
-                                        </div>
-                                    </li>
-                                    
-                                </ul>
-                                
-                                <!-- TOTARA -->
-                                <!-- <span id="pull_student_data">pull_student_data()</span>  -->
-                                <!--  <h3><i class="fa fa-bar-chart"></i> Totara Activity</h3>
-                            <table class="tablesorter sortable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>   
-                                        <th>Student</th>   
-                                        <th>Action</th>
-                                        <th>Course ID</th>   
-                                        <th>Object Table</th>
-                                        <th>Object ID</th> 
-                                        <th>Date/Time</th>           
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_activity_result"></tbody>
-                            </table> -->
-                            </section>
-                            <!-- \"@endDate":"2015-12-08",
-//    "@startDate":"2015-01-01",
-//    "@type":"Summary",
-//    "@generatedDate":"12/10/15 8:32 AM",
-//    "@version":"1.0",
-//    "event":[  
-//       {  
-//          "@avgUsersLastDay":"0",
-//          "@avgUsersLastMonth":"1",
-//          "@avgUsersLastWeek":"0",
-//          "@eventName":"PDF Downloaded",
-//          "@totalCount":"34",
-//          "@totalSessions":"18",
-//          "@usersLastDay":"0",
-//          "@usersLastMonth":"6",
-//          "@usersLastWeek":"7"
-//       }, -->
-                            <section class="pill tabs" id="four_stages" style="display:none;">
-                                <ul class="tab-nav">
-                                    <li class="active">
-                                        <a href="#" onclick="populate_data_content()"><span class="light label">1</span> Interactions Summary</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><span class="light label">2</span> All Data</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><span class="light label">3</span> Learner Details</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content active">
-                                    <div class="widget-content" style="min-height: 500px;">
-                                        <div class="row graph_holder" id="video_view_stats">
-                                            <!-- <canvas height="250" id="video_views_bar" width="250"></canvas> -->
-                                            <ul>
-                                                <li>
-                                                    <h5>@eventName</h5>
-                                                </li>
-                                                <li>Total Times Video Launched: <span id="view_total_launches"></span></li>
-                                                <li>Total Abandoned Or Stalled Usages: <span id="total_abandoned_or_stalled"></span></li>
-                                                <li>Total Unique Users: <span id="total_unique_users"></span></li>
-                                                <li>Total instance Learning Module Consumed:
-                                                    <ul>
-                                                        <li>traditional model: <small>(coming soon...)</small>
-                                                        </li>
-                                                        <li>non-traditional model: <small>(coming soon...)</small>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="row graph_holder" id="video_time_stats">
-                                            <ul>
-                                                <li>
-                                                    <h5>
-                                                        Video View Report
-                                                    </h5>
-                                                </li>
-                                                <li>Longest Time in Module: <span id="longest_view_in_module"></span> <small>min</small>
-                                                </li>
-                                                <li>Shortest Time in Module: <span id="shortest_view_in_module"></span> <small>sec</small>
-                                                </li>
-                                                <li>Average Time in Module: <span id="average_viewing_length_in_module"></span> min
-                                                </li>
-                                                <li>Duration of Module: XX
-                                                </li>
-                                            </ul>
-                                            <canvas height="250" id="video_view_duration" width="250"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-content">
-                                    <div class="">
-                                        <div class="table_key" id="verbsheader">
-                                            <strong>Verbs:</strong>
-                                        </div>
-                                        <table class="tablesorter striped rounded" id="sortable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        ID <i class="icon-arrow-combo"></i>
-                                                    </th>
-                                                    <th>
-                                                        Student <i class="icon-arrow-combo"></i>
-                                                    </th>
-                                                    <th>
-                                                        Date <i class="icon-arrow-combo"></i>
-                                                    </th>
-                                                    <th>
-                                                        Time <i class="icon-arrow-combo"></i>
-                                                    </th>
-                                                    <th>
-                                                        Verb <i class="icon-arrow-combo"></i>
-                                                    </th>
-                                                    <th>
-                                                        Object <i class="icon-arrow-combo"></i>
-                                                    </th><!--<th>Part <i class="icon-arrow-combo"></i></th>-->
-                                                    <!-- <th>User <i class="icon-arrow-combo"></i></th>-->
-                                                </tr>
-                                            </thead>
-                                            <tbody class="verbtable"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="tab-content">
-                                    <div class="">
-                                        <div class="table_key">
-                                            <strong>Key:</strong> <span class="light label"><i class="fa fa-puzzle-piece green"></i> Hover to See Module Data</span><span class="light label"><i class="fa fa-check-square-o green"></i> Hover to View Knowledge Check Data</span>
-                                        </div>
-                                        <table class="tablesorter striped rounded" id="sortable_learner_detail">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <i class="icon-arrow-combo"></i>Student
-                                                    </th>
-                                                    <th>
-                                                        <i class="icon-arrow-combo"></i>Start Time
-                                                    </th>
-                                                    <th id="modules">
-                                                        <i class="icon-arrow-combo"></i>Modules
-                                                    </th>
-                                                    <th id="knowledge_checks">
-                                                        <i class="icon-arrow-combo"></i>Knowledge Checks
-                                                    </th>
-                                                    <th>
-                                                        <i class="icon-arrow-combo"></i> <!--<span>Total</span><br><br> -->Duration
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="learnerdetails"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="row five push_one columns" id="">
-                            <ul class="widget-grid full-width">
-                                <li data-type="video" id="widget-overview">
-                                    <h2 style="background-color:#b6dbac;">
-                                        Overview: <span id="data_query"></span> <a class="toggle" gumby-trigger="#widget-overview .widget-content"><i class="icon-minus-squared"></i></a>
-                                    </h2>
-                                    <div class="widget-content">
-                                        <div class="clearfix">
-                                            <ul>
-                                                <li id="overview_stats">
-                                                    <div class="growth_factor">
-                                                        <span class="badge">
-                                                            <span class="label"></span>
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <p>
-                                                            <span class="period"></span>
-                                                        </p>
-                                                    </div>
-                                                    <span class="current_val"></span>
-                                                    <span class="previous_val"></span>
-                                                </li>
-                                                <li class="current_val">
-                                                    <div class="growth_factor">
-                                                        <span class="badge default">
-                                                            <span class="number"></span>
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <p>
-                                                            <span class="period"></span>
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="previous_val">
-                                                    <div class="growth_factor">
-                                                        <span class="badge default">
-                                                            <span class="number"></span>
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <p>
-                                                            <span class="period"></span>
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <!-- <div id="overview_updated">
-                                            <span><i class="icon-arrows-ccw"></i> Data Updated: <time id="overview_updated_date"></time></span> <span><i class="icon-arrows-ccw"></i> Last Usage: <time id="overview_updated_usage"></time></span>
-                                        </div> -->
-                                    </div>
-                                </li>
-                            </ul>
-                            
-                            <ul class="widget-grid full-width">
-                                <li id="widget-app-overview">
-                                    <h2 style="background-color:#b6dbac;">
-                                        App Overview <a class="toggle" onclick="showFlurryAppStats();" ><i class="icon-minus-squared"></i></a>
-                                    </h2>
-                                    <div class="widget-content active" id="app_overview">
-                                        <ul>
-                                            <li>Name: <span class="app_name"></span></li>
-                                            <li>Platform: <span class="app_platform"></span></li>
-                                            <li>Category: <span class="app_category"></span></li>
-                                            <li>App Created: <span class="app_createdDate"></span></li>
-                                            <li>Report Generated: <span class="app_generatedDate"></span></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul class="widget-grid full-width">
-                                <li id="widget-app-version-history">
-                                    <h2 style="background-color:#b6dbac;">
-                                        App Version History <a class="toggle" gumby-trigger="#widget-app-version-history .widget-content"><i class="icon-minus-squared"></i></a>
-                                    </h2>
-                                    <div class="widget-content active">
-                                        <div class="row">
-                                            <ul class="app_version_history" style="margin:0; font-size:14px; line-height:1.5em;">
-                                                <!-- populated by js -->
-                                            </ul>
-                                        </li>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="row ten columns" id="content_loader">
+                        <!-- dashboard - mobile (flurry)
+                        learning (activity)
+                        teacher (mef) -->
+                        <script>
+                            $(document).ready(function() {
+                                if (urlParams['page'] == 'mobile-analytics'){
+                                    cc('Loading mobile-analytics partial','ready');
+                                    $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/mobile-analytics.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                                }
+                                if (urlParams['page'] == 'learning-activity'){
+                                    cc('Loading learning-activity partial','ready');
+                                    $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/learning-activity.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                                }
+                                if (urlParams['page'] == 'teacher-reports'){
+                                    cc('Loading teacher-reports partial','ready');
+                                    $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/teacher-reports.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                                }
+                            });
+                        </script>
                     </div>
+                    <div class="row five push_one columns" id="sidebar_widgets"></div>
+                    <script>
+                        cc('Loading sidebar_widgets partial','ready');
+                        $( "#sidebar_widgets" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/sidebar-widgets.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                    </script>
                 </div>
             </div><!-- / main content -->
         </div><!-- / #root -->
@@ -910,18 +121,10 @@
         
         <footer id="footer">
             <ul class="menu centered">
-                <li>
-                    <a href="/feedback"><i class="icon-comment"></i>Feedback</a>
-                </li>
-                <li>
-                    <a href="/help"><i class="icon-help-circled"></i>Help</a>
-                </li>
-                <li>
-                    <a href="/support"><i class="icon-mail"></i>Support</a>
-                </li>
-                <li>
-                    <a href="/contact"><i class="icon-mail"></i>Contact</a>
-                </li>
+                <li><a href="/feedback"><i class="icon-comment"></i>Feedback</a></li>
+                <li><a href="/help"><i class="icon-help-circled"></i>Help</a></li>
+                <li><a href="/support"><i class="icon-mail"></i>Support</a></li>
+                <li><a href="/contact"><i class="icon-mail"></i>Contact</a></li>
             </ul>
         </footer><!-- footer js -->
 
@@ -966,6 +169,7 @@
         <script src="assets/js/vendor/bootstrap.js"></script> 
         <script src="assets/vendor/moment/moment.min.js"></script> 
         <script src="assets/vendor/chart/Chart.min.js"></script> 
+        <script src="assets/vendor/jquery-plugin-query-object-master/jquery.query-object.js"></script> 
         <script src="assets/js/vendor/underscore.js"></script> 
 
         <!-- CUSTOM - Common scripts -->   

@@ -109,6 +109,11 @@ $(document).ready(function() {
   $("#get_item_data").click(function() {
     get_item_data();
   });
+
+  // $("li.mobile_analytics_triggers").click(function() {
+  //   window.location.search = jQuery.query.set("page", "mobile-analytics");
+  // });
+
   $("#work_in_progress").click(function() {
     // getItemDataFromEndpoint("16","course","get_startdate");
     work_in_progress();

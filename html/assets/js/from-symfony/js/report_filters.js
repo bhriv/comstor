@@ -63,7 +63,7 @@ $( window ).load(function() {
 	var actor = user.email; 
 	var user_roles = user.roles;
 
-	console.log(user.roles);
+	// console.log(user.roles);
 
     // var base_url = urls.analytics;
     

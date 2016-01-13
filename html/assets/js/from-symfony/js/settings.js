@@ -5,62 +5,62 @@
 $( document ).ready(function() {
 	// misc variables
 	// TEMP
-	var user = [];
-	user = {
-			    "id": "628",
-			    "username": "ben@invitrosocialmedia.com",
-			    "firstname": "Ben",
-			    "lastname": "Richards",
-			    "email": "ben@invitrosocialmedia.com",
-			    "city": "Los Angeles",
-			    "country": "US",
-			    "lang": "en",
-			    "timezone": "8.0",
-			    "firstaccess": "1426697383",
-			    "lastaccess": "1431449532",
-			    "lastlogin": "1431446607",
-			    "currentlogin": "1431446768",
-			    "lastip": "104.35.169.218",
-			    "picture": "39366",
-			    "url": "",
-			    "timecreated": "1426602943",
-			    "timemodified": "1426699319",
-			    "posts": [
-			      {
-			        "id": "47",
-			        "module": "notes",
-			        "userid": "628",
-			        "courseid": "23",
-			        "groupid": "0",
-			        "moduleid": "0",
-			        "coursemoduleid": "0",
-			        "subject": "",
-			        "summary": null,
-			        "content": "Ben Richards Test Student Notes 5-8-15",
-			        "uniquehash": "",
-			        "rating": "0",
-			        "format": "2",
-			        "summaryformat": "0",
-			        "attachment": null,
-			        "publishstate": "draft",
-			        "lastmodified": "1431117607",
-			        "created": "1431117579",
-			        "usermodified": "36"
-			      }
-			    ],
-			    "quizattempts": [
+	// var user = [];
+	// user = {
+	// 		    "id": "628",
+	// 		    "username": "ben@invitrosocialmedia.com",
+	// 		    "firstname": "Ben",
+	// 		    "lastname": "Richards",
+	// 		    "email": "ben@invitrosocialmedia.com",
+	// 		    "city": "Los Angeles",
+	// 		    "country": "US",
+	// 		    "lang": "en",
+	// 		    "timezone": "8.0",
+	// 		    "firstaccess": "1426697383",
+	// 		    "lastaccess": "1431449532",
+	// 		    "lastlogin": "1431446607",
+	// 		    "currentlogin": "1431446768",
+	// 		    "lastip": "104.35.169.218",
+	// 		    "picture": "39366",
+	// 		    "url": "",
+	// 		    "timecreated": "1426602943",
+	// 		    "timemodified": "1426699319",
+	// 		    "posts": [
+	// 		      {
+	// 		        "id": "47",
+	// 		        "module": "notes",
+	// 		        "userid": "628",
+	// 		        "courseid": "23",
+	// 		        "groupid": "0",
+	// 		        "moduleid": "0",
+	// 		        "coursemoduleid": "0",
+	// 		        "subject": "",
+	// 		        "summary": null,
+	// 		        "content": "Ben Richards Test Student Notes 5-8-15",
+	// 		        "uniquehash": "",
+	// 		        "rating": "0",
+	// 		        "format": "2",
+	// 		        "summaryformat": "0",
+	// 		        "attachment": null,
+	// 		        "publishstate": "draft",
+	// 		        "lastmodified": "1431117607",
+	// 		        "created": "1431117579",
+	// 		        "usermodified": "36"
+	// 		      }
+	// 		    ],
+	// 		    "quizattempts": [
 			      
-			    ],
-			    "quizgrades": [
+	// 		    ],
+	// 		    "quizgrades": [
 			      
-			    ]
-			 };
+	// 		    ]
+	// 		 };
 
 	var actor = user.email; //user.email;
 	var mode = $("#analytics_mode").html();
 	var pcid = $("#pageid").html();
-	// var base_url = urls.settings;
-	var base_url = 'http://localhost:8000/temp/settings/';
+	var base_url = urls.settings;
+	// var base_url = 'http://localhost:8000/temp/settings/';
 	var loader = $('.loading');
 	var empty = $('.empty');
 
