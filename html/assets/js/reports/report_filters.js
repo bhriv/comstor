@@ -109,16 +109,18 @@ $( window ).load(function() {
 			
 			// @BHRIV
 			// after loading the options convert all select boxes into a selectBoxIt display
-			$("#catfilter select").selectBoxIt({ 
-				autoWidth: false
-			});
-			$("#coursefilter select").selectBoxIt({ 
-				autoWidth: false
-			});
+
+            // @2016 BHRIV hack
+			// $("#catfilter select").selectBoxIt({ 
+			// 	autoWidth: false
+			// });
+			// $("#coursefilter select").selectBoxIt({ 
+			// 	autoWidth: false
+			// });
 			
-			$("#quizfilter select").selectBoxIt({ 
-				autoWidth: false
-			});
+			// $("#quizfilter select").selectBoxIt({ 
+			// 	autoWidth: false
+			// });
 			
 		 });
 	}

@@ -205,63 +205,74 @@ $('#select-all').on('click',function(e) {
 //     // go to page selector - select dropdown that sets the current page
 //     cssGoto: '.gotoPage'
 //   };
+// 
 
-$(".tablesorter").tablesorter({
-  headers: {
-      // disable sorting of the first column (we can use zero or the header class name)
-      0 : {
-        // disable it by setting the property sorter to false
-        //sorter: false
-      }
-    },
-});
 
-$(".tablesorter-filter-paged").tablesorter({
-  headers: {
-      // disable sorting of the first column (we can use zero or the header class name)
-      0 : {
-        // disable it by setting the property sorter to false
-        //sorter: false
-      }
-    },
-    widgets: ["zebra", "filter"],
-    widthFixed: true,
-    widgetOptions : {
-      // filter_anyMatch replaced! Instead use the filter_external option
-      // Set to use a jQuery selector (or jQuery object) pointing to the
-      // external filter (column specific or any match)
-      //filter_external : '.search',
-      // add a default type search to the first name column
-      filter_defaultFilter: { 1 : '~{query}' },
-      // include column filters
-      filter_columnFilters: true,
-      filter_placeholder: { search : 'Search...' },
-      filter_saveFilters : true,
-      filter_reset: '.reset'
-    }
-}); //.tablesorterPager(pagerOptions);
+$(document).ready(function() {
+  //ckeditor 
+  
+  // Replace the <textarea id="editor1"> with a CKEditor
+  // instance, using default configuration.
+  // CKEDITOR.replace( 'textarea.editor' );
 
-//instantiate any input fields with a 'datepicker' class
-$('.datepicker').pikaday({
-  format: 'MM/DD/YYYY'
-});
 
-// Add a Group user filter
-$('#filterbox').on('keyup',function(){
-  searchstr = $(this).val().toLowerCase();
-  filterel = $('.filteritems td.name');
-  filterel.each(function(){
-    if($(this).text().toLowerCase().indexOf(searchstr) < 0){
-      $(this).parent().hide();
-    }else{
-      $(this).parent().show();
-    }
+  $(".tablesorter").tablesorter({
+    headers: {
+        // disable sorting of the first column (we can use zero or the header class name)
+        0 : {
+          // disable it by setting the property sorter to false
+          //sorter: false
+        }
+      },
   });
-});
 
-// //ckeditor 
-// $( 'textarea.editor' ).ckeditor();
+  $(".tablesorter-filter-paged").tablesorter({
+    headers: {
+        // disable sorting of the first column (we can use zero or the header class name)
+        0 : {
+          // disable it by setting the property sorter to false
+          //sorter: false
+        }
+      },
+      widgets: ["zebra", "filter"],
+      widthFixed: true,
+      widgetOptions : {
+        // filter_anyMatch replaced! Instead use the filter_external option
+        // Set to use a jQuery selector (or jQuery object) pointing to the
+        // external filter (column specific or any match)
+        //filter_external : '.search',
+        // add a default type search to the first name column
+        filter_defaultFilter: { 1 : '~{query}' },
+        // include column filters
+        filter_columnFilters: true,
+        filter_placeholder: { search : 'Search...' },
+        filter_saveFilters : true,
+        filter_reset: '.reset'
+      }
+  }); //.tablesorterPager(pagerOptions);
 
+  //instantiate any input fields with a 'datepicker' class // If you're using jQuery make sure to pass only the first element:
+  var picker = new Pikaday({ field: $('.datepicker')[0] });
+  // old version
+  // $('.datepicker').pikaday({
+  //   format: 'MM/DD/YYYY'
+  // });
+
+  // Add a Group user filter
+  $('#filterbox').on('keyup',function(){
+    searchstr = $(this).val().toLowerCase();
+    filterel = $('.filteritems td.name');
+    filterel.each(function(){
+      if($(this).text().toLowerCase().indexOf(searchstr) < 0){
+        $(this).parent().hide();
+      }else{
+        $(this).parent().show();
+      }
+    });
+  });
+
+
+}); // end doc ready
 
 // // global to track total mentions
 // var tally = 0;

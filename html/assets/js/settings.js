@@ -387,8 +387,8 @@ $( document ).ready(function() {
 	}
 
 	// SelectBoxIt - default settin
-	$("select[name='coursename']").selectBoxIt({ 
-		showFirstOption: false,
-		autoWidth: false
-	});
+	// $("select[name='coursename']").selectBoxIt({ 
+	// 	showFirstOption: false,
+	// 	autoWidth: false
+	// });
 });
