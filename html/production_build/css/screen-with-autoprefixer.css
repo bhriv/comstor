@@ -14,6 +14,15 @@ Import Resets
 @import url(../../assets/vendor/jquery.fileupload.css);
 /* Test For autoprefixer browser support */
 /* line 4, ../sass/_custom.scss */
+::-webkit-input-placeholder{
+  color: #ccc;
+}
+::-moz-placeholder{
+  color: #ccc;
+}
+:-ms-input-placeholder{
+  color: #ccc;
+}
 ::placeholder {
   color: #ccc;
 }
@@ -316,7 +325,9 @@ button {
   width: 70px;
   height: 70px;
   display: block;
-  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
   border-right: 1px solid #eee;
   border-top: 1px solid #eee;
   top: 10px !important;

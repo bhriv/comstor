@@ -22,41 +22,21 @@
         <meta content="" itemprop="description">
         <meta content="" itemprop="image">
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
-        <title>
-            Dashboard - Comstor Lumious
-        </title>
-        
-        <link href="css/favicon.css" rel="shortcut icon" type="image/x-icon">
-        
+        <title>Dashboard - Comstor Lumious</title>
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <!-- Merge these to SASS files once framework is established -->
         <link href="assets/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
-
-        <!-- <link href="assets/from-symfony/css/pikaday.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/jquery.fileupload.css" rel="stylesheet"> -->
-        <!-- <link href="assets/from-symfony/css/style.css" rel="stylesheet"> -->
-        <link href="assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
-
-        <script src="assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
-        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
-        <!-- Unminified -->
-        <script src="assets/js/vendor/jquery.js"></script> 
-        <script src="assets/vendor/jqueryui/jquery-ui.js"></script>
-        <script src="assets/js/console-class.js"></script> 
-        <script src="assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
+        <link href="production_build/css/screen-with-autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
         
-        <!-- Dev Only -->
-        <script src="assets/js/testing-only.js"></script>
-        <script>
-            urls = { 
-                analytics: 'http://akronzip.com/',
-                messaging: 'http://akronzip.com/',
-                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
-                settings: 'http://akronzip.com/',
-                reports: 'http://www.privacyvector.com/api/lumiousreports/'
-            };
-        </script>
+        <!-- Modernizr - load first, then jQuery -->
+        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
+        <!-- Grab Google CDN's jQuery, fall back to local if offline, 2.0 for modern browsers, oldIE not supported by this project  -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script>if (!window.jQuery) { document.write('<script src="assets/from-symfony/js/libs/jquery-2.0.2.min.js"><\/script>'); }</script>
+        <script src="assets/js/console-class.js"></script> 
     </head>
     <body class="cisco_one">
-        <!--[if lt IE 7]>
+        <!--[if lt IE 8]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <!-- <?php //include_once('header') ?> -->
@@ -66,7 +46,6 @@
             cc('Loading header partial','ready');
             $( "#header_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/header.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
         </script>
-
     
         <div class="row" id="root">
             <!-- navbar column -->
@@ -129,88 +108,94 @@
             </ul>
         </footer><!-- footer js -->
 
-        <!-- From Symfony: LIBRARY -->
+    
+        
+        <!-- Dev Only -->
+        <script src="assets/js/testing-only.js"></script>
 
-        <!--    <script src="https://www.highcharts.com/samples/data/maps/world.js"></script> 
-        <script src="//cdn.ckeditor.com/4.4.3/basic/ckeditor.js"></script>
-        <script src="//cdn.ckeditor.com/4.4.3/basic/adapters/jquery.js"></script>  
-        -->
-
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/gumby.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.checkbox.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.fixed.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.navbar.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.radiobtn.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.retina.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.skiplink.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.tabs.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.toggleswitch.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/jquery.validation.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/masonry.pkgd.min.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/gumby.init.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/retina.min.js"></script>
-         
-        <script src="assets/js/from-symfony/js/libs/dna.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/dumper.js" type="text/javascript"></script> 
-        <!--
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script>
-    -->
-         
-        <script src="assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.min.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/jquery-sortable-min.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/pikaday.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript"></script> 
-        <!-- END From Symfony -->
+        <script>
+            urls = { 
+                analytics: 'http://akronzip.com/',
+                messaging: 'http://akronzip.com/',
+                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
+                settings: 'http://akronzip.com/',
+                reports: 'http://www.privacyvector.com/api/lumiousreports/'
+            };
+        </script>
+    
+    <!-- From Symfony: LIBRARY -->
+        <script type="text/javascript" src="assets/from-symfony/js/libs/gumby.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.checkbox.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.fixed.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.navbar.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.radiobtn.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.retina.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.skiplink.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.tabs.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/gumby.toggleswitch.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/jquery.validation.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ui/masonry.pkgd.min.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/gumby.init.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/fp_js_validator.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/retina.min.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/dna.js"></script> 
+        <script type="text/javascript" src="assets/from-symfony/js/libs/dumper.js"></script> 
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ckeditor/ckeditor.4.4.3.basic.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/ckeditor/ckeditor.4.4.3.adapters.jquery.js"></script>
+        <script type="text/javascript" src="assets/from-symfony/js/libs/tablesorter/jquery.tablesorter.min.js"></script> 
+        <script type="text/javascript" src="assets/from-symfony/js/libs/tablesorter/jquery.tablesorter.pager.js"></script> 
+        <script type="text/javascript" src="assets/from-symfony/js/libs/tablesorter/jquery.tablesorter.widgets.js"></script> 
+        <script type="text/javascript" src="assets/from-symfony/js/libs/sortable.min.js"></script> 
+        <script type="text/javascript" src="assets/from-symfony/js/libs/selectBoxIt.min.js"></script> 
+        
+    <!-- END From Symfony -->
          
         <!-- CUSTOM -->  
-        <script src="assets/js/vendor/bootstrap.js"></script> 
-        <script src="assets/vendor/moment/moment.min.js"></script> 
-        <script src="assets/vendor/chart/Chart.min.js"></script> 
-        <script src="assets/vendor/jquery-plugin-query-object-master/jquery.query-object.js"></script> 
-        <script src="assets/js/vendor/underscore.js"></script> 
+        <script type="text/javascript" src="assets/vendor/jqueryui/jquery-ui.js"></script> 
+        <script type="text/javascript" src="assets/vendor/jquery.placeholder.js"></script> 
+        <script type="text/javascript" src="assets/vendor/bootstrap.js"></script> 
+        <script type="text/javascript" src="assets/vendor/underscore.js"></script> 
+        <script type="text/javascript" src="assets/vendor/moment/moment.min.js"></script> 
+        <script type="text/javascript" src="assets/vendor/chart/Chart.min.js"></script> 
+        <script type="text/javascript" src="assets/vendor/jquery-plugin-query-object-master/jquery.query-object.js"></script> 
+        <script type="text/javascript" src="assets/vendor/Pikaday-master/pikaday.js"></script>
 
-        <!-- CUSTOM - Common scripts -->   
-        <script src="assets/js/useful.js"></script> 
-        <script src="assets/js/local-storage.js"></script> 
+        <script type="text/javascript" src="assets/js/useful.js"></script> 
+        <script type="text/javascript" src="assets/js/local-storage.js"></script> 
         
-        
-        <!-- Route Based Script Loading (js implementation) --> 
-        <script src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
-        <!--
-        <script src="assets/js/dashboard.js"></script> 
-        <script src="assets/js/flurry.js"></script> 
-        <script src="assets/js/totara.js"></script> 
-        -->
 
         <!-- From Symfony: CUSTOM -->
-         
-        <script src="assets/js/from-symfony/js/plugins.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/main.js" type="text/javascript"></script> 
+        <script type="text/javascript" src="assets/js/settings.js"></script> 
+        <script type="text/javascript" src="assets/js/main.js"></script> 
+        <script type="text/javascript" src="assets/js/analytics.js"></script> 
+        <script type="text/javascript" src="assets/js/messaging.js"></script>
+
+        <!-- Route Based Script Loading (js implementation) --> 
+        <script type="text/javascript" src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
+        <!--
+        <script type="text/javascript" src="assets/js/dashboard.js"></script> 
+        <script type="text/javascript" src="assets/js/flurry.js"></script> 
+        <script type="text/javascript" src="assets/js/totara.js"></script> 
+        -->
 
     <!-- MEF REPORT FILTERS -->
-        <script src="assets/js/from-symfony/js/report_filters.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/report_students_access.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/report_students_performance.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/report_queries_questions.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/report_queries_attempts.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/report_concatenated_rows.js" type="text/javascript"></script> 
-    
-        <script src="assets/js/from-symfony/js/analytics.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/settings.js" type="text/javascript"></script> 
+        <script type="text/javascript" src="assets/js/reports/report_filters.js"></script> 
+        <script type="text/javascript" src="assets/js/reports/report_students_access.js"></script> 
+        <script type="text/javascript" src="assets/js/reports/report_students_performance.js"></script> 
+        <script type="text/javascript" src="assets/js/reports/report_queries_questions.js"></script> 
+        <script type="text/javascript" src="assets/js/reports/report_queries_attempts.js"></script> 
+        <script type="text/javascript" src="assets/js/reports/report_concatenated_rows.js"></script> 
+
+         
         <!-- END From Symfony -->
         
         <!-- Production Ready : All vendor and custom js compiled 
          ** BREAKS lumi.js
-
-        <script src="build/production-uglified.js"></script>
-
+        <script type="text/javascript" src="build/production-uglified.js"></script>
         -->
-         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-         
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;

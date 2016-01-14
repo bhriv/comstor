@@ -60,5 +60,14 @@ $(document).ready(function() {
           cc('teacher-reports script not loaded','fatal');
       }); 
     }
+    if (urlParams['page'] == 'login'){
+      $.getScript( "assets/js/fb_login.js" )
+        .done(function( script, textStatus ) {
+          cc('fb_login loading '+ textStatus,'ready' );
+        })
+        .fail(function( jqxhr, settings, exception ) {
+          cc('fb_login script not loaded','fatal');
+      }); 
+    }
 });
 

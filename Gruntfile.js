@@ -7,35 +7,88 @@ module.exports = function(grunt) {
             sass_folder: 'html/assets/sass',
             css_folder: 'html/assets/css',
             js_folder: 'html/assets/js',
+            js_libs_folder: 'html/assets/from-symfony/js/libs',
+            js_vendor_folder: 'html/assets/vendor',
+            js_lumious_reports: 'html/assets/js/reports',
             images_folder: 'html/assets/images',
             // files for deploying
-            build_folder: 'html/build'
+            production_build_folder: 'html/production_build'
             // Usage Example: 
                 // dest: '<%= dirs.sass_folder %>/assets/sass' 
         },
 
         pkg: grunt.file.readJSON('package.json'),
         // Concat JS into single production file
-        concat: {   
+        concat: {
+            gumby: {
+                src: [
+                    '<%= dirs.js_libs_folder %>/gumby.js', 
+                    '<%= dirs.js_libs_folder %>/ui/*.js', 
+                    '<%= dirs.js_libs_folder %>/gumby.init.js', 
+                ],
+                dest: '<%= dirs.js_folder %>/build/concat-gumby.js',
+            },
+            ui_libs: {
+                src: [
+                    '<%= dirs.js_libs_folder %>/jquery-ui-1.11.4.js',
+                    '<%= dirs.js_libs_folder %>/fp_js_validator.js',
+                    '<%= dirs.js_libs_folder %>/retina.js',
+                    '<%= dirs.js_libs_folder %>/respond.js',
+                    '<%= dirs.js_libs_folder %>/dna.js',
+                    '<%= dirs.js_libs_folder %>/dumper.js',
+                    '<%= dirs.js_libs_folder %>/ckeditor/*.js',
+                    '<%= dirs.js_libs_folder %>/tablesorter/*.js',
+                    '<%= dirs.js_libs_folder %>/sortable.js',
+                    '<%= dirs.js_libs_folder %>/selectBoxIt.min.js',
+                ],
+                dest: '<%= dirs.js_folder %>/build/concat-ui_libs.js',
+            },
+            ui_vendor: {
+                src: [
+                    '<%= dirs.js_vendor_folder %>/jquery-ui.js',
+                    '<%= dirs.js_vendor_folder %>/jquery.placeholder.js',
+                    '<%= dirs.js_vendor_folder %>/bootstrap.js',
+                    '<%= dirs.js_vendor_folder %>/underscore.js',
+                    '<%= dirs.js_vendor_folder %>/moment/moment.min.js',
+                    '<%= dirs.js_vendor_folder %>/chart/Chart.min.js',
+                    '<%= dirs.js_vendor_folder %>/jquery-plugin-query-object-master/jquery.query-object.js',
+                    '<%= dirs.js_vendor_folder %>/Pikaday-master/pikaday.js',
+                ],
+                dest: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',
+            },
+            lumious_reports: {
+                src: [
+                    '<%= dirs.js_lumious_reports %>/report_filters.js',
+                    '<%= dirs.js_lumious_reports %>/report_students_access.js',
+                    '<%= dirs.js_lumious_reports %>/report_students_performance.js',
+                    '<%= dirs.js_lumious_reports %>/report_queries_questions.js',
+                    '<%= dirs.js_lumious_reports %>/report_queries_attempts.js',
+                    '<%= dirs.js_lumious_reports %>/report_concatenated_rows.js',
+                ],
+                dest: '<%= dirs.js_folder %>/build/concat-reports.js',
+            },
             dist: {
                 src: [
-                    // '<%= dirs.js_folder %>/vendor/*.js', // All JS in the libs folder
-                    '<%= dirs.js_folder %>/vendor/jquery.js',  // Special Sauce trigger
-                    '<%= dirs.js_folder %>/vendor/bootstrap.js',  // Special Sauce trigger
-                    '<%= dirs.js_folder %>/vendor/underscore.js',  // Special Sauce trigger
-                    // '<%= dirs.js_folder %>/lumi.js',  // Special Sauce trigger
-                    // '<%= dirs.js_folder %>/lumi-blackjack.js',  // Special Sauce trigger
-                    '<%= dirs.js_folder %>/main.js'  // This specific file
+                    '<%= dirs.js_folder %>/useful.js',  // This specific file
+                    '<%= dirs.js_folder %>/local-storage.js',  // This specific file
+                    '<%= dirs.js_folder %>/settings.js',  // This specific file
+                    '<%= dirs.js_folder %>/main.js',  // This specific file
+                    '<%= dirs.js_folder %>/analytics.js',  // This specific file
+                    '<%= dirs.js_folder %>/messaging.js',  // This specific file
                 ],
-                dest: '<%= dirs.js_folder %>/build/production.js',
-            }
+                dest: '<%= dirs.js_folder %>/build/concat-dist.js',
+            },
         },
         // Uglify JS
         uglify: {
             build: {
-                src: '<%= dirs.js_folder %>/build/production.js',
+                src: '<%= dirs.js_folder %>/build/concat-gumby.js',
+                src: '<%= dirs.js_folder %>/build/concat-ui_libs.js',
+                src: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',
+                src: '<%= dirs.js_folder %>/build/concat-reports.js',
+                src: '<%= dirs.js_folder %>/build/concat-dist.js',
                 // dest: '<%= dirs.js_folder %>/build/production-uglified.js'
-                dest: '<%= dirs.build_folder %>/production-uglified.js'
+                dest: '<%= dirs.production_build_folder %>/all-uglified.js'
             }
         },
         // Image Optimization
@@ -45,7 +98,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'html/assets/images',
                     src: ['**/*.{png,jpg,jpeg,gif}'],
-                    dest: 'html/build/images-optimized'
+                    dest: 'html/production_build/images-optimized'
                 }]
             }
         },
@@ -116,7 +169,7 @@ module.exports = function(grunt) {
                 // Target-specific options go here.
               },
               src: 'html/assets/css/screen.css',
-              dest: 'html/assets/css/autoprefixer/screen-autoprefixer.css'
+              dest: 'html/production_build/css/screen-with-autoprefixer.css'
             },
         },
 
@@ -189,11 +242,11 @@ module.exports = function(grunt) {
     
     // Tell Grunt what to do when we type "grunt" into the terminal (default tasks)
     // PRODUCTION - Use these tasks
-    // grunt.registerTask('default', ['concat','uglify','imagemin','compass:dev','autoprefixer' ]);
+    grunt.registerTask('default', ['concat','uglify','imagemin','compass:dev','autoprefixer' ]);
     // grunt.registerTask('default', ['concat','compass:dev' ]);
     // grunt.registerTask('default', ['concat','uglify' ]);
     // grunt.registerTask('default', ['concat','uglify','compass:dev' ]);
     // DEV 
-    grunt.registerTask('default', ['concat','compass:dev']);
+    // grunt.registerTask('default', ['concat','compass:dev']);
 
 };
