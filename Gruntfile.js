@@ -65,7 +65,7 @@ module.exports = function(grunt) {
                     '<%= dirs.js_lumious_reports %>/report_queries_attempts.js',
                     '<%= dirs.js_lumious_reports %>/report_concatenated_rows.js',
                 ],
-                dest: '<%= dirs.js_folder %>/build/concat-reports.js',
+                dest: '<%= dirs.js_folder %>/build/concat-lumious_reports.js',
             },
             dist: {
                 src: [
