@@ -12,38 +12,11 @@ $( document ).ready(function() {
 
 	function renderDash(){
 
-	    var base_url = urls.analytics;
-	    var user_roles = user.roles;
-	//	var base_url = "http://akronzip.com/";
-		var url_activelearners = base_url + "activelearners";
-		var url_challenges = base_url + "challenges";
-		var url_remediations = base_url +"remediations";
-		
-		var url_alerts = base_url + "alerts";
-		var url_openalerts = base_url +"openalerts";
-		
-		var url_activitygraph = base_url + "activitygraph";
-		var url_usergraph = base_url +"usergraph";
-		var url_messagegraph = base_url + "messagegraph";
-		
-		var url_plan = base_url + "plan";
-
-		var url_activityfeed = base_url + "statement";
-
-		var url_verbtrends = base_url + "verbtrends";
-		var url_usertrends = base_url + "actortrends";
-		var url_activitytrends = base_url + "targettrends";
-
-		var url_quiz_reports = base_url + "results";
-
-		var url_course_students = base_url + "results/courselist/";
-		
-		var analytics_mode = checkLocalStorage('filter_mode');
-
 		//override analytics mode based on user type
 		/*if(searchRoles('ROLE_INSTRUCTOR')){
 			analytics_mode = "courseplan";
 		}*/
+		var analytics_mode = checkLocalStorage('filter_mode');
 		
 		if (analytics_mode == "plan") {
 			var planid = checkLocalStorage('current_plan');

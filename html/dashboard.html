@@ -76,6 +76,131 @@
                     <!-- flash messages -->
                     <!-- / flash messages -->
                     <div class="row ten columns" id="content_loader">
+
+
+
+
+
+
+                        <div class="" style="padding-top:0;">
+                                    <div id="" class="row" style="margin-bottom:1em;">
+                                        <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a>
+                                        <div class="picker_holder">
+                                            <label for="start_date">Start Date</label>
+                                            <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
+                                        </div>
+                                        <div class="picker_holder">
+                                            <label for="end_date">End Date</label>
+                                            <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
+                                        </div>
+                                        <div class="picker_holder " id="metric_type">
+                                            <label>Metric Type:</label>
+                                            <div class="picker">
+                                                <select id="basisfilter">
+                                                    <option value="null">
+                                                        - select -
+                                                    </option>
+                                                    <option value="appMetrics">
+                                                        App Metrics
+                                                    </option>
+                                                    <option disabled value="eventMetrics">
+                                                        Event Metrics
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="picker_holder " id="app_metric_specific" >
+                                            <label>App Metric:</label>
+                                            <div class="picker">
+                                                <select>
+                                                    <option value="null">
+                                                        - select -
+                                                    </option>
+                                                    <optgroup label="Sessions">
+                                                        <option value="Sessions">
+                                                            Sessions
+                                                        </option>
+                                                        <option value="MedianSessionLength">
+                                                            Median Session Length
+                                                        </option>
+                                                        <option value="AvgSessionLength">
+                                                            Avg Session Length
+                                                        </option>
+                                                    </optgroup>
+                                                    <optgroup label="Users">
+                                                        <option value="ActiveUsers">
+                                                            Active Users
+                                                        </option>
+                                                        <option value="ActiveUsersByWeek">
+                                                            Active Users By Week
+                                                        </option>
+                                                        <option value="ActiveUsersByMonth">
+                                                            Active Users By Month
+                                                        </option>
+                                                        <option value="NewUsers">
+                                                            New Users
+                                                        </option>
+                                                        <option value="RetainedUsers">
+                                                            Retained Users
+                                                        </option>
+                                                    </optgroup>
+                                                    <optgroup label="Views">
+                                                        <option value="PageViews">
+                                                            Page Views
+                                                        </option>
+                                                        <option value="AvgPageViewsPerSession">
+                                                            Avg Page Views Per Session
+                                                        </option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="" id="event_metric_specific">
+                                            <label>Event:</label> <input id="event_name" placeholder="Type EXACT Event Name..." type="text"> <label>Event Metric:</label>
+                                            <div class="picker">
+                                                <select>
+                                                    <option value="null">
+                                                        - select -
+                                                    </option>
+                                                    <optgroup label="Sessions">
+                                                        <option value="totalSessions">
+                                                            Total Sessions
+                                                        </option>
+                                                        <option value="totalCount">
+                                                            Total Count
+                                                        </option>
+                                                    </optgroup>
+                                                    <optgroup label="Users">
+                                                        <option value="usersLastDay">
+                                                            Users Last Day
+                                                        </option>
+                                                        <option value="usersLastWeek">
+                                                            Users Last Week
+                                                        </option>
+                                                        <option value="usersLastMonth">
+                                                            Users Last Month
+                                                        </option>
+                                                    </optgroup>
+                                                    <optgroup label="Average Users">
+                                                        <option value="usersLastDay">
+                                                            Ave Users Last Day
+                                                        </option>
+                                                        <option value="usersLastWeek">
+                                                            Ave Users Last Week
+                                                        </option>
+                                                        <option value="usersLastMonth">
+                                                            Ave Users Last Month
+                                                        </option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                </div>
+
+
+
+
+
                         <!-- dashboard - mobile (flurry)
                         learning (activity)
                         teacher (mef) -->
@@ -133,15 +258,18 @@
         <script type="text/javascript" src="assets/js/build/concat-gumby.js"></script>
         <script type="text/javascript" src="assets/js/build/concat-ui_libs.js"></script>
         <script type="text/javascript" src="assets/js/build/concat-ui_vendor.js"></script>
-        <script type="text/javascript" src="assets/js/build/concat-dist.js"></script>
-        
+        <script type="text/javascript" src="assets/js/build/concat-dashboard_custom.js"></script>
+
         <!-- Production Ready : All vendor and custom js compiled 
         <script type="text/javascript" src="production_build/all-uglified.js"></script>
         -->
 
-        <!-- Route Based Script Loading (js implementation) --> 
+        <!-- Route Based Script Loading (js implementation) 
         <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>
+    --> 
         <script type="text/javascript" src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
+
+        
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>

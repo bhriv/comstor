@@ -1,22 +1,23 @@
 
 $( document ).ready(function() {
+  $('#flurry_reports').show();
   /************** Load Actve Users   **************/
   // var id = 'ActiveUsers';
   var id = 'NewUsers';
   var app_metric_specific = id;
   setAppMetricSpecific(app_metric_specific);
   getChartData(id);
-  /************** end - Load Actve Users   *********/ 
-  $('#flurry_reports').show();
-  
+  /************** end - Load Actve Users   *********/  
 });
+
+
 /***********************************************************************/
-/*************************** Setup Flurry API **********************/
+/*************************** Setup Flurry API Variables **********************/
 /***********************************************************************/
 
-var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
-    // apiKey                    = 'VW7Z3VDXXSK7HM6GKWZ3',
-    apiKey                    = get_apiKey_from_storage(),
+var base_url_Flurry           = 'http://api.flurry.com/',
+    apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
+    apiKey                    = checkApiKey(), //'VW7Z3VDXXSK7HM6GKWZ3',
     flurry_country_data       = [], 
     flurry_metric_data        = [],
 
@@ -29,15 +30,23 @@ var apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
     flurry_values             = [],
     flurry_object             = [],
 
+    url_new_Flurry            = '',
     url_metric_type           = '',
     url_app_metric_specific   = '',
     url_startDate             = '',
     url_endDate               = '',
-    url_country               = 'ALL',
-    url_new_Flurry            = '',
-    base_url_Flurry           = 'http://api.flurry.com/';
+    url_country               = 'ALL';
+
+
+/***********************************************************************/
+/****************** Construct Flurry API Endpoint **********************/
+/***********************************************************************/
+
 
 function constructFlurryEndpoint(){
+  var base_url_Flurry       = 'http://api.flurry.com/',
+  apiAccessCode             = 'FX2FBFN9RQXW8DKJH4WB',
+  apiKey                    = checkApiKey(), //'VW7Z3VDXXSK7HM6GKWZ3',
   url_metric_type           = checkMetricType(),
   url_app_metric_specific   = checkAppMetricSpecific(),
   url_startDate             = checkStartDate(),
@@ -45,29 +54,26 @@ function constructFlurryEndpoint(){
   url_country               = 'ALL';
   url_new_Flurry = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
   // var DEBUG_url_new_Flurry = 'http://api.flurry.com/appMetrics/ActiveUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
-  console.log('API URL: '+url_new_Flurry);
+  // alert('URL for Endpoint is temp hardconded');
+  cc('API URL: '+url_new_Flurry,'success');
   return url_new_Flurry;
 }
 
+// construct endpoint URL with api access code and api key
 function constructFlurryAppInfoEndpoint(){
   url_app_metric_specific = 'getApplication';
-  // construct endpoint URL with api access code and api key
   url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey;
   return url_new_Flurry;
 }
 
+// get the app details from Flurry endpoint, then add to the app_overview div
 function getFlurryAppInfo(){
-  // get the app details from Flurry endpoint, then add to the app_overview div
-  console.log('----- START getFlurryAppInfo -----');
-  
+  cc('getFlurryAppInfo','run');
   $.getJSON( constructFlurryAppInfoEndpoint(), function( Flurry_json ) {
     console.log('getting url_Flurry data...');
     console.log(Flurry_json);
       //By using javasript json parser
-      // console.log('@category:' +Flurry_json['@category']);
-      // console.log('@createdDate:' +Flurry_json['@createdDate']);
-      // console.log('@name:' +Flurry_json['@name']);
-      var app_versions = Flurry_json['version'];
+      var app_versions = Flurry_json['version']; // @category, @createdDate, @createdDate,@name
       // loop through the version history and pass all version names to a list
       jQuery.each(app_versions, function(i, vdata) {
         console.log('app_versions DATA');
@@ -75,12 +81,10 @@ function getFlurryAppInfo(){
         var v_createdDate = vdata['@createdDate'];
         var v_name = vdata['@name'];
         var v_version = '<strong>Version Name:</strong> ' +v_name +'  <strong>Created:</strong> ' +v_createdDate;
-        //console.log('v_version: '+v_version);
         var v_history = '<li>'+v_version+'</li>';
-        
+        // Pass all version history to the UI
         $('ul.app_version_history').append(v_history);
       });
-      
       $('span.app_category').html(Flurry_json['@category']);
       $('span.app_createdDate').html(Flurry_json['@createdDate']);
       $('span.app_name').html(Flurry_json['@name']);
@@ -91,47 +95,44 @@ function getFlurryAppInfo(){
 }
 
 // Construct Endpoing to get all Company App Details
+// construct endpoint URL with api access code and api key
 function constructFlurryAllAppsInfoEndpoint(){
   url_app_metric_specific = 'getAllApplications';
-  // construct endpoint URL with api access code and api key
   url_new_Flurry = base_url_Flurry + 'appInfo/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode;
   return url_new_Flurry;
 }
 
 // Pull all Company App Details
+// get the app details from Flurry endpoint, then add to the app_overview div
 function getFlurryAllAppsInfo(){
-  // get the app details from Flurry endpoint, then add to the app_overview div
-  console.log('----- START getFlurryAllAppsInfo -----');
+  cc('getFlurryAllAppsInfo','run');
   $.getJSON( constructFlurryAllAppsInfoEndpoint(), function( Flurry_json ) {
     console.log('getting url_Flurry data...');
     console.log(Flurry_json);
-      // Parse using javasript json parser
-      console.log('@companyName:' +Flurry_json['@companyName']);
-      console.log('@generatedDate:' +Flurry_json['@generatedDate']);
-      console.log('@version:' +Flurry_json['@version']);
-      console.log('application:');
-      console.log(Flurry_json['application']);
-
-      var all_app_versions = Flurry_json['application'];
-
-      // loop through the version history and pass all version names to a list
-      jQuery.each(all_app_versions, function(i, vdata) {
-        console.log('app_versions DATA');
-        // @apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name"
-        console.log(vdata);
-        
-        var this_url = window.location.href;
-        var v_name = vdata['@name'];
-        var v_platform = vdata['@platform'];
-        var v_createdDate = vdata['@createdDate'];
-        var v_apiKey = vdata['@apiKey'];
-        var v_analytics_link = this_url+'analytics.html?apiKey='+v_apiKey;
-        var v_app_data = '<li><h5><a class="link_to_analytics" href="'+v_analytics_link+'" target="blank"><i class="fa fa-file"></i> ' +v_name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></li><li><strong><i class="fa fa-apple"></i> Platform: </strong> ' +v_platform+ '</li><li><strong><i class="fa fa-calendar"></i> Created: </strong> ' +v_createdDate+ '</li><li><strong><i class="fa fa-key"></i> API Key: </strong> ' +v_apiKey +'</li><li style="display:none;"><strong><a href="'+v_analytics_link+'" target="blank"><i class="fa fa-external-link"></i> '+v_analytics_link+'</a></strong></li>';
-        //console.log('v_version: '+v_version);
-        var v_all_apps = '<li><ul class="app_overview">'+v_app_data+'</ul></li>';
-        // Display all apps in a list
-        $('ul.all_apps').append(v_all_apps);
-      });
+    // Parse using javasript json parser
+    console.log('@companyName:' +Flurry_json['@companyName']);
+    console.log('@generatedDate:' +Flurry_json['@generatedDate']);
+    console.log('@version:' +Flurry_json['@version']);
+    console.log('application:');
+    console.log(Flurry_json['application']);
+    var all_app_versions = Flurry_json['application'];
+    // loop through the version history and pass all version names to a list
+    // @apiKey":"3R6JJMNY284SC6B3TD99","@createdDate":"2014-10-11","@platform":"Android","@name"
+    jQuery.each(all_app_versions, function(i, vdata) {
+      console.log('app_versions DATA');
+      console.log(vdata);
+      var this_url = window.location.href;
+      var v_name = vdata['@name'];
+      var v_platform = vdata['@platform'];
+      var v_createdDate = vdata['@createdDate'];
+      var v_apiKey = vdata['@apiKey'];
+      var v_analytics_link = this_url+'analytics.html?apiKey='+v_apiKey;
+      var v_app_data = '<li><h5><a class="link_to_analytics" href="'+v_analytics_link+'" target="blank"><i class="fa fa-file"></i> ' +v_name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></li><li><strong><i class="fa fa-apple"></i> Platform: </strong> ' +v_platform+ '</li><li><strong><i class="fa fa-calendar"></i> Created: </strong> ' +v_createdDate+ '</li><li><strong><i class="fa fa-key"></i> API Key: </strong> ' +v_apiKey +'</li><li style="display:none;"><strong><a href="'+v_analytics_link+'" target="blank"><i class="fa fa-external-link"></i> '+v_analytics_link+'</a></strong></li>';
+      //console.log('v_version: '+v_version);
+      var v_all_apps = '<li><ul class="app_overview">'+v_app_data+'</ul></li>';
+      // Display all apps in a list
+      $('ul.all_apps').append(v_all_apps);
+    });
     console.log('----- END getFlurryAllAppsInfo -----');
   });
 }
@@ -150,23 +151,27 @@ function showFlurryAppStats() {
 /*****************************************************************/
 
 function getChartData(id,period){
-  console.log('----- getChartData -----');
+  cc('getChartData','run');
   
-  console.log('period: '+period);
-  if (period == undefined) {
+  if (isItemNullorUndefined(period)) {
     period = 'days';
-    console.log('period updated: '+period);
-  }else{
-    console.log('period NOT updated: '+period);
+    period_label = 'Change This<br>Week';
+    growth_change_current = stats_label+'<br>This Week';
+    growth_change_previous = stats_label+'<br>Last Week';
+    cc('No period is set so the default of '+period+' will be used','warning');
+    }else{
+    console.log('period NOT updated. Period parameter: '+period);
   }
-  if (id == undefined) {
+  if (isItemNullorUndefined(id)) {
     id = 'ActiveUsers';
-    console.log('id updated: '+id);
-  }else{
-    console.log('id NOT updated: '+id);
+    cc('No id is set so the default of '+id+' will be used','warning');
+    }else{
+    console.log('id NOT updated. Id passed was: '+id);
   }
+
   var stats_label = '';
   var data_query_label = '';
+
   if (id == 'NewUsers'){ stats_label = 'New Users'; data_query_label = 'New Users';}
   if (id == 'RetainedUsers') { stats_label = 'Retained Users';  data_query_label = 'Retained Users';}
   if (id == 'Sessions') { stats_label = 'Sessions'; data_query_label = 'Sessions';}
@@ -177,95 +182,107 @@ function getChartData(id,period){
 
   // GROUP DATA by Period
 
-    var url_flurry_api = constructFlurryEndpoint();
-    var url_group_by = period;
+  var url_flurry_api = constructFlurryEndpoint();
+  cc('url_flurry_api = '+url_flurry_api,'info');
+  var url_flurry_api = url_flurry_api + '&groupBy=' + period;
+  cc('url_flurry_api WITH PERIOD = '+url_flurry_api,'info');
 
-    url_flurry_api = base_url_Flurry + url_metric_type + '/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-    if (period != undefined) {
-      url_flurry_api = url_flurry_api + '&groupBy=' +url_group_by;
+  // var url_new_Flurry = 'http://api.flurry.com/appMetrics/NewUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
+
+  // $.when( url_flurry_api ).done(function( x ) {
+  //   cc('constructFlurryEndpoint is DONE','success');
+  //   cc('new Endpoitn is : '+x, 'info');
+  //   var period = 'days';
+  //   if (isItemNullorUndefined(period)) {
+  //     cc('No period is set so the FLURRY default will be used','warning');
+  //   }
+  //   else{
+  //     cc('period NOT updated: '+period,'info');
+  //     x = url_flurry_api + '&groupBy=' +period;
+  //   }
+  //   cc('Grouped By API URL: '+x,'success');
+  // });
+
+
+
+  // Modify calls to Active Users endpoint
+  if (id == 'ActiveUsers') { 
+    stats_label = 'Active Users';
+    if (period == 'weeks'){
+      url_app_metric_specific = 'ActiveUsersByWeek';
+      url_flurry_api = base_url_Flurry + 'appMetrics/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+      console.log('url_flurry_api: '+url_flurry_api);
     };
-    console.log('Grouped By API URL: '+url_flurry_api);
+    if (period == 'months'){
+      url_app_metric_specific = 'ActiveUsersByMonth';
+      url_flurry_api = base_url_Flurry + 'appMetrics/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
+      console.log('url_flurry_api: '+url_flurry_api);
+    };
+  }
+  
+  var flurry_data_loaded = $.getJSON( url_flurry_api);
 
-    // Modify calls to Active Users endpoint
-    if (id == 'ActiveUsers') { 
-      console.log('TEST is TRUE: id='+id);
-      stats_label = 'Active Users';
-      if (period == 'weeks'){
-        url_app_metric_specific = 'ActiveUsersByWeek';
-        url_flurry_api = base_url_Flurry + 'appMetrics/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-        console.log('url_flurry_api: '+url_flurry_api);
-      };
-      if (period == 'months'){
-        url_app_metric_specific = 'ActiveUsersByMonth';
-        url_flurry_api = base_url_Flurry + 'appMetrics/' + url_app_metric_specific + '/?apiAccessCode=' + apiAccessCode + '&apiKey=' + apiKey + '&startDate=' + url_startDate + '&endDate=' + url_endDate + '&country=' + url_country;
-        console.log('url_flurry_api: '+url_flurry_api);
-      };
+  $.when(flurry_data_loaded).done(function(flurry_object) {
+
+    if (url_country == 'ALL') {
+      console.log('url_country: '+url_country);
+      flurry_country_data = flurry_object['country'];
+      flurry_metric_data = flurry_country_data['day'];  
+    }else{
+      alert('Currently Configured to query ALL countries');
     }
+    flurry_dates = _.pluck(flurry_metric_data,'@date');
+    flurry_values = _.pluck(flurry_metric_data,'@value');
+    console.log('flurry_values: ');
+    console.log(flurry_values);
+
+    var current_val = _.last(flurry_values);
+    var previous_val = flurry_values.reverse()[1];
+
+    var growth_val = parseInt((current_val - previous_val) / current_val * 100);
+    console.log('growth_val: '+growth_val);
+    var growth_class = 'default';
+    if (growth_val < 0) { growth_class = 'danger'; };
+    if (growth_val > 0) { growth_class = 'success'; };
+    console.log('growth_class: '+growth_class);
+    var growth_factor = growth_val + '%';
     
-    var flurry_data_loaded = $.getJSON( url_flurry_api);
+    console.log('period inside loop: '+period);
+    if (period == 'days') {
+        period_label = 'Change<br>Today';
+        growth_change_current = stats_label+'<br>Today';
+        growth_change_previous = stats_label +'<br>Yesterday';
+    };
+    if (period == 'weeks') {
+      period_label = 'Change This<br>Week';
+      growth_change_current = stats_label+'<br>This Week';
+      growth_change_previous = stats_label+'<br>Last Week';
+    };
+    if (period == 'months') {
+      period_label = 'Change This<br>Month';
+      growth_change_current = stats_label+'<br>This Month';
+      growth_change_previous = stats_label+'<br>Last Month';
+    };
 
-    $.when(flurry_data_loaded).done(function(flurry_object) {
+    console.log('period_label: '+period_label);
 
-      if (url_country == 'ALL') {
-        console.log('url_country: '+url_country);
-        flurry_country_data = flurry_object['country'];
-        flurry_metric_data = flurry_country_data['day'];  
-      }else{
-        alert('Currently Configured to query ALL countries');
-      }
-      flurry_dates = _.pluck(flurry_metric_data,'@date');
-      flurry_values = _.pluck(flurry_metric_data,'@value');
-      console.log('flurry_values: ');
-      console.log(flurry_values);
+    $('#widget-overview .current_val .number').html(current_val);
+    $('#widget-overview .current_val .period').html(growth_change_current);
+    $('#widget-overview .previous_val .number').html(previous_val);
+    $('#widget-overview .previous_val .period').html(growth_change_previous);
+    
+    $('#overview_stats .period').html(period_label);
+    $('#overview_stats .growth_factor span').text(growth_factor);
+    $('#overview_stats .growth_factor .badge').addClass(growth_class);
 
-      var current_val = _.last(flurry_values);
-      var previous_val = flurry_values.reverse()[1];
-
-      var growth_val = parseInt((current_val - previous_val) / current_val * 100);
-      console.log('growth_val: '+growth_val);
-      var growth_class = 'default';
-      if (growth_val < 0) { growth_class = 'danger'; };
-      if (growth_val > 0) { growth_class = 'success'; };
-      console.log('growth_class: '+growth_class);
-      var growth_factor = growth_val + '%';
-      
-      console.log('period inside loop: '+period);
-      if (period == 'days') {
-          period_label = 'Change<br>Today';
-          growth_change_current = stats_label+'<br>Today';
-          growth_change_previous = stats_label +'<br>Yesterday';
-      };
-      if (period == 'weeks') {
-        period_label = 'Change This<br>Week';
-        growth_change_current = stats_label+'<br>This Week';
-        growth_change_previous = stats_label+'<br>Last Week';
-      };
-      if (period == 'months') {
-        period_label = 'Change This<br>Month';
-        growth_change_current = stats_label+'<br>This Month';
-        growth_change_previous = stats_label+'<br>Last Month';
-      };
-
-      console.log('period_label: '+period_label);
-
-      $('#widget-overview .current_val .number').html(current_val);
-      $('#widget-overview .current_val .period').html(growth_change_current);
-      $('#widget-overview .previous_val .number').html(previous_val);
-      $('#widget-overview .previous_val .period').html(growth_change_previous);
-      
-      $('#overview_stats .period').html(period_label);
-      $('#overview_stats .growth_factor span').text(growth_factor);
-      $('#overview_stats .growth_factor .badge').addClass(growth_class);
-
-      // var chart_id = 'newUsersPerWeek';
-      var chart_id = id;
-      if (chart_id == 'RetainedUsers') {
-        newFlurryBarChart(chart_id);
-      }else{
-        newFlurryChart(chart_id);  
-      }
-    }); 
-
+    // var chart_id = 'newUsersPerWeek';
+    var chart_id = id;
+    if (chart_id == 'RetainedUsers') {
+      newFlurryBarChart(chart_id);
+    }else{
+      newFlurryChart(chart_id);  
+    }
+  }); 
   console.log('------ end getChartData -------') ;
 }
 

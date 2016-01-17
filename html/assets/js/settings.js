@@ -6,59 +6,36 @@ FpJsFormValidator.config = {'routing':{'check_unique_entity':null}};
  * 
  */
 $( document ).ready(function() {
-	// misc variables
-	// TEMP
-	// var user = [];
-	// user = {
-	// 		    "id": "628",
-	// 		    "username": "ben@invitrosocialmedia.com",
-	// 		    "firstname": "Ben",
-	// 		    "lastname": "Richards",
-	// 		    "email": "ben@invitrosocialmedia.com",
-	// 		    "city": "Los Angeles",
-	// 		    "country": "US",
-	// 		    "lang": "en",
-	// 		    "timezone": "8.0",
-	// 		    "firstaccess": "1426697383",
-	// 		    "lastaccess": "1431449532",
-	// 		    "lastlogin": "1431446607",
-	// 		    "currentlogin": "1431446768",
-	// 		    "lastip": "104.35.169.218",
-	// 		    "picture": "39366",
-	// 		    "url": "",
-	// 		    "timecreated": "1426602943",
-	// 		    "timemodified": "1426699319",
-	// 		    "posts": [
-	// 		      {
-	// 		        "id": "47",
-	// 		        "module": "notes",
-	// 		        "userid": "628",
-	// 		        "courseid": "23",
-	// 		        "groupid": "0",
-	// 		        "moduleid": "0",
-	// 		        "coursemoduleid": "0",
-	// 		        "subject": "",
-	// 		        "summary": null,
-	// 		        "content": "Ben Richards Test Student Notes 5-8-15",
-	// 		        "uniquehash": "",
-	// 		        "rating": "0",
-	// 		        "format": "2",
-	// 		        "summaryformat": "0",
-	// 		        "attachment": null,
-	// 		        "publishstate": "draft",
-	// 		        "lastmodified": "1431117607",
-	// 		        "created": "1431117579",
-	// 		        "usermodified": "36"
-	// 		      }
-	// 		    ],
-	// 		    "quizattempts": [
-			      
-	// 		    ],
-	// 		    "quizgrades": [
-			      
-	// 		    ]
-	// 		 };
+	
+	var base_url = urls.analytics;
+    cc('base_url: '+base_url,'info');
+    var user_roles = user.roles;
+//	var base_url = "http://akronzip.com/";
+	var url_activelearners = base_url + "activelearners";
+	var url_challenges = base_url + "challenges";
+	var url_remediations = base_url +"remediations";
+	
+	var url_alerts = base_url + "alerts";
+	var url_openalerts = base_url +"openalerts";
+	
+	var url_activitygraph = base_url + "activitygraph";
+	var url_usergraph = base_url +"usergraph";
+	var url_messagegraph = base_url + "messagegraph";
+	
+	var url_plan = base_url + "plan";
 
+	var url_activityfeed = base_url + "statement";
+
+	var url_verbtrends = base_url + "verbtrends";
+	var url_usertrends = base_url + "actortrends";
+	var url_activitytrends = base_url + "targettrends";
+
+	var url_quiz_reports = base_url + "results";
+
+	var url_course_students = base_url + "results/courselist/";
+	
+	
+	
 	var actor = user.email; //user.email;
 	var mode = $("#analytics_mode").html();
 	var pcid = $("#pageid").html();

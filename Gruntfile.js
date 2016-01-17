@@ -68,7 +68,7 @@ module.exports = function(grunt) {
                 ],
                 dest: '<%= dirs.js_folder %>/build/concat-lumious_reports.js',
             },
-            dist: {
+            dashboard_custom: {
                 src: [
                     '<%= dirs.js_folder %>/useful.js',  // This specific file
                     '<%= dirs.js_folder %>/local-storage.js',  // This specific file
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
                     '<%= dirs.js_folder %>/analytics.js',  // This specific file
                     '<%= dirs.js_folder %>/messaging.js',  // This specific file
                 ],
-                dest: '<%= dirs.js_folder %>/build/concat-dist.js',
+                dest: '<%= dirs.js_folder %>/build/concat-dashboard_custom.js',
             },
         },
         // Uglify JS
@@ -87,8 +87,7 @@ module.exports = function(grunt) {
                 src: '<%= dirs.js_folder %>/build/concat-ui_libs.js',
                 src: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',
                 src: '<%= dirs.js_folder %>/build/concat-reports.js',
-                src: '<%= dirs.js_folder %>/build/concat-dist.js',
-                // dest: '<%= dirs.js_folder %>/build/production-uglified.js'
+                src: '<%= dirs.js_folder %>/build/concat-dashboard_custom.js',
                 dest: '<%= dirs.production_build_folder %>/all-uglified.js'
             }
         },
@@ -243,9 +242,9 @@ module.exports = function(grunt) {
     
     // Tell Grunt what to do when we type "grunt" into the terminal (default tasks)
     // PRODUCTION - Use these tasks
-    grunt.registerTask('default', ['concat','uglify','imagemin','compass:dev','autoprefixer' ]);
+    // grunt.registerTask('default', ['concat','uglify','imagemin','compass:dev','autoprefixer' ]);
     // grunt.registerTask('default', ['concat','compass:dev' ]);
-    // grunt.registerTask('default', ['concat','uglify' ]);
+    grunt.registerTask('default', ['concat','uglify' ]);
     // grunt.registerTask('default', ['concat','uglify','compass:dev' ]);
     // DEV 
     // grunt.registerTask('default', ['concat','compass:dev']);

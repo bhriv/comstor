@@ -89,7 +89,7 @@ localStorage.setItem( 'apiKey',this_page_apiKey);
 
 
 // Return API Key from Storage
-function get_apiKey_from_storage(){
+function checkApiKey(){
   var apiKey_from_storage = localStorage.getItem( 'apiKey');
   console.log('function - get apiKey from STORAGE: '+apiKey_from_storage);
   return apiKey_from_storage;
@@ -153,7 +153,7 @@ $(function() {
 /*****************************************************************/
 
 function isItemNullorUndefined(item){
-  cc('isItemNullorUndefined','run')
+  cc('isItemNullorUndefined: '+item,'run')
   if (item == null || item == 'null' || item == undefined || item == 'undefined') {
     cc('ITEM is - '+item,'error');
     return true

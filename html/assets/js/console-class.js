@@ -12,7 +12,7 @@ function cc(message,console_class){
   var m = message;
   switch(console_class){
     case "run":
-      m = 'RUNNING: '+m+'()';
+      m = 'RUNNING: '+m;
       c = 'background: #fff; color: #82bfd8;';
       break;
     case "ready":

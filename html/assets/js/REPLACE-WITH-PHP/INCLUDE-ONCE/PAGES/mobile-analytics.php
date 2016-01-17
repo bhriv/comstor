@@ -1,6 +1,6 @@
 <?php // Dashboard - mobile analytics powered by Flurry ?>
 Mobile Analytics
-<section class="report_display_switch" id="flurry_reports">
+<section class="report_display_switch" id="flurry_reports" style="display:block !important;">
     <!-- status bar -->
     <div class="status-bar" style="padding-top:0;">
         <div id="" class="row" style="margin-bottom:1em;">
@@ -13,115 +13,6 @@ Mobile Analytics
                 <label for="end_date">End Date</label>
                 <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
             </div>
-            <!-- 
-            <div class="picker_holder hideme" id="metric_type">
-                <label>Metric Type:</label>
-                <div class="picker">
-                    <select id="basisfilter">
-                        <option value="null">
-                            - select -
-                        </option>
-                        <option value="appMetrics">
-                            App Metrics
-                        </option>
-                        <option disabled value="eventMetrics">
-                            Event Metrics
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="picker_holder hideme" id="app_metric_specific" >
-                <label>App Metric:</label>
-                <div class="picker">
-                    <select>
-                        <option value="null">
-                            - select -
-                        </option>
-                        <optgroup label="Sessions">
-                            <option value="Sessions">
-                                Sessions
-                            </option>
-                            <option value="MedianSessionLength">
-                                Median Session Length
-                            </option>
-                            <option value="AvgSessionLength">
-                                Avg Session Length
-                            </option>
-                        </optgroup>
-                        <optgroup label="Users">
-                            <option value="ActiveUsers">
-                                Active Users
-                            </option>
-                            <option value="ActiveUsersByWeek">
-                                Active Users By Week
-                            </option>
-                            <option value="ActiveUsersByMonth">
-                                Active Users By Month
-                            </option>
-                            <option value="NewUsers">
-                                New Users
-                            </option>
-                            <option value="RetainedUsers">
-                                Retained Users
-                            </option>
-                        </optgroup>
-                        <optgroup label="Views">
-                            <option value="PageViews">
-                                Page Views
-                            </option>
-                            <option value="AvgPageViewsPerSession">
-                                Avg Page Views Per Session
-                            </option>
-                        </optgroup>
-                    </select>
-                </div>
-            </div>
-            <div class="hideme" id="event_metric_specific">
-                <label>Event:</label> <input id="event_name" placeholder="Type EXACT Event Name..." type="text"> <label>Event Metric:</label>
-                <div class="picker">
-                    <select>
-                        <option value="null">
-                            - select -
-                        </option>
-                        <optgroup label="Sessions">
-                            <option value="totalSessions">
-                                Total Sessions
-                            </option>
-                            <option value="totalCount">
-                                Total Count
-                            </option>
-                        </optgroup>
-                        <optgroup label="Users">
-                            <option value="usersLastDay">
-                                Users Last Day
-                            </option>
-                            <option value="usersLastWeek">
-                                Users Last Week
-                            </option>
-                            <option value="usersLastMonth">
-                                Users Last Month
-                            </option>
-                        </optgroup>
-                        <optgroup label="Average Users">
-                            <option value="usersLastDay">
-                                Ave Users Last Day
-                            </option>
-                            <option value="usersLastWeek">
-                                Ave Users Last Week
-                            </option>
-                            <option value="usersLastMonth">
-                                Ave Users Last Month
-                            </option>
-                        </optgroup>
-                    </select>
-                </div>
-            </div> -->
-       <!--  <div class="query_controls">
-            <label for=""></label><br>
-            <button id="runDashboard">Submit</button>
-             <a class="restart"><i class="fa fa-refresh"></i> Restart</a>
-             <a id="testFlurryAnalytics"><i class="fa fa-refresh"></i> testFlurryAnalytics()</a>
-        </div> -->
     </div>
     <!-- <span id="chart_key"><small><strong>Key:</strong>: <span class="flurry_key" style="color:#82bfd8;"><i class="fa fa-line-chart"></i> Flurry Data</span> <span class="compare_key" style="color: #fe5f55"><i class="fa fa-line-chart"></i> Course Data</span></small></span> -->
 

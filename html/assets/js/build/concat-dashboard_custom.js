@@ -89,7 +89,7 @@ localStorage.setItem( 'apiKey',this_page_apiKey);
 
 
 // Return API Key from Storage
-function get_apiKey_from_storage(){
+function checkApiKey(){
   var apiKey_from_storage = localStorage.getItem( 'apiKey');
   console.log('function - get apiKey from STORAGE: '+apiKey_from_storage);
   return apiKey_from_storage;
@@ -153,7 +153,7 @@ $(function() {
 /*****************************************************************/
 
 function isItemNullorUndefined(item){
-  cc('isItemNullorUndefined','run')
+  cc('isItemNullorUndefined: '+item,'run')
   if (item == null || item == 'null' || item == undefined || item == 'undefined') {
     cc('ITEM is - '+item,'error');
     return true
@@ -274,67 +274,99 @@ function setEventMetricSpecific(event_metric_specific){
   cc('event_metric_specific set: '+event_metric_specific,'info');
 }
 
+function setApiKey(apiKey){
+  localStorage.setItem( 'apiKey', apiKey );
+  cc('apiKey set: '+apiKey,'info');
+}
+
 
 /*****************************************************************/
 /**********************  Check Variable Values *******************/
 /*****************************************************************/
 
 function checkUserSessionID(){
-  var my_session_id = localStorage.getItem( 'session_id' );
-  return my_session_id;
+  var session_id = localStorage.getItem( 'session_id' );
+  if (isItemNullorUndefined(session_id)) {
+    session_id = '999999999_session_id_default';
+    cc('No session_id is set so the default of '+session_id+' will be used');
+    setSessionID(session_id);
+  }
+  return session_id;
 }
 
 function checkStartDate(){
   var start_date = localStorage.getItem( 'start_date' );
-  alert('start_date TEST: '+start_date);
   if (isItemNullorUndefined(start_date)) {
     start_date = '2015-01-01';
-    alert('No Start Date is set so the default date of '+start_date+' will be used');
-    setStartDate();
+    cc('No Start Date is set so the default date of '+start_date+' will be used');
+    setStartDate(start_date);
   }
-  cc('STORAGE start_date: '+start_date, 'info');
   return start_date;
 }
 
 function checkEndDate(){
   var end_date = localStorage.getItem( 'end_date' );
-  if (isItemNullorUndefined(start_date)) {
-    setEndDate();
+  if (isItemNullorUndefined(end_date)) {
     end_date = '2015-12-31';
-    alert('No End Date is set so the default date of '+end_date+' will be used');
+    cc('No end_date is set so the default of '+end_date+' will be used');
+    setEndDate(end_date);
   };
   return end_date;
 }
 
 function checkMetricType(){
   var metric_type = localStorage.getItem( 'metric_type' );
-  if (metric_type == null) {
+  if (isItemNullorUndefined(metric_type)) {
     metric_type = 'appMetrics';
+    cc('No metric_type is set so the default of '+metric_type+' will be used');
+    setMetricType(metric_type);
   };
-  cc('STORAGE metric_type: '+metric_type, 'info');
   return metric_type;
 }
 
 function checkAppMetricSpecific(){
   var app_metric_specific = localStorage.getItem( 'app_metric_specific' );
-  cc('STORAGE app_metric_specific: '+app_metric_specific,'info');
-  if (app_metric_specific == null) {
+  if (isItemNullorUndefined(app_metric_specific)) {
     app_metric_specific = 'ActiveUsers';
+    cc('No app_metric_specific is set so the default of '+app_metric_specific+' will be used');
+    setAppMetricSpecific(app_metric_specific);
   };
   return app_metric_specific;
 }
 
 function checkEventMetricSpecific(){
   var event_metric_specific = localStorage.getItem( 'event_metric_specific' );
-  cc('STORAGE event_metric_specific: '+event_metric_specific,'info')
+  if (isItemNullorUndefined(event_metric_specific)) {
+    event_metric_specific = 'CourseViewed';
+    cc('No event_metric_specific is set so the default of '+event_metric_specific+' will be used');
+    setEventMetricSpecific(event_metric_specific);
+  };
   return event_metric_specific;
 }
 
 function checkStorageItem(item_NAME){
   var item_DATA = localStorage.getItem( item_NAME );
-  cc('STORAGE '+item_NAME,'info');
+  cc('Check STORAGE Item '+item_NAME,'info');
   return item_DATA;
 }
+
+// Return API Key from Storage
+function checkApiKey(){
+  cc('checkApiKey','run');
+  var apiKey = localStorage.getItem( 'apiKey');
+  if (isItemNullorUndefined(apiKey)) {
+    cc('No apiKey is set so check URL for parameter','warning');
+    var this_page_apiKey = urlParams['apiKey'];
+    if (isItemNullorUndefined(this_page_apiKey)) {
+      cc('No apiKey is found in the URL. Queries will not find data.','fatal');
+    }else{
+      setApiKey(this_page_apiKey);
+      apiKey = this_page_apiKey;  
+    }
+  }
+  return apiKey;
+}
+
 // Moved here from the head.
 FpJsFormValidator.config = {'routing':{'check_unique_entity':null}};
 
@@ -343,59 +375,36 @@ FpJsFormValidator.config = {'routing':{'check_unique_entity':null}};
  * 
  */
 $( document ).ready(function() {
-	// misc variables
-	// TEMP
-	// var user = [];
-	// user = {
-	// 		    "id": "628",
-	// 		    "username": "ben@invitrosocialmedia.com",
-	// 		    "firstname": "Ben",
-	// 		    "lastname": "Richards",
-	// 		    "email": "ben@invitrosocialmedia.com",
-	// 		    "city": "Los Angeles",
-	// 		    "country": "US",
-	// 		    "lang": "en",
-	// 		    "timezone": "8.0",
-	// 		    "firstaccess": "1426697383",
-	// 		    "lastaccess": "1431449532",
-	// 		    "lastlogin": "1431446607",
-	// 		    "currentlogin": "1431446768",
-	// 		    "lastip": "104.35.169.218",
-	// 		    "picture": "39366",
-	// 		    "url": "",
-	// 		    "timecreated": "1426602943",
-	// 		    "timemodified": "1426699319",
-	// 		    "posts": [
-	// 		      {
-	// 		        "id": "47",
-	// 		        "module": "notes",
-	// 		        "userid": "628",
-	// 		        "courseid": "23",
-	// 		        "groupid": "0",
-	// 		        "moduleid": "0",
-	// 		        "coursemoduleid": "0",
-	// 		        "subject": "",
-	// 		        "summary": null,
-	// 		        "content": "Ben Richards Test Student Notes 5-8-15",
-	// 		        "uniquehash": "",
-	// 		        "rating": "0",
-	// 		        "format": "2",
-	// 		        "summaryformat": "0",
-	// 		        "attachment": null,
-	// 		        "publishstate": "draft",
-	// 		        "lastmodified": "1431117607",
-	// 		        "created": "1431117579",
-	// 		        "usermodified": "36"
-	// 		      }
-	// 		    ],
-	// 		    "quizattempts": [
-			      
-	// 		    ],
-	// 		    "quizgrades": [
-			      
-	// 		    ]
-	// 		 };
+	
+	var base_url = urls.analytics;
+    cc('base_url: '+base_url,'info');
+    var user_roles = user.roles;
+//	var base_url = "http://akronzip.com/";
+	var url_activelearners = base_url + "activelearners";
+	var url_challenges = base_url + "challenges";
+	var url_remediations = base_url +"remediations";
+	
+	var url_alerts = base_url + "alerts";
+	var url_openalerts = base_url +"openalerts";
+	
+	var url_activitygraph = base_url + "activitygraph";
+	var url_usergraph = base_url +"usergraph";
+	var url_messagegraph = base_url + "messagegraph";
+	
+	var url_plan = base_url + "plan";
 
+	var url_activityfeed = base_url + "statement";
+
+	var url_verbtrends = base_url + "verbtrends";
+	var url_usertrends = base_url + "actortrends";
+	var url_activitytrends = base_url + "targettrends";
+
+	var url_quiz_reports = base_url + "results";
+
+	var url_course_students = base_url + "results/courselist/";
+	
+	
+	
 	var actor = user.email; //user.email;
 	var mode = $("#analytics_mode").html();
 	var pcid = $("#pageid").html();
@@ -1942,38 +1951,11 @@ $( document ).ready(function() {
 
 	function renderDash(){
 
-	    var base_url = urls.analytics;
-	    var user_roles = user.roles;
-	//	var base_url = "http://akronzip.com/";
-		var url_activelearners = base_url + "activelearners";
-		var url_challenges = base_url + "challenges";
-		var url_remediations = base_url +"remediations";
-		
-		var url_alerts = base_url + "alerts";
-		var url_openalerts = base_url +"openalerts";
-		
-		var url_activitygraph = base_url + "activitygraph";
-		var url_usergraph = base_url +"usergraph";
-		var url_messagegraph = base_url + "messagegraph";
-		
-		var url_plan = base_url + "plan";
-
-		var url_activityfeed = base_url + "statement";
-
-		var url_verbtrends = base_url + "verbtrends";
-		var url_usertrends = base_url + "actortrends";
-		var url_activitytrends = base_url + "targettrends";
-
-		var url_quiz_reports = base_url + "results";
-
-		var url_course_students = base_url + "results/courselist/";
-		
-		var analytics_mode = checkLocalStorage('filter_mode');
-
 		//override analytics mode based on user type
 		/*if(searchRoles('ROLE_INSTRUCTOR')){
 			analytics_mode = "courseplan";
 		}*/
+		var analytics_mode = checkLocalStorage('filter_mode');
 		
 		if (analytics_mode == "plan") {
 			var planid = checkLocalStorage('current_plan');
