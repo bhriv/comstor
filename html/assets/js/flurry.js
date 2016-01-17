@@ -28,7 +28,7 @@ var base_url_Flurry           = 'http://api.flurry.com/',
 
 $( document ).ready(function() {
   cc('Initial Chart Display on page load','success');
-  
+  runFlurryDashboard();
   /************** Load Actve Users   **************/
   // var id = 'ActiveUsers';
   // var id = ;
@@ -176,7 +176,7 @@ function showFlurryAppStats() {
 
 function getChartData(id,period){
   cc('getChartData','run');
-  
+
   if (isItemNullorUndefined(period)) {
     period = 'days';
     period_label = 'Change This<br>Week';
