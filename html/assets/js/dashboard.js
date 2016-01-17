@@ -22,8 +22,6 @@ $(document).ready(function() {
   $('#graphs-holder li#widget-NewUsers .widget-content').removeClass('active');
 
   // Setup UX with Previous selections from Local Storage
-  $('#start_date').val(checkStartDate());
-  $('#end_date').val(checkEndDate());
   
   //  UX filter event listeners to determine data query type **************/
 
@@ -694,6 +692,10 @@ function work_in_progress(){
   cc('work_in_progress', 'run');
   // logFunctionName();
   // http://www.akronzip.com/lumiousreports/course/4 (gives all courses with Category 4)
+  // http://www.privacyvector.com/api/lumiousreports/studentdata/17
+  // http://www.privacyvector.com/api/lumiousreports/logstore/17
+  // http://www.privacyvector.com/api/lumiousreports/courselookup/4
+
   
   var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
   // var item_ID = 22; var item_TYPE = 'quiz'; 

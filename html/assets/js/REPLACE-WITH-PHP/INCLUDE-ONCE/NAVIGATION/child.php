@@ -20,14 +20,24 @@
                     var page = urlParams['page'];
                     var url = location.search;
                 });
+                $("#mobile_analytics_triggers li").click(function() {
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=mobile-analytics');
+                });
+                $("#learning_activity_triggers li").click(function() {
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=learning-activity');
+                });
+                $("#teacher_reports_triggers li").click(function() {
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=teacher-reports');
+                });
+                
             </script>
         </ul>
 
-        <ul class="learning_activity_triggers">
+        <ul id="learning_activity_triggers">
             <li><small><strong>Learning Activity</strong></small></li>
         </ul>
 
-        <ul class="teacher_reports_triggers">
+        <ul id="teacher_reports_triggers">
             <li><small><strong>Teacher Reports</strong></small></li>
             <li><a onclick="work_in_progress();">TEST: work_in_progress();</a></li>
             <li><a class="get_item_data">TEST: get_item_data();</a></li>

@@ -27,19 +27,19 @@
         </title><!-- FONTS provided in sass files
         <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
 
-        <link rel="stylesheet" href="assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="old_assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
         -->
-        <link href="css/favicon.css" rel="shortcut icon" type="image/x-icon">
-        <link href="assets/css/screen.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/gumby.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/pikaday.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/jquery.fileupload.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/style.css" rel="stylesheet">
-        <link href="assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <link href="old_assets/css/screen.css" rel="stylesheet">
+        <link href="old_assets/from-symfony/css/gumby.css" rel="stylesheet">
+        <link href="old_assets/from-symfony/css/pikaday.css" rel="stylesheet">
+        <link href="old_assets/from-symfony/css/jquery.fileupload.css" rel="stylesheet">
+        <link href="old_assets/from-symfony/css/style.css" rel="stylesheet">
+        <link href="old_assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
 
-        <script src="assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
-        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
-        <script src="assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
+        <script src="old_assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
+        <script src="old_assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
+        <script src="old_assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
         <script type="text/javascript">
             user = {
                 email: 'ben.porcelain@gmail.com',
@@ -51,13 +51,13 @@
             message = {
                                 id: 0
                             }
-
             urls = { 
-                analytics: 'http://akronzip.com/',
-                messaging: 'http://akronzip.com/',
+                analytics: 'http://www.privacyvector.com/api/',
+                messaging: 'http://www.privacyvector.com/api/',
                 attachment: 'http://playground.learningconsole.com/lumiousattachment/',
-                settings: 'http://akronzip.com/',
-                reports: 'http://www.privacyvector.com/api/lumiousreports/'
+                settings: 'http://www.privacyvector.com/api/',
+                reports: 'http://www.privacyvector.com/api/'
+                // reports: 'http://www.privacyvector.com/api/lumiousreports/'
             };
 
             fb = {
@@ -80,8 +80,8 @@
                     <nav>
                          <ul>
                             <li><a id="show_mef_reports">Lumious Reports</a></li>
-                            <li><a id="show_ciscoone_reports"><img src="/assets/images/logo@2x.png" width="103" height"20" alt="" class="hidden"> xAPI Activity</a></li>
-                            <li><a id="show_flurry_reports"><img src="/assets/images/flurry-logo@2x.png" width="103" height"20" alt="" class="hidden"> xAPI &amp; Flurry</a></li>
+                            <li><a id="show_ciscoone_reports"><img src="/old_assets/images/logo@.png" width="103" height"20" alt="" class="hidden"> xAPI Activity</a></li>
+                            <li><a id="show_flurry_reports"><img src="/old_assets/images/flurry-logo@2x.png" width="103" height"20" alt="" class="hidden"> xAPI &amp; Flurry</a></li>
                         </ul>   
                     </nav>
                 </header>
@@ -333,7 +333,7 @@
 
                     
                         <div class="static">
-                              <table id="concatenated-results" class="tablesorter sortable" style="display:none;">
+                              <table id="concatenated-results" class="tablesorter sortable" style="display:block;">
                                 <thead>
                                     <tr>
                                         <th>ID</th>   
@@ -351,7 +351,7 @@
 
 
                         <ul class="widget-grid full-width" id="report_results_holder">
-                            <li id="widget-quiz-reports-performance" style="display:none;">
+                            <li id="widget-quiz-reports-performance" style="display:block;">
                                 <h2 class="yellow">Results<a href="#" class="toggle" gumby-trigger="#widget-quiz-reports .widget-content"><i class="icon-minus-squared"></i></a></h2>
                                 <div class="widget-content">
                                     <div class="row widget">
@@ -409,7 +409,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li id="widget-quiz-reports" style="display:none;">
+                            <li id="widget-quiz-reports" style="display:block;">
                                 <h2 class="yellow">Results<a href="#" class="toggle" gumby-trigger="#widget-quiz-reports .widget-content"><i class="icon-minus-squared"></i></a></h2>
                                 <div class="widget-content">
                                     <div class="row widget">
@@ -461,7 +461,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li id="widget-question-reports" style="display:none;">
+                            <li id="widget-question-reports" style="display:block;">
                                 <h2 class="yellow">Results<a href="#" class="toggle" gumby-trigger="#widget-quiz-reports .widget-content"><i class="icon-minus-squared"></i></a></h2>
                                 <div class="widget-content">
                                     <div class="row widget">
@@ -492,191 +492,9 @@
                             </li>
                         </ul>
                         <div class="loading" id="loading_gif" style="display: none;">
-                            <img src="/images/b8163ca_loading_1.gif" alt="Loading..." />
+                            <img src="/images/loading.gif" alt="Loading..." />
                         </div>
                     </div>
-                </section>
-                <!-- flurry_reports -->
-                <section id="ciscoone_reports" class="report_display_switch">
-                    <h2>Symfony Migration</h2>
-                    <canvas id="video_views_bar" width="500" height="500"></canvas> 
-                    <canvas id="video_view_duration" width="250" height="250"></canvas> 
-                    <table id="sortable_learner_detail" class="tablesorter striped rounded">
-                        <thead>
-                            <th><i class="icon-arrow-combo"></i>Student</th>
-                            <th><i class="icon-arrow-combo"></i>Start Time</th>
-                            <th id="modules"><i class="icon-arrow-combo"></i>Modules</th>
-                            <th id="knowledge_checks"><i class="icon-arrow-combo"></i>Knowledge Checks</th>
-                            <th><i class="icon-arrow-combo"></i><!--<span>Total</span><br><br> -->Duration</th>
-                        </thead>
-                        <tbody id="learnerdetails">
-                            <!-- populated by js -->
-                        </tbody>
-                    </table> 
-                </section>
-               
-                <section id="flurry_reports" class="report_display_switch">
-                    <h3><i class="fa fa-bar-chart"></i> Custom Flurry API Data Query</h3>
-                    <div id="app_overview">
-                        <h5>App Details</h5>
-                        <ul>
-                            <li>name: <span class="app_name"></span></li>
-                            <li>platform: <span class="app_platform"></span></li>
-                            <li>category: <span class="app_category"></span></li>
-                            <li>API version: <span class="app_version"></span></li>
-                            <li>App report generated: <span class="app_generatedDate"></span></li>
-                            <li>Current App Version created: <span class="app_createdDate"></span></li>
-                            <li>App version history Widget:
-                                <ul class="app_version_history"></ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <h3><i class="fa fa-bar-chart"></i> Totara Activity</h3>
-
-                    <table class="tablesorter sortable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>   
-                                <th>Student</th>   
-                                <th>Action</th>
-                                <th>Course ID</th>   
-                                <th>Object Table</th>
-                                <th>Object ID</th> 
-                                <th>Date/Time</th>           
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_activity_result"></tbody>
-                    </table>
-
-                    <div id="query_controls">
-                        <div class="picker_holder">
-                            <label for="start_date">Start Date</label><br>
-                            <input type="text" id="start_date" name="start_date" class="date_changer">
-                            
-                        </div>
-                        <div class="picker_holder">
-                            <label for="end_date">End Date</label><br>
-                            <input type="text" id="end_date" name="end_date" class="date_changer">
-                        </div>
-                        <div id="metric_type" class="picker_holder">
-                            <label>Metric Type:</label>
-                            <div class="picker">
-                                <select id="basisfilter">
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <option value="appMetrics">
-                                        <span data-criteria="appMetrics">App Metrics</span>
-                                    </option>
-                                    <option value="eventMetrics" disabled>
-                                        <span data-criteria="eventMetrics">Event Metrics</span>
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="app_metric_specific" class="picker_holder">
-                            <label>App Metric:</label>
-                            <div class="picker">
-                                <select>
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <optgroup label="Sessions">
-                                        <option value="Sessions">
-                                            <span data-criteria="Sessions">Sessions</span>
-                                        </option>
-                                        <option value="MedianSessionLength">
-                                            <span data-criteria="MedianSessionLength">Median Session Length</span>
-                                        </option>
-                                        <option value="AvgSessionLength">
-                                            <span data-criteria="AvgSessionLength">Avg Session Length</span>
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Users">
-                                        <option value="ActiveUsers">
-                                            <span data-criteria="ActiveUsers">Active Users</span>
-                                        </option>
-                                        <option value="ActiveUsersByWeek">
-                                            <span data-criteria="ActiveUsersByWeek">Active Users By Week</span>
-                                        </option>
-                                        <option value="ActiveUsersByMonth">
-                                            <span data-criteria="ActiveUsersByMonth">Active Users By Month</span>
-                                        </option>
-                                        <option value="NewUsers">
-                                            <span data-criteria="NewUsers">New Users</span>
-                                        </option>
-                                        <option value="RetainedUsers">
-                                            <span data-criteria="RetainedUsers">Retained Users</span>
-                                        </option>
-                                    </optgroup>
-                                        <optgroup label="Views">
-                                        <option value="PageViews">
-                                            <span data-criteria="PageViews">Page Views</span>
-                                        </option>
-                                        <option value="AvgPageViewsPerSession">
-                                            <span data-criteria="AvgPageViewsPerSession">Avg Page Views Per Session</span>
-                                        </option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="event_metric_specific" class="hideme">
-                            <label>Event:</label>
-                            <input type="text" id="event_name" placeholder="Type EXACT Event Name...">
-                            <label>Event Metric:</label>
-                            <div class="picker">
-                                <select>
-                                    <option value="null">
-                                        <span>- select -</span>
-                                    </option>
-                                    <optgroup label="Sessions">
-                                        <option value="totalSessions">
-                                            <span data-criteria="totalSessions">Total Sessions</span>
-                                        </option>
-                                        <option value="totalCount">
-                                            <span data-criteria="totalCount">Total Count</span>
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Users">
-                                        <option value="usersLastDay">
-                                            <span data-criteria="usersLastDay">Users Last Day</span>
-                                        </option>
-                                        <option value="usersLastWeek">
-                                            <span data-criteria="usersLastWeek">Users Last Week</span>
-                                        </option>
-                                        <option value="usersLastMonth">
-                                            <span data-criteria="usersLastMonth">Users Last Month</span>
-                                        </option>
-                                    </optgroup>
-                                    <optgroup label="Average Users">
-                                        <option value="usersLastDay">
-                                            <span data-criteria="aveUsersLastDay">Ave Users Last Day</span>
-                                        </option>
-                                        <option value="usersLastWeek">
-                                            <span data-criteria="aveUsersLastWeek">Ave Users Last Week</span>
-                                        </option>
-                                        <option value="usersLastMonth">
-                                            <span data-criteria="aveUsersLastMonth">Ave Users Last Month</span>
-                                        </option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="query_controls">
-                            <label for=""></label><br>
-                            <!-- <button id="runDashboard">Submit</button> -->
-                            <a class="restart"><i class="fa fa-refresh"></i> Restart</a>
-                        </div>
-                    </div>
-                    
-                    <span id="chart_key">
-                        <small>
-                            <strong>Key:</strong>: 
-                            <span class="flurry_key" style="color:#82bfd8;"><i class="fa fa-line-chart"></i> Flurry Data</span>
-                            <span class="compare_key" style="color: #fe5f55"><i class="fa fa-line-chart"></i> Course Data</span>
-                        </small>
-                    </span>
-                    <canvas id="updating-chart"></canvas>
                 </section>
 
             </div> <!-- #main -->
@@ -699,9 +517,9 @@
             </ul>
         </footer><!-- footer js -->
         <!-- Unminified -->
-        <script src="assets/js/vendor/jquery.js">
+        <script src="old_assets/js/vendor/jquery.js">
         </script> 
-        <script src="assets/vendor/jqueryui/jquery-ui.js">
+        <script src="old_assets/vendor/jqueryui/jquery-ui.js">
         </script> <!-- From Symfony: LIBRARY -->
 
 
@@ -710,72 +528,72 @@
         <script src="//cdn.ckeditor.com/4.4.3/basic/adapters/jquery.js"></script>  
         -->
 
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/gumby.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.checkbox.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.fixed.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.navbar.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.radiobtn.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.retina.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.skiplink.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.tabs.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/gumby.toggleswitch.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/jquery.validation.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/ui/masonry.pkgd.min.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/gumby.init.js"></script>
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/retina.min.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/gumby.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.checkbox.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.fixed.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.navbar.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.radiobtn.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.retina.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.skiplink.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.tabs.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.toggleswitch.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/jquery.validation.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/masonry.pkgd.min.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/gumby.init.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/retina.min.js"></script>
          
-        <script src="assets/js/from-symfony/js/libs/dna.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/dna.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/dumper.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/dumper.js" type="text/javascript">
         </script> 
         <!--
-        <script type="text/javascript" src="assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script>
     -->
          
-        <script src="assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.min.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/jquery.tablesorter.min.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/jquery-sortable-min.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/jquery-sortable-min.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/pikaday.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/pikaday.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript">
         </script> <!-- END From Symfony -->
          
-        <script src="assets/js/vendor/bootstrap.js"></script> 
-        <script src="assets/vendor/moment/moment.min.js"></script> 
-        <script src="assets/vendor/chart/Chart.min.js"></script> 
-        <script src="assets/js/vendor/underscore.js"></script> 
-        <script src="assets/js/dashboard.js"></script> 
+        <script src="old_assets/js/vendor/bootstrap.js"></script> 
+        <script src="old_assets/vendor/moment/moment.min.js"></script> 
+        <script src="old_assets/vendor/chart/Chart.min.js"></script> 
+        <script src="old_assets/js/vendor/underscore.js"></script> 
+        <script src="old_assets/js/dashboard.js"></script> 
 
         <!-- From Symfony: CUSTOM -->
          
-        <script src="assets/js/from-symfony/js/plugins.js" type="text/javascript"></script> 
-        <script src="assets/js/from-symfony/js/main.js" type="text/javascript"></script> 
+        <script src="old_assets/js/from-symfony/js/plugins.js" type="text/javascript"></script> 
+        <script src="old_assets/js/from-symfony/js/main.js" type="text/javascript"></script> 
     <!-- MEF REPORT FILTERS -->
-        <script src="assets/js/from-symfony/js/report_filters.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/report_filters.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/report_students_access.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/report_students_access.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/report_students_performance.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/report_students_performance.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/report_queries_questions.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/report_queries_questions.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/report_queries_attempts.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/report_queries_attempts.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/report_concatenated_rows.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/report_concatenated_rows.js" type="text/javascript">
         </script> 
     
-        <script src="assets/js/from-symfony/js/analytics.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/analytics.js" type="text/javascript">
         </script> 
-        <script src="assets/js/from-symfony/js/settings.js" type="text/javascript">
+        <script src="old_assets/js/from-symfony/js/settings.js" type="text/javascript">
         </script> <!-- END From Symfony -->
          <!-- Production Ready : All vendor and custom js compiled 
          ** BREAKS lumi.js
@@ -798,77 +616,9 @@
             $( document ).ready(function() {
                   console.error();
                   console.warn();
-
-                  console.log('%c Document Ready: Custom Functions Start...', 'background: #00cc00; color: #000; padding: 2px 300px');
-
-
-                    test_arr = student_result_id_17[0];
-                    test_arr = test_arr["user"];
-                    console.log(test_arr);
-                    
-                    // var test_ID = 17;
-                    // var TESTfindItemByID = findItemByID(test_arr,test_ID);
-
-                    // work_in_progress();
-                    
-                    var all_students = [];
-                    all_students.push(student_result_id_17);
-                    all_students.push(student_result_id_4);
-                    console.log('find 17');
-                    // for json storage items must stringify and parse
-                    findItemByID(all_students,'17','all_students');
-                    // WORKS
-
-                    var all_courses = [];
-                    all_courses.push(course_1);
-                    all_courses.push(course_2);
-                    console.log('find course id 1');
-                    // for json storage items must stringify and parse
-                    var c = findItemByID(all_courses,'1','all_courses');
-                    console.log('c result');
-                    console.log(c);
-                    // WORKS
-
-                    
-                    var item_storage_data = JSON.stringify(all_students);
-                    // item_storage_data = item_storage_data[1];
-                    localStorage.setItem( 'all_students',item_storage_data);
-                    var string_arr = checkStorageItem('all_students');
-                    var arr = JSON.parse(string_arr); 
-                    // findItemByID(all_students,'4','all_students');
-                    console.log('find 4');
-                    // ID 4 search in all_students array from storage returns all the student data
-                    var s = findItemByID(arr,'4','all_students');
-                    console.log('s result');
-                    console.log(s);
-                    
-
-
-
-                /************** PRODUCTIONS Functions   **************/
-
-                  /************** Load Actve Users   **************/
-                    // var id = 'ActiveUsers';
-                    var id = 'NewUsers';
-                    var app_metric_specific = id;
-                    setAppMetricSpecific(app_metric_specific);
-                    getChartData(id);
-                /************** end - Load Actve Users   *********/ 
-
-                $('#flurry_reports').show();
+                  $('#mef_reports').show();
 
             }); // end doc ready
-
-
-                function pop_up(hyperlink, window_name)
-                {
-                    if (!window.focus) {
-                        return true;
-                    }
-                    var href = (typeof(hyperlink) == 'string' ? hyperlink : hyperlink.href);
-                    window.open(href, window_name, 'width=800,height=800,toolbar=no, scrollbars=yes');
-                    return false;
-                }
         </script> 
         <script type="text/javascript">
         $(document).ready(function() {
@@ -910,18 +660,7 @@
             }
           });
         });
-        </script><!-- prepare JS to migrate to Comstor and Tech2000 to Totara 
-pull main queries to be standalone out of Symfony for faster testing 
-add JS dump for bug tracing 
-run test queries for identifying issues 
-do PSD screenshots for loading table 
-add dynamic progress bar for query results loading 
-format PSD for tempate use 
-add default graphic for loading - with instructions 
-when query done hide graphic show results 
-add temp query parameter to produce limited, faster, results 
-reset selectors when key dropdown changed to ensure results are fetched 
-include required functions outside of key function 
- -->
+        </script>
+
     </body>
 </html>

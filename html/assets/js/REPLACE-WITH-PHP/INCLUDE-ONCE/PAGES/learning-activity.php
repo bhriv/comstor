@@ -1,6 +1,6 @@
 <?	// Learning Activity ?>
 Learning Activity - TOTARA
-<section class="report_display_switch" id="flurry_reports">
+<section class="report_display_switch" id="flurry_reports" style="display:block;">
     <!-- TOTARA -->
     <span id="pull_student_data">pull_student_data()</span> 
      <h3><i class="fa fa-bar-chart"></i> Totara Activity</h3>

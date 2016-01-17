@@ -1,0 +1,689 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* ----------------------  
+Import Resets
+---------------------- */
+@import url(../css/bootstrap/bootstrap.css);
+@import url(../css/bootstrap/bootstrap-responsive.css);
+/* Fool-proof @font-face */
+/* Based on http://coding.smashingmagazine.com/2013/02/14/setting-weights-and-styles-at-font-face-declaration/ */
+/* Test For autoprefixer browser support */
+@import url(../vendor/jqueryui/jquery-ui.css);
+/* line 4, ../sass/_custom.scss */
+::placeholder {
+  color: #ccc;
+}
+
+/* line 4, ../sass/_comstor.scss */
+.student_email, .last_access {
+  display: block;
+  margin-top: 10px;
+  font-weight: 300;
+  font-size: 14px;
+  text-transform: none;
+}
+
+/* line 14, ../sass/_comstor.scss */
+#root .subnav-bar ul li h2 i {
+  position: absolute;
+  right: -40px;
+  padding-left: 0;
+}
+
+/* line 22, ../sass/_comstor.scss */
+#overview_updated, body.cisco_one .video_holder ul li {
+  font-size: 60%;
+  line-height: 1.5em;
+  font-weight: 700;
+}
+
+/* line 29, ../sass/_comstor.scss */
+.main-filter {
+  display: inline-block;
+  float: left;
+}
+/* line 32, ../sass/_comstor.scss */
+.main-filter select {
+  width: auto;
+}
+
+/* line 36, ../sass/_comstor.scss */
+.report_display_switch {
+  display: none;
+}
+
+/* line 41, ../sass/_comstor.scss */
+table tbody td {
+  padding: 10px 5px;
+}
+/* line 45, ../sass/_comstor.scss */
+table tbody tr td {
+  line-height: 1em;
+}
+/* line 48, ../sass/_comstor.scss */
+table tbody tr:nth-child(odd) {
+  background-color: #f5f5f5;
+}
+/* line 53, ../sass/_comstor.scss */
+table .icon-arrow-combo {
+  min-width: 5px;
+  margin: 0;
+  opacity: 0.3;
+}
+/* line 57, ../sass/_comstor.scss */
+table .icon-arrow-combo:hover {
+  cursor: pointer;
+}
+/* line 62, ../sass/_comstor.scss */
+table#sortable_learner_detail tbody tr td {
+  line-height: 1em;
+  font-size: 14px;
+}
+/* line 66, ../sass/_comstor.scss */
+table#sortable_learner_detail th span {
+  top: 5px;
+  font-size: 10px;
+}
+/* line 71, ../sass/_comstor.scss */
+table thead th {
+  padding: 10px 5px;
+}
+/* line 74, ../sass/_comstor.scss */
+table tr td {
+  padding: 10px 5px;
+  line-height: 1em;
+}
+/* line 77, ../sass/_comstor.scss */
+table tr td:first-child {
+  font-weight: normal;
+}
+/* line 81, ../sass/_comstor.scss */
+table.striped tr:nth-of-type(even) {
+  background-color: #f5f5f5;
+}
+/* line 85, ../sass/_comstor.scss */
+table table tr.stripe {
+  background-color: #f5f5f5;
+}
+/* line 88, ../sass/_comstor.scss */
+table table tr.striped {
+  background-color: #f5f5f5;
+}
+
+/* line 94, ../sass/_comstor.scss */
+div.picker_holder {
+  margin-right: 0.5em;
+  width: auto;
+  float: left;
+}
+/* line 99, ../sass/_comstor.scss */
+div.quiz_result_holder span {
+  font-size: 14px;
+  line-height: 1.5em;
+}
+/* line 102, ../sass/_comstor.scss */
+div.quiz_result_holder span .student-stress {
+  font-size: 12px !important;
+}
+
+/* line 110, ../sass/_comstor.scss */
+.last_access {
+  margin-top: 0;
+}
+/* line 113, ../sass/_comstor.scss */
+.last_access small {
+  color: #000;
+}
+
+/* line 117, ../sass/_comstor.scss */
+.student_name {
+  line-height: 1.5em;
+  text-transform: capitalize;
+}
+
+/* line 121, ../sass/_comstor.scss */
+.attempt_object {
+  margin-right: 5px;
+}
+
+/* line 124, ../sass/_comstor.scss */
+.quiz_result_holder {
+  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #e5e5e5;
+}
+/* line 128, ../sass/_comstor.scss */
+.quiz_result_holder:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+/* line 134, ../sass/_comstor.scss */
+.wrap {
+  display: block;
+}
+
+/* line 138, ../sass/_comstor.scss */
+ol li {
+  list-style: decimal !important;
+}
+/* line 140, ../sass/_comstor.scss */
+ol li:before {
+  content: "- ";
+}
+/* line 144, ../sass/_comstor.scss */
+ol ul {
+  margin-top: 0;
+}
+
+/* line 149, ../sass/_comstor.scss */
+ul ul {
+  margin-top: 0;
+}
+/* line 152, ../sass/_comstor.scss */
+ul.knowledge_check_user {
+  margin: 0;
+  padding: 1em;
+}
+/* line 155, ../sass/_comstor.scss */
+ul.knowledge_check_user ul {
+  margin: 0;
+  padding: 0;
+}
+/* line 158, ../sass/_comstor.scss */
+ul.knowledge_check_user ul a {
+  font-size: 80%;
+}
+/* line 161, ../sass/_comstor.scss */
+ul.knowledge_check_user ul p {
+  font-size: 80%;
+}
+/* line 165, ../sass/_comstor.scss */
+ul.knowledge_check_user img {
+  border-radius: 50%;
+  padding-right: 10px;
+}
+/* line 170, ../sass/_comstor.scss */
+ul.knowledge_check_user .btn.medium a {
+  font-size: 80%;
+}
+/* line 173, ../sass/_comstor.scss */
+ul.knowledge_check_user .skiplink.medium a {
+  font-size: 80%;
+}
+/* line 177, ../sass/_comstor.scss */
+ul li.page_item {
+  margin-bottom: 0;
+}
+/* line 180, ../sass/_comstor.scss */
+ul.children li.page_item_has_children {
+  margin-top: 0;
+}
+
+/* line 185, ../sass/_comstor.scss */
+li.page_item {
+  margin-bottom: 2em;
+}
+/* line 188, ../sass/_comstor.scss */
+li.page_item_has_children.page_item {
+  margin-top: 2em;
+}
+
+/* line 192, ../sass/_comstor.scss */
+label {
+  display: inline;
+}
+
+/* line 195, ../sass/_comstor.scss */
+html {
+  margin: 1em 2em;
+}
+
+/* line 198, ../sass/_comstor.scss */
+header {
+  text-align: center;
+  margin: 1em 0;
+}
+
+/* line 202, ../sass/_comstor.scss */
+.restart {
+  margin-left: 1em;
+}
+
+/* line 205, ../sass/_comstor.scss */
+#basisfilter {
+  width: 125px;
+}
+
+/* line 208, ../sass/_comstor.scss */
+#query_controls {
+  float: none;
+  clear: both;
+  min-height: 70px;
+}
+
+/* line 213, ../sass/_comstor.scss */
+#chart_key {
+  display: block;
+  float: none;
+  margin-bottom: 1em;
+}
+
+/* line 218, ../sass/_comstor.scss */
+button {
+  max-width: 180px;
+}
+
+/* line 222, ../sass/_comstor.scss */
+.video_holder .icon-eye {
+  min-width: 5px;
+  margin: 0;
+}
+/* line 226, ../sass/_comstor.scss */
+.video_holder .icon-check {
+  min-width: 5px;
+  margin: 0;
+}
+
+/* line 231, ../sass/_comstor.scss */
+.table_key {
+  font-size: 14px;
+  line-height: 1em;
+  margin-bottom: 1em;
+}
+
+/* line 236, ../sass/_comstor.scss */
+.tablesorter-header-inner {
+  line-height: 1em;
+  position: relative;
+  padding: 0.5em 0 1em 0.5em;
+}
+/* line 240, ../sass/_comstor.scss */
+.tablesorter-header-inner:last-child {
+  padding-right: 0;
+}
+
+/* line 244, ../sass/_comstor.scss */
+.progress_arrow {
+  z-index: 0;
+  position: absolute;
+  left: -4px;
+  width: 70px;
+  height: 70px;
+  display: block;
+  transform: rotate(45deg);
+  border-right: 1px solid #eee;
+  border-top: 1px solid #eee;
+  top: 10px !important;
+}
+
+/* line 261, ../sass/_comstor.scss */
+#learnerdetails .ttip:hover:before {
+  left: 2.2em;
+  top: 1.5em;
+}
+/* line 265, ../sass/_comstor.scss */
+#learnerdetails .ttip:hover:after {
+  left: 2.2em;
+  left: 1.9em;
+  top: 0.5em;
+}
+/* line 271, ../sass/_comstor.scss */
+#learnerdetails tr.expand {
+  cursor: pointer;
+}
+/* line 273, ../sass/_comstor.scss */
+#learnerdetails tr.expand i {
+  font-size: 1.3em;
+}
+/* line 278, ../sass/_comstor.scss */
+#learnerdetails tr.expand td.mdata ul {
+  background-color: #f6f9fd;
+  display: none;
+}
+/* line 282, ../sass/_comstor.scss */
+#learnerdetails tr.expand td.kdata div {
+  background-color: #f6f9fd;
+  display: none;
+}
+
+/* line 289, ../sass/_comstor.scss */
+#modules {
+  width: 80px;
+}
+
+/* line 292, ../sass/_comstor.scss */
+.graph_holder {
+  margin-right: 2em;
+}
+/* line 294, ../sass/_comstor.scss */
+.graph_holder canvas {
+  margin-bottom: 2em;
+  margin-right: 2em;
+  float: left;
+}
+/* line 299, ../sass/_comstor.scss */
+.graph_holder ul {
+  width: 45%;
+  float: left;
+  text-transform: capitalize;
+}
+/* line 303, ../sass/_comstor.scss */
+.graph_holder ul ul {
+  width: 100%;
+  float: none;
+  text-transform: none;
+}
+/* line 307, ../sass/_comstor.scss */
+.graph_holder ul ul li {
+  list-style: outside;
+  line-height: 1em;
+}
+/* line 313, ../sass/_comstor.scss */
+.graph_holder h4 {
+  font-weight: bold;
+}
+
+/* line 317, ../sass/_comstor.scss */
+#widget-overview {
+  margin-top: 4em;
+}
+/* line 319, ../sass/_comstor.scss */
+#widget-overview ul {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+/* line 323, ../sass/_comstor.scss */
+#widget-overview ul li {
+  margin: 0 0.2em 1em 0;
+  padding: 1em 2em 2em;
+  width: 89px;
+  height: 89px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #eee;
+  float: left;
+}
+/* line 333, ../sass/_comstor.scss */
+#widget-overview ul li div {
+  text-align: center;
+}
+/* line 336, ../sass/_comstor.scss */
+#widget-overview ul li p {
+  line-height: 1em;
+  font-weight: 700;
+  text-align: center;
+  margin: 5px 0 0;
+  font-size: 14px;
+}
+
+/* line 346, ../sass/_comstor.scss */
+#overview_updated {
+  margin-top: 1em;
+  font-size: 14px;
+  line-height: 1em;
+}
+/* line 350, ../sass/_comstor.scss */
+#overview_updated span {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5em;
+}
+/* line 354, ../sass/_comstor.scss */
+#overview_updated span time {
+  font-weight: normal;
+}
+/* line 357, ../sass/_comstor.scss */
+#overview_updated span i {
+  margin-right: 0;
+}
+
+/* line 364, ../sass/_comstor.scss */
+#profile_thumb_details {
+  width: 100%;
+}
+/* line 366, ../sass/_comstor.scss */
+#profile_thumb_details li {
+  width: 50%;
+  float: left;
+  padding-right: 10px;
+  line-height: 16px;
+  margin-bottom: 5px;
+}
+/* line 372, ../sass/_comstor.scss */
+#profile_thumb_details li p {
+  margin: 0;
+  line-height: 24px;
+}
+
+/* line 378, ../sass/_comstor.scss */
+#flurry_reports table {
+  width: 100%;
+  text-align: left;
+}
+/* line 381, ../sass/_comstor.scss */
+#flurry_reports table thead {
+  font-weight: bold;
+}
+/* line 384, ../sass/_comstor.scss */
+#flurry_reports table th {
+  font-weight: normal;
+}
+
+/* line 388, ../sass/_comstor.scss */
+span.quiz_details {
+  display: block;
+  float: none;
+  letter-spacing: -0.02em;
+}
+
+/* line 393, ../sass/_comstor.scss */
+.label.null_label {
+  background: #f06e6e;
+  border: 1px solid #f06e6e;
+}
+
+/* line 397, ../sass/_comstor.scss */
+th.tablesorter-header {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  padding: 0;
+}
+/* line 402, ../sass/_comstor.scss */
+th.tablesorter-header:hover {
+  cursor: pointer;
+}
+
+/* line 406, ../sass/_comstor.scss */
+td.student_details {
+  font-weight: 600;
+  line-height: 1em;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+/* line 411, ../sass/_comstor.scss */
+td.student_details .instructor_comments {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 1em;
+}
+
+/* line 417, ../sass/_comstor.scss */
+input[type="text"].date_changer {
+  width: 80px;
+}
+
+/* line 420, ../sass/_comstor.scss */
+canvas.flurry_chart {
+  width: 100%;
+  min-width: 400px;
+  height: auto;
+  margin-bottom: 3em;
+}
+
+/* line 426, ../sass/_comstor.scss */
+.obj-list td:nth-child(3) span:first-child {
+  display: none;
+}
+
+/* line 429, ../sass/_comstor.scss */
+i.icon-flash.danger {
+  color: #d71816;
+}
+
+/* line 433, ../sass/_comstor.scss */
+body.cisco_one .video_holder {
+  min-height: auto;
+}
+/* line 435, ../sass/_comstor.scss */
+body.cisco_one .video_holder img {
+  width: 50%;
+  float: left;
+  margin-right: 0.5em;
+}
+/* line 440, ../sass/_comstor.scss */
+body.cisco_one .video_holder ul {
+  margin: 0;
+  float: left;
+  width: 45%;
+}
+/* line 444, ../sass/_comstor.scss */
+body.cisco_one .video_holder ul li {
+  width: auto;
+  margin-bottom: 3px;
+  font-size: 10px;
+}
+/* line 449, ../sass/_comstor.scss */
+body.cisco_one .video_holder ul li:nth-child(1) {
+  font-size: 12px;
+}
+/* line 455, ../sass/_comstor.scss */
+body.cisco_one #widget-alerts tbody tr.obj-list td:nth-child(2) {
+  font-weight: 300;
+  text-transform: none;
+}
+/* line 460, ../sass/_comstor.scss */
+body.cisco_one .tabs.pill .tab-nav > li > a {
+  color: #939393;
+}
+/* line 463, ../sass/_comstor.scss */
+body.cisco_one .tabs.pill .tab-nav > li span.label {
+  color: #82bfd8;
+  border-color: #82bfd8;
+}
+/* line 469, ../sass/_comstor.scss */
+body.cisco_one ul.widget-grid li .widget-content {
+  padding: 1em;
+  min-height: 125px;
+  margin-bottom: 3em;
+}
+/* line 474, ../sass/_comstor.scss */
+body.cisco_one ul.widget-grid li#widget-course_videos .widget-content {
+  min-height: 430px;
+}
+
+/* line 479, ../sass/_comstor.scss */
+#four_stages .widget-content {
+  padding: 1em;
+}
+
+/* line 482, ../sass/_comstor.scss */
+#verbsheader .label {
+  margin-right: 2px;
+}
+
+/* line 485, ../sass/_comstor.scss */
+tr.obj-list td {
+  padding-left: 0;
+}
+/* line 487, ../sass/_comstor.scss */
+tr.obj-list td:nth-child(4) {
+  padding-left: 0;
+}
+/* line 490, ../sass/_comstor.scss */
+tr.obj-list td:nth-child(5) {
+  padding-left: 0;
+}
+/* line 493, ../sass/_comstor.scss */
+tr.obj-list td:nth-child(6) {
+  padding-left: 0;
+}
+/* line 496, ../sass/_comstor.scss */
+tr.obj-list td:nth-child(7) {
+  padding-left: 0;
+}
+/* line 499, ../sass/_comstor.scss */
+tr.obj-list td:first-child {
+  padding-left: 5px;
+}
+
+/* line 503, ../sass/_comstor.scss */
+#sortable_learner_detail thead {
+  color: #fff;
+}
+/* line 505, ../sass/_comstor.scss */
+#sortable_learner_detail thead th {
+  white-space: nowrap;
+  padding-right: 1em;
+}
+/* line 508, ../sass/_comstor.scss */
+#sortable_learner_detail thead th:nth-child(5) {
+  width: 10%;
+}
+/* line 515, ../sass/_comstor.scss */
+#sortable_learner_detail thead th:nth-child(1) {
+  width: 12%;
+}
+/* line 518, ../sass/_comstor.scss */
+#sortable_learner_detail thead th:nth-child(2) {
+  width: 8%;
+}
+/* line 521, ../sass/_comstor.scss */
+#sortable_learner_detail thead th:nth-child(3) {
+  width: 50%;
+}
+/* line 524, ../sass/_comstor.scss */
+#sortable_learner_detail thead th:nth-child(4) {
+  width: 20%;
+}
+/* line 528, ../sass/_comstor.scss */
+#sortable_learner_detail thead .icon-arrow-combo {
+  margin-right: 0.5em;
+}
+
+/* line 532, ../sass/_comstor.scss */
+#root .subnav-bar ul {
+  margin-top: 0;
+}
+/* line 534, ../sass/_comstor.scss */
+#root .subnav-bar ul li {
+  position: relative;
+}
+/* line 536, ../sass/_comstor.scss */
+#root .subnav-bar ul li h2 {
+  text-transform: capitalize;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  padding: 0;
+  margin-top: 0;
+}
+/* line 542, ../sass/_comstor.scss */
+#root .subnav-bar ul li h2 small {
+  color: #444;
+}
+
+/* line 552, ../sass/_comstor.scss */
+#video_time_stats ul {
+  margin-right: 2em;
+  text-align: right;
+  margin-top: 2em;
+}
+
+/* Welcome to Compass. Use this file to define print styles.
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /> */

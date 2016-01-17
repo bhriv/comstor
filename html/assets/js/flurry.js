@@ -25,23 +25,17 @@ var base_url_Flurry           = 'http://api.flurry.com/',
     url_country               = 'ALL';
 
 
-
-$( document ).ready(function() {
-  cc('Initial Chart Display on page load','success');
-  runFlurryDashboard();
-  // FlurryDatePicker();
-  /************** Load Actve Users   **************/
-  // var id = 'ActiveUsers';
-  // var id = ;
-  // var app_metric_specific = id;
-  // setAppMetricSpecific('NewUsers');
-  
-  /************** end - Load Actve Users   *********/  
-});
-
 /*******************************************************/
 /**************  Run Flurry Dashboard  **************/
 /*******************************************************/
+
+$( document ).ready(function() {
+  cc('Flurry JS is running','success');
+  $('#start_date').val(checkStartDate());
+  $('#end_date').val(checkEndDate());
+  runFlurryDashboard();
+});
+
 
 function runFlurryDashboard(){
   cc('runFlurryDashboard','run');
@@ -51,14 +45,12 @@ function runFlurryDashboard(){
   var d = checkAppMetricSpecific();
   // var e = localStorage.getItem( 'event_metric_specific' );
   if (a && b && c && d) {
-    console.log('All requirements met, runDashboard executing','success');
-    // runDashboard();
-    // buildCombinedDataChart();
-    // buildFlurryChart();
+    cc('All Flurry requirements met, runDashboard executing','success');
+    // get default 
     getChartData('NewUsers','days');
     $('#flurry_reports').show();
     }else{
-    cc('All requirements NOT met, runDashboard NOT executing','fatal');
+    cc('All Flurry requirements NOT met, runDashboard NOT executing','fatal');
   }
 }
 

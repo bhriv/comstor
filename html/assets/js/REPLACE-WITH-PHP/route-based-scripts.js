@@ -52,12 +52,12 @@ $(document).ready(function() {
       });
     }
     if (urlParams['page'] == 'teacher-reports'){
-      $.getScript( "assets/js/teacher-reports.js" )
+      $.getScript( "assets/js/build/concat-lumious_reports.js" )
         .done(function( script, textStatus ) {
-          cc('teacher-reports loading '+ textStatus,'ready' );
+          cc('concat-lumious_reports loading '+ textStatus,'ready' );
         })
         .fail(function( jqxhr, settings, exception ) {
-          cc('teacher-reports script not loaded','fatal');
+          cc('concat-lumious_reports script not loaded','fatal');
       }); 
     }
     if (urlParams['page'] == 'login'){

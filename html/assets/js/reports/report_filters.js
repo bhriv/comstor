@@ -66,8 +66,9 @@ $( window ).load(function() {
 	// console.log(user.roles);
 
     // var base_url = urls.analytics;
-    
-	var base_url = 'http://akronzip.com/';
+    var base_url = 'http://www.privacyvector.com/api/';
+    // http://www.privacyvector.com/api/lumiousreports/course/1
+	// var base_url = 'http://akronzip.com/';
     var url_cat = base_url + "lumiousreports/coursecategories";
     var url_course = base_url + "lumiousreports/course";
     var url_quiz = base_url + "lumiousreports/quiz";
