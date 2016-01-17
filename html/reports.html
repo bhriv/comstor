@@ -22,51 +22,27 @@
         <meta content="" itemprop="description">
         <meta content="" itemprop="image">
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
-        <title>
-            Dashboard - Comstor Lumious
-        </title><!-- FONTS provided in sass files
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
-
-        <link rel="stylesheet" href="old_assets/fonts/font-awesome-4.4.0/css/font-awesome.min.css">
-        -->
+        <title>Dashboard - Comstor Lumious</title>
         <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-        <link href="old_assets/css/screen.css" rel="stylesheet">
-        <link href="old_assets/from-symfony/css/gumby.css" rel="stylesheet">
-        <link href="old_assets/from-symfony/css/pikaday.css" rel="stylesheet">
-        <link href="old_assets/from-symfony/css/jquery.fileupload.css" rel="stylesheet">
-        <link href="old_assets/from-symfony/css/style.css" rel="stylesheet">
-        <link href="old_assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet"><!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
 
-        <script src="old_assets/from-symfony/js/libs/respond.js" type="text/javascript"></script>
-        <script src="old_assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
-        <script src="old_assets/from-symfony/js/libs/fp_js_validator.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            user = {
-                email: 'ben.porcelain@gmail.com',
-                firstname: 'Joe',
-                lastname: 'Average',
-                roles: ['ROLE_USER',]
-            };
-            
-            message = {
-                                id: 0
-                            }
-            urls = { 
-                analytics: 'http://www.privacyvector.com/api/',
-                messaging: 'http://www.privacyvector.com/api/',
-                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
-                settings: 'http://www.privacyvector.com/api/',
-                reports: 'http://www.privacyvector.com/api/'
-                // reports: 'http://www.privacyvector.com/api/lumiousreports/'
-            };
+        <!-- Merge these to SASS files once framework is established -->
+        <link href="assets/css/screen.css" media="screen, projection"  rel="stylesheet" type="text/css">
+        <!-- <link href="assets/from-symfony/css/gumby.css" media="screen, projection"  rel="stylesheet" type="text/css"> -->
 
-            fb = {
-                client_id: '',
-                redirect_url: 'http://ciscolive.lumious.co/oauth/redirect/facebook'
-            };
-        </script>
+         <!-- PREPARTIALS VERSION OF STYLES FOR TESTING -->
+        <!-- <link href="production_build/css/screen-with-autoprefixer.css" rel="stylesheet" type="text/css"> -->
+        <link href="assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet" type="text/css">
+        
+        <!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
+        
+        <!-- Modernizr - load first, then jQuery -->
+        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
+        <!-- Grab Google CDN's jQuery, fall back to local if offline, 2.0 for modern browsers, oldIE not supported by this project  -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script>if (!window.jQuery) { document.write('<script src="assets/from-symfony/js/libs/jquery-2.0.2.min.js"><\/script>'); }</script>
+        <script src="assets/js/console-class.js"></script> 
     </head>
-    <body>
+    <body class="cisco_one">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -516,68 +492,33 @@
                 </li>
             </ul>
         </footer><!-- footer js -->
-        <!-- Unminified -->
-        <script src="old_assets/js/vendor/jquery.js">
-        </script> 
-        <script src="old_assets/vendor/jqueryui/jquery-ui.js">
-        </script> <!-- From Symfony: LIBRARY -->
+        
 
+    
+        
+        <!-- Dev Only -->
+        <script src="assets/js/testing-only.js"></script>
 
-        <!--    <script src="https://www.highcharts.com/samples/data/maps/world.js"></script> 
-        <script src="//cdn.ckeditor.com/4.4.3/basic/ckeditor.js"></script>
-        <script src="//cdn.ckeditor.com/4.4.3/basic/adapters/jquery.js"></script>  
-        -->
+        <script>
+            urls = { 
+                analytics: 'http://akronzip.com/',
+                messaging: 'http://akronzip.com/',
+                settings: 'http://akronzip.com/',
+                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
+                reports: 'http://www.privacyvector.com/api/lumiousreports/'
+            };
+        </script>
+    
+        <script type="text/javascript" src="assets/js/build/concat-gumby.js"></script>
+        <script type="text/javascript" src="assets/js/build/concat-ui_libs.js"></script>
+        <script type="text/javascript" src="assets/js/build/concat-ui_vendor.js"></script>
+        <script type="text/javascript" src="assets/js/build/concat-dashboard_custom.js"></script>
 
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/gumby.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.checkbox.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.fixed.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.navbar.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.radiobtn.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.retina.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.skiplink.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.tabs.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/gumby.toggleswitch.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/jquery.validation.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/ui/masonry.pkgd.min.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/gumby.init.js"></script>
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/retina.min.js"></script>
-         
-        <script src="old_assets/js/from-symfony/js/libs/dna.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/dumper.js" type="text/javascript">
-        </script> 
-        <!--
-        <script type="text/javascript" src="old_assets/js/from-symfony/js/libs/jquery.ui.widget.js"></script>
-    -->
-         
-        <script src="old_assets/js/from-symfony/js/libs/jquery-ui-1.10.3.min.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/jquery.selectBoxIt.min.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/jquery.tablesorter.min.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/jquery.tablesorter.pager.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/jquery.tablesorter.widgets.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/jquery-sortable-min.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/pikaday.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/libs/pikaday.jquery.js" type="text/javascript">
-        </script> <!-- END From Symfony -->
-         
-        <script src="old_assets/js/vendor/bootstrap.js"></script> 
-        <script src="old_assets/vendor/moment/moment.min.js"></script> 
-        <script src="old_assets/vendor/chart/Chart.min.js"></script> 
-        <script src="old_assets/js/vendor/underscore.js"></script> 
-        <script src="old_assets/js/dashboard.js"></script> 
-
-        <!-- From Symfony: CUSTOM -->
-         
-        <script src="old_assets/js/from-symfony/js/plugins.js" type="text/javascript"></script> 
-        <script src="old_assets/js/from-symfony/js/main.js" type="text/javascript"></script> 
-    <!-- MEF REPORT FILTERS -->
+<!-- Route Based Script Loading (js implementation) --> 
+        <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>
+    
+       
+    <!-- MEF REPORT FILTERS 
         <script src="old_assets/js/from-symfony/js/report_filters.js" type="text/javascript">
         </script> 
         <script src="old_assets/js/from-symfony/js/report_students_access.js" type="text/javascript">
@@ -590,11 +531,8 @@
         </script> 
         <script src="old_assets/js/from-symfony/js/report_concatenated_rows.js" type="text/javascript">
         </script> 
-    
-        <script src="old_assets/js/from-symfony/js/analytics.js" type="text/javascript">
-        </script> 
-        <script src="old_assets/js/from-symfony/js/settings.js" type="text/javascript">
-        </script> <!-- END From Symfony -->
+    -->
+   
          <!-- Production Ready : All vendor and custom js compiled 
          ** BREAKS lumi.js
 
@@ -620,47 +558,6 @@
 
             }); // end doc ready
         </script> 
-        <script type="text/javascript">
-        $(document).ready(function() {
-        $( "#tbody_activity td.timestamp" ).each(function( index ) {
-            var dateString = $(this).text();
-            dateString = moment(dateString).format('MMMM Do YYYY, h:mm:ss a');
-            console.log( index + ": " + dateString );
-            $(this).text(dateString);
-        });
-
-        $( "#tbody_activity td.level-verb" ).each(function( index ) {
-            var textstring = $(this).text();
-
-            if (textstring.toLowerCase().indexOf("arrange") >= 0){
-                $(this).addClass(' category-knowledge');    
-            }
-            // };
-        });
-        // $( "div" ).data( "level" ) === "knowledge";
-
-        });
-        </script> 
-        <script type="text/javascript">
-        $(document).ready(function () {
-          $('.accordion-tabs-minimal').each(function(index) {
-            $(this).children('li').first().children('a').addClass('is-active').next().addClass('is-open').show();
-          });
-          $('.accordion-tabs-minimal').on('click', 'li > a.tab-link', function(event) {
-            if (!$(this).hasClass('is-active')) {
-              event.preventDefault();
-              var accordionTabs = $(this).closest('.accordion-tabs-minimal');
-              accordionTabs.find('.is-open').removeClass('is-open').hide();
-
-              $(this).next().toggleClass('is-open').toggle();
-              accordionTabs.find('.is-active').removeClass('is-active');
-              $(this).addClass('is-active');
-            } else {
-              event.preventDefault();
-            }
-          });
-        });
-        </script>
 
     </body>
 </html>
