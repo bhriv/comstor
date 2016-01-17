@@ -137,7 +137,7 @@ function checkMetricType(){
 function checkAppMetricSpecific(){
   var app_metric_specific = localStorage.getItem( 'app_metric_specific' );
   if (isItemNullorUndefined(app_metric_specific)) {
-    app_metric_specific = 'ActiveUsers';
+    app_metric_specific = 'NewUsers';
     cc('No app_metric_specific is set so the default of '+app_metric_specific+' will be used');
     setAppMetricSpecific(app_metric_specific);
   };

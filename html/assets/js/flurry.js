@@ -1,16 +1,3 @@
-
-$( document ).ready(function() {
-  $('#flurry_reports').show();
-  /************** Load Actve Users   **************/
-  // var id = 'ActiveUsers';
-  var id = 'NewUsers';
-  var app_metric_specific = id;
-  setAppMetricSpecific(app_metric_specific);
-  getChartData(id);
-  /************** end - Load Actve Users   *********/  
-});
-
-
 /***********************************************************************/
 /*************************** Setup Flurry API Variables **********************/
 /***********************************************************************/
@@ -36,6 +23,43 @@ var base_url_Flurry           = 'http://api.flurry.com/',
     url_startDate             = '',
     url_endDate               = '',
     url_country               = 'ALL';
+
+
+
+$( document ).ready(function() {
+  cc('Initial Chart Display on page load','success');
+  
+  /************** Load Actve Users   **************/
+  // var id = 'ActiveUsers';
+  // var id = ;
+  // var app_metric_specific = id;
+  // setAppMetricSpecific('NewUsers');
+  
+  /************** end - Load Actve Users   *********/  
+});
+
+/*******************************************************/
+/**************  Run Flurry Dashboard  **************/
+/*******************************************************/
+
+function runFlurryDashboard(){
+  cc('runFlurryDashboard','run');
+  var a = checkStartDate();
+  var b = checkEndDate();
+  var c = checkMetricType();
+  var d = checkAppMetricSpecific();
+  // var e = localStorage.getItem( 'event_metric_specific' );
+  if (a && b && c && d) {
+    console.log('All requirements met, runDashboard executing','success');
+    // runDashboard();
+    // buildCombinedDataChart();
+    // buildFlurryChart();
+    getChartData('NewUsers','days');
+    $('#flurry_reports').show();
+    }else{
+    cc('All requirements NOT met, runDashboard NOT executing','fatal');
+  }
+}
 
 
 /***********************************************************************/
@@ -169,41 +193,11 @@ function getChartData(id,period){
     console.log('id NOT updated. Id passed was: '+id);
   }
 
-  var stats_label = '';
-  var data_query_label = '';
-
-  if (id == 'NewUsers'){ stats_label = 'New Users'; data_query_label = 'New Users';}
-  if (id == 'RetainedUsers') { stats_label = 'Retained Users';  data_query_label = 'Retained Users';}
-  if (id == 'Sessions') { stats_label = 'Sessions'; data_query_label = 'Sessions';}
-  if (id == 'MedianSessionLength') { stats_label = 'Med. Session<br>Length';  data_query_label = 'Med. Session Length (sec)';}
-  if (id == 'AvgSessionLength') { stats_label = 'Ave. Session<br>Length'; data_query_label = 'Avg. Session Length (sec)';}
-  if (id == 'PageViews') { stats_label = 'Page Views'; data_query_label = 'Page Views';}
-  $("span#data_query").text(data_query_label);
-
   // GROUP DATA by Period
 
   var url_flurry_api = constructFlurryEndpoint();
-  cc('url_flurry_api = '+url_flurry_api,'info');
-  var url_flurry_api = url_flurry_api + '&groupBy=' + period;
+  url_flurry_api = url_flurry_api + '&groupBy=' + period;
   cc('url_flurry_api WITH PERIOD = '+url_flurry_api,'info');
-
-  // var url_new_Flurry = 'http://api.flurry.com/appMetrics/NewUsers?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-10-31&country=ALL';
-
-  // $.when( url_flurry_api ).done(function( x ) {
-  //   cc('constructFlurryEndpoint is DONE','success');
-  //   cc('new Endpoitn is : '+x, 'info');
-  //   var period = 'days';
-  //   if (isItemNullorUndefined(period)) {
-  //     cc('No period is set so the FLURRY default will be used','warning');
-  //   }
-  //   else{
-  //     cc('period NOT updated: '+period,'info');
-  //     x = url_flurry_api + '&groupBy=' +period;
-  //   }
-  //   cc('Grouped By API URL: '+x,'success');
-  // });
-
-
 
   // Modify calls to Active Users endpoint
   if (id == 'ActiveUsers') { 
@@ -219,6 +213,17 @@ function getChartData(id,period){
       console.log('url_flurry_api: '+url_flurry_api);
     };
   }
+
+  var stats_label = '';
+  var data_query_label = '';
+
+  if (id == 'NewUsers'){ stats_label = 'New Users'; data_query_label = 'New Users';}
+  if (id == 'RetainedUsers') { stats_label = 'Retained Users';  data_query_label = 'Retained Users';}
+  if (id == 'Sessions') { stats_label = 'Sessions'; data_query_label = 'Sessions';}
+  if (id == 'MedianSessionLength') { stats_label = 'Med. Session<br>Length';  data_query_label = 'Med. Session Length (sec)';}
+  if (id == 'AvgSessionLength') { stats_label = 'Ave. Session<br>Length'; data_query_label = 'Avg. Session Length (sec)';}
+  if (id == 'PageViews') { stats_label = 'Page Views'; data_query_label = 'Page Views';}
+  $("span#data_query").text(data_query_label);
   
   var flurry_data_loaded = $.getJSON( url_flurry_api);
 
@@ -292,7 +297,7 @@ function getChartData(id,period){
 /*******************************************************/
 
 function newFlurryChart(chart_id){
-  //Chart Data
+  cc('newFlurryChart','run');
   var canvas_id = 'flurry-chart-' +chart_id;
     var canvas = document.getElementById(canvas_id),
     ctx = canvas.getContext('2d'),
@@ -314,7 +319,7 @@ function newFlurryChart(chart_id){
 } // end newCombinedChart
 
 function newFlurryBarChart(chart_id){
-  //Chart Data
+  cc('newFlurryBarChart','run');
   var canvas_id = 'flurry-chart-' +chart_id;
     var canvas = document.getElementById(canvas_id),
     ctx = canvas.getContext('2d'),
@@ -831,25 +836,3 @@ function testFlurryAnalytics(){
   });
 }
 
-
-
-/*******************************************************/
-/**************  Run Flurry Dashboard  **************/
-/*******************************************************/
-
-function runFlurryDashboard(){
-  cc('runFlurryDashboard','run');
-  var a = localStorage.getItem( 'start_date' );
-  var b = localStorage.getItem( 'end_date' );
-  var c = localStorage.getItem( 'metric_type' );
-  var d = localStorage.getItem( 'app_metric_specific' );
-  // var e = localStorage.getItem( 'event_metric_specific' );
-  if (a && b && c && d) {
-    console.log('All requirements met, runDashboard executing');
-    // runDashboard();
-    // buildCombinedDataChart();
-    buildFlurryChart();
-  }else{
-    console.log('All requirements NOT met, runDashboard NOT executing');
-  }
-}
