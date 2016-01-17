@@ -228,7 +228,9 @@ function getChartData(id,period){
   var flurry_data_loaded = $.getJSON( url_flurry_api);
 
   $.when(flurry_data_loaded).done(function(flurry_object) {
-
+    console.log('flurry_data_loaded is DONE');
+    console.log('flurry_object');
+    console.log(flurry_object);
     if (url_country == 'ALL') {
       console.log('url_country: '+url_country);
       flurry_country_data = flurry_object['country'];
@@ -624,7 +626,6 @@ function buildFlurryChart(){
   $.when(flurry_data_loaded).done(function(flurry_object) {
     console.log('flurry_data_loaded is DONE');
     console.log('flurry_object');
-    // flatten response object
     console.log(flurry_object);
     // flurry_object = flurry_object[0];
     // console.log(flurry_object);
@@ -781,7 +782,10 @@ function newUsersPerWeek(){
   var flurry_data_loaded = $.getJSON( url_flurry_api);
 
   $.when(flurry_data_loaded).done(function(flurry_object) {
-
+    console.log('flurry_data_loaded is DONE');
+    console.log('flurry_object');
+    console.log(flurry_object);
+    
     if (url_country == 'ALL') {
       console.log('url_country: '+url_country);
       flurry_country_data = flurry_object['country'];
