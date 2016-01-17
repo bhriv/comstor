@@ -169,7 +169,7 @@
         background-color: #7ea2aa;
     }
     .widget-grid li h2.yellow{
-        background-color: #ffc145;
+        background-color: #afdfdb;
     }
 </style>
 <script>cc('child.php content loaded','ready');</script>

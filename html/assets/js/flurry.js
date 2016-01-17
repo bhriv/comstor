@@ -29,6 +29,7 @@ var base_url_Flurry           = 'http://api.flurry.com/',
 $( document ).ready(function() {
   cc('Initial Chart Display on page load','success');
   runFlurryDashboard();
+  // FlurryDatePicker();
   /************** Load Actve Users   **************/
   // var id = 'ActiveUsers';
   // var id = ;
@@ -228,9 +229,9 @@ function getChartData(id,period){
   var flurry_data_loaded = $.getJSON( url_flurry_api);
 
   $.when(flurry_data_loaded).done(function(flurry_object) {
-    console.log('flurry_data_loaded is DONE');
-    console.log('flurry_object');
-    console.log(flurry_object);
+    // console.log('flurry_data_loaded is DONE');
+    // console.log('flurry_object');
+    // console.log(flurry_object);
     if (url_country == 'ALL') {
       console.log('url_country: '+url_country);
       flurry_country_data = flurry_object['country'];
@@ -782,9 +783,9 @@ function newUsersPerWeek(){
   var flurry_data_loaded = $.getJSON( url_flurry_api);
 
   $.when(flurry_data_loaded).done(function(flurry_object) {
-    console.log('flurry_data_loaded is DONE');
-    console.log('flurry_object');
-    console.log(flurry_object);
+    // console.log('flurry_data_loaded is DONE');
+    // console.log('flurry_object');
+    // console.log(flurry_object);
     
     if (url_country == 'ALL') {
       console.log('url_country: '+url_country);
@@ -839,4 +840,41 @@ function testFlurryAnalytics(){
     console.log('----- END testFlurryAnalytics -----');
   });
 }
+
+
+
+/*****************************************************************/
+// Set Flurry Date Picker Processing Functions 
+/*****************************************************************/
+
+function FlurryDatePicker(){
+  cc('FlurryDatePicker','run');
+  $( "#start_date" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths: 3,
+    onClose: function( selectedDate ) {
+      $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
+      localStorage.setItem( 'start_date', selectedDate );
+      console.log('NEW start_date: ' +selectedDate);
+    }
+  });
+  $( "#end_date" ).datepicker({
+    formatDate: "yyyy-mm-dd",
+    // defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths: 3,
+    onClose: function( selectedDate ) {
+      $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
+      localStorage.setItem( 'end_date', selectedDate );
+      console.log('NEW end_date: ' +selectedDate);
+    }
+  });
+
+  $.datepicker.setDefaults({
+      dateFormat: 'yy-mm-dd'
+  });
+}
+// end Date Picker
+
 
