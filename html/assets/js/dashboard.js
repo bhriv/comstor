@@ -8,7 +8,7 @@
 // UX Functions Dependent on Doc Ready State
 
 $(document).ready(function() {
-  
+  // checkEndDate();
   // Setup basic app needs
   // cc('Document Ready','ready');
   $('.hideme').hide();
@@ -41,9 +41,13 @@ $(document).ready(function() {
 
   $('#app_metric_specific select').on('change', function() {
       var app_metric_specific = $(this).val();
-      console.log('app_metric_specific: ' +app_metric_specific);
-      setAppMetricSpecific(app_metric_specific);
-      console.log('NEW app_metric_specific:' +app_metric_specific);
+      cc('app_metric_specific: ' +app_metric_specific,'info');
+      if (isItemNullorUndefined('app_metric_specific')) {
+        app_metric_specific = 'appMetrics';
+        cc('app_metric_specific default used: ' +app_metric_specific,'info');
+      }
+      setAppMetricSpecific(app_metric_specific);  
+      cc('NEW app_metric_specific:' +app_metric_specific,'success');
   });
 
   $('#event_metric_specific select').on('change', function() {

@@ -240,31 +240,38 @@ function setDefaultData(){
 }
 
 function setStartDate(){
-  cc('setDefaultData','run');
+  cc('setStartDate','run');
   var start_date = $('#start_date').val();
+  if (isItemNullorUndefined(start_date)) {
+    start_date = '2015-01-01';
+  }
   localStorage.setItem( 'start_date', start_date );
-  console.log('start_date set: '+start_date);
+  cc('start_date set: '+start_date,'info');
 }
 
 function setEndDate(){
+  cc('setEndDate','run');
   var end_date = $('#end_date').val();
+  if (isItemNullorUndefined(end_date)) {
+    end_date = '2015-12-31';
+  }
   localStorage.setItem( 'end_date', end_date );
-  console.log('end_date set: '+end_date);
+  cc('end_date set: '+end_date,'info');
 }
 
 function setMetricType(metric_type){
   localStorage.setItem( 'metric_type', metric_type );
-  console.log('metric_type set: '+metric_type);
+  cc('metric_type set: '+metric_type,'info');
 }
 
 function setAppMetricSpecific(app_metric_specific){
   localStorage.setItem( 'app_metric_specific', app_metric_specific );
-  console.log('app_metric_specific set: '+app_metric_specific);
+  cc('app_metric_specific set: '+app_metric_specific,'info');
 }
 
 function setEventMetricSpecific(event_metric_specific){
   localStorage.setItem( 'event_metric_specific', event_metric_specific );
-  console.log('event_metric_specific set: '+event_metric_specific);
+  cc('event_metric_specific set: '+event_metric_specific,'info');
 }
 
 
@@ -279,17 +286,20 @@ function checkUserSessionID(){
 
 function checkStartDate(){
   var start_date = localStorage.getItem( 'start_date' );
-  cc('STORAGE start_date: '+start_date, 'info');
-  if (start_date == null) {
+  alert('start_date TEST: '+start_date);
+  if (isItemNullorUndefined(start_date)) {
     start_date = '2015-01-01';
-  };
+    alert('No Start Date is set so the default date of '+start_date+' will be used');
+    setStartDate();
+  }
+  cc('STORAGE start_date: '+start_date, 'info');
   return start_date;
 }
 
 function checkEndDate(){
   var end_date = localStorage.getItem( 'end_date' );
-  cc('STORAGE end_date: '+end_date, 'info');
-  if (end_date == null) {
+  if (isItemNullorUndefined(start_date)) {
+    setEndDate();
     end_date = '2015-12-31';
     alert('No End Date is set so the default date of '+end_date+' will be used');
   };
