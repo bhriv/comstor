@@ -3,8 +3,9 @@
 /*******************************************************/
 // Emulate PHP route methods for loading scripts based on the current route
 
+// LOAD on All Dashboard Pages
 
-if (/dashboard/.test(window.location.href)){
+if (/mobile-analytics/.test(window.location.href)){
     $.getScript( "assets/js/dashboard.js" )
       .done(function( script, textStatus ) {
         cc('dashboard.js loading '+ textStatus,'ready' );

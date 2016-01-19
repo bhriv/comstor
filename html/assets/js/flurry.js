@@ -30,10 +30,116 @@ var base_url_Flurry           = 'http://api.flurry.com/',
 /*******************************************************/
 
 $( document ).ready(function() {
+
+  /*****************************************************************/
+  /**************** Trigger Events to Build Charts  **************/
+  /*****************************************************************/
+
+  // Example: a#NewUsers_ 
+  $("span.chart_trigger").click(function(event) {
+    event.stopPropagation();
+    var id = $(this).attr('id');
+    id = id.slice(0, -1);
+    
+    $('#graphs-holder li .widget-content').addClass('active');
+    var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+    $(current_widget).removeClass('active');
+
+
+    if(id == 'Summary'){
+      var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+      $(c).addClass('active');
+      getCustomEventSummaryData();
+    }
+    if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
+      
+      buildCustomEventDataTables(id);
+    }
+    
+    if(id != 'Summary' && id != 'ModuleViewed' && id != 'CourseViewed' && id != 'ModuleRated' && id != 'PDFDownloaded' ){
+      var app_metric_specific = id;
+      setAppMetricSpecific(app_metric_specific);
+      getChartData(id);
+      var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
+      $(c).addClass('active');
+    }
+  });
+
+  // Example: span.months_
+  $("#graphs-holder li h2 span").click(function(event) {
+    event.stopPropagation();
+    var id = $(this).attr('id');
+    id = id.slice(0, -1);
+    var period = $(this).attr('class');
+    // add active classes to subnav to match switch
+    var nav_trigger = 'nav ul li span#'+id+'_ a';
+    $('#analytics_triggers nav ul li span a').removeClass('active');
+    $(nav_trigger).addClass('active');
+
+    $('#graphs-holder li .widget-content').addClass('active');
+    var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+    $(current_widget).removeClass('active');
+
+    var app_metric_specific = id;
+    setAppMetricSpecific(app_metric_specific);
+    getChartData(id,period);
+    $('#graphs-holder li h2 span').removeClass('active');
+    $(this).addClass('active');
+  });
+
+  // Set default widget displays
+  $('#graphs-holder li h2 span.days').addClass('active');
+  $('#graphs-holder li .widget-content').addClass('active');
+  $('#graphs-holder li#widget-NewUsers .widget-content').removeClass('active');
+
+  /*********************************************************************************/
+  /**************  UX filter event listeners to determine data query type **********/
+  /************************* Dropdown Select Actions /**************//**************/
+
+  $('#flurry_reports select').on('change', function() {
+    runFlurryDashboard();
+  });
+
+  $('#metric_type select').on('change', function() {
+      var metric_type = $(this).val();
+      console.log('metric_type: ' +metric_type);
+      setMetricType(metric_type);
+      console.log('NEW metric_type:' +metric_type);
+  });
+
+  $('#app_metric_specific select').on('change', function() {
+      var app_metric_specific = $(this).val();
+      cc('app_metric_specific: ' +app_metric_specific,'info');
+      if (isItemNullorUndefined('app_metric_specific')) {
+        app_metric_specific = 'appMetrics';
+        cc('app_metric_specific default used: ' +app_metric_specific,'info');
+      }
+      setAppMetricSpecific(app_metric_specific);  
+      cc('NEW app_metric_specific:' +app_metric_specific,'success');
+  });
+
+  $('#event_metric_specific select').on('change', function() {
+      var event_metric_specific = $(this).val();
+      console.log('event_metric_specific: ' +event_metric_specific);
+      setEventMetricSpecific(event_metric_specific);
+      console.log('NEW event_metric_specific:' +event_metric_specific);
+  });
+
+  // autoload Select option from localStorage
+  $("#metric_type select option").filter(function() {
+      return $(this).val() == checkMetricType(); 
+  }).prop('selected', true);
+
+
+  /*****************************************************************/
+  /**************** Main Flurry Activation Series of Events  **************/
+  /*****************************************************************/
+
   cc('Flurry JS is running','success');
   $('#start_date').val(checkStartDate());
   $('#end_date').val(checkEndDate());
   runFlurryDashboard();
+  /**************************** END Flurry Activation Series ***********************/
 });
 
 
