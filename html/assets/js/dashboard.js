@@ -143,7 +143,7 @@ $(document).ready(function() {
       getCustomEventSummaryData();
     }
     if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
-      alert('Trigger hit!');
+      
       buildCustomEventDataTables(id);
     }
     
