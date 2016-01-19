@@ -13,12 +13,12 @@
                         cc('Loading mobile-analytics submenu items partial','ready');
                         $( "#mobile_analytics_submenus" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/NAVIGATION/SUBMENUS/mobile-analytics-submenu.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
                     }
-                    var pageid = $.query.get('page');
-                    alert('Page from URL = '+pageid);
-                    var newerQuery = $.query.SET('page', 'learning-activity');
-                    alert('newerQuery = '+ newerQuery);
-                    var page = urlParams['page'];
-                    var url = location.search;
+                    // var pageid = $.query.get('page');
+                    // alert('Page from URL = '+pageid);
+                    // var newerQuery = $.query.SET('page', 'learning-activity');
+                    // alert('newerQuery = '+ newerQuery);
+                    // var page = urlParams['page'];
+                    // var url = location.search;
                 });
                 $("#mobile_analytics_triggers li").click(function() {
                     location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=mobile-analytics');

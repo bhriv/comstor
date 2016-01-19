@@ -3,6 +3,7 @@
 /*******************************************************/
 // Emulate PHP route methods for loading scripts based on the current route
 
+
 if (/dashboard/.test(window.location.href)){
     $.getScript( "assets/js/dashboard.js" )
       .done(function( script, textStatus ) {
@@ -32,7 +33,8 @@ if (/dashboard/.test(window.location.href)){
 //     });
 // }
 
-$(document).ready(function() {
+
+// $(document).ready(function() {
     if (urlParams['page'] == 'mobile-analytics'){
       $.getScript( "assets/js/flurry.js" )
         .done(function( script, textStatus ) {
@@ -69,5 +71,5 @@ $(document).ready(function() {
           cc('fb_login script not loaded','fatal');
       }); 
     }
-});
+// });
 
