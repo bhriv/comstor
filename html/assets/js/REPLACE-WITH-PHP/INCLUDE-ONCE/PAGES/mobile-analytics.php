@@ -1,19 +1,6 @@
 <?php // Dashboard - mobile analytics powered by Flurry ?>
-Mobile Analytics
 <section class="report_display_switch" id="flurry_reports" style="display:block !important;">
     <!-- status bar -->
-    <div class="status-bar" style="padding-top:0;">
-        <div id="" class="row" style="margin-bottom:1em;">
-            <!-- <a onclick="getCustomEventSummaryData();">getCustomEventSummaryData()</a> -->
-            <div class="picker_holder">
-                <label for="start_date">Start Date</label>
-                <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
-            </div>
-            <div class="picker_holder">
-                <label for="end_date">End Date</label>
-                <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
-            </div>
-    </div>
     <!-- <span id="chart_key"><small><strong>Key:</strong>: <span class="flurry_key" style="color:#82bfd8;"><i class="fa fa-line-chart"></i> Flurry Data</span> <span class="compare_key" style="color: #fe5f55"><i class="fa fa-line-chart"></i> Course Data</span></small></span> -->
 
     <ul id="graphs-holder" class="widget-grid full-width">

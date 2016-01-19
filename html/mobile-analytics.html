@@ -38,7 +38,7 @@
         <!-- Modernizr - load first, then jQuery -->
         <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
         <!-- Grab Google CDN's jQuery, fall back to local if offline, 2.0 for modern browsers, oldIE not supported by this project  -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script src="XXX//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script>if (!window.jQuery) { document.write('<script src="assets/from-symfony/js/libs/jquery-2.0.2.min.js"><\/script>'); }</script>
         <script src="assets/js/console-class.js"></script> 
     </head>
@@ -584,6 +584,33 @@
                       </section> 
                     </div>
                     <div class="row five push_one columns" id="sidebar_widgets">
+                      <style> 
+                      .choose_dates label{
+                        display: block;
+                        line-height: 0.7em;
+                        margin: 0 0 0.25em 0;
+                      }
+                      .choose_dates i.icon-calendar{
+                        color: #DDD !important;
+                        min-width: 15px;
+                        margin: 0;
+                      }
+                      .choose_dates i.icon-calendar:before{
+                        content: none;
+                      }
+
+                      </style>
+                      <div class="row choose_dates">
+                        <div class="picker_holder">
+                            <label for="start_date"><small><strong>Date Range Start:</strong></small></label>
+                            <i class="icon-calendar"></i> <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
+                        </div>
+                        <div class="picker_holder">
+                            <label for="end_date"><small><strong>Date Range End:</strong></small></label>
+                            <i class="icon-calendar"></i> <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
+                        </div>
+                      </div>
+
                       <ul class="widget-grid full-width">
                         <li data-type="video" id="widget-overview">
                           <h2 style="background-color:#b6dbac;">
@@ -621,9 +648,10 @@
                                   </p>
                                 </div>
                               </li>
-                            </ul><!-- <div id="overview_updated">
-                                                          <span><i class="icon-arrows-ccw"></i> Data Updated: <time id="overview_updated_date"></time></span> <span><i class="icon-arrows-ccw"></i> Last Usage: <time id="overview_updated_usage"></time></span>
-                                                      </div> -->
+                            </ul>
+                            <!-- <div id="overview_updated">
+                                <span><i class="icon-arrows-ccw"></i> Data Updated: <time id="overview_updated_date"></time></span> <span><i class="icon-arrows-ccw"></i> Last Usage: <time id="overview_updated_usage"></time></span>
+                            </div> -->
                           </div>
                         </li>
                       </ul>
@@ -776,6 +804,9 @@
     }
     #analytics_triggers li a:hover{
         cursor: pointer;
+    }
+    #widget-overview{
+      margin-top: 1em;
     }
     #widget-overview ul li span.period{
        text-transform: capitalize;

@@ -428,8 +428,8 @@ function newFlurryBarChart(chart_id){
       labels: flurry_dates,
       datasets: [
           {
-              fillColor: "#5b90bf",
-              strokeColor: "#5b90bf",
+              fillColor: "#fe5f55",
+              strokeColor: "#fe5f55",
               pointColor: "rgba(220,220,220,1)",
               pointStrokeColor: "#fff",
               data: flurry_values
