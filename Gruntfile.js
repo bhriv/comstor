@@ -245,8 +245,8 @@ module.exports = function(grunt) {
     // grunt.registerTask('default', ['concat','uglify','imagemin','compass:dev','autoprefixer' ]);
     // grunt.registerTask('default', ['concat','compass:dev' ]);
     
-    grunt.registerTask('default', ['concat','uglify' ]);
-    // grunt.registerTask('default', ['concat','uglify','compass:dev' ]);
+    // grunt.registerTask('default', ['concat','uglify' ]);
+    grunt.registerTask('default', ['concat','uglify','compass:dev' ]);
     // DEV 
     // grunt.registerTask('default', ['concat','compass:dev']);
 
