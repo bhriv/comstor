@@ -377,7 +377,9 @@ FpJsFormValidator.config = {'routing':{'check_unique_entity':null}};
 $( document ).ready(function() {
 	
 	var base_url = urls.analytics;
-    cc('base_url: '+base_url,'info');
+	var reports_base_url = urls.reports;
+    cc('analytics base_url: '+base_url,'info');
+    cc('reports base_url: '+reports_base_url,'info');
     var user_roles = user.roles;
 //	var base_url = "http://akronzip.com/";
 	var url_activelearners = base_url + "activelearners";
