@@ -40,26 +40,28 @@
             <script>cc('mobile-analytics-submenu.php content loaded','ready');</script>
             <script>
                 $("#mobile_analytics_triggers li").click(function() {
-                    location.replace('/mobile-analytics.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=mobile-analytics');
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=mobile-analytics');
                 });
                 $("#learning_activity_triggers li").click(function() {
-                    location.replace('/learning-activity.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=learning-activity');
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=learning-activity');
                 });
                 $("#teacher_reports_triggers li").click(function() {
-                    location.replace('/teacher-reports.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=teacher-reports');
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=teacher-reports');
+                    $("#sidebar_widgets").hide();
                 });
                 
             </script>
         </ul>
 
-        <ul id="learning_activity_triggers">
+        <!-- <ul id="learning_activity_triggers">
             <li><small><strong>Learning Activity</strong></small></li>
-        </ul>
+        </ul> -->
 
         <ul id="teacher_reports_triggers">
-            <li><small><strong>Teacher Reports</strong></small></li>
-            <li><a onclick="work_in_progress();">TEST: work_in_progress();</a></li>
-            <li><a class="get_item_data">TEST: get_item_data();</a></li>
+            <li>
+                <small><strong>Teacher Reports</strong></small></li>
+            <!-- <li><a onclick="work_in_progress();">TEST: work_in_progress();</a></li> -->
+            <!-- <li><a class="get_item_data">TEST: get_item_data();</a></li> -->
         </ul>
     </nav>
 </div><!-- / navbar column -->

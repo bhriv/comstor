@@ -42,13 +42,16 @@ if (urlParams['page'] == 'login'){
       cc('fb_login script not loaded','fatal');
   }); 
 }
-// if (urlParams['page'] == 'teacher-reports'){
-//   $.getScript( "assets/js/build/concat-lumious_reports.js" )
-//     .done(function( script, textStatus ) {
-//       cc('concat-lumious_reports loading '+ textStatus,'ready' );
-//     })
-//     .fail(function( jqxhr, settings, exception ) {
-//       cc('concat-lumious_reports script not loaded','fatal');
-//   }); 
-// }
+if (urlParams['page'] == 'teacher-reports'){
+  // $.getScript( "assets/js/build/concat-lumious_reports.js" )
+  //   .done(function( script, textStatus ) {
+  //     cc('concat-lumious_reports loading '+ textStatus,'ready' );
+  //   })
+  //   .fail(function( jqxhr, settings, exception ) {
+  //     cc('concat-lumious_reports script not loaded','fatal');
+  // }); 
+  $('#sidebar_widgets').addClass('hideme');
+  $('#mobile_analytics_submenus').addClass('hideme');
+  
+}
 

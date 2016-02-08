@@ -419,7 +419,8 @@ Teacher Reports
             </li>
         </ul>
         <div class="loading" id="loading_gif" style="display: none;">
-            <img src="/images/loading.gif" alt="Loading..." />
+            Loading...
+            <!-- <img src="/images/loading.gif" alt="Loading..." /> -->
         </div>
     </div>
 </section>
