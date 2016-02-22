@@ -42,7 +42,6 @@ $( document ).ready(function() {
 	var mode = $("#analytics_mode").html();
 	var pcid = $("#pageid").html();
 	var base_url = urls.settings;
-	// var base_url = 'http://localhost:8000/temp/settings/';
 	var loader = $('.loading');
 	var empty = $('.empty');
 

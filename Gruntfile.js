@@ -20,6 +20,12 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         // Concat JS into single production file
         concat: {
+            urls: {
+                src: [
+                    '<%= dirs.js_folder %>/urls.js'
+                ],
+                dest: '<%= dirs.js_folder %>/build/urls.js',
+            },
             gumby: {
                 src: [
                     '<%= dirs.js_libs_folder %>/gumby.js', 
@@ -83,6 +89,7 @@ module.exports = function(grunt) {
         // Uglify JS
         uglify: {
             build: {
+                src: '<%= dirs.js_folder %>/build/urls.js',
                 src: '<%= dirs.js_folder %>/build/concat-gumby.js',
                 src: '<%= dirs.js_folder %>/build/concat-ui_libs.js',
                 src: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',

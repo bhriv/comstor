@@ -190,6 +190,21 @@ function cheatModeToggle(){
 
 
 /*****************************************************************/
+/***************************  LOGIN ENDPIONT ***************/
+/*****************************************************************/
+
+// http://privacyvector.com/api/lumiouslogin/ben@me.com/lumious
+// [18/12/2015, 2:53:36 PM] Bruce Carlson: http://privacyvector.com/api/lumiouslogin/ben@me.com/lumious
+// [18/12/2015, 3:17:54 PM] Benjamin Holman Richards IV: Great! I'm assuming that I will pass the email address that the user enters on the login form to the endpoint and if I get a successful response (and the password matches) then I grant user access. Does that sound correct?
+// [18/12/2015, 3:43:04 PM] Bruce Carlson: Sounds good to me
+// [18/12/2015, 3:44:02 PM] Bruce Carlson: What would you like it to return if there isn't a match. Presently, it returns nothing.
+// [18/12/2015, 4:07:42 PM] Bruce Carlson: It might return an empty set.
+// [18/12/2015, 5:12:59 PM] Benjamin Holman Richards IV: it's fine as it is. thanks
+// [18/12/2015, 5:14:08 PM] Bruce Carlson: Wonderful. I'll stand down. Have a great weekend.
+
+
+
+/*****************************************************************/
 /********** Work With Local Storage Session Data *****************/
 /*****************************************************************/
 
@@ -411,7 +426,6 @@ $( document ).ready(function() {
 	var mode = $("#analytics_mode").html();
 	var pcid = $("#pageid").html();
 	var base_url = urls.settings;
-	// var base_url = 'http://localhost:8000/temp/settings/';
 	var loader = $('.loading');
 	var empty = $('.empty');
 

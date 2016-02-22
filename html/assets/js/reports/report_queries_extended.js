@@ -27,8 +27,10 @@ function lumiousreports_get_course_details(){
     var courselookup_fullname = null;
     var courselookup_shortname = null;
     var courselookup_startdate = null;
+    
+    var reports_url = urls.reports;
 
-    url_courselookup = 'http://www.akronzip.com/lumiousreports/courselookup/' +selected_course_id;
+    url_courselookup = reports_url +'courselookup/' +selected_course_id;
     console.log('COURSE LOOKUP ' +url_courselookup);
 
 
@@ -81,7 +83,9 @@ function lumiousreports_get_quiz_details(){
     var quizlookup_sumgrades = null;
     var quizlookup_grade = null;
 
-    url_quizlookup = 'http://www.akronzip.com/lumiousreports/quizlookup/' +selected_quiz_id;
+    var reports_url = urls.reports;
+
+    url_quizlookup = reports_url + 'quizlookup/' +selected_quiz_id;
     console.log('QUIZ LOOKUP ' +url_quizlookup);
 
     $.getJSON( url_quizlookup, function( quizlookup_data ) {
@@ -117,7 +121,9 @@ function lumiousreports_single_student_data(){
 	var selected_course_id = checkLocalStorage('current_course');
 	console.log('LOCAL STORAGE current_course ' +selected_course_id);
 	
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    var reports_url = urls.reports;
+
+    url_course_students = reports_url + 'students/' +selected_course_id;
     console.log('STUDENT LOOKUP ' +url_course_students);
 
     /* ---------------------
@@ -348,7 +354,8 @@ function lumiousreports_single_student_extended_data(){
 						    var quizlookup_sumgrades = null;
 						    var quizlookup_grade = null;
 
-						    url_quizlookup = 'http://www.akronzip.com/lumiousreports/quizlookup/' +quizlookup_id; console.log('QUIZ LOOKUP ' +url_quizlookup);
+
+						    url_quizlookup = urls.reports + 'quizlookup/' +quizlookup_id; console.log('QUIZ LOOKUP ' +url_quizlookup);
 
 						    $.getJSON( url_quizlookup, function( quizlookup_data ) {
 								$.each( quizlookup_data, function( key, x) {
@@ -558,7 +565,7 @@ function lumiousreports_single_student_quiz_attempt_grades_data(){
     // New endpoint
     // url_student_quizattempt = 'http://www.akronzip.com/lumiousreports/studentdata/' +current_student_id;
     // Old endpoint
-    url_student_quizattempt = 'http://akronzip.com/lumiousreports/studentquizattempts/' +current_student_id;
+    url_student_quizattempt = urls.reports + 'studentquizattempts/' +current_student_id;
     console.log('url_student_quizattempt: '+url_student_quizattempt);
 
     var student_quizattempt_id = null;

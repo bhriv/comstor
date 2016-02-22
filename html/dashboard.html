@@ -578,7 +578,7 @@
                           </ul>
 
                           <div class="loading" id="loading_gif" style="display: none;">
-                            <img alt="Loading..." src="/images/loading.gif">
+                            <img alt="Loading..." src="/assets/images/loading.gif">
                           </div>
                         </div>
                       </section> 
@@ -681,21 +681,11 @@
         
         <!-- Dev Only -->
         <script src="assets/js/testing-only.js"></script>
-
-        <script>
-            urls = { 
-                analytics: 'http://akronzip.com/',
-                messaging: 'http://akronzip.com/',
-                settings: 'http://akronzip.com/',
-                attachment: 'http://playground.learningconsole.com/lumiousattachment/',
-                reports: 'http://comstor.lumiousanalytics.com/api/lumiousreports/'
-            };
-        </script>
-    
-        <script type="text/javascript" src="assets/js/build/concat-gumby.js"></script>
-        <script type="text/javascript" src="assets/js/build/concat-ui_libs.js"></script>
-        <script type="text/javascript" src="assets/js/build/concat-ui_vendor.js"></script>
-        <script type="text/javascript" src="assets/js/build/concat-dashboard_custom.js"></script>
+        <script src="assets/js/build/urls.js"></script>
+        <script src="assets/js/build/concat-gumby.js"></script>
+        <script src="assets/js/build/concat-ui_libs.js"></script>
+        <script src="assets/js/build/concat-ui_vendor.js"></script>
+        <script src="assets/js/build/concat-dashboard_custom.js"></script>
         
         <script>
                 if (urlParams['page'] == 'mobile-analytics'){

@@ -92,6 +92,26 @@ function show_students_who_are_doing_well_on_their_prework(){
                     attempt_attempt = adata.attempt;
                     attempt_percentage = (attempt_sumgrades/quiz_sumgrades)*100;
 
+                    /*
+                    Overview: Currently the single attempt percentage grades are calculated on the front end. 
+                    This is not scalable. We need an endpoint to caculate these scores to improve performance and reliabiliy. 
+
+                    Requirements:
+
+                    FOR each student in the current class:
+                    GET each quiz
+                    FOR each quiz 
+                    GET quiz 'sumgrades' (this is the quiz 'max' score. Usually an integer between 10-20)
+                    GET each attempt
+                    GET single attempt 'sumgrades'
+                    - calculate attempt percentage
+                    - attempt_percentage = (attempt_sumgrades/quiz_sumgrades)*100;
+
+                    Notes: As these are a % score, no score should be greater than 100%. 
+
+                    Example: See attached image. 
+
+                    */
                     if(attempt_user === 632){
                         console.log("##############################################");
                         console.log("Current Attempt ID: " + attempt_id);

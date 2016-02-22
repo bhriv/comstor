@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!-- Consider adding an manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 9]><!-->
+<html class="no-js" itemscope itemtype="http://schema.org/Product" lang="en">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8"><!-- Use the .htaccess and remove these lines to avoid edge case issues. More info: h5bp.com/b/378 -->
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+        <meta content="humans.txt" name="author"><!-- Facebook Metadata /-->
+        <meta content="" property="fb:page_id">
+        <meta content="" property="og:image">
+        <meta content="" property="og:description">
+        <meta content="" property="og:title"><!-- Google+ Metadata /-->
+        <meta content="" itemprop="name">
+        <meta content="" itemprop="description">
+        <meta content="" itemprop="image">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
+        <title>Dashboard - Comstor Lumious</title>
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+        <!-- Merge these to SASS files once framework is established -->
+        <link href="assets/css/screen.css" media="screen, projection"  rel="stylesheet" type="text/css">
+        <!-- <link href="assets/from-symfony/css/gumby.css" media="screen, projection"  rel="stylesheet" type="text/css"> -->
+
+         <!-- PREPARTIALS VERSION OF STYLES FOR TESTING -->
+        <!-- <link href="production_build/css/screen-with-autoprefixer.css" rel="stylesheet" type="text/css"> -->
+        <link href="assets/from-symfony/css/gumby_with_autoprefixer.css" rel="stylesheet" type="text/css">
+        
+        <!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->
+        
+        <!-- Modernizr - load first, then jQuery -->
+        <script src="assets/from-symfony/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
+        <!-- Grab Google CDN's jQuery, fall back to local if offline, 2.0 for modern browsers, oldIE not supported by this project  -->
+        <script src="XXX//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script>if (!window.jQuery) { document.write('<script src="assets/from-symfony/js/libs/jquery-2.0.2.min.js"><\/script>'); }</script>
+        <script src="assets/js/console-class.js"></script> 
+    </head>
+    <body class="cisco_one">
+        <!--[if lt IE 8]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!-- <?php //include_once('header') ?> -->
+        <!-- HEADER populated with js REPLACE with PHP functions-->
+        <div id="header_loaded"></div>
+        <script>
+            cc('Loading header partial','ready');
+            $( "#header_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/header.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+        </script>
+    
+        <div class="row" id="root">
+            <!-- navbar column -->
+            <!-- PARENT MENU populated with js REPLACE with PHP functions-->
+            <div id="parent_menu_loaded"></div>
+            <script>
+                cc('Loading parent menu partial','ready');
+                $( "#parent_menu_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/NAVIGATION/parent.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+            </script>
+
+            <!-- CHILD MENU populated with js REPLACE with PHP functions-->
+            <div id="child_menu_loaded"></div>
+            <script>
+                cc('Loading child menu partial','ready');
+                $( "#child_menu_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/NAVIGATION/child.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+            </script>
+            
+            <!-- main content column -->
+            <div class="thirteen columns main-content">
+                <div class="row content">
+                    <!-- flash messages -->
+                    <!-- / flash messages -->
+                    <div class="row ten columns" id="content_loader">
+
+                      <!-- dashboard - mobile (flurry)
+                      learning (activity)
+                      teacher (mef) -->
+                      <section id="mef_reports" class="report_display_switch">
+                          <div class="">
+                            <div class="field columns main-filter" id="mdl_course_categories">
+                                <label>Category:</label>
+                                <div class="picker">
+                                    <select id="catfilter">
+                                        <option value="null">
+                                            <span>- select -</span>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="field columns main-filter" id="query-class">
+                                <label>Course:</label>
+                                <div class="picker">
+                                    <select id="coursefilter">
+                                        <option value="null">
+                                            <span data-type="type">- select -</span>
+                                        </option> 
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="field columns main-filter" id="report-basis-criteria">
+                                <label>Report Basis:</label>
+                                <div class="picker">
+                                    <select id="basisfilter">
+                                        <option value="null">
+                                            <span>- select -</span>
+                                        </option>
+                                        <option value="student_based_report">
+                                            <span data-criteria="access">Student Based Report</span>
+                                        </option>
+                                        <option value="quiz_based_report">
+                                            <span data-criteria="performance">Quiz Based Report</span>
+                                        </option>
+                                        <!-- static -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="student_query" class="hideme">
+                                <div class="field columns main-filter" id="query-criteria">
+                                    <label>Report On:</label>
+                                    <div class="picker">
+                                        <select id="criteriafilter">
+                                            <option value="null">
+                                                <span>- select -</span>
+                                            </option>
+                                            <option value="performance">
+                                                <span data-criteria="performance">Performance</span>
+                                            </option>
+                                            <option value="access">
+                                                <span data-criteria="access">Access</span>
+                                            </option>
+                                            <!-- static -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field columns main-filter hideme" id="query-show-students-access">
+                                    <label>Show Students:</label>
+                                    <div class="picker">
+                                        <select id="accessfilter">
+                                            <option value="null">
+                                                <span data-type="type">- select -</span>
+                                            </option> 
+                                            <option value="show_all_students">
+                                                <span data-type="type">- All Students -</span>
+                                            </option>
+                                            <option value="show_students_that_have_logged_in">
+                                                <span>That have logged in</span>
+                                            </option> 
+                                            <option value="show_students_that_have_not_logged_in">
+                                                <span>That have NOT logged in yet</span>
+                                            </option> 
+                                            <option value="show_students_that_have_not_logged_in_two_days_before_start_date">
+                                                <span>That have NOT logged in two days before the start date</span>
+                                            </option>
+                                            <option value="show_students_that_have_not_logged_in_within_the_last_two_days">
+                                                <span>Have NOT logged in within the last two days</span>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field columns main-filter hideme" id="query-show-students-performance">
+                                    <label>Show Students:</label>
+                                    <div class="picker">
+                                        <select id="performancefilter" data-id="parentvalue">
+                                            <option value="null">
+                                                <span data-type="type">- select -</span>
+                                            </option> 
+                                            <option value="concatenated_results" data-id="0">
+                                                <span> All Results</span>
+                                            </option>
+                                                        <option value="show_all_students_with_all_grades_attempt_1" data-id="1">
+                                                <span> -- By Attempt #1</span>
+                                            </option>
+                                            <option value="show_all_students_with_all_grades_attempt_2" data-id="2">
+                                                <span> -- By Attempt #2</span>
+                                            </option>
+                                            <option value="show_all_students_with_all_grades_attempt_3" data-id="3">
+                                                <span> -- By Attempt #3</span>
+                                            </option>
+                                            <option value="show_all_students_with_all_grades_attempt_4" data-id="4">
+                                                <span> -- By Attempt #4</span>
+                                            </option>
+                                            <option value="show_all_students_with_all_grades_attempt_5" data-id="5">
+                                                <span> -- By Attempt #5</span>
+                                            </option>
+
+                                            <option value="show_students_who_are_doing_well_on_their_prework">
+                                                <span> Who are doing well on their pre-work</span>
+                                            </option>
+                                            <option value="show_students_who_are_not_doing_well_on_their_prework">
+                                                <span> Who are NOT doing well on their pre-work</span>
+                                            </option>
+                                            <option value="show_students_who_are_doing_well_on_their_homework">
+                                                <span> Who are doing well on their homework</span>
+                                            </option>
+                                            <option value="show_students_who_are_not_doing_well_on_their_homework">
+                                                <span> Who are NOT doing well on their homework</span>
+                                            </option>
+                                            <option value="show_students_who_are_not_going_to_pass">
+                                                <span> Who are NOT going to pass</span>
+                                            </option>
+                                            <!-- static -->
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                              <!-- end #student_query -->
+                                          
+                              <div id="quiz_query" class="hideme">
+                                              
+                                <div class="field columns main-filter" id="query-criteria">
+                                    <label>Quiz:</label>
+                                    <div class="picker">
+                                        <select id="quizfilter">
+                                            <option value="null">
+                                                <span data-mdlquiz="type">- Select -</span>
+                                            </option> 
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="field columns main-filter hideme" id="report-type">
+                                    <label>Type of Report:</label>
+                                    <div class="picker">
+                                        <select id="typefilter">
+                                            <option value="null">
+                                                <span data-type="type">- select -</span>
+                                            </option> 
+                                            <option value="student-report">
+                                                <span data-type="type">Student Report</span>
+                                            </option>
+                                            <option value="question-report">
+                                                <span data-type="type">Question Report</span>
+                                            </option>
+                                            <option value="subject-report">
+                                                <span data-type="type">Subject Report</span>
+                                            </option>
+                                            <!-- static -->
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="field columns main-filter hideme" id="query-show-students-report">
+                                    <label>Show Students:</label>
+                                    <div class="picker">
+                                        <select id="studentfilter">
+                                            <option value="null">
+                                                <span data-type="type">- select -</span>
+                                            </option> 
+                                            <option value="">
+                                                <span>Who have completed the quiz</span>
+                                            </option>
+                                            <option value="">
+                                                <span>Who have NOT completed the quiz</span>
+                                            </option>
+                                            <!-- static -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field columns main-filter hideme" id="query-show-questions-report">
+                                    <label>Show Questions:</label>
+                                    <div class="picker">
+                                        <select id="questionfilter">
+                                            <option value="null">
+                                                <span data-type="type">- select -</span>
+                                            </option> 
+                                            <option value="show_all_single_question_data">
+                                                <span> Show all single question data</span>
+                                            </option>
+                                            <option value="show_questions_that_the_majority_of_students_pass">
+                                                <span> That the majority of students pass</span>
+                                            </option>
+                                            <option value="show_questions_that_the_majority_of_students_do_not_pass">
+                                                <span> That the majority of students do NOT pass</span>
+                                            </option>
+                                            
+                                                       
+                                            <!-- static -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field columns main-filter hideme" id="query-show-subjects-report">
+                                    <label>Show Subjects:</label>
+                                    <div class="picker">
+                                        <select id="subjectfilter">
+                                            <option value="null">
+                                                <span data-type="type">- select -</span>
+                                            </option> 
+                                            <option value="">
+                                                <span> That the majority of students pass</span>
+                                            </option>
+                                            <option value="">
+                                                <span> That the majority of students do NOT pass</span>
+                                            </option>
+                                            
+                                            <option value="">
+                                                <span> That students spend the MOST time on</span>
+                                            </option>
+                                            <option value="">
+                                                <span> That students spend the LEAST time on</span>
+                                            </option>
+                                            
+                                            <!-- static -->
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                              <!-- end #quiz_query -->
+                          
+
+                              <div class="row"></div>
+
+                              <div class="static">
+                                  <table class="tablesorter sortable hideme" id="concatenated-results">
+                                      <thead>
+                                        <tr>
+                                          <th>
+                                            ID
+                                          </th>
+                                          <th>
+                                            Student
+                                          </th>
+                                          <th>
+                                            Last Access
+                                          </th>
+                                          <th>
+                                            First Access
+                                          </th>
+                                          <th>
+                                            Stress
+                                          </th>
+                                          <th>
+                                            Actions
+                                          </th>
+                                          <th>
+                                            Quiz Attempt Details
+                                          </th>
+                                        </tr>
+                                      </thead>
+
+                                      <tbody id="tbody_quiz_result">
+                                      </tbody>
+                                  </table>
+                          </div>  
+
+                          <ul class="widget-grid full-width hideme" id="report_results_holder">
+                            <li id="widget-quiz-reports-performance">
+                              <h2 class="yellow">
+                                Results<a class="toggle" gumby-trigger="#widget-quiz-reports .widget-content" href="#"><i class="icon-minus-squared"></i></a>
+                              </h2>
+
+                              <div class="widget-content">
+                                <div class="row widget">
+                                  <div class="sixteen columns detail" id="student-list-performance">
+                                    <!-- populated by js -->
+
+                                    <table class="tablesorter" id="sortable">
+                                      <thead>
+                                        <tr>
+                                          <th>
+                                            ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            STUDENT <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            ACTION <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            LAST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            FIRST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            QUIZ ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            ATTEMPT <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            GRADE %<i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                        </tr>
+                                      </thead>
+
+                                      <tbody id="tbody_quiz_result">
+                                        <!-- Filled by Javascript Dynamically -->
+
+                                        <tr class="dna-template" data-class="~~STATUS~~" id="results-body-performance">
+                                          <td>
+                                            <span class="student-id">~~ID~~</span>
+                                          </td>
+                                          <td class="user-details">
+                                            <span class="student-firstname">~~FIRSTNAME~~</span> <span class="student-lastname">~~LASTNAME~~</span> <span class="student-email">~~EMAIL~~</span>
+                                          </td>
+                                          <td class="dna-nucleotide user-actions" data-firstname="~~FIRSTNAME~~">
+                                            <p>
+                                              <a class="switch" gumby-trigger="#modal-challenge" href="quiz-reports#">Challenge</a>
+                                            </p>
+
+                                            <p>
+                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Remediation</a>
+                                            </p>
+
+                                            <p>
+                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Badge</a>
+                                            </p>
+                                          </td>
+                                          <td>
+                                            <span class="hideme">~~LASTACCESS~~</span> <span>~~LASTACCESSFORMATTEDDATE~~</span>
+                                          </td>
+                                          <td>
+                                            <span class="hideme">~~FIRSTACCESS~~</span> <span>~~FIRSTACCESSFORMATTEDDATE~~</span>
+                                          </td>
+                                          <td>
+                                            <span>~~QID~~</span>
+                                          </td>
+                                          <td>
+                                            <span>~~QATTEMPT~~</span>
+                                          </td>
+                                          <td>
+                                            ~~QPERCENTAGE~~
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+
+                            <li class="hideme" id="widget-quiz-reports">
+                              <h2 class="yellow">
+                                Results<a class="toggle" gumby-trigger="#widget-quiz-reports .widget-content" href="#"><i class="icon-minus-squared"></i></a>
+                              </h2>
+
+                              <div class="widget-content">
+                                <div class="row widget">
+                                  <div class="sixteen columns detail" id="student-list">
+                                    <!-- populated by js -->
+
+                                    <table class="tablesorter" id="sortable">
+                                      <thead>
+                                        <tr>
+                                          <th>
+                                            ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            STUDENT <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            ACTION <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            LAST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            FIRST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            STRESS <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            COMMENTS <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                        </tr>
+                                      </thead>
+
+                                      <tbody id="tbody_quiz_result">
+                                        <!-- Filled by Javascript Dynamically -->
+
+                                        <tr class="dna-template" data-class="~~STATUS~~" id="results-body-access">
+                                          <td>
+                                            <span class="student-id">~~ID~~</span>
+                                          </td>
+                                          <td class="user-details">
+                                            <span class="student-firstname">~~FIRSTNAME~~</span> <span class="student-lastname">~~LASTNAME~~</span> <span class="student-email">~~EMAIL~~</span>
+                                          </td>
+                                          <td class="dna-nucleotide user-actions" data-firstname="~~FIRSTNAME~~">
+                                            <p>
+                                              <a class="switch" gumby-trigger="#modal-challenge" href="quiz-reports#">Challenge</a>
+                                            </p>
+
+                                            <p>
+                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Remediation</a>
+                                            </p>
+
+                                            <p>
+                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Badge</a>
+                                            </p>
+                                          </td>
+                                          <td>
+                                            <span class="hideme">~~LASTACCESS~~</span> <span>~~LASTACCESSFORMATTEDDATE~~</span>
+                                          </td>
+                                          <td>
+                                            <span class="hideme">~~FIRSTACCESS~~</span> <span>~~FIRSTACCESSFORMATTEDDATE~~</span>
+                                          </td>
+                                          <td>
+                                            ~~STUDENTSTRESS~~
+                                          </td>
+                                          <td>
+                                            ~~STUDENTINSTRUCTORCOMMENTS~~
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+
+                            <li class="hideme" id="widget-question-reports">
+                              <h2 class="yellow">
+                                Results<a class="toggle" gumby-trigger="#widget-quiz-reports .widget-content" href="#"><i class="icon-minus-squared"></i></a>
+                              </h2>
+
+                              <div class="widget-content">
+                                <div class="row widget">
+                                  <div class="sixteen columns detail" id="question-list">
+                                    <!-- populated by js -->
+
+                                    <table class="tablesorter" id="sortable">
+                                      <thead>
+                                        <tr>
+                                          <th>
+                                            ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            <small>TOTAL</small><br>
+                                            ATTEMPTS <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            AVE GRADE <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                          <th>
+                                            QUESTION CONTENT<i class="icon-down-dir"></i><i class="icon-up-dir"></i>
+                                          </th>
+                                        </tr>
+                                      </thead>
+
+                                      <tbody id="tbody_quiz_result">
+                                        <!-- Filled by Javascript Dynamically -->
+
+                                        <tr class="dna-template" data-class="~~STATUS~~" id="results-body-questions">
+                                          <td>
+                                            <span class="student-id">~~ID~~</span>
+                                          </td>
+                                          <td class="user-total-attempts">
+                                            ~~TOTALATTEMPTS~~
+                                          </td>
+                                          <td class="user-ave-grade">
+                                            ~~AVERAGEGRADE~~
+                                          </td>
+                                          <td class="user-question-content">
+                                            ~~QUESTIONCONTENT~~
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+
+                          <div class="loading" id="loading_gif" style="display: none;">
+                            <img alt="Loading..." src="/assets/images/loading.gif">
+                          </div>
+                        </div>
+                      </section> 
+                    </div>
+                    <div class="row five push_one columns" id="sidebar_widgets">
+                      <style> 
+                      .choose_dates label{
+                        display: block;
+                        line-height: 0.7em;
+                        margin: 0 0 0.25em 0;
+                      }
+                      .choose_dates i.icon-calendar{
+                        color: #DDD !important;
+                        min-width: 15px;
+                        margin: 0;
+                      }
+                      .choose_dates i.icon-calendar:before{
+                        content: none;
+                      }
+
+                      </style>
+                      <div class="row choose_dates">
+                        <div class="picker_holder">
+                            <label for="start_date"><small><strong>Date Range Start:</strong></small></label>
+                            <i class="icon-calendar"></i> <input class="date_changer" id="start_date" name="start_date" type="text" value="2015-01-01">
+                        </div>
+                        <div class="picker_holder">
+                            <label for="end_date"><small><strong>Date Range End:</strong></small></label>
+                            <i class="icon-calendar"></i> <input class="date_changer" id="end_date" name="end_date" type="text" value="2015-12-10">
+                        </div>
+                      </div>
+
+                      <ul class="widget-grid full-width">
+                        <li data-type="video" id="widget-overview">
+                          <h2 style="background-color:#b6dbac;">
+                            Overview: <span id="data_query"></span> <a class="toggle" gumby-trigger="#widget-overview .widget-content"><i class="icon-minus-squared"></i></a>
+                          </h2>
+                          <div class="widget-content">
+                            <ul>
+                              <li id="overview_stats">
+                                <div class="growth_factor">
+                                  <span class="badge"><span class="label"></span></span>
+                                </div>
+                                <div>
+                                  <p>
+                                    <span class="period"></span>
+                                  </p>
+                                </div><span class="current_val"></span> <span class="previous_val"></span>
+                              </li>
+                              <li class="current_val">
+                                <div class="growth_factor">
+                                  <span class="badge default"><span class="number"></span></span>
+                                </div>
+                                <div>
+                                  <p>
+                                    <span class="period"></span>
+                                  </p>
+                                </div>
+                              </li>
+                              <li class="previous_val">
+                                <div class="growth_factor">
+                                  <span class="badge default"><span class="number"></span></span>
+                                </div>
+                                <div>
+                                  <p>
+                                    <span class="period"></span>
+                                  </p>
+                                </div>
+                              </li>
+                            </ul>
+                            <!-- <div id="overview_updated">
+                                <span><i class="icon-arrows-ccw"></i> Data Updated: <time id="overview_updated_date"></time></span> <span><i class="icon-arrows-ccw"></i> Last Usage: <time id="overview_updated_usage"></time></span>
+                            </div> -->
+                          </div>
+                        </li>
+                      </ul>
+                      <ul class="widget-grid full-width">
+                        <li id="widget-app-overview">
+                          <h2 style="background-color:#b6dbac;">
+                            App Overview <a class="toggle" onclick="showFlurryAppStats();"><i class="icon-minus-squared"></i></a>
+                          </h2>
+                          <div class="widget-content active" id="app_overview">
+                            <ul>
+                              <li>Name: <span class="app_name"></span>
+                              </li>
+                              <li>Platform: <span class="app_platform"></span>
+                              </li>
+                              <li>Category: <span class="app_category"></span>
+                              </li>
+                              <li>App Created: <span class="app_createdDate"></span>
+                              </li>
+                              <li>Report Generated: <span class="app_generatedDate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul class="widget-grid full-width">
+                        <li id="widget-app-version-history">
+                          <h2 style="background-color:#b6dbac;">
+                            App Version History <a class="toggle" gumby-trigger="#widget-app-version-history .widget-content"><i class="icon-minus-squared"></i></a>
+                          </h2>
+                          <div class="widget-content active">
+                            <div class="row">
+                              <ul class="app_version_history" style="margin:0; font-size:14px; line-height:1.5em;">
+                                <!-- populated by js -->
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                </div>
+            </div><!-- / main content -->
+        </div><!-- / #root -->
+        <!-- global modals -->
+        
+        <footer id="footer">
+            <ul class="menu centered">
+                <li><a href="/feedback"><i class="icon-comment"></i>Feedback</a></li>
+                <li><a href="/help"><i class="icon-help-circled"></i>Help</a></li>
+                <li><a href="/support"><i class="icon-mail"></i>Support</a></li>
+                <li><a href="/contact"><i class="icon-mail"></i>Contact</a></li>
+            </ul>
+        </footer><!-- footer js -->
+
+    <style>.report_display_switch{display: block !important;}</style>
+        
+        <!-- Dev Only -->
+        <script src="assets/js/testing-only.js"></script>
+        <script src="assets/js/build/urls.js"></script>
+        <script src="assets/js/build/concat-gumby.js"></script>
+        <script src="assets/js/build/concat-ui_libs.js"></script>
+        <script src="assets/js/build/concat-ui_vendor.js"></script>
+        <script src="assets/js/build/concat-dashboard_custom.js"></script>
+        
+        <script>
+                if (urlParams['page'] == 'mobile-analytics'){
+                    cc('Loading mobile-analytics partial','ready');
+                    $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/mobile-analytics.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                }
+                if (urlParams['page'] == 'learning-activity'){
+                    cc('Loading learning-activity partial','ready');
+                    $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/learning-activity.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                }
+                if (urlParams['page'] == 'teacher-reports'){
+                  // $('#teacher_reports_triggers ul li small strong').css('color','#DDD');
+                  // $('#sidebar_widgets').hide();
+                  $('#content_loader').removeClass('ten').addClass('sixteen');
+                    // $('#mef_reports').show();
+                    // cc('Loading teacher-reports partial','ready');
+                    // $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/teacher-reports.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
+                }
+        </script>
+        <script type="text/javascript" src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
+        <!--
+        <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>  
+      -->
+        <!-- Production Ready : All vendor and custom js compiled 
+        <script type="text/javascript" src="production_build/all-uglified.js"></script>
+        -->
+
+        <!-- Route Based Script Loading (js implementation) 
+        <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>
+    --> 
+        
+        
+<style>
+    #root .subnav-bar ul{
+        margin-top: 0;
+    }
+    #root .subnav-bar ul li h2{
+        margin-bottom: 0;
+    }
+    #root .subnav-bar ul li h2 i{
+        margin-top: 0.6em;
+    }
+    #root .nav-bar nav ul li a i,
+    #root .subnav-bar nav ul li a i
+    {
+        background-image: none;
+        padding-top: 5px;
+    }
+    #root .subnav-bar ul li ul li {
+        margin-bottom: 0;
+        font-size: 14px;
+        text-transform: capitalize;
+    }
+    #root .subnav-bar ul li a .icon-play{
+        visibility: hidden;
+        margin-top: 0;
+    }
+    #root .subnav-bar ul li a.active .icon-play{
+        visibility: visible;
+    }
+    input[type="text"].date_changer{
+        width: 90px;
+    }
+    input[type="text"].date_changer:hover{
+        cursor: pointer;
+    }
+    #graphs-holder.widget-grid li h2{
+        text-align: left;
+        text-transform: none;
+    }
+    #graphs-holder.widget-grid li h2 span {
+        float: right;
+        padding: 2px 6px;
+        border: 1px solid #e5e5e5;
+        border-radius: 3px;
+        font-size: 80%;
+        margin-right: 4px;
+    }
+    #analytics_triggers li a:hover{
+        cursor: pointer;
+    }
+    #widget-overview{
+      margin-top: 1em;
+    }
+    #widget-overview ul li span.period{
+       text-transform: capitalize;
+        font-size: 11px;
+        line-height: 1.1em; 
+    }
+    #overview_stats span.period{
+        
+    }
+    #graphs-holder li h2 span:hover{
+        cursor: pointer;
+    }
+    #graphs-holder li h2 span.active{
+        background-color: bisque;
+        color: gray;
+    }
+    header#site_header .logo{
+        float: left;
+    }
+    #root .nav-bar nav ul li{
+        text-align: left;
+        padding-left: 10px;
+    }
+    #app_overview{
+        min-height: 145px !important;
+    }
+    #app_version_history{
+        min-height: 400px;
+    }
+    #app_version_history,
+    #app_overview ul{
+        margin: 0;
+    }
+    #app_version_history li,
+    #app_overview ul li{
+        margin-bottom: 0;
+        font-size: 16px;
+        line-height: 1.5em;
+        font-weight: bold;
+    }
+    #app_version_history li span,
+    #app_overview ul li span{
+        font-weight: normal;
+    }
+    #overview_stats .badge.default{
+        color: #fff;
+    }
+    i.icon-info{
+        border-radius: 50%;
+        border: 1px solid #fff;
+        padding: 0.5em;
+        position: relative;
+        top: 2px;
+    }
+    .icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before {
+        top: 0;
+        position: absolute;
+        left: 38%;
+        top: 6%;
+        color: #fff;
+        font-size: 10px;
+    }
+   /* .tablesorter-header-inner {
+        line-height: 1em;
+        padding: 0.5em 0 0.5em 0.5em;
+        text-align: center;
+        font-size: 12px;
+    }*/
+    .widget-grid li div.widget-content table th{
+        padding: 0.5em;
+    }
+    .widget-grid li div.widget-content table thead th{
+        padding: 0;
+    }
+    #graphs-holder ul li .tablesorter-header-inner{
+        padding: 4px 0 4px 4px;
+        text-align: center;
+    }
+    .tablesorter-header-inner span.clearfix{
+        display: block;
+        clear: both;
+        font-size: 9px;
+    }
+    .widget-grid li div.widget-content table thead{
+        background-color: #7ea2aa;
+    }
+    .widget-grid li h2.yellow{
+        background-color: #afdfdb;
+    }
+        .picker select{
+          padding: 6px 15px;
+        }
+        #student-list table{
+          margin: 0;
+          width: 100%;
+        }
+        section#mef_reports ul.widget-grid li .widget-content{
+          padding: 0.5em;
+        }
+        #mef_reports label{
+          display: block;
+          float: left;
+          line-height: 2.2em;
+        }
+        #root .picker{
+          background-color: #fff;
+        }
+        </style>
+
+        
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            // e.src='//www.google-analytics.com/analytics.js';
+            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            // ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script> 
+    </body>
+</html>
