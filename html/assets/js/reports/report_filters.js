@@ -66,7 +66,7 @@ $( window ).load(function() {
 	// console.log(user.roles);
 
     var base_url = urls.analytics;
-    var url_cat = base_url + "lumiousreports/coursecategories";
+    var url_cat = base_url + "lumiousreports/coursecategories/";
     cc('category URL: '+url_cat, 'success');
     var url_course = base_url + "lumiousreports/course";
     var url_quiz = base_url + "lumiousreports/quiz";

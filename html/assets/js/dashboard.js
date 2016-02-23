@@ -64,6 +64,14 @@ $(document).ready(function() {
     get_item_data();
   });
 
+  $("#get_course_cat_data").click(function() {
+    get_course_cat_data();
+  });
+
+  $("#get_course_hidden_cat_data").click(function() {
+    get_course_hidden_cat_data();
+  });
+
   // $("li.mobile_analytics_triggers").click(function() {
   //   window.location.search = jQuery.query.set("page", "mobile-analytics");
   // });
@@ -81,6 +89,17 @@ function hide_reports(){
   $('.report_display_switch').hide();
 }
 
+
+
+/*****************************************************************************/
+/************* PROCESSING CATEFORY DATA **************************/
+/*****************************************************************************/
+function get_course_cat_data(){
+  cc(course_cat_data,'success');
+}
+function get_course_hidden_cat_data(){
+  cc(course_hidden_cat_data,'warning');
+}
 
 /*****************************************************************************/
 /************* PROCESSING COURSE DATA with CACHING **************************/
@@ -589,10 +608,16 @@ function work_in_progress(){
   cc('work_in_progress', 'run');
   // logFunctionName();
   // http://www.akronzip.com/lumiousreports/course/4 (gives all courses with Category 4)
-  // http://www.privacyvector.com/api/lumiousreports/studentdata/17
   // http://www.privacyvector.com/api/lumiousreports/logstore/17
-  // http://www.privacyvector.com/api/lumiousreports/courselookup/4
 
+  // http://comstor.lumiousanalytics.com/api/lumiousreports/course/
+  // http://comstor.lumiousanalytics.com/api/lumiousreports/courselookup/
+  // http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/  
+  // http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/ 
+  // http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/
+  // http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/
+
+// http://comstor.lumiousanalytics.com/api/lumiousreports/students/
   
   var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
   // var item_ID = 22; var item_TYPE = 'quiz'; 

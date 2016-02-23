@@ -66,7 +66,7 @@ $( window ).load(function() {
 	// console.log(user.roles);
 
     var base_url = urls.analytics;
-    var url_cat = base_url + "lumiousreports/coursecategories";
+    var url_cat = base_url + "lumiousreports/coursecategories/";
     cc('category URL: '+url_cat, 'success');
     var url_course = base_url + "lumiousreports/course";
     var url_quiz = base_url + "lumiousreports/quiz";
@@ -539,10 +539,17 @@ function get_endpoint_data(){
     widget_quiz_reports_performance.hide();
     
     // ajax URLs
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    // url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
+    // url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
+    // url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
+    // url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+
+    var reports_url = urls.analytics;
+
+    url_course_students = reports_url + 'students/'+selected_course_id;
+    url_course_quiz = reports_url + 'quiz/'    +selected_course_id;
+    url_quiz_attempts = reports_url + 'quizattempts/'+selected_course_id;
+    url_student_data = reports_url + 'studentdata/';
     
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
