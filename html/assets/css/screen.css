@@ -19,7 +19,7 @@ Import Resets
 }
 
 /* line 4, ../sass/_comstor.scss */
-.student_email, .last_access {
+.student_email, .last_access, #app_overview ul li, #app_version_history li {
   display: block;
   margin-top: 10px;
   font-weight: 300;
@@ -28,7 +28,7 @@ Import Resets
 }
 
 /* line 14, ../sass/_comstor.scss */
-#root .subnav-bar ul li h2 i {
+#root .subnav-bar ul li h2 i, .icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before {
   position: absolute;
   right: -40px;
   padding-left: 0;
@@ -684,6 +684,210 @@ tr.obj-list td:first-child {
   margin-right: 2em;
   text-align: right;
   margin-top: 2em;
+}
+
+/* line 12, ../sass/_hotfixes.scss */
+.student_email, .last_access, #app_overview ul li, #app_version_history li {
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 1.5em;
+  font-weight: bold;
+}
+
+/* line 21, ../sass/_hotfixes.scss */
+#root .subnav-bar ul li h2 i, .icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before {
+  top: 0;
+  position: absolute;
+  left: 38%;
+  top: 6%;
+  color: #fff;
+  font-size: 10px;
+}
+
+/* line 33, ../sass/_hotfixes.scss */
+#root .subnav-bar ul {
+  margin-top: 0;
+}
+/* line 36, ../sass/_hotfixes.scss */
+#root .subnav-bar ul li h2 {
+  margin-bottom: 0;
+}
+/* line 38, ../sass/_hotfixes.scss */
+#root .subnav-bar ul li h2 i {
+  margin-top: 0.6em;
+}
+/* line 43, ../sass/_hotfixes.scss */
+#root .subnav-bar ul li a .icon-play {
+  visibility: hidden;
+  margin-top: 0;
+}
+/* line 47, ../sass/_hotfixes.scss */
+#root .subnav-bar ul li a.active .icon-play {
+  visibility: visible;
+}
+/* line 51, ../sass/_hotfixes.scss */
+#root .subnav-bar ul li ul li {
+  margin-bottom: 0;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+/* line 58, ../sass/_hotfixes.scss */
+#root .subnav-bar nav ul li a i {
+  background-image: none;
+  padding-top: 5px;
+}
+/* line 63, ../sass/_hotfixes.scss */
+#root .picker {
+  background-color: #fff;
+}
+/* line 66, ../sass/_hotfixes.scss */
+#root .nav-bar nav ul li {
+  text-align: left;
+  padding-left: 10px;
+}
+/* line 69, ../sass/_hotfixes.scss */
+#root .nav-bar nav ul li a i {
+  background-image: none;
+  padding-top: 5px;
+}
+
+/* line 76, ../sass/_hotfixes.scss */
+#graphs-holder.widget-grid li h2 {
+  text-align: left;
+  text-transform: none;
+}
+/* line 79, ../sass/_hotfixes.scss */
+#graphs-holder.widget-grid li h2 span {
+  float: right;
+  padding: 2px 6px;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  font-size: 80%;
+  margin-right: 4px;
+}
+/* line 90, ../sass/_hotfixes.scss */
+#graphs-holder li h2 span:hover {
+  cursor: pointer;
+}
+/* line 93, ../sass/_hotfixes.scss */
+#graphs-holder li h2 span.active {
+  background-color: bisque;
+  color: gray;
+}
+/* line 98, ../sass/_hotfixes.scss */
+#graphs-holder ul li .tablesorter-header-inner {
+  padding: 4px 0 4px 4px;
+  text-align: center;
+}
+
+/* line 106, ../sass/_hotfixes.scss */
+#overview_stats .badge.default {
+  color: #fff;
+}
+
+/* line 110, ../sass/_hotfixes.scss */
+#app_overview {
+  min-height: 145px !important;
+}
+/* line 112, ../sass/_hotfixes.scss */
+#app_overview ul {
+  margin: 0;
+}
+/* line 116, ../sass/_hotfixes.scss */
+#app_overview ul li span {
+  font-weight: normal;
+}
+
+/* line 122, ../sass/_hotfixes.scss */
+#app_version_history {
+  min-height: 400px;
+  margin: 0;
+}
+/* line 127, ../sass/_hotfixes.scss */
+#app_version_history li span {
+  font-weight: normal;
+}
+
+/* line 140, ../sass/_hotfixes.scss */
+input[type="text"].date_changer {
+  width: 90px;
+}
+/* line 142, ../sass/_hotfixes.scss */
+input[type="text"].date_changer:hover {
+  cursor: pointer;
+}
+
+/* line 146, ../sass/_hotfixes.scss */
+#analytics_triggers li a:hover {
+  cursor: pointer;
+}
+
+/* line 149, ../sass/_hotfixes.scss */
+#widget-overview ul li span.period {
+  text-transform: capitalize;
+  font-size: 11px;
+  line-height: 1.1em;
+}
+
+/* line 154, ../sass/_hotfixes.scss */
+header#site_header .logo {
+  float: left;
+}
+
+/* line 157, ../sass/_hotfixes.scss */
+i.icon-info {
+  border-radius: 50%;
+  border: 1px solid #fff;
+  padding: 0.5em;
+  position: relative;
+  top: 2px;
+}
+
+/* line 170, ../sass/_hotfixes.scss */
+.widget-grid li div.widget-content table th {
+  padding: 0.5em;
+}
+/* line 173, ../sass/_hotfixes.scss */
+.widget-grid li div.widget-content table thead {
+  background-color: #7ea2aa;
+}
+/* line 175, ../sass/_hotfixes.scss */
+.widget-grid li div.widget-content table thead th {
+  padding: 0;
+}
+/* line 180, ../sass/_hotfixes.scss */
+.widget-grid li h2.yellow {
+  background-color: #afdfdb;
+}
+
+/* line 184, ../sass/_hotfixes.scss */
+.tablesorter-header-inner span.clearfix {
+  display: block;
+  clear: both;
+  font-size: 9px;
+}
+
+/* line 189, ../sass/_hotfixes.scss */
+.picker select {
+  padding: 6px 15px;
+}
+
+/* line 192, ../sass/_hotfixes.scss */
+#student-list table {
+  margin: 0;
+  width: 100%;
+}
+
+/* line 196, ../sass/_hotfixes.scss */
+section#mef_reports ul.widget-grid li .widget-content {
+  padding: 0.5em;
+}
+
+/* line 199, ../sass/_hotfixes.scss */
+#mef_reports label {
+  display: block;
+  float: left;
+  line-height: 2.2em;
 }
 
 /* Welcome to Compass. Use this file to define print styles.

@@ -546,9 +546,9 @@ function get_endpoint_data(){
 
     var reports_url = urls.analytics;
 
-    url_course_students = reports_url + 'students/'+selected_course_id;
-    url_course_quiz = reports_url + 'quiz/'    +selected_course_id;
-    url_quiz_attempts = reports_url + 'quizattempts/'+selected_course_id;
+    url_course_students = reports_url + 'students/'+selected_course_id+'/';
+    url_course_quiz = reports_url + 'quiz/'    +selected_course_id+'/';
+    url_quiz_attempts = reports_url + 'quizattempts/'+selected_course_id+'/';
     url_student_data = reports_url + 'studentdata/';
     
     // store results from these static URLs as objects to use with promises

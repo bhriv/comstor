@@ -24,6 +24,17 @@ function pop_up(hyperlink, window_name){
 
 
 /*************************************************************/
+/*************** CONVERT TO READABLE MOMENT DATE  ****************/
+/*************************************************************/
+
+// Open link in a new popup window pre-sized 
+function dateMoment(timestamp){
+  var time_moment = moment.unix(timestamp).format("YYYY/MM/DD hh:mm:ss");
+  return time_moment;
+}
+
+
+/*************************************************************/
 /*************************** Merge Two Arrays ****************/
 /*************************************************************/
 

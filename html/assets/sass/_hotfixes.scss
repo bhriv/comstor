@@ -1,0 +1,203 @@
+//colors
+$mercury: #e5e5e5;
+$color_negroni_approx: bisque;
+$gray: gray;
+$white: #fff;
+$color_gumbo_approx: #7ea2aa;
+$color_powder_blue_approx: #afdfdb;
+
+//@extend-elements
+//original selectors
+//#app_version_history li, #app_overview ul li
+%extend_1 {
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 1.5em;
+  font-weight: bold;
+}
+
+//original selectors
+//.icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before
+%extend_2 {
+  top: 0;
+  position: absolute;
+  left: 38%;
+  top: 6%;
+  color: $white;
+  font-size: 10px;
+}
+
+
+#root {
+  .subnav-bar {
+    ul {
+      margin-top: 0;
+      li {
+        h2 {
+          margin-bottom: 0;
+          i {
+            margin-top: 0.6em;
+          }
+        }
+        a {
+          .icon-play {
+            visibility: hidden;
+            margin-top: 0;
+          }
+          &.active .icon-play {
+            visibility: visible;
+          }
+        }
+        ul li {
+          margin-bottom: 0;
+          font-size: 14px;
+          text-transform: capitalize;
+        }
+      }
+    }
+    nav ul li a i {
+      background-image: none;
+      padding-top: 5px;
+    }
+  }
+  .picker {
+    background-color: $white;
+  }
+  .nav-bar nav ul li {
+    text-align: left;
+    padding-left: 10px;
+    a i {
+      background-image: none;
+      padding-top: 5px;
+    }
+  }
+}
+#graphs-holder {
+  &.widget-grid li h2 {
+    text-align: left;
+    text-transform: none;
+    span {
+      float: right;
+      padding: 2px 6px;
+      border: 1px solid $mercury;
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 3px;
+      font-size: 80%;
+      margin-right: 4px;
+    }
+  }
+  li h2 span {
+    &:hover {
+      cursor: pointer;
+    }
+    &.active {
+      background-color: $color_negroni_approx;
+      color: $gray;
+    }
+  }
+  ul li .tablesorter-header-inner {
+    padding: 4px 0 4px 4px;
+    text-align: center;
+  }
+}
+#overview_stats {
+  span.period {
+  }
+  .badge.default {
+    color: $white;
+  }
+}
+#app_overview {
+  min-height: 145px !important;
+  ul {
+    margin: 0;
+    li {
+      @extend %extend_1;
+      span {
+        font-weight: normal;
+      }
+    }
+  }
+}
+#app_version_history {
+  min-height: 400px;
+  margin: 0;
+  li {
+    @extend %extend_1;
+    span {
+      font-weight: normal;
+    }
+  }
+}
+.icon-info {
+  &.icon-left a:before {
+    @extend %extend_2;
+  }
+  &.icon-right a:after {
+    @extend %extend_2;
+  }
+}
+input[type="text"].date_changer {
+  width: 90px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+#analytics_triggers li a:hover {
+  cursor: pointer;
+}
+#widget-overview ul li span.period {
+  text-transform: capitalize;
+  font-size: 11px;
+  line-height: 1.1em;
+}
+header#site_header .logo {
+  float: left;
+}
+i.icon-info {
+  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+  border-radius: 50%;
+  border: 1px solid $white;
+  padding: 0.5em;
+  position: relative;
+  top: 2px;
+  &:before {
+    @extend %extend_2;
+  }
+}
+.widget-grid li {
+  div.widget-content table {
+    th {
+      padding: 0.5em;
+    }
+    thead {
+      background-color: $color_gumbo_approx;
+      th {
+        padding: 0;
+      }
+    }
+  }
+  h2.yellow {
+    background-color: $color_powder_blue_approx;
+  }
+}
+.tablesorter-header-inner span.clearfix {
+  display: block;
+  clear: both;
+  font-size: 9px;
+}
+.picker select {
+  padding: 6px 15px;
+}
+#student-list table {
+  margin: 0;
+  width: 100%;
+}
+section#mef_reports ul.widget-grid li .widget-content {
+  padding: 0.5em;
+}
+#mef_reports label {
+  display: block;
+  float: left;
+  line-height: 2.2em;
+}
