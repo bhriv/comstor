@@ -76,63 +76,50 @@
                     <!-- flash messages -->
                     <!-- / flash messages -->
                     <div class="row ten columns" id="content_loader">
-                    <p><span id="get_course_cat_data">course_cat_data()</span></p>
-                    <p><span id="get_course_hidden_cat_data">course_hidden_cat_data()</span></p>
-                    <p id="total_categories"></p>
-                    <div class="widget-content active" id="admin_category_control">
-                      <h2>Visible Categories</h2>
-                      <div class="row">
-                        <table class="tablesorter">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Last Modified</th>
-                              <th>Depth</th>
-                              <th>Path</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
+                     <!--  <div id="admin_category_control">
+                        <a id="getCategories_visible">visible</a>
+                        <a id="getCategories_hidden">hidden</a>
+                      </div> -->
+                      <div class="widget-content active hidden" id="show_hide_categories">
+                        <h3>Visible Categories <span id="visible_count"></span></h3>
+                        <div class="row">
+                          <table class="tablesorter">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Last Modified</th>
+                                <th>Depth</th>
+                                <th>Path</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
 
-                          <tbody id="visible_categories">
-                            <!-- Filled by Javascript Dynamically -->
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="row">
-                        <h2>Hidden Categories</h2>
-                        <table class="tablesorter">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Last Modified</th>
-                              <th>Depth</th>
-                              <th>Path</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
+                            <tbody id="visible_categories">
+                              <!-- Filled by Javascript Dynamically -->
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="row">
+                          <h3>Hidden Categories <span id="hidden_count"></span></h3>
+                          <table class="tablesorter">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Last Modified</th>
+                                <th>Depth</th>
+                                <th>Path</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
 
-                          <tbody id="hidden_categories">
-                            <!-- Filled by Javascript Dynamically -->
-                          </tbody>
-                        </table>
+                            <tbody id="hidden_categories">
+                              <!-- Filled by Javascript Dynamically -->
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
-                      <style>
-                      #admin_category_control ul ul{
-                        width: 100%;
-                      }
-                      #admin_category_control ul li{
-                        clear: left;
-                        padding: 0.5em;
-                        border: 1px solid #f7f7f7;
-                      }
-                      #admin_category_control ul ul li{
-                        float: left;
-                        clear: none;
-                        margin-right: 1em;
-                        border: none;
-                      }
-                      </style>
-                    </div>
 
                       <!-- dashboard - mobile (flurry)
                       learning (activity)
@@ -735,7 +722,201 @@
         </footer><!-- footer js -->
 
     <style>.report_display_switch{display: block !important;}</style>
-        
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">  
+
+    <style>
+      #app_overview ul li, #app_version_history li {
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 1.5em;
+  font-weight: bold;
+}
+
+.icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before {
+  top: 0;
+  position: absolute;
+  left: 38%;
+  top: 6%;
+  color: #fff;
+  font-size: 10px;
+  width: 5px;
+}
+
+#root .subnav-bar ul {
+  margin-top: 0;
+}
+
+#root .subnav-bar ul li h2 {
+  margin-bottom: 0;
+}
+
+#root .subnav-bar ul li h2 i {
+  margin-top: 0.6em;
+}
+
+#root .subnav-bar ul li a .icon-play {
+  visibility: hidden;
+  margin-top: 0;
+}
+
+#root .subnav-bar ul li a.active .icon-play {
+  visibility: visible;
+}
+
+#root .subnav-bar ul li ul li {
+  margin-bottom: 0;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+#root .subnav-bar nav ul li a i {
+  background-image: none;
+  padding-top: 5px;
+}
+
+#root .picker {
+  background-color: #fff;
+}
+
+#root .nav-bar nav ul li {
+  text-align: left;
+  padding-left: 10px;
+}
+
+#root .nav-bar nav ul li a i {
+  background-image: none;
+  padding-top: 5px;
+}
+
+#graphs-holder.widget-grid li h2 {
+  text-align: left;
+  text-transform: none;
+}
+
+#graphs-holder.widget-grid li h2 span {
+  float: right;
+  padding: 2px 6px;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  font-size: 80%;
+  margin-right: 4px;
+}
+
+#graphs-holder li h2 span:hover {
+  cursor: pointer;
+}
+
+#graphs-holder li h2 span.active {
+  background-color: bisque;
+  color: gray;
+}
+
+#graphs-holder ul li .tablesorter-header-inner {
+  padding: 4px 0 4px 4px;
+  text-align: center;
+}
+
+#overview_stats .badge.default {
+  color: #fff;
+}
+
+#app_overview {
+  min-height: 145px !important;
+}
+
+#app_overview ul {
+  margin: 0;
+}
+
+#app_overview ul li span {
+  font-weight: normal;
+}
+
+#app_version_history {
+  min-height: 400px;
+  margin: 0;
+}
+
+#app_version_history li span {
+  font-weight: normal;
+}
+
+input[type="text"].date_changer {
+  width: 90px;
+}
+
+input[type="text"].date_changer:hover {
+  cursor: pointer;
+}
+
+#analytics_triggers li a:hover {
+  cursor: pointer;
+}
+
+#widget-overview ul li span.period {
+  text-transform: capitalize;
+  font-size: 11px;
+  line-height: 1.1em;
+}
+
+header#site_header .logo {
+  float: left;
+}
+
+i.icon-info {
+  border-radius: 50%;
+  border: 1px solid #fff;
+  padding: 0.5em;
+  position: relative;
+  top: 2px;
+}
+
+.widget-grid li div.widget-content table th {
+  padding: 0.5em;
+}
+
+.widget-grid li div.widget-content table thead {
+  background-color: #7ea2aa;
+}
+
+.widget-grid li div.widget-content table thead th {
+  padding: 0;
+}
+
+.widget-grid li h2.yellow {
+  background-color: #afdfdb;
+}
+
+.tablesorter-header-inner span.clearfix {
+  display: block;
+  clear: both;
+  font-size: 9px;
+}
+
+.picker select {
+  padding: 6px 15px;
+}
+
+#student-list table {
+  margin: 0;
+  width: 100%;
+}
+
+section#mef_reports ul.widget-grid li .widget-content {
+  padding: 0.5em;
+}
+
+#mef_reports label {
+  display: block;
+  float: left;
+  line-height: 2.2em;
+}
+
+#show_hide_categories h3 {
+  margin-top: 0.5em;
+}
+
+    </style>
         <!-- Dev Only -->
         <script src="assets/js/testing-only.js"></script>
         <script src="assets/js/build/urls.js"></script>
@@ -764,7 +945,7 @@
         </script>
         <script type="text/javascript" src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
         <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>  
-      
+
         <!-- Production Ready : All vendor and custom js compiled 
         <script type="text/javascript" src="production_build/all-uglified.js"></script>
         -->

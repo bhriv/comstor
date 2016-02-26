@@ -544,7 +544,7 @@ function get_endpoint_data(){
     // url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
     // url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
 
-    var reports_url = urls.analytics;
+    var reports_url = urls.reports;
 
     url_course_students = reports_url + 'students/'+selected_course_id+'/';
     url_course_quiz = reports_url + 'quiz/'    +selected_course_id+'/';

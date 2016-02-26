@@ -890,6 +890,11 @@ section#mef_reports ul.widget-grid li .widget-content {
   line-height: 2.2em;
 }
 
+/* line 206, ../sass/_hotfixes.scss */
+#show_hide_categories h3 {
+  margin-top: 0.5em;
+}
+
 /* Welcome to Compass. Use this file to define print styles.
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /> */

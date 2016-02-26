@@ -9,10 +9,22 @@ if (/dashboard/.test(window.location.href)){
     $.getScript( "assets/js/dashboard.js" )
       .done(function( script, textStatus ) {
         cc('dashboard.js loading '+ textStatus,'ready' );
+        if (urlParams['page'] == 'admin'){
+          $('#sidebar_widgets').addClass('hidden');
+          $('#mobile_analytics_submenus').addClass('hidden');
+          $('#mef_reports').addClass('hidden');
+          $('#show_hide_categories').removeClass('hidden');
+          $(document).ready(function() {
+            getCategories('visible');
+            getCategories('hidden');
+
+          }); // end Doc Ready 
+        }
       })
       .fail(function( jqxhr, settings, exception ) {
         cc('Dashboard script not loaded','fatal');
     });
+
 }
 
 if (urlParams['page'] == 'mobile-analytics'){
@@ -54,4 +66,5 @@ if (urlParams['page'] == 'teacher-reports'){
   $('#mobile_analytics_submenus').addClass('hideme');
   
 }
+
 

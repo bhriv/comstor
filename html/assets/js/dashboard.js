@@ -81,6 +81,17 @@ $(document).ready(function() {
     work_in_progress();
   });
 
+  $("#getCategories_visible").click(function() {
+    getCategories('visible');
+  });
+  $("#getCategories_hidden").click(function() {
+    getCategories('hidden');
+  });
+
+  // $(".popup_link").click(function() {
+  //   return pop_up(this, "Pop Up");
+  // });
+
 
 }); // end Doc Ready 
 
@@ -90,42 +101,38 @@ function hide_reports(){
 }
 
 
-
-/*****************************************************************************/
-/************* PROCESSING CATEFORY DATA **************************/
-/*****************************************************************************/
-function get_course_cat_data(){
-  cc(course_cat_data,'success');
-  getCategories('visible');
-}
-function get_course_hidden_cat_data(){
-  cc(course_hidden_cat_data,'warning');
-  getCategories('hidden');
-}
-
 /*****************************************************************************/
 /**************************** GET COURSE CATEGORIES  *************************/
 /*****************************************************************************/
-  
-function getCategories(visibility_type){
-  // get the course categories from endpoint, then add to the results table
-  cc('getCategories','info');
-  // base_url = urls.reports;
-  var item_url = base_url +'lumiousreports/coursecategories/';
+// get the course categories from endpoint, then add to the results table
+
+var category_grandparents = [];
+var category_parents = [];
+var category_children = [];
+
+function getCategories(visibility_type){  
+  cc('getCategories('+visibility_type+')','info');
+  // Setup ids and labels
+  var switch_label = 'Show';
+  var count_id = '#'+visibility_type+'_count';
   var table_id = '#'+visibility_type+'_categories';
+  cc('table_id '+table_id, 'warning');
   if (visibility_type == 'visible') {
     visibility_type = 'course';
-  };
-  var switch_url = base_url +'lumiousreports/'+visibility_type+'categories/';
+    var switch_url = base_url +'lumiousreports/hiddencategories/';
+    var switch_label = 'Hide';
+  }else{
+    var switch_url = base_url +'lumiousreports/coursecategories/';
+  }
+  var item_url = base_url +'lumiousreports/'+visibility_type+'categories/';
   console.log('%c SWITCH ENDPOINT url '+switch_url, 'background: #ddd; color: #fff');
-
+  // Populate and extract data
   var item_data_from_array = [];
   var itemdata_count = 0;
-  var itemdata = $.getJSON(switch_url);
+  var itemdata = $.getJSON(item_url);
   $.when(itemdata).done(function(item_data_from_array) {
     jQuery.each(item_data_from_array, function(i, cdata) {
       // Process all courses within the category
-      itemdata_count++;
       var d = item_data_from_array[0];
       if (d != undefined) {
         var this_item_ID = cdata.id;
@@ -133,7 +140,7 @@ function getCategories(visibility_type){
         // Get data from JSON
         var this_item_ID = cdata['id'];
         var hide_this_item_ID = switch_url + this_item_ID;
-        var show_this_item_ID = item_url + this_item_ID;
+        var show_this_item_ID = switch_url + this_item_ID;
         var name        = cdata['name'];
         var depth       = cdata['depth'];
         var timemodified = cdata['timemodified'];
@@ -141,17 +148,108 @@ function getCategories(visibility_type){
         var path      = cdata['path'];
         cc('name '+name+' timemodified '+timemodified+ ' readable_date '+readable_date+ ' depth '+depth+ ' path '+path+ ' switch_url '+ switch_url, 'success' );
         // Push to display table
-        var table_data = '<tr><td><h5><a class="link_to_analytics"><i class="fa fa-file"></i> ' +name+ '<span style="float:right;"><i class="fa fa-external-link"></i></span></a></h5></td><td><strong><i class="fa fa-calendar"></i><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td><strong><i class="fa fa-indent"></i></strong> ' +depth+ '</td><td><strong><i class="fa fa-list-alt"></i></strong> ' +path +'</td><td><strong><a href="'+hide_this_item_ID+'" target="blank"><i class="fa fa-eye-slash"></i> Hide</a></strong></tr>';
+        var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>' +name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
         $(table_id).append(table_data);
-
-      }else{
+        if (visibility_type == 'course') {
+          if (depth == '1') {
+            category_grandparents.push(cdata);
+          };
+          if (depth == '2') {
+            category_parents.push(cdata);
+          };
+        };
+        
+      }
+      else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
       }
+      itemdata_count++;
     }); // end $.each
-    var itemdata_count_display = '<span>Total: '+itemdata_count+ '</span>';
-    $('#total_categories').append(itemdata_count_display);
+    var itemdata_count_display = '('+itemdata_count+ ')';
+    cc('count_id '+count_id, 'success');
+    $(count_id).append(itemdata_count_display);
+    cc('category_grandparents array');
+    processGrandparents();
+    processParents();
+    updateGrandparents();
   }); // end $.when
 }
+
+function processGrandparents(){
+  var child_details = [];
+  var nestled_categories = [];
+
+  var itemdata_count = 0;
+  var item_data_from_array = category_grandparents;
+  var size = _.size(category_grandparents);
+  cc('category_grandparents SIZE:'+size, 'success');
+
+  jQuery.each(item_data_from_array, function(i, cdata) {
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Get data from JSON
+      var this_item_ID = cdata['id'];
+      var name         = cdata['name'];
+      var depth        = cdata['depth'];
+      var path         = cdata['path'];
+      cc('GRANDPARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
+      // cc(cdata, 'warning');
+      // Push to display table
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+  }); // end $.each
+}
+
+function processParents(){
+  var itemdata_count = 0;
+  var item_data_from_array = category_parents;
+  jQuery.each(category_grandparents, function(i, cdata) {
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Get data from JSON
+      var this_item_ID = cdata['id'];
+      var name         = cdata['name'];
+      var depth        = cdata['depth'];
+      var path         = cdata['path'];
+      cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
+      // cc(cdata, 'warning');
+      // Push to display table
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+  }); // end $.each
+}
+
+function updateGrandparents(){
+  var itemdata_count = 0;
+  var item_data_from_array = category_parents;
+  jQuery.each(category_grandparents, function(i, cdata) {
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Get data from JSON
+      var this_item_ID = cdata['id'];
+      var name         = cdata['name'];
+      var depth        = cdata['depth'];
+      var path         = cdata['path'];
+      cc('GRANDPARENT: '+name+'('+this_item_ID+') depth('+depth+')', 'success' );
+      cc(cdata, 'warning');
+      // Push to display table
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+  }); // end $.each
+}
+
 
 /*****************************************************************************/
 /************* PROCESSING COURSE DATA with CACHING **************************/
