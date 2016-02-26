@@ -718,6 +718,7 @@
                 <li><a href="/help"><i class="icon-help-circled"></i>Help</a></li>
                 <li><a href="/support"><i class="icon-mail"></i>Support</a></li>
                 <li><a href="/contact"><i class="icon-mail"></i>Contact</a></li>
+                <li class="get_item_data">get_item_data()</li>
             </ul>
         </footer><!-- footer js -->
 
@@ -954,7 +955,14 @@ section#mef_reports ul.widget-grid li .widget-content {
         <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>
     --> 
         
-
+    <script>
+        $(".get_item_data").click(function() {
+            // runConsoleClassTests();
+          get_item_data("9","course","get_startdate");
+          // findItemByID(all_students,'17','all_students');
+        });             
+        
+    </script>
         
     <!-- hide courses ID = 35,38,42,43, from course categories -->
 

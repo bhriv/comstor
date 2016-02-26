@@ -169,6 +169,7 @@ function isItemNullorUndefined(item){
     cc('ITEM is - '+item,'error');
     return true
   }else{
+    cc('ITEM is not Null or Underfined','success');
     return false
   }
 }

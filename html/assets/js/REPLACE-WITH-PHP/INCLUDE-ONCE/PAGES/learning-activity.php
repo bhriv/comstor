@@ -3,6 +3,8 @@ Learning Activity - TOTARA
 <section class="report_display_switch" id="flurry_reports" style="display:block;">
     <!-- TOTARA -->
     <span id="pull_student_data">pull_student_data()</span> 
+    <span id="work_in_progress">work_in_progress()</span> 
+    <span onclick="runConsoleClassTests()">runConsoleClassTests()</span> 
      <h3><i class="fa fa-bar-chart"></i> Totara Activity</h3>
 	<table class="tablesorter sortable">
 	    <thead>

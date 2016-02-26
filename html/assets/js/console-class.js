@@ -7,46 +7,95 @@
   cc('This is the message that will be printed in the console','success');
 */
 
+
+var theme_run     = null,
+    theme_ready   = null,
+    theme_done    = null,
+    theme_success = null,
+    theme_info    = null,
+    theme_warning = null,
+    theme_error   = null,
+    theme_fatal   = null,
+    theme_default = null;
+
+var theme = 'batman';
+
+switch(theme){
+  case "monalisa":
+    theme_run     = 'color: #d5ae56;';
+    theme_ready   = 'color: #808a58;';
+    theme_done    = 'color: #8d7f48;';
+    theme_success = 'color: #d5ae56;';
+    theme_info    = 'color: #e0b75d;';
+    theme_warning = 'color: #b38138;';
+    theme_error   = 'background: #b94631; color: #fff;';
+    theme_fatal   = 'background: #a9471d; color: #FFF; padding: 2px 100px;';
+    theme_default = 'color: #000000;';
+    break;
+  case "batman":
+    theme_run     = 'color: #ccc65e;';
+    theme_ready   = 'background: #6a9c7c; color: #fff; padding: 1px 10px;';
+    theme_done    = 'color: #535135;';
+    theme_success = 'background: #000; color: #f7ef11; padding: 1px 10px;';
+    theme_info    = 'background: #137bb3; color: #fff; padding: 1px 10px;';
+    theme_warning = 'color: #bab4b5;';
+    theme_error   = 'background: #8b1c15; color: #fff;';
+    theme_fatal   = 'background: #de1e23; color: #fff; padding: 2px 100px;';
+    theme_default = 'color: #000000;';
+    break;
+  default:
+    theme_run     = 'background: #fff; color: #82bfd8;';
+    theme_ready   = 'color: #8be8cd;';
+    theme_done    = 'color: #000000;';
+    theme_success = 'background: #b6dbac; color: #000;';
+    theme_info    = 'background: #ffc145; color: #000;';
+    theme_warning = 'background: #f79f79; color: #000;';
+    theme_error   = 'background: #d71816; color: #FFF;';
+    theme_fatal   = 'background: #FF0000; color: #FFF; padding: 2px 100px;';
+    theme_default = 'background: #ffffff; color: #7ea2aa;';
+}
+
 function cc(message,console_class){
   var c = null;
   var m = message;
   switch(console_class){
     case "run":
       m = 'RUNNING: '+m;
-      c = 'background: #fff; color: #82bfd8;';
+      c = theme_run;
       break;
     case "ready":
-      c = 'background: #fff; color: #8be8cd;';
+      c = theme_ready;
       break;
     case "done":
-      c = 'color: #afdfdb;';
+      c = theme_done;
       break;
     case "success":
-      c = 'background: #b6dbac; color: #000;';
+      c = theme_success;
       break;
     case "info":
-      c = 'background: #ffc145; color: #000;';
+      c = theme_info;
       break;
     case "warning":
       m = 'WARNING: '+m;
-      c = 'background: #f79f79; color: #000;';
+      c = theme_warning;
       break;
     case "error":
       m = 'ERROR: '+m;
-      c = 'background: #d71816; color: #FFF;';
+      c = theme_error;
       break;
     case "fatal":
       m = 'FATAL ERROR: '+m;
-      c = 'background: #FF0000; color: #FFF; padding: 2px 100px;';
+      c = theme_fatal;
       break;
     default:
-      c = 'background: #ffffff; color: #7ea2aa;';
+      c = theme_default;
   }
   console.log('%c '+m,c);
 }
 
 function runConsoleClassTests(){
-  cc('Example class ready');
+  cc('Example class run', 'run');
+  cc('Example class ready', 'ready');
   cc('Example class success', 'success');
   cc('Example class warning', 'warning');
   cc('Example class info', 'info');

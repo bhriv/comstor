@@ -292,7 +292,10 @@ function findItemByID(arr,item_ID,item_TYPE){
   // console.log('query_item_id ='+query_item_id);
   console.log('findItemByID - below is the value of arr:');
   console.log(arr);
+
+  cc('is array NULL?','info');
   isItemNullorUndefined(arr);
+  cc('is item NULL?','info');
   isItemNullorUndefined(item_ID);
   // the following should only execute if the values are not null or undefined
   var found = false;
@@ -306,6 +309,8 @@ function findItemByID(arr,item_ID,item_TYPE){
         console.log('checking all_students');
         if (arr[i][0]["user"].id == item_ID) {
             found = true;
+            cc('Student FOUND:', 'success');
+            cc('Student NAME: '+arr[i][0]["user"].firstname, 'info');
             return { // return array of data including labels for access
                 id: arr[i][0]["user"].id,
                 email: arr[i][0]["user"].email,
@@ -423,9 +428,14 @@ function get_item_data(item_ID, item_TYPE, item_ACTION){
 
   if (session_item_data_array != null) {
     console.log('session_item_data_array is NOT NULL');
+    // var arr = localStorage.getItem(item_storage_name);
+
     var arr = JSON.parse(session_item_data_array);
-    // console.log('*********** arr **************');
-    // console.log(arr);  
+    // var arr = session_item_data_array;
+
+    console.log('*********** arr **************');
+    console.log(arr);  
+
     var item_data_from_array = findItemByID(arr,item_ID,data_name);
     console.log('---- item_data_from_array -----');
     console.log(item_data_from_array);
@@ -756,6 +766,23 @@ function displayItemData(d,item_TYPE,item_ACTION){
 function work_in_progress(){
   startSession();
   cc('work_in_progress', 'run');
+
+  // var all_students = [];
+  // all_students.push(student_result_id_17);
+  // all_students.push(student_result_id_4);
+  // console.log('find 17');
+  // // for json storage items must stringify and parse
+
+  // findItemByID(all_students,'17','all_students');
+  // // WORKS
+
+  cc('set temp_set_course_data','info');
+  var course_data = temp_set_course_data();
+
+  // for json storage items must stringify and parse
+  findItemByID(course_data,'4','courses');
+  
+
   // logFunctionName();
   // http://www.akronzip.com/lumiousreports/course/4 (gives all courses with Category 4)
   // http://www.privacyvector.com/api/lumiousreports/logstore/17
@@ -765,16 +792,14 @@ function work_in_progress(){
   // http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/  
   // http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/ 
   // http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/
-  // http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/
 
 // http://comstor.lumiousanalytics.com/api/lumiousreports/students/
   
-  var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
-  // var item_ID = 22; var item_TYPE = 'quiz'; 
-  // var item_ID = 2; var item_TYPE = 'students'; //var item_ID = 25; var item_TYPE = 'students';
-  
+  // var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
+  // // var item_ID = 22; var item_TYPE = 'quiz'; 
+  // var item_ID = 25; var item_TYPE = 'students'; //var item_ID = 25; var item_TYPE = 'students';
+  // getAllItemDataFromEndpoint(item_ID,item_TYPE);
 
-  getAllItemDataFromEndpoint(item_ID,item_TYPE);
   // getAllCategoryCourseDataFromEndpoint(client_category);
   // get all course ID's from endpoint
   // run get course data for each

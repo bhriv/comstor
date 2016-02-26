@@ -170,11 +170,12 @@ function temp_set_course_data(){
       "startdate": "1445036400"
     }
   ];
-  // console.log('FULL course_data object');                  
-  // console.log(course_data);                  
+  console.log('FULL course_data object');                  
+  console.log(course_data);                  
   var data = JSON.stringify(course_data);
   localStorage.setItem( 'session_item_data_array',data);
-  // console.log('*********** END temp_set_course_data *****************')
+  console.log('*********** END temp_set_course_data *****************');
+  return data;
 }
 
 
