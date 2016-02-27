@@ -307,133 +307,133 @@ function findItemByID(data,item_ID,item_TYPE){
   cc('data[0] fullname = '+y.fullname,'success');
   // ------------------------------------------ //
 
-  // if (item_TYPE == 'course' || item_TYPE == 'courses') {
-  //   console.log('checking courses...');
-  //   for(var i = 0; i < data.length; i++) {
-  //     cc('iterating through dataay COUNT = '+i, 'info');
-  //     cc('data.length = '+data.length, 'info');
-  //     var x = data[i];
-  //     cc('node = data[i]:','info' );
-  //     console.log(x);
+  if (item_TYPE == 'course' || item_TYPE == 'courses') {
+    console.log('checking courses...');
+    for(var i = 0; i < data.length; i++) {
+      cc('iterating through dataay COUNT = '+i, 'info');
+      cc('data.length = '+data.length, 'info');
+      
+      cc('node = data['+i+']:','info' );
+      console.log(data[i]);
 
-  //     if (data[i] != null && data[i] != undefined) {
-  //         if (data[i].id == item_ID) {
-  //             found = true;
-  //             cc('ID MATCHED!!!: '+found, 'success');
-  //             return { // return dataay of data including labels for access
-  //                 id: data[i].id,
-  //                 category: data[i].category,
-  //                 fullname: data[i].fullname,
-  //                 shortname: data[i].shortname,
-  //                 startdate: data[i].startdate
-  //             };
-  //             break;
-  //         }
-  //         else{
-  //           cc('ID not matched, moving on to the next node', 'warning');
-  //           // if (data[i].id == item_ID) {
-  //           //     found = true;
-  //           //     break;
-  //           // }
-  //         }
-  //     }else{
-  //         cc('data[i] is NULL', 'error');
-  //     }
-  //   } // end for // iterate through dataay
-  // } // end check for course or courses
-  // else{
-  //   // only do this if the item type != course || courses
-  //   for(var i = 0; i < data.length; i++) {
-  //     console.log('%c data.length = '+data.length, 'background: #000; color: #fff');
-  //     var x = data[i];
-  //     console.log('x = ');
-  //     console.log(x);
-  //     if (data[i] != null && data[i] != undefined) {
-  //       if (item_TYPE == 'all_students') {
-  //         console.log('checking all_students');
-  //         if (data[i][0]["user"].id == item_ID) {
-  //             found = true;
-  //             cc('Student FOUND:', 'success');
-  //             cc('Student NAME: '+data[i][0]["user"].firstname, 'info');
-  //             return { // return dataay of data including labels for access
-  //                 id: data[i][0]["user"].id,
-  //                 email: data[i][0]["user"].email,
-  //                 firstname: data[i][0]["user"].firstname,
-  //                 lastname: data[i][0]["user"].lastname,
-  //                 lastaccess: data[i][0]["user"].lastaccess,
-  //                 firstaccess: data[i][0]["user"].firstaccess
-  //             };
-  //             break;
-  //         }
-  //       }
-  //       else if (item_TYPE == 'course' || item_TYPE == 'courses') {
-  //         console.log('checking courses');
-  //         if (data[i][0].id == item_ID) {
-  //             found = true;
-  //             console.log('found: '+found);
-  //             return { // return dataay of data including labels for access
-  //                 id: data[i][0].id,
-  //                 category: data[i][0].category,
-  //                 fullname: data[i][0].fullname,
-  //                 shortname: data[i][0].shortname,
-  //                 startdate: data[i][0].startdate
-  //             };
-  //             break;
-  //         }
-  //       }
-  //       else if (item_TYPE == 'all_courses') {
-  //         console.log('checking all_courses');
-  //         if (data[i][0].id == item_ID) {
-  //             found = true;
-  //             console.log('found: '+found);
-  //             return { // return dataay of data including labels for access
-  //                 id: data[i][0].id,
-  //                 category: data[i][0].category,
-  //                 fullname: data[i][0].fullname,
-  //                 shortname: data[i][0].shortname,
-  //                 startdate: data[i][0].startdate
-  //             };
-  //             break;
-  //         }
-  //       }
-  //       else if (item_TYPE == 'quizz' || item_TYPE == 'quizzes') {
-  //         console.log('checking courses');
-  //         if (data[i].id == item_ID) {
-  //             found = true;
-  //             break;
-  //         }
-  //       }
-  //       else if (item_TYPE == 'student' || item_TYPE == 'students') {
-  //         console.log('checking students');
-  //         // if (data[i] != null) {
-  //           if (data[i][0]["user"].id == item_ID) {
-  //             found = true;
-  //             return { // return dataay of data including labels for access
-  //                 id: data[i][0]["user"].id,
-  //                 email: data[i][0]["user"].email,
-  //                 firstname: data[i][0]["user"].firstname,
-  //                 lastname: data[i][0]["user"].lastname,
-  //                 lastaccess: data[i][0]["user"].lastaccess,
-  //                 firstaccess: data[i][0]["user"].firstaccess
-  //             };
-  //             break;
-  //           }
-  //         // }else{
-  //         //   console.log('%c data[i] is NULL', 'background: #FFCC00; color: #fff;');
-  //         // }
-  //       }
-  //       else{
-  //         if (data[i].id == item_ID) {
-  //             found = true;
-  //             break;
-  //         }
-  //       }
-  //     }else{
-  //         cc('data[i] is NULL', 'error');
-  //       }
-  //   }
-  // }
-  // cc('found: '+found,'info'); 
+      if (data[i] != null && data[i] != undefined) {
+          if (data[i].id == item_ID) {
+              found = true;
+              cc('ID MATCHED!!!: '+found, 'success');
+              return { // return dataay of data including labels for access
+                  id: data[i].id,
+                  category: data[i].category,
+                  fullname: data[i].fullname,
+                  shortname: data[i].shortname,
+                  startdate: data[i].startdate
+              };
+              break;
+          }
+          else{
+            cc('ID not matched in data['+i+'], moving on to the next node', 'warning');
+            // if (data[i].id == item_ID) {
+            //     found = true;
+            //     break;
+            // }
+          }
+      }else{
+          cc('data['+i+'] is NULL or undefined', 'error');
+      }
+    } // end for // iterate through dataay
+  } // end check for course or courses
+  else{
+    // only do this if the item type != course || courses
+    for(var i = 0; i < data.length; i++) {
+      console.log('%c data.length = '+data.length, 'background: #000; color: #fff');
+      var x = data[i];
+      console.log('x = ');
+      console.log(x);
+      if (data[i] != null && data[i] != undefined) {
+        if (item_TYPE == 'all_students') {
+          console.log('checking all_students');
+          if (data[i][0]["user"].id == item_ID) {
+              found = true;
+              cc('Student FOUND:', 'success');
+              cc('Student NAME: '+data[i][0]["user"].firstname, 'info');
+              return { // return dataay of data including labels for access
+                  id: data[i][0]["user"].id,
+                  email: data[i][0]["user"].email,
+                  firstname: data[i][0]["user"].firstname,
+                  lastname: data[i][0]["user"].lastname,
+                  lastaccess: data[i][0]["user"].lastaccess,
+                  firstaccess: data[i][0]["user"].firstaccess
+              };
+              break;
+          }
+        }
+        else if (item_TYPE == 'course' || item_TYPE == 'courses') {
+          console.log('checking courses');
+          if (data[i][0].id == item_ID) {
+              found = true;
+              console.log('found: '+found);
+              return { // return dataay of data including labels for access
+                  id: data[i][0].id,
+                  category: data[i][0].category,
+                  fullname: data[i][0].fullname,
+                  shortname: data[i][0].shortname,
+                  startdate: data[i][0].startdate
+              };
+              break;
+          }
+        }
+        else if (item_TYPE == 'all_courses') {
+          console.log('checking all_courses');
+          if (data[i][0].id == item_ID) {
+              found = true;
+              console.log('found: '+found);
+              return { // return dataay of data including labels for access
+                  id: data[i][0].id,
+                  category: data[i][0].category,
+                  fullname: data[i][0].fullname,
+                  shortname: data[i][0].shortname,
+                  startdate: data[i][0].startdate
+              };
+              break;
+          }
+        }
+        else if (item_TYPE == 'quizz' || item_TYPE == 'quizzes') {
+          console.log('checking courses');
+          if (data[i].id == item_ID) {
+              found = true;
+              break;
+          }
+        }
+        else if (item_TYPE == 'student' || item_TYPE == 'students') {
+          console.log('checking students');
+          // if (data[i] != null) {
+            if (data[i][0]["user"].id == item_ID) {
+              found = true;
+              return { // return dataay of data including labels for access
+                  id: data[i][0]["user"].id,
+                  email: data[i][0]["user"].email,
+                  firstname: data[i][0]["user"].firstname,
+                  lastname: data[i][0]["user"].lastname,
+                  lastaccess: data[i][0]["user"].lastaccess,
+                  firstaccess: data[i][0]["user"].firstaccess
+              };
+              break;
+            }
+          // }else{
+          //   console.log('%c data[i] is NULL', 'background: #FFCC00; color: #fff;');
+          // }
+        }
+        else{
+          if (data[i].id == item_ID) {
+              found = true;
+              break;
+          }
+        }
+      }else{
+          cc('data[i] is NULL', 'error');
+        }
+    }
+  }
+  cc('found: '+found,'info'); 
 }
 
 
