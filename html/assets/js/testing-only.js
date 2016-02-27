@@ -178,6 +178,84 @@ function temp_set_course_data(){
   return data;
 }
 
+// TEMP DATA for testing without having to hit the endpoing (no internet connection etc)
+var quiz_data = [];
+function temp_set_quiz_data(){
+
+  var quiz_data = [
+    {
+        "id": "1",
+        "course": "2",
+        "name": "Test quiz/assessment",
+        "sumgrades": "1.00000",
+        "grade": "10.00000"
+    },
+    {
+        "id": "2",
+        "course": "99",
+        "name": "Bens Fake Quiz",
+        "sumgrades": "0.90000",
+        "grade": "9.90000"
+    }
+  ];
+  console.log('FULL quiz_data object');                  
+  console.log(quiz_data);                  
+  var data = JSON.stringify(quiz_data);
+  localStorage.setItem( 'session_item_quiz_data',data);
+  console.log('*********** END temp_set_quiz_data *****************');
+  return data;
+}
+
+// TEMP DATA for testing without having to hit the endpoing (no internet connection etc)
+var quizattempt_data = [];
+function temp_set_quizattempt_data(){
+
+  var quizattempt_data = [
+    {
+        "id": "12",
+        "quiz": "2",
+        "userid": "18",
+        "attempt": "1",
+        "uniqueid": "12",
+        "timestart": "1449854318",
+        "timefinish": "1449854898",
+        "timemodified": "1449854898",
+        "timecheckstate": null,
+        "sumgrades": "0.00000"
+    },
+    {
+        "id": "13",
+        "quiz": "2",
+        "userid": "18",
+        "attempt": "2",
+        "uniqueid": "13",
+        "timestart": "1449855003",
+        "timefinish": "1449855012",
+        "timemodified": "1449855012",
+        "timecheckstate": null,
+        "sumgrades": "0.00000"
+    },
+    {
+        "id": "14",
+        "quiz": "2",
+        "userid": "18",
+        "attempt": "3",
+        "uniqueid": "14",
+        "timestart": "1449855484",
+        "timefinish": "1449855498",
+        "timemodified": "1449865746",
+        "timecheckstate": null,
+        "sumgrades": "9.50000"
+    }
+  ];
+  console.log('FULL quizattempt_data object');                  
+  console.log(quizattempt_data);                  
+  var data = JSON.stringify(quizattempt_data);
+  localStorage.setItem( 'session_item_quizattempt_data',data);
+  console.log('*********** END temp_set_quizattempt_data *****************');
+  return data;
+}
+
 
 var course_1 = [{
     "id": "1",
