@@ -289,24 +289,21 @@ function getAllItemDataFromEndpoint(item_ID, item_TYPE){
 
 function findItemByID(data,item_ID,item_TYPE){
   cc('findItemByID(data,'+item_ID+','+item_TYPE+')','run');
-  // console.log('query_item_id ='+query_item_id);
   console.log('findItemByID - below is the value of the incoming data:');
   console.log(data);
-
   cc('is data NULL?','info');
   isItemNullorUndefined(data);
   cc('is item NULL?','info');
   isItemNullorUndefined(item_ID);
-  // the following should only execute if the values are not null or undefined
-  var found = false;
-
   // ----- TEST TO ENSURE DATA IS WORKING ------ // 
-  var y = data[0];
-  console.log(y);
-  cc('data[0] ID = '+y.id,'success');
-  cc('data[0] fullname = '+y.fullname,'success');
+  // var y = data[0];
+  // console.log(y);
+  // cc('data[0] ID = '+y.id,'success');
+  // cc('data[0] fullname = '+y.fullname,'success');
   // ------------------------------------------ //
 
+  var found = false;
+  
   if (item_TYPE == 'course' || item_TYPE == 'courses') {
     console.log('checking courses...');
     for(var i = 0; i < data.length; i++) {
@@ -332,10 +329,6 @@ function findItemByID(data,item_ID,item_TYPE){
           }
           else{
             cc('ID not matched in data['+i+'], moving on to the next node', 'warning');
-            // if (data[i].id == item_ID) {
-            //     found = true;
-            //     break;
-            // }
           }
       }else{
           cc('data['+i+'] is NULL or undefined', 'error');
@@ -371,10 +364,6 @@ function findItemByID(data,item_ID,item_TYPE){
           }
           else{
             cc('ID not matched in data['+i+'], moving on to the next node', 'warning');
-            // if (data[i].id == item_ID) {
-            //     found = true;
-            //     break;
-            // }
           }
       }else{
           cc('data['+i+'] is NULL or undefined', 'error');
@@ -411,98 +400,8 @@ function findItemByID(data,item_ID,item_TYPE){
     } // end for // iterate through dataay
   } // end check for course or courses
   else{
-    // only do this if the item type != course || courses
-    for(var i = 0; i < data.length; i++) {
-      console.log('%c data.length = '+data.length, 'background: #000; color: #fff');
-      var x = data[i];
-      console.log('x = ');
-      console.log(x);
-      if (data[i] != null && data[i] != undefined) {
-        if (item_TYPE == 'all_students') {
-          console.log('checking all_students');
-          if (data[i][0]["user"].id == item_ID) {
-              found = true;
-              cc('Student FOUND:', 'success');
-              cc('Student NAME: '+data[i][0]["user"].firstname, 'info');
-              return { // return dataay of data including labels for access
-                  id: data[i][0]["user"].id,
-                  email: data[i][0]["user"].email,
-                  firstname: data[i][0]["user"].firstname,
-                  lastname: data[i][0]["user"].lastname,
-                  lastaccess: data[i][0]["user"].lastaccess,
-                  firstaccess: data[i][0]["user"].firstaccess
-              };
-              break;
-          }
-        }
-        else if (item_TYPE == 'course' || item_TYPE == 'courses') {
-          console.log('checking courses');
-          if (data[i][0].id == item_ID) {
-              found = true;
-              console.log('found: '+found);
-              return { // return dataay of data including labels for access
-                  id: data[i][0].id,
-                  category: data[i][0].category,
-                  fullname: data[i][0].fullname,
-                  shortname: data[i][0].shortname,
-                  startdate: data[i][0].startdate
-              };
-              break;
-          }
-        }
-        else if (item_TYPE == 'all_courses') {
-          console.log('checking all_courses');
-          if (data[i][0].id == item_ID) {
-              found = true;
-              console.log('found: '+found);
-              return { // return dataay of data including labels for access
-                  id: data[i][0].id,
-                  category: data[i][0].category,
-                  fullname: data[i][0].fullname,
-                  shortname: data[i][0].shortname,
-                  startdate: data[i][0].startdate
-              };
-              break;
-          }
-        }
-        else if (item_TYPE == 'quizz' || item_TYPE == 'quizzes') {
-          console.log('checking courses');
-          if (data[i].id == item_ID) {
-              found = true;
-              break;
-          }
-        }
-        else if (item_TYPE == 'student' || item_TYPE == 'students') {
-          console.log('checking students');
-          // if (data[i] != null) {
-            if (data[i][0]["user"].id == item_ID) {
-              found = true;
-              return { // return dataay of data including labels for access
-                  id: data[i][0]["user"].id,
-                  email: data[i][0]["user"].email,
-                  firstname: data[i][0]["user"].firstname,
-                  lastname: data[i][0]["user"].lastname,
-                  lastaccess: data[i][0]["user"].lastaccess,
-                  firstaccess: data[i][0]["user"].firstaccess
-              };
-              break;
-            }
-          // }else{
-          //   console.log('%c data[i] is NULL', 'background: #FFCC00; color: #fff;');
-          // }
-        }
-        else{
-          if (data[i].id == item_ID) {
-              found = true;
-              break;
-          }
-        }
-      }else{
-          cc('data[i] is NULL', 'error');
-        }
-    }
-  }
-  cc('found: '+found,'info'); 
+    cc('Data type not found. Nothing specified to be done with the incoming data', 'error');
+  } 
 }
 
 
@@ -585,6 +484,7 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
   console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'background: #d7d7d7; color: #000');
   base_url = urls.reports;
 
+  // FORMAT ENDPOINT
   if (item_TYPE == 'students') {
     var item_url = base_url + 'studentdata/'+item_ID;
   }else{
@@ -592,18 +492,37 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
   }
   console.log('%c check ENDPOINT url '+item_url, 'background: #ddd; color: #fff');
   
+  // GET DATA FROM ENDPOINT
   var itemdata = $.getJSON(item_url);
   $.when(itemdata).done(function(item_data_from_array) {
-    console.log('%c DOING LOOP', 'background: #ff0000;');
+    cc('DOING LOOP','info');
+    // dig down to data node
     if (item_TYPE == 'students') {
       var d = item_data_from_array["user"];  
     }else{
       var d = item_data_from_array[0];
     }
-    // console.log('d');
-    console.log(d);
+    // Process Data
     if (d != undefined) {
-      processItemData(d,item_TYPE,item_ACTION);
+      cc('the following data has been successfully pulled from the endpoint','success');
+      console.log(d);
+      findItemByID(d,item_ID,'course');
+      // BHRIV 20160226
+// ----- All Course Details need to be stored in an array in LocalStorage...then iterated over to find an ID match
+// ----- The purpose is to prevent hitting endpoint many times
+// ----- The storage and check storage functions are the key to not hitting endpoint more than once, except for student data. 
+      
+      // if (item_TYPE == 'course' || item_TYPE == 'courses') {
+      //     cc('Find Course by ID','info');
+      //     console.log(d);
+      //     // ensure data passed is an object
+      //     var course_data_object = dataType(d,'object');
+      //     cc('course_data_object','warning');
+      //     console.log(course_data_object);
+      //     findItemByID(course_data_object,item_ID,'courses');
+      // }
+      
+      // processItemData(d,item_TYPE,item_ACTION);
       return d;
     }else{
       console.log('There was an error retrieving information '+item_TYPE+': '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')

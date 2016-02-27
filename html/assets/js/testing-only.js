@@ -257,6 +257,43 @@ function temp_set_quizattempt_data(){
 }
 
 
+// // WORKING TESTS USING STATIC TEST DATA in testing-only.js
+
+//  var all_students = [];
+//   all_students.push(student_result_id_17);
+//   all_students.push(student_result_id_4);
+//   cc('STUDENT TEST: IF SUCCESS console will iterate through array, list each ID found, stop if ID matches search, say success','warning');
+//   var all_students_data_object = dataType(all_students,'object');
+//   findItemByID(all_students,'17','all_students');
+  
+//   cc('set temp_set_course_data','info');
+//   var course_data = temp_set_course_data();
+//   // ensure data passed is an object
+//   var course_data_object = dataType(course_data,'object');
+//   cc('COURSE TEST: IF SUCCESS console will iterate through array, list each ID found, stop if ID matches search, say success','warning');
+//   // for json storage items must stringify and parse
+//   findItemByID(course_data_object,'4','courses');
+
+
+//   cc('set temp_set_quizattempt_data','info');
+//   var quizattempt_data = temp_set_quizattempt_data();
+//   // ensure data passed is an object
+//   var quizattempt_data_object = dataType(quizattempt_data,'object');
+//   cc('QUIZATTEMPT TEST: IF SUCCESS console will iterate through array, list each ID found, stop if ID matches search, say success','warning');
+//   findItemByID(quizattempt_data_object,'14','quizattempt');
+  
+
+//   cc('set temp_set_quiz_data','info');
+//   var quiz_data = temp_set_quiz_data();
+//   // ensure data passed is an object
+//   var quiz_data_object = dataType(quiz_data,'object');
+//   cc('QUIZ TEST: IF SUCCESS console will iterate through array, list each ID found, stop if ID matches search, say success','warning');
+//   findItemByID(quiz_data_object,'2','quiz');
+// // END - -------- WORKING TESTS USING STATIC TEST DATA in testing-only.js
+
+
+
+
 var course_1 = [{
     "id": "1",
     "category": "0",
