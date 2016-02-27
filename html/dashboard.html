@@ -956,11 +956,72 @@ section#mef_reports ul.widget-grid li .widget-content {
     --> 
         
     <script>
-        $(".get_item_data").click(function() {
-            // runConsoleClassTests();
-          get_item_data("9","course","get_startdate");
+        // $(".get_item_data").click(function() {
+        //     // runConsoleClassTests();
+        //   get_item_data("9","course","get_startdate");
+        //   // findItemByID(all_students,'17','all_students');
+        // });  
+
+
+        // Simple loader to determine what feature is being worked on currently.
+        function work_in_progress(){
+          startSession();
+          cc('work_in_progress', 'run');
+
+          // var all_students = [];
+          // all_students.push(student_result_id_17);
+          // all_students.push(student_result_id_4);
+          // console.log('find 17');
+          // // for json storage items must stringify and parse
+
           // findItemByID(all_students,'17','all_students');
-        });             
+          // // WORKS
+
+          cc('set temp_set_course_data','info');
+          var course_data = temp_set_course_data();
+          cc('Test Data type. Should be an string','warning');
+          var course_data_object = dataType(course_data,'object');
+
+
+          cc('IF SUCCESS console will iterate through array, list each ID found, stop if ID matches search, say success','warning');
+          // for json storage items must stringify and parse
+          findItemByID(course_data_object,'4','courses');
+          
+
+          // logFunctionName();
+          // http://www.akronzip.com/lumiousreports/course/4 (gives all courses with Category 4)
+          // http://www.privacyvector.com/api/lumiousreports/logstore/17
+
+          // http://comstor.lumiousanalytics.com/api/lumiousreports/course/
+          // http://comstor.lumiousanalytics.com/api/lumiousreports/courselookup/
+          // http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/  
+          // http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/ 
+          // http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/
+
+        // http://comstor.lumiousanalytics.com/api/lumiousreports/students/
+          
+          // var item_ID = 1; var item_TYPE = 'course'; // privacysphere course item_ID = 4
+          // // var item_ID = 22; var item_TYPE = 'quiz'; 
+          // var item_ID = 25; var item_TYPE = 'students'; //var item_ID = 25; var item_TYPE = 'students';
+          // getAllItemDataFromEndpoint(item_ID,item_TYPE);
+
+          // getAllCategoryCourseDataFromEndpoint(client_category);
+          // get all course ID's from endpoint
+          // run get course data for each
+
+          // get_item_data(4);
+          // // get_item_data(99); // Fail Test
+          // get_item_data(5);
+          // // get_item_data(6);
+          // // get_item_data(68); // Fail Test
+          // get_item_data(7);
+          // get_item_data(8); // True Hit Endpoint Test
+          // get_item_data(9); // True Hit Endpoint Test
+          // get_item_data(4); // True Hit Endpoint Test
+          // console.log('%c DOUBLE TEST FOR 9 ', 'background: #ff0000; color: #000');
+          // get_item_data(9); // True Hit Endpoint Test
+            
+        }           
         
     </script>
         

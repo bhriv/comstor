@@ -200,6 +200,44 @@ function cheatModeToggle(){
   $('.cheatmode').toggle();
 }
 
+/*****************************************************************/
+/*************** Data Type ***************/
+/*****************************************************************/
+
+function dataType(data,convert_to){
+  cc('dataType', 'run');
+  var data_return = 'not sure';
+  if (_.isObject(data)) {
+    cc('original data type is object','info');
+    if(convert_to == 'string'){
+      new_data_object = JSON.stringify(data);
+      if (_.isObject(new_data_object)) {
+        cc('data is NOW converted from object to string','success');
+        return new_data_object;
+      }
+      else{
+        return data;
+      }
+    }
+  }
+  else if (_.isString(data)) {
+    cc('original data type is string','info');
+    if(convert_to == 'object'){
+      new_data_object = JSON.parse(data);
+      if (_.isObject(new_data_object)) {
+        cc('data is NOW converted from string to object','success');
+        return new_data_object;
+      }
+      else{
+        return data;
+      }
+    }
+  }
+  else{
+    return data;
+  }
+}
+
 
 /*****************************************************************/
 /***************************  LOGIN ENDPIONT ***************/
