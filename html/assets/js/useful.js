@@ -207,11 +207,12 @@ function cheatModeToggle(){
 function dataType(data,convert_to){
   cc('dataType', 'run');
   var data_return = 'not sure';
+
   if (_.isObject(data)) {
     cc('original data type is object','info');
     if(convert_to == 'string'){
       new_data_object = JSON.stringify(data);
-      if (_.isObject(new_data_object)) {
+      if (_.isString(new_data_object)) {
         cc('data is NOW converted from object to string','success');
         return new_data_object;
       }

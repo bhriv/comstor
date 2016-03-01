@@ -407,10 +407,7 @@ function findItemByID(data,item_ID,item_TYPE){
 
 // Given the Course ID determine if the specific data can be loaded from localStorage. If not, hit the endpoint.
 function get_item_data(item_ID, item_TYPE, item_ACTION){
-  console.log('%c PROCESSING CURRENT '+item_TYPE+' ID: '+item_ID+' item_ACTION:'+item_ACTION, 'background: #FFCC00; color: #fff; padding: 2px 100px;');
-  console.log('%c item_TYPE: '+item_TYPE +', item_ID:'+item_ID, 'background: #DDD; color: #000');
-  var arr = null;
-  var item_data_from_array = null;
+  cc('get_item_data('+item_ID +','+item_TYPE+','+item_ACTION+')', 'run');
   // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
   // temp_set_item_data();
   if (item_TYPE == 'course') {
@@ -428,16 +425,20 @@ function get_item_data(item_ID, item_TYPE, item_ACTION){
   
   // var session_item_data_array = getStoredSessionData(data_name);
   var session_item_data_array = localStorage.getItem(data_name);
-  console.log('session_item_data_array('+data_name+') is: ');
+  cc('session_item_data_array('+data_name+') is: ','info');
   console.log(session_item_data_array);
 
-
   if (isItemNullorUndefined(session_item_data_array)) {
-    console.log('session_item_data_array is NULL or undefined');
+    console.log('LINE 436: session_item_data_array is NULL or undefined');
     getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
+    alert('434 Exiting - temp');
   }else{
-    console.log('session_item_data_array is not NULL or undefined');
+    console.log('LINE 439: session_item_data_array is not NULL or undefined');
   }
+  // TEMP
+
+  // var arr = null;
+  // var item_data_from_array = null;
 
   if (session_item_data_array != null) {
     console.log('session_item_data_array is NOT NULL');
@@ -478,10 +479,10 @@ function get_item_data(item_ID, item_TYPE, item_ACTION){
   };
 }
 
-// Get the Course Data from the Endpoint
+// Get the single Item Data from the Endpoint
 function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
   // get the course details from endpoint, then add to the results table
-  console.log('%c FUNCTION getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'background: #d7d7d7; color: #000');
+  cc('getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'run');
   base_url = urls.reports;
 
   // FORMAT ENDPOINT
@@ -490,7 +491,7 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
   }else{
     var item_url = base_url +item_TYPE+'lookup/'+item_ID;  
   }
-  console.log('%c check ENDPOINT url '+item_url, 'background: #ddd; color: #fff');
+  cc('check ENDPOINT url '+item_url, 'success');
   
   // GET DATA FROM ENDPOINT
   var itemdata = $.getJSON(item_url);
@@ -506,12 +507,12 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
     if (d != undefined) {
       cc('the following data has been successfully pulled from the endpoint','success');
       console.log(d);
-      findItemByID(d,item_ID,'course');
+      // findItemByID(d,item_ID,item_TYPE);
+      processItemData(d,'course','update')
       // BHRIV 20160226
 // ----- All Course Details need to be stored in an array in LocalStorage...then iterated over to find an ID match
 // ----- The purpose is to prevent hitting endpoint many times
-// ----- The storage and check storage functions are the key to not hitting endpoint more than once, except for student data. 
-      
+// ----- The storage and check storage functions are the key to not hitting endpoint more than once, except for student data.       
       // if (item_TYPE == 'course' || item_TYPE == 'courses') {
       //     cc('Find Course by ID','info');
       //     console.log(d);
@@ -523,7 +524,8 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
       // }
       
       // processItemData(d,item_TYPE,item_ACTION);
-      return d;
+      // cc('String will be returned','warning');
+      // return s;
     }else{
       console.log('There was an error retrieving information '+item_TYPE+': '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
     }
@@ -531,116 +533,145 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
 }
 
 
-var item_ACTION = null;
+// var item_ACTION = null;
 
 // Given a data object process the data, add the data to a localStorage object for future use, do something with the data
 function processItemData(d,item_TYPE,item_ACTION){
-  console.log('%c FUNCTION processItemData('+d["id"]+','+item_TYPE+') ', 'background: #9933ff; color: #fff');
-  console.log('d - incoming to processItemData');
-  console.log(d);
+  cc('processItemData('+d["id"]+','+item_TYPE+','+item_ACTION+') ', 'run');
   
   // get existing storage data, parse new data, store updated data object string
-  var item_storage_name = item_TYPE;
-  
-  var storage_data = [];
-  var storage_data = localStorage.getItem(item_storage_name);
-  console.log('storage_data ('+item_storage_name+') from storage');
-  console.log(storage_data);
-  if (storage_data == undefined || storage_data == null) {
-    console.log('%c ERROR: storage_data is null or undefined', 'background: #ff0000; color: #fff');
-  }
-  if (_.isArray(storage_data)) {
-    console.log('storage_data is array');
-  }else{
-    console.log('storage_data is NOT array');
-  }
+  if (item_ACTION == 'update') {
+    cc('ACTION:'+item_ACTION, 'run');
+    var updated_data_object = [];
+    var storage_data = [];
+    var storage_data = localStorage.getItem(item_TYPE);
+    
+    if (!isItemNullorUndefined(storage_data)) { 
 
-  var new_data_object = [];
+      console.log('storage_data ('+item_TYPE+') from storage');
+      console.log(storage_data);
+      // convert storage data to object
+      dataType(storage_data,'object');
+    // Temp test adding new nodes to object
+      updated_data_object.push(storage_data);
+      var t = temp_set_quizattempt_data();
+      var q = temp_set_quiz_data();
+      var t_o = dataType(t,'object');
+      var q_o = dataType(q,'object');
+      updated_data_object.push(t_o);
+      updated_data_object.push(q_o);
+      cc('updated_data_object TEMP:','success');
+      console.log(updated_data_object);
+
+      // var s = dataType(updated_data_object,'string');
+      cc('updated_data_object CONVERTED to string','warning');
+      
+      localStorage.setItem(item_TYPE,updated_data_object);
+      cc('updated_data_object is now: ','info');
+      var n = localStorage.getItem(item_TYPE);
+      console.log(n);
+      cc('Data updated and stored in localStorage as string','success');
+
+    // end TEMP
+    }else{
+      cc('No local storage for '+item_TYPE, 'warning');
+      updated_data_object.push(d);
+      console.log(updated_data_object);
+
+      var s = dataType(updated_data_object,'string');
+      cc('Data pushed to updated_data_object','info');
+      cc('updated_data_object is now: ','info');
+      localStorage.setItem(item_TYPE,s);
+      cc('Data updated and stored in localStorage as string','success');
+    }
+  };
+  
+  
   // var m = _.extend(storage_data, d);
   // console.log('m');
   // console.log(m);
   
-  if (storage_data == null) {
-    new_data_object.push(d);
-  }
-  else{
-    console.log('storage_data NOT null');
-    if (_.isObject(storage_data)) {
-      console.log('storage_data is object');
-      
-    }else{
-      console.log('storage_data is not object');
-      // _.object()
-      if (_.isString(storage_data)) {
-        console.log('storage_data is string');
-        new_data_object = JSON.parse(storage_data);
-        if (_.isObject(new_data_object)) {
-          console.log('storage_data is NOW converted from string to object');
-        }
-      };
-    }
-
-    console.log('is d an object?');
-    console.log(_.isObject(d));
-
-    console.log('is new_data_object an object?');
-    console.log(_.isObject(new_data_object[0]));
-
-    new_data_object.push.apply(new_data_object, d);
-    console.log('new_data_object is push');
+  // if (storage_data == null) {
     
-    var all_courses = [];
-    all_courses.push(d);
-    all_courses.push(new_data_object[0]);
+  // }
+  // else{
+  //   console.log('storage_data NOT null');
+  //   if (_.isObject(storage_data)) {
+  //     console.log('storage_data is object');
+      
+  //   }else{
+  //     console.log('storage_data is not object');
+  //     // _.object()
+  //     if (_.isString(storage_data)) {
+  //       console.log('storage_data is string');
+  //       new_data_object = JSON.parse(storage_data);
+  //       if (_.isObject(new_data_object)) {
+  //         console.log('storage_data is NOW converted from string to object');
+  //       }
+  //     };
+  //   }
 
-    console.log('all_courses');
-    console.log(all_courses);
-  }
+  //   console.log('is d an object?');
+  //   console.log(_.isObject(d));
+
+  //   console.log('is new_data_object an object?');
+  //   console.log(_.isObject(new_data_object[0]));
+
+  //   new_data_object.push.apply(new_data_object, d);
+  //   console.log('new_data_object is push');
+    
+  //   var all_courses = [];
+  //   all_courses.push(d);
+  //   all_courses.push(new_data_object[0]);
+
+  //   console.log('all_courses');
+  //   console.log(all_courses);
+  // }
   
-  if (item_TYPE == 'course')    {
-    item_storage_name = 'courses';
-    // var item_storage_data = JSON.stringify(d);
-    localStorage.setItem( 'courses', JSON.stringify(all_courses) );
-    cc('Data Stored in "courses" localStorage', 'done');
-    var i = localStorage.getItem( 'courses');
-    cc('New "courses" from localStorage:', 'info');
-    console.log(i);
-  }
+  // if (item_TYPE == 'course')    {
+  //   item_storage_name = 'courses';
+  //   // var item_storage_data = JSON.stringify(d);
+  //   localStorage.setItem( 'courses', JSON.stringify(all_courses) );
+  //   cc('Data Stored in "courses" localStorage', 'done');
+  //   var i = localStorage.getItem( 'courses');
+  //   cc('New "courses" from localStorage:', 'info');
+  //   console.log(i);
+  // }
 
-  if (item_TYPE == 'quiz')      {
-    item_storage_name = 'quizzes';
-    var item_storage_data = JSON.stringify(d);
-    localStorage.setItem( item_storage_name, item_storage_data );
-    cc('Data Stored in '+item_storage_name+' localStorage', 'done');
-  }
+  // if (item_TYPE == 'quiz')      {
+  //   item_storage_name = 'quizzes';
+  //   var item_storage_data = JSON.stringify(d);
+  //   localStorage.setItem( item_storage_name, item_storage_data );
+  //   cc('Data Stored in '+item_storage_name+' localStorage', 'done');
+  // }
 
-  if (item_TYPE == 'students')  { 
-    item_storage_name = 'students';
-    // For 'student's 
-    // Filter the size of logstore in students array
-    var data_filtered_logstore = filterLogstoreData(d);
-    item_constructed_array.push(data_filtered_logstore);
-    var item_storage_data = JSON.stringify(item_constructed_array);
-    localStorage.setItem( item_storage_name, item_storage_data );
-    cc('Data Stored in '+item_storage_name+' localStorage', 'done');
-  }
-  if (item_TYPE == 'all_students')      {
-    item_storage_name = 'all_students';
-    var item_storage_data = JSON.stringify(d);
-    localStorage.setItem( item_storage_name, item_storage_data );
-    cc('Data Stored in '+item_storage_name+' localStorage', 'done');
-  }
+  // if (item_TYPE == 'students')  { 
+  //   item_storage_name = 'students';
+  //   // For 'student's 
+  //   // Filter the size of logstore in students array
+  //   var data_filtered_logstore = filterLogstoreData(d);
+  //   item_constructed_array.push(data_filtered_logstore);
+  //   var item_storage_data = JSON.stringify(item_constructed_array);
+  //   localStorage.setItem( item_storage_name, item_storage_data );
+  //   cc('Data Stored in '+item_storage_name+' localStorage', 'done');
+  // }
+  // if (item_TYPE == 'all_students')      {
+  //   item_storage_name = 'all_students';
+  //   var item_storage_data = JSON.stringify(d);
+  //   localStorage.setItem( item_storage_name, item_storage_data );
+  //   cc('Data Stored in '+item_storage_name+' localStorage', 'done');
+  // }
 
-  console.log('"'+item_storage_name+'" storage retrieval includes data for '+item_TYPE+' ID: '+d["id"]);
-  var s = JSON.parse(localStorage.getItem( item_storage_name));
-  console.log(s);
-  // Do something with the data
-  // if (item_ACTION == null) {
-    displayItemData(d,item_TYPE,item_ACTION);  
-  // };
-  // if (item_ACTION == 'get_name') {
-  //   console.log('get name for course: '+item_ID);
-  // };
+  // console.log('"'+item_storage_name+'" storage retrieval includes data for '+item_TYPE+' ID: '+d["id"]);
+  // var s = JSON.parse(localStorage.getItem( item_storage_name));
+  // console.log(s);
+  // // Do something with the data
+  // // if (item_ACTION == null) {
+  //   displayItemData(d,item_TYPE,item_ACTION);  
+  // // };
+  // // if (item_ACTION == 'get_name') {
+  // //   console.log('get name for course: '+item_ID);
+  // // };
 }
 
 function filterLogstoreData(d){

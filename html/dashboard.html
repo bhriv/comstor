@@ -961,14 +961,42 @@ section#mef_reports ul.widget-grid li .widget-content {
         //   get_item_data("9","course","get_startdate");
         //   // findItemByID(all_students,'17','all_students');
         // });  
-
+            function myFunct(){
+                alert('done');
+            }
 
         // Simple loader to determine what feature is being worked on currently.
         function work_in_progress(){
           startSession();
           cc('work_in_progress', 'run');
 
-          getItemDataFromEndpoint('9','course');
+
+          // getItemDataFromEndpoint('9','course');
+          // console.log(x);
+
+          // item should hit endpoint then store in local storage
+            getItemDataFromEndpoint('9','course');;
+            getItemDataFromEndpoint('11','course');;
+             
+            //$.when( d1 ).then( alert('Done'));
+
+          // get_item_data('9','course');
+
+          /*
+            for specified data type and id
+            check if localStorage contains data type
+            if yes, set localStorage to query data object
+            ensure/transform query data to object
+            iterate through data to find ID within object
+            return result - found or not found
+            log result
+            ... if not found
+            get item data from endpoint()
+
+            ... save returned data to endpoint 
+            ... display returned data.
+
+          */
           
 
           //   cc('set temp_set_course_data','info');

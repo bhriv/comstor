@@ -420,7 +420,7 @@ Teacher Reports
         </ul>
         <div class="loading" id="loading_gif" style="display: none;">
             Loading...
-            <!-- <img src="/images/loading.gif" alt="Loading..." /> -->
+            <!-- <img src="/assets/images/loading.gif" alt="Loading..." /> -->
         </div>
     </div>
 </section>
