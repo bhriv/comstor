@@ -534,56 +534,106 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
 
 
 // var item_ACTION = null;
-
+var action_count = 0;
 // Given a data object process the data, add the data to a localStorage object for future use, do something with the data
 function processItemData(d,item_TYPE,item_ACTION){
-  cc('processItemData('+d["id"]+','+item_TYPE+','+item_ACTION+') ', 'run');
+  action_count++;
+  cc('Count = '+action_count+' processItemData('+d["id"]+','+item_TYPE+','+item_ACTION+') ', 'run');
   
   // get existing storage data, parse new data, store updated data object string
   if (item_ACTION == 'update') {
     cc('ACTION:'+item_ACTION, 'run');
-    var updated_data_object = [];
-    var storage_data = [];
-    var storage_data = localStorage.getItem(item_TYPE);
-    
-    if (!isItemNullorUndefined(storage_data)) { 
 
-      console.log('storage_data ('+item_TYPE+') from storage');
-      console.log(storage_data);
+    var updated_data_object = [];
+    var storage_data = localStorage.getItem(item_TYPE);
+
+    if (isItemNullorUndefined(storage_data)) { 
+      // var data_string = dataType(d,'string');
+      cc('INSIDE PROCESS LOOP FIRST RUN','success');
+      // console.log(data_string);
+      // localStorage.setItem(item_TYPE,data_string);
+
+      var data_object = dataType(d,'object');
+      // console.log(data_object);
+      var flattened_data_object = _.flatten(data_object);
+      cc('flatten flattened_data_object','info');
+      console.log(flattened_data_object);
+
+      flattened_data_object.push(d);
+      // updated_data_object.push(d);
+      cc('flattened_data_object with OLD and NEW is:','done');
+      console.log(flattened_data_object);
+      var data_string = dataType(flattened_data_object,'string');
+      localStorage.setItem(item_TYPE,data_string);
+
+
+    }else{
+      cc('storage_data is:','done');
+      // console.log(storage_data);
+      var data_object = dataType(storage_data,'object');
+      // console.log(data_object);
+      var flattened_data_object = _.flatten(data_object);
+      cc('flatten flattened_data_object','info');
+      console.log(flattened_data_object);
+
+      flattened_data_object.push(d);
+      // updated_data_object.push(d);
+      cc('flattened_data_object with OLD and NEW is:','done');
+      console.log(flattened_data_object);
+      var data_string = dataType(flattened_data_object,'string');
+      localStorage.setItem(item_TYPE,data_string);
+    }
+    // var storage_data_object = dataType(storage_data, 'object');
+    // console.log('storage_data_object ('+item_TYPE+') from storage');
+    // console.log(storage_data_object);
+    
+    
+    /*
+    if (!isItemNullorUndefined(storage_data_object)) { 
       // convert storage data to object
-      dataType(storage_data,'object');
-    // Temp test adding new nodes to object
-      updated_data_object.push(storage_data);
-      var t = temp_set_quizattempt_data();
-      var q = temp_set_quiz_data();
-      var t_o = dataType(t,'object');
-      var q_o = dataType(q,'object');
-      updated_data_object.push(t_o);
-      updated_data_object.push(q_o);
-      cc('updated_data_object TEMP:','success');
+      // dataType(storage_data,'object');
+      // dataType(d,'object');
+    
+    // Push original data object to initiated new object 
+      updated_data_object.push(storage_data_object);
+    // combine new data with existing data
+      updated_data_object.push(d);
+
+      // var t = temp_set_quizattempt_data();
+      // var q = temp_set_quiz_data();
+      // var t_o = dataType(t,'object');
+      // var q_o = dataType(q,'object');
+      // updated_data_object.push(t_o);
+      // updated_data_object.push(q_o);
+      // cc('updated_data_object TEMP:','success');
+      // console.log(updated_data_object);
+      cc('Combined updated_data_object OBJECT:','info');
       console.log(updated_data_object);
 
-      // var s = dataType(updated_data_object,'string');
-      cc('updated_data_object CONVERTED to string','warning');
+      // var s = dataType(updated_data_object);
       
-      localStorage.setItem(item_TYPE,updated_data_object);
-      cc('updated_data_object is now: ','info');
-      var n = localStorage.getItem(item_TYPE);
-      console.log(n);
-      cc('Data updated and stored in localStorage as string','success');
+      // // var data_string = dataType(updated_data_object,'string');
+      // // cc('updated_data_object CONVERTED to string','info');
+      // localStorage.setItem(item_TYPE,updated_data_object);
+      // cc('Data updated and stored in localStorage as string. Data from storage is NOW:','success');
+      // var n = localStorage.getItem(item_TYPE);
+      // console.log(n);
 
     // end TEMP
     }else{
       cc('No local storage for '+item_TYPE, 'warning');
-      updated_data_object.push(d);
-      console.log(updated_data_object);
 
-      var s = dataType(updated_data_object,'string');
-      cc('Data pushed to updated_data_object','info');
-      cc('updated_data_object is now: ','info');
-      localStorage.setItem(item_TYPE,s);
-      cc('Data updated and stored in localStorage as string','success');
+      var data_string = dataType(d,'string');
+      // cc('data_object CONVERTED to string','info');
+      
+      console.log(data_string);
+
+      localStorage.setItem(item_TYPE,d);
+      cc('Data updated and stored in localStorage as string. Data from storage is NOW:','success');
+      var n = localStorage.getItem(item_TYPE);
+      console.log(n);
     }
+    */
   };
   
   
