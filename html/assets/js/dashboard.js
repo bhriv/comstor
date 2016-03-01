@@ -486,7 +486,7 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
   base_url = urls.reports;
 
   // FORMAT ENDPOINT
-  if (item_TYPE == 'students') {
+  if (item_TYPE == 'students' || item_TYPE == 'student') {
     var item_url = base_url + 'studentdata/'+item_ID;
   }else{
     var item_url = base_url +item_TYPE+'lookup/'+item_ID;  
@@ -506,9 +506,9 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
     // Process Data
     if (d != undefined) {
       cc('the following data has been successfully pulled from the endpoint','success');
-      console.log(d);
+      cc(d,'data');
       // findItemByID(d,item_ID,item_TYPE);
-      processItemData(d,'course','update')
+      processItemData(d,item_TYPE,item_ACTION)
       // BHRIV 20160226
 // ----- All Course Details need to be stored in an array in LocalStorage...then iterated over to find an ID match
 // ----- The purpose is to prevent hitting endpoint many times
@@ -532,7 +532,6 @@ function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
   }); // end $.when
 }
 
-
 // var item_ACTION = null;
 var action_count = 0;
 // Given a data object process the data, add the data to a localStorage object for future use, do something with the data
@@ -548,38 +547,27 @@ function processItemData(d,item_TYPE,item_ACTION){
     var storage_data = localStorage.getItem(item_TYPE);
 
     if (isItemNullorUndefined(storage_data)) { 
-      // var data_string = dataType(d,'string');
       cc('INSIDE PROCESS LOOP FIRST RUN','success');
-      // console.log(data_string);
-      // localStorage.setItem(item_TYPE,data_string);
-
+      // if no localstorage for item_TYPE, set this data as the storage data
       var data_object = dataType(d,'object');
-      // console.log(data_object);
+      // flatten object to ensure new data is binded to last node
       var flattened_data_object = _.flatten(data_object);
       cc('flatten flattened_data_object','info');
-      console.log(flattened_data_object);
-
+      cc(flattened_data_object,'data');
       flattened_data_object.push(d);
-      // updated_data_object.push(d);
       cc('flattened_data_object with OLD and NEW is:','done');
-      console.log(flattened_data_object);
+      cc(flattened_data_object,'data');
       var data_string = dataType(flattened_data_object,'string');
       localStorage.setItem(item_TYPE,data_string);
-
-
     }else{
       cc('storage_data is:','done');
-      // console.log(storage_data);
       var data_object = dataType(storage_data,'object');
-      // console.log(data_object);
       var flattened_data_object = _.flatten(data_object);
       cc('flatten flattened_data_object','info');
-      console.log(flattened_data_object);
-
+      cc(flattened_data_object,'data');
       flattened_data_object.push(d);
-      // updated_data_object.push(d);
       cc('flattened_data_object with OLD and NEW is:','done');
-      console.log(flattened_data_object);
+      cc(flattened_data_object,'data');
       var data_string = dataType(flattened_data_object,'string');
       localStorage.setItem(item_TYPE,data_string);
     }

@@ -16,7 +16,8 @@ var theme_run     = null,
     theme_warning = null,
     theme_error   = null,
     theme_fatal   = null,
-    theme_default = null;
+    theme_default = null,
+    theme_data    = null;
 
 var theme = 'batman';
 
@@ -31,6 +32,7 @@ switch(theme){
     theme_error   = 'background: #b94631; color: #fff;';
     theme_fatal   = 'background: #a9471d; color: #FFF; padding: 2px 100px;';
     theme_default = 'color: #000000;';
+    theme_data    = 'color: #000000; padding: 2px 5px; border: dotted 1px #777; font-family: "Courier New", Courier, monospace;';
     break;
   case "batman":
     theme_run     = 'color: #ccc65e;';
@@ -42,6 +44,7 @@ switch(theme){
     theme_error   = 'background: #8b1c15; color: #fff;';
     theme_fatal   = 'background: #de1e23; color: #fff; padding: 2px 100px;';
     theme_default = 'color: #000000;';
+    theme_data    = 'color: #000000; padding: 2px 5px; border: dotted 1px #777; font-family: "Courier New", Courier, monospace;';
     break;
   default:
     theme_run     = 'background: #fff; color: #82bfd8;';
@@ -53,6 +56,7 @@ switch(theme){
     theme_error   = 'background: #d71816; color: #FFF;';
     theme_fatal   = 'background: #FF0000; color: #FFF; padding: 2px 100px;';
     theme_default = 'background: #ffffff; color: #7ea2aa;';
+    theme_data    = 'color: #000000; padding: 2px 5px; border: dotted 1px #777; font-family: "Courier New", Courier, monospace;';
 }
 
 function cc(message,console_class){
@@ -87,6 +91,10 @@ function cc(message,console_class){
       m = 'FATAL ERROR: '+m;
       c = theme_fatal;
       break;
+    case "data":
+      m = m;
+      c = theme_data;
+      break;
     default:
       c = theme_default;
   }
@@ -101,4 +109,5 @@ function runConsoleClassTests(){
   cc('Example class info', 'info');
   cc('Example class error', 'error');
   cc('Example class fatal', 'fatal');
+  cc('Example class data', 'data');
 }
