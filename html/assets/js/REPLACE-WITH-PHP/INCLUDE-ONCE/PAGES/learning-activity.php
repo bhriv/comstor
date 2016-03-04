@@ -2,6 +2,10 @@
 Learning Activity - TOTARA
 <section class="report_display_switch" id="flurry_reports" style="display:block;">
     <!-- TOTARA -->
+    <button id="resolve">resolve()</button>
+    <span id="new_dashboard">new_dashboard()</span>
+    <span id="get_courses_with_students">get_courses_with_students()</span>
+    <span id="count_students">count_students()</span>
     <span id="pull_student_data">pull_student_data()</span> 
     <span id="work_in_progress">work_in_progress()</span> 
     <span onclick="runConsoleClassTests()">runConsoleClassTests()</span> 

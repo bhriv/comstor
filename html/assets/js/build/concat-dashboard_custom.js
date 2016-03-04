@@ -164,7 +164,8 @@ $(function() {
 /*****************************************************************/
 
 function isItemNullorUndefined(item){
-  cc('isItemNullorUndefined: '+item,'run')
+  // cc('isItemNullorUndefined: '+item,'run');
+  cc('isItemNullorUndefined: ','run')
   if (item == null || item == 'null' || item == undefined || item == 'undefined') {
     cc('ITEM is - '+item,'error');
     return true

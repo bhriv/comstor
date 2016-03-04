@@ -17,7 +17,8 @@ var theme_run     = null,
     theme_error   = null,
     theme_fatal   = null,
     theme_default = null,
-    theme_data    = null;
+    theme_data    = null,
+    theme_highlight   = 'color: #000000; padding: 2px 10px; border: dotted 2px green; font-family: "Courier New", Courier, monospace;';
 
 var theme = 'batman';
 
@@ -94,6 +95,10 @@ function cc(message,console_class){
     case "data":
       m = m;
       c = theme_data;
+      break;
+    case "highlight":
+      m = m;
+      c = theme_highlight;
       break;
     default:
       c = theme_default;
