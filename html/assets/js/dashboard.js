@@ -181,8 +181,11 @@ function processCourses(item_data_from_array){
     // Process all item_TYPE within the array
     var d = cdata;
     if (d != undefined) {
-      var this_item_ID = cdata;
-      cc('Course with students ID:'+cdata, 'success');
+      var item_ID = cdata;
+      var item_TYPE = 'course';
+      var item_ACTION = 'list_course_names';
+      cc(item_TYPE+' with students ID:'+item_ID, 'success');
+      getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
       // get_item_data(this_item_ID,item_TYPE);
     }else{
       cc('Could not list data.','error');
@@ -217,6 +220,151 @@ function getAllItemDataFromEndpoint(item_ID, item_TYPE){
     }); // end $.each
   }); // end $.when
 }
+
+// Get the single Item Data from the Endpoint
+function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
+  // get the course details from endpoint, then add to the results table
+  cc('getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'run');
+  base_url = urls.reports;
+
+  // FORMAT ENDPOINT
+  if (item_TYPE == 'students' || item_TYPE == 'student') {
+    var item_url = base_url + 'studentdata/'+item_ID;
+  }else{
+    var item_url = base_url +item_TYPE+'lookup/'+item_ID;  
+  }
+  cc('check ENDPOINT url '+item_url, 'success');
+  
+  // GET DATA FROM ENDPOINT
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    // cc('DOING LOOP','info');
+    // dig down to data node
+    if (item_TYPE == 'students' || item_TYPE == 'student') {
+      var d = item_data_from_array["user"];  
+    }else{
+      var d = item_data_from_array[0];
+    }
+    // Process Data
+    if (d != undefined) {
+      cc('the following data has been successfully pulled from the endpoint','success');
+      console.log(d);
+      if (item_TYPE == 'course' || item_TYPE == 'courses') {
+        if (item_ACTION == 'list_course_names') {
+          cc(item_TYPE+' details:' ,'info');
+          cc( 'ID: '+d.id+ ' NAME:'+d.fullname,'success');
+          var table_id = '#active_courses table'
+          var this_item_ID = d['id'];
+          var fullname        = d['fullname'];
+          var shortname       = d['shortname'];
+          var startdate = d['startdate'];
+          var readable_date = dateMoment(startdate);
+          var category      = d['category'];
+          // cc('name '+name+' timemodified '+timemodified+ ' readable_date '+readable_date+ ' depth '+depth+ ' path '+path+ ' switch_url '+ switch_url, 'success' );
+          // Push to display table
+          var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>' +fullname+ '</h5></td><td>' +shortname+ '</td><td>' +category +'</td><td><span class="hidden">'+startdate+'</span></strong> ' +readable_date+ '</td></tr>';
+          $(table_id).append(table_data);
+        };
+      };
+      // findItemByID(d,item_ID,item_TYPE);
+      processItemData(d,item_TYPE,item_ACTION)
+      // BHRIV 20160226
+// ----- All Course Details need to be stored in an array in LocalStorage...then iterated over to find an ID match
+// ----- The purpose is to prevent hitting endpoint many times
+// ----- The storage and check storage functions are the key to not hitting endpoint more than once, except for student data.       
+      // if (item_TYPE == 'course' || item_TYPE == 'courses') {
+      //     cc('Find Course by ID','info');
+      //     console.log(d);
+      //     // ensure data passed is an object
+      //     var course_data_object = dataType(d,'object');
+      //     cc('course_data_object','warning');
+      //     console.log(course_data_object);
+      //     findItemByID(course_data_object,item_ID,'courses');
+      // }
+      
+      // processItemData(d,item_TYPE,item_ACTION);
+      // cc('String will be returned','warning');
+      // return s;
+    }else{
+      console.log('There was an error retrieving information '+item_TYPE+': '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
+    }
+  }); // end $.when
+}
+
+// Given the Course ID determine if the specific data can be loaded from localStorage. If not, hit the endpoint.
+function get_item_data(item_ID, item_TYPE, item_ACTION){
+  cc('get_item_data('+item_ID +','+item_TYPE+','+item_ACTION+')', 'run');
+  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
+  // temp_set_item_data();
+  if (item_TYPE == 'course') {
+    var data_name = 'courses';  
+  };
+  if (item_TYPE == 'quiz') {
+    var data_name = 'quizzes';  
+  };
+  if (item_TYPE == 'students') {
+    var data_name = 'students';  
+  };
+  if (item_TYPE == 'all_students') {
+    var data_name = 'all_students';  
+  };
+  
+  // var session_item_data_array = getStoredSessionData(data_name);
+  var session_item_data_array = localStorage.getItem(data_name);
+  cc('session_item_data_array('+data_name+') is: ','info');
+  console.log(session_item_data_array);
+
+  if (isItemNullorUndefined(session_item_data_array)) {
+    console.log('LINE 436: session_item_data_array is NULL or undefined');
+    getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
+    alert('434 Exiting - temp');
+  }else{
+    console.log('LINE 439: session_item_data_array is not NULL or undefined');
+  }
+  // TEMP
+
+  // var arr = null;
+  // var item_data_from_array = null;
+
+  if (session_item_data_array != null) {
+    console.log('session_item_data_array is NOT NULL');
+    // var arr = localStorage.getItem(item_storage_name);
+
+    var arr = JSON.parse(session_item_data_array);
+    // var arr = session_item_data_array;
+
+    console.log('*********** arr **************');
+    console.log(arr);  
+
+    var item_data_from_array = findItemByID(arr,item_ID,data_name);
+    console.log('---- item_data_from_array -----');
+    console.log(item_data_from_array);
+
+    // IF the item is not found, or if the arr is null or doesn't exist yet, hit the endpoint
+    if (item_data_from_array == 'false') {
+      console.log('FALSE satisfied - item_data_from_array is false, SO get data from endpoint for '+item_TYPE+': '+item_ID);
+      // hit endpoint, get data, save to session array data
+      getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
+      // returns d
+      var d = item_data_from_array[0];
+      if (d != undefined) {
+        processItemData(d,item_TYPE);
+      }else{
+        console.log('There was an error retrieving information for '+item_TYPE+' ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
+      }
+    }
+    else{
+      console.log('item_data_from_array is NOT false - get dataobject in localStorage for '+item_TYPE+' ID: '+item_ID+'. Endpoint WILL NOT be hit again. ');
+      d = arr;
+      if (d != undefined) {
+        processItemData(d,item_TYPE,item_ACTION);
+      }else{
+        console.log('There was an error retrieving information from the localStorage for '+item_TYPE+' ID: '+item_ID);
+      }
+    }
+  };
+}
+
 
 
 /* =======================================
@@ -344,133 +492,6 @@ function findItemByID(data,item_ID,item_TYPE){
   } 
 }
 
-
-// Given the Course ID determine if the specific data can be loaded from localStorage. If not, hit the endpoint.
-function get_item_data(item_ID, item_TYPE, item_ACTION){
-  cc('get_item_data('+item_ID +','+item_TYPE+','+item_ACTION+')', 'run');
-  // console.log('Test Data Set: 4,99,5,6,68,7. -- Endpoint calls should be triggered for Course 99 and Course 68 as these are not saved in the TEMP data. Once retrieved add the new course Data to the Stored Data array. ')
-  // temp_set_item_data();
-  if (item_TYPE == 'course') {
-    var data_name = 'courses';  
-  };
-  if (item_TYPE == 'quiz') {
-    var data_name = 'quizzes';  
-  };
-  if (item_TYPE == 'students') {
-    var data_name = 'students';  
-  };
-  if (item_TYPE == 'all_students') {
-    var data_name = 'all_students';  
-  };
-  
-  // var session_item_data_array = getStoredSessionData(data_name);
-  var session_item_data_array = localStorage.getItem(data_name);
-  cc('session_item_data_array('+data_name+') is: ','info');
-  console.log(session_item_data_array);
-
-  if (isItemNullorUndefined(session_item_data_array)) {
-    console.log('LINE 436: session_item_data_array is NULL or undefined');
-    getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
-    alert('434 Exiting - temp');
-  }else{
-    console.log('LINE 439: session_item_data_array is not NULL or undefined');
-  }
-  // TEMP
-
-  // var arr = null;
-  // var item_data_from_array = null;
-
-  if (session_item_data_array != null) {
-    console.log('session_item_data_array is NOT NULL');
-    // var arr = localStorage.getItem(item_storage_name);
-
-    var arr = JSON.parse(session_item_data_array);
-    // var arr = session_item_data_array;
-
-    console.log('*********** arr **************');
-    console.log(arr);  
-
-    var item_data_from_array = findItemByID(arr,item_ID,data_name);
-    console.log('---- item_data_from_array -----');
-    console.log(item_data_from_array);
-
-    // IF the item is not found, or if the arr is null or doesn't exist yet, hit the endpoint
-    if (item_data_from_array == 'false') {
-      console.log('FALSE satisfied - item_data_from_array is false, SO get data from endpoint for '+item_TYPE+': '+item_ID);
-      // hit endpoint, get data, save to session array data
-      getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
-      // returns d
-      var d = item_data_from_array[0];
-      if (d != undefined) {
-        processItemData(d,item_TYPE);
-      }else{
-        console.log('There was an error retrieving information for '+item_TYPE+' ID: '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
-      }
-    }
-    else{
-      console.log('item_data_from_array is NOT false - get dataobject in localStorage for '+item_TYPE+' ID: '+item_ID+'. Endpoint WILL NOT be hit again. ');
-      d = arr;
-      if (d != undefined) {
-        processItemData(d,item_TYPE,item_ACTION);
-      }else{
-        console.log('There was an error retrieving information from the localStorage for '+item_TYPE+' ID: '+item_ID);
-      }
-    }
-  };
-}
-
-// Get the single Item Data from the Endpoint
-function getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION){
-  // get the course details from endpoint, then add to the results table
-  cc('getItemDataFromEndpoint('+item_ID+','+item_TYPE+') ', 'run');
-  base_url = urls.reports;
-
-  // FORMAT ENDPOINT
-  if (item_TYPE == 'students' || item_TYPE == 'student') {
-    var item_url = base_url + 'studentdata/'+item_ID;
-  }else{
-    var item_url = base_url +item_TYPE+'lookup/'+item_ID;  
-  }
-  cc('check ENDPOINT url '+item_url, 'success');
-  
-  // GET DATA FROM ENDPOINT
-  var itemdata = $.getJSON(item_url);
-  $.when(itemdata).done(function(item_data_from_array) {
-    cc('DOING LOOP','info');
-    // dig down to data node
-    if (item_TYPE == 'students' || item_TYPE == 'student') {
-      var d = item_data_from_array["user"];  
-    }else{
-      var d = item_data_from_array[0];
-    }
-    // Process Data
-    if (d != undefined) {
-      cc('the following data has been successfully pulled from the endpoint','success');
-      cc(d,'data');
-      // findItemByID(d,item_ID,item_TYPE);
-      processItemData(d,item_TYPE,item_ACTION)
-      // BHRIV 20160226
-// ----- All Course Details need to be stored in an array in LocalStorage...then iterated over to find an ID match
-// ----- The purpose is to prevent hitting endpoint many times
-// ----- The storage and check storage functions are the key to not hitting endpoint more than once, except for student data.       
-      // if (item_TYPE == 'course' || item_TYPE == 'courses') {
-      //     cc('Find Course by ID','info');
-      //     console.log(d);
-      //     // ensure data passed is an object
-      //     var course_data_object = dataType(d,'object');
-      //     cc('course_data_object','warning');
-      //     console.log(course_data_object);
-      //     findItemByID(course_data_object,item_ID,'courses');
-      // }
-      
-      // processItemData(d,item_TYPE,item_ACTION);
-      // cc('String will be returned','warning');
-      // return s;
-    }else{
-      console.log('There was an error retrieving information '+item_TYPE+': '+item_ID+'. The response was NULL - meaning there was no information supplied to the Endpoint for this '+item_TYPE+'.')
-    }
-  }); // end $.when
-}
 
 // var item_ACTION = null;
 var action_count = 0;

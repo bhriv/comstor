@@ -25,3 +25,19 @@ Learning Activity - TOTARA
 	    <tbody id="tbody_activity_result"></tbody>
 	</table>
 </section>
+<section id="active_courses">
+	<h3>Active Courses</h3>
+	<table class="tablesorter sortable">
+	    <thead>
+	        <tr>
+	            <th>ID</th>   
+	            <th>Course Full Name</th>   
+	            <th>Course Short Name</th>   
+	            <th>Category</th>
+	            <th>Start Date/Time</th>           
+	        </tr>
+	    </thead>
+	    <tbody id="tbody_activity_result"></tbody>
+	</table>
+
+</section>
