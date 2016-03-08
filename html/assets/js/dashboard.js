@@ -912,13 +912,18 @@ var all_hidden_category_data = [];
 var category_grandparents = [];
 var category_parents = [];
 var category_children = [];
+var category_grandchildren = [];
 
 var visible_category_grandparents = [];
 var visible_category_grandparents_data = [];
 var visible_category_parents = [];
 var visible_category_parents_data = [];
+
 var visible_category_children = [];
 var visible_category_children_data = [];
+
+var visible_category_grandchildren = [];
+var visible_category_grandchildren_data = [];
 
 
 // Get Visible Course Category IDS, save in Array
@@ -936,8 +941,11 @@ function getAllVisibleCategories(){
   var visible_category_grandparents_data = [];
   var visible_category_parents = [];
   var visible_category_parents_data = [];
+
   var visible_category_children = [];
   var visible_category_children_data = [];
+  var visible_category_grandchildren = [];
+  var visible_category_grandchildren_data = [];
 
   cc('all_visible_categories AND all_visible_category_data RESET','highlight');
 
@@ -1085,6 +1093,12 @@ function displayCategories(visibility_type){
           if (depth == '2') {
             category_parents.push(cdata);
           };
+          if (depth == '3') {
+            category_children.push(cdata);
+          };
+          if (depth == '4' || depth == '5' || depth == '6' || depth == '7' || depth == '8') {
+            category_grandchildren.push(cdata);
+          };
         };
         itemdata_count++;
         cc('COUNT '+itemdata_count,'warning')
@@ -1092,6 +1106,8 @@ function displayCategories(visibility_type){
           cc('Display categories done','success');
           processGrandparents();
           processParents();
+          processChildren();
+          processGrandchildren();
           // updateGrandparents();
           // setLocalStorage(all_hidden_category_data,'hidden_categories');
         };
@@ -1152,6 +1168,7 @@ function processGrandparents(){
 }
 
 function processParents(){
+  cc('processParents','run')
   var itemdata_count = 0;
   var visible_category_parents = [];
   var visible_category_parents_data = [];
@@ -1163,7 +1180,6 @@ function processParents(){
     var d = item_data_from_array[0];
     if (d != undefined) {
       // Get data from JSON
-      
       var name         = cdata['name'];
       var depth        = cdata['depth'];
       var path         = cdata['path'];
@@ -1171,7 +1187,6 @@ function processParents(){
       var this_item_ID_int = parseInt(this_item_ID);
       visible_category_parents.push(this_item_ID_int);
       visible_category_parents_data.push(cdata);
-
       cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
       // cc(cdata, 'warning');
       // Push to display table
@@ -1183,6 +1198,77 @@ function processParents(){
     if (itemdata_count == result_count) {
       cc('All processParents complete. visible_category_parents_data: ','success');
       console.log(visible_category_parents_data);
+    };
+  }); // end $.each
+}
+
+function processChildren(){
+  cc('processChildren','run')
+  var itemdata_count = 0;
+  var visible_category_children = [];
+  var visible_category_children_data = [];
+  var item_data_from_array = category_children;
+  jQuery.each(item_data_from_array, function(i, cdata) {
+    var result_count = getResponseSize(item_data_from_array);
+    // cc('results COUNT returned: '+result_count,'highlight');
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Get data from JSON
+      var name         = cdata['name'];
+      var depth        = cdata['depth'];
+      var path         = cdata['path'];
+      var this_item_ID = cdata['id'];
+      var this_item_ID_int = parseInt(this_item_ID);
+      visible_category_children.push(this_item_ID_int);
+      visible_category_children_data.push(cdata);
+      cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
+      // cc(cdata, 'warning');
+      // Push to display table
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processchildren complete. visible_category_children_data: ','success');
+      console.log(visible_category_children_data);
+    };
+  }); // end $.each
+}
+
+function processGrandchildren(){
+  cc('processGrandchildren','run')
+  var itemdata_count = 0;
+  var visible_category_grandchildren = [];
+  var visible_category_grandchildren_data = [];
+  
+  var item_data_from_array = category_grandchildren;
+  jQuery.each(item_data_from_array, function(i, cdata) {
+    var result_count = getResponseSize(item_data_from_array);
+    // cc('results COUNT returned: '+result_count,'highlight');
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Get data from JSON
+      var name         = cdata['name'];
+      var depth        = cdata['depth'];
+      var path         = cdata['path'];
+      var this_item_ID = cdata['id'];
+      var this_item_ID_int = parseInt(this_item_ID);
+      visible_category_grandchildren.push(this_item_ID_int);
+      visible_category_grandchildren_data.push(cdata);
+      cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
+      // cc(cdata, 'warning');
+      // Push to display table
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processgrandchildren complete. visible_category_grandchildren_data: ','success');
+      console.log(visible_category_grandchildren_data);
     };
   }); // end $.each
 }

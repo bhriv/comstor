@@ -15,8 +15,8 @@ if (/dashboard/.test(window.location.href)){
           $('#mef_reports').addClass('hidden');
           $('#show_hide_categories').removeClass('hidden');
           $(document).ready(function() {
-            getCategories('visible');
-            getCategories('hidden');
+            displayCategories('visible');
+            displayCategories('hidden');
 
           }); // end Doc Ready 
         }
