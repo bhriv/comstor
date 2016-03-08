@@ -2,8 +2,20 @@
 Learning Activity - TOTARA
 <section class="report_display_switch" id="flurry_reports" style="display:block;">
     <!-- TOTARA -->
-    <button id="resolve">resolve()</button>
+    
     <span id="new_dashboard">new_dashboard()</span>
+    <hr>
+    <h2>Get IDS</h2>
+    <span id="getAllVisibleCategories">getAllVisibleCategories()</span>
+    <span id="getAllHiddenCategories">getAllHiddenCategories()</span>
+    <hr>
+    <h2>Build Table</h2>
+    <span id="displayCategories_visible">displayCategories(visible)</span>
+    <span id="displayCategories_hidden">displayCategories(hidden)</span>
+    <hr>
+
+    
+
     <span id="get_courses_with_students">get_courses_with_students()</span>
     <span id="count_students">count_students()</span>
     <span id="pull_student_data">pull_student_data()</span> 

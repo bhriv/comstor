@@ -202,7 +202,7 @@ function cheatModeToggle(){
 }
 
 /*****************************************************************/
-/*************** Data Type ***************/
+/*************************** Data Type ***************************/
 /*****************************************************************/
 
 function dataType(data,convert_to){
@@ -238,6 +238,45 @@ function dataType(data,convert_to){
   else{
     return data;
   }
+}
+
+
+/*****************************************************************/
+/*************** GET RESPONSE SIZE ***************/
+/*****************************************************************/
+/* useful when chaining events. 
+/ Eg. When nestled loops depend on a prior process being complete you can use:
+    itemdata_count++;
+      if (itemdata_count == result_count) {
+        cc('All chained processes complete. Now do something else','success');
+        console.log(...something else.....);  
+      };
+*/
+function getResponseSize(itemdata,data_type){
+  cc('getResponseSize with data type('+data_type+')', 'run');
+  console.log(itemdata);
+  if (data_type == 'JSON') {
+    console.log(itemdata["responseJSON"]);
+    var result_count_data = itemdata["responseJSON"];
+    var result_count = _.size(result_count_data);
+  }else{
+    var result_count = _.size(itemdata);
+  }
+  cc('SIZE of result_count: '+result_count,'success');
+  return result_count;
+}
+
+
+
+/*****************************************************************/
+/********************** SET LOCAL STORAGE  ***********************/
+/*****************************************************************/
+
+function setLocalStorage(data,name){
+  cc('setLocalStorage', 'run');
+  var data_return = 'not sure';
+  var d = dataType(data,'string');
+  localStorage.setItem(name,d);
 }
 
 

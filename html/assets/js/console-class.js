@@ -7,6 +7,8 @@
   cc('This is the message that will be printed in the console','success');
 */
 
+// Turn Console Messages On/Off (true/false)
+var console_class = true;
 
 var theme_run     = null,
     theme_ready   = null,
@@ -20,7 +22,8 @@ var theme_run     = null,
     theme_data    = null,
     theme_highlight   = 'color: #000000; padding: 2px 10px; border: dotted 2px green; font-family: "Courier New", Courier, monospace;';
 
-var theme = 'batman';
+var theme = 'default';
+// var theme = 'batman';
 
 switch(theme){
   case "monalisa":
@@ -47,7 +50,7 @@ switch(theme){
     theme_default = 'color: #000000;';
     theme_data    = 'color: #000000; padding: 2px 5px; border: dotted 1px #777; font-family: "Courier New", Courier, monospace;';
     break;
-  default:
+  case "default":
     theme_run     = 'background: #fff; color: #82bfd8;';
     theme_ready   = 'color: #8be8cd;';
     theme_done    = 'color: #000000;';
@@ -103,7 +106,9 @@ function cc(message,console_class){
     default:
       c = theme_default;
   }
-  console.log('%c '+m,c);
+  if (console_class) {
+    console.log('%c '+m,c);  
+  };
 }
 
 function runConsoleClassTests(){
