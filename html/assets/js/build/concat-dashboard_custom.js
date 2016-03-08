@@ -253,7 +253,12 @@ function dataType(data,convert_to){
       };
 */
 function getResponseSize(itemdata,data_type){
-  cc('getResponseSize with data type('+data_type+')', 'run');
+  if (data_type != undefined) {
+    cc('getResponseSize with data type('+data_type+')', 'run');  
+  }else{
+    cc('getResponseSize with data type', 'run');
+  }
+  
   console.log(itemdata);
   if (data_type == 'JSON') {
     console.log(itemdata["responseJSON"]);
@@ -280,6 +285,52 @@ function setLocalStorage(data,name){
 }
 
 
+
+/*****************************************************************/
+/********************** GET PARENT ID  ***********************/
+/*****************************************************************/
+
+function getParentID(path){
+  cc('getParentID','run')
+  // Remove Grandparent ID = 1
+  var parent_id    = path.slice(3, -1);
+  var n = parent_id.indexOf("/");
+  var parent_id_trimmed = parent_id.substring(0, n);
+  cc('parent_id_trimmed: '+parent_id_trimmed,'highlight')
+  return parent_id_trimmed
+}
+
+function getGrandparentID(path){
+  cc('getGrandparentID','run')
+  var parent_id_trimmed    = path.slice(1, 2)
+  // var n = parent_id.indexOf("/");
+  // var parent_id_trimmed = parent_id.substring(0, n);
+  cc('grandparent_id_trimmed: '+parent_id_trimmed,'highlight')
+  return parent_id_trimmed
+}
+
+/*****************************************************************/
+/********************** FILTER CATEGORY DATA ***********************/
+/*****************************************************************/
+
+function filterCategoryData(data){
+  cc('filterCategoryData','run')
+  var data_object = dataType(data,'object');
+  // Remove Grandparent ID = 1
+  var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','display']
+  var filtered_data  = _.omit(data_object,keys);
+  var data_string = dataType(data_string,'string') 
+  return data_string
+}
+
+// var name         = cdata['name'];
+// var depth        = cdata['depth'];
+// var path         = cdata['path'];
+// var parent_ID    = getParentID(path);
+// var this_item_ID = cdata['id'];
+// var this_item_ID_int = parseInt(this_item_ID);
+// var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','display','sortorder']
+// var filtered_data  = _.omit(cdata,keys);
 /*****************************************************************/
 /***************************  LOGIN ENDPIONT ***************/
 /*****************************************************************/
