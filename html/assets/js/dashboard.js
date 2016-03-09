@@ -1415,6 +1415,7 @@ function updateGrandparents(){
   }); // end $.each
 }
 
+var all_category_data = [];
 var sorted_category_data = [];
 
 function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level){
@@ -1455,8 +1456,9 @@ function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,t
       "levelup_name": 'All > '+parent_details.name
   }
   // var item_object = dataType(item,'object')
-  sorted_category_data.push(item);
-  cc('sorted_category_data','fatal')
+  all_category_data.push(item);
+  cc('sorted_category_data','highlight')
+  sorted_category_data = _.sortBy(all_category_data, 'path');
   console.log(sorted_category_data);
 }
 
