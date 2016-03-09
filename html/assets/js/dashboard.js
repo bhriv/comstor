@@ -1206,6 +1206,8 @@ function processGrandparents(visibility_type){
 
 function processParents(visibility_type){
   cc('processParents','run')
+  var level = 'processParents';
+
   var itemdata_count = 0;
   var result_count = null;
   var visible_category_parents = [];
@@ -1240,40 +1242,42 @@ function processParents(visibility_type){
     var d = item_data_from_array[0];
     if (d != undefined) {
       // Get data from JSON
-      var name         = cdata['name'];
-      var depth        = cdata['depth'];
-      var path         = cdata['path'];
-      // var parent_ID    = getGrandparentID(path);
-      var this_item_ID = cdata['id'];
-      var this_item_ID_int = parseInt(this_item_ID);
-      visible_category_parents.push(this_item_ID_int);
-      // Only store core info in object
+//       var name         = cdata['name'];
+//       var depth        = cdata['depth'];
+//       var path         = cdata['path'];
+//       // var parent_ID    = getGrandparentID(path);
+//       var this_item_ID = cdata['id'];
+//       var this_item_ID_int = parseInt(this_item_ID);
+//       visible_category_parents.push(this_item_ID_int);
+//       // Only store core info in object
       var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','display','sortorder']
       var filtered_data  = _.omit(cdata,keys);
       visible_category_parents_data.push(filtered_data);
-      cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
-////////////
-        var name         = cdata['name'];
-        var depth        = cdata['depth'];
-        var path         = cdata['path'];
-        var parent_ID    = getGrandparentID(path);
-        var timemodified = cdata['timemodified'];
-        var this_item_ID = cdata['id'];
-        var this_item_ID_int = parseInt(this_item_ID);
-        var readable_date = dateMoment(timemodified);
-        var hide_this_item_ID = switch_url + this_item_ID;
-        var show_this_item_ID = switch_url + this_item_ID;
-        // Get parent details
-        var g = localStorage.getItem('grandparents');
-        var gp = dataType(g,'object');
-        var parent_details = findItemByID(gp,parent_ID,'parent_ID');
-        var levelup_name = parent_details.name;
-        if (levelup_name == 'Miscellaneous') {
-          levelup_name = 'All';
-        };
-        // Push to display table
-        var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
-        $(table_id).append(table_data);
+//       cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
+// ////////////
+//         var name         = cdata['name'];
+//         var depth        = cdata['depth'];
+//         var path         = cdata['path'];
+//         var parent_ID    = getGrandparentID(path);
+//         var timemodified = cdata['timemodified'];
+//         var this_item_ID = cdata['id'];
+//         var this_item_ID_int = parseInt(this_item_ID);
+//         var readable_date = dateMoment(timemodified);
+//         var hide_this_item_ID = switch_url + this_item_ID;
+//         var show_this_item_ID = switch_url + this_item_ID;
+//         // Get parent details
+//         var g = localStorage.getItem('grandparents');
+//         var gp = dataType(g,'object');
+//         var parent_details = findItemByID(gp,parent_ID,'parent_ID');
+//         var levelup_name = parent_details.name;
+//         if (levelup_name == 'Miscellaneous') {
+//           levelup_name = 'All';
+//         };
+//         // Push to display table
+//         var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
+//         $(table_id).append(table_data);
+        displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level);
+        buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level);
 ////////////        
       // cc(cdata, 'warning');
       // Push to display table
@@ -1456,11 +1460,10 @@ function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,t
   console.log(sorted_category_data);
 }
 
-function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id){
+function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level){
   var name         = cdata['name'];
   var depth        = cdata['depth'];
   var path         = cdata['path'];
-  var parent_ID    = getParentID(path);
   var timemodified = cdata['timemodified'];
   var this_item_ID = cdata['id'];
   var this_item_ID_int = parseInt(this_item_ID);
@@ -1468,9 +1471,17 @@ function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,ta
   var hide_this_item_ID = switch_url + this_item_ID;
   var show_this_item_ID = switch_url + this_item_ID;
   // Get parent details
-  var g = localStorage.getItem('parents');
+  if (level == 'processChildren') {
+    var parent_ID    = getParentID(path);
+    var g = localStorage.getItem('parents');
+  };
+  if (level == 'processParents') {
+    var parent_ID    = getGrandparentID(path);
+    var g = localStorage.getItem('grandparents');
+  };
   var gp = dataType(g,'object');
   var parent_details = findItemByID(gp,parent_ID,'parent_ID');
+
   // Push to display table
   var levelup_name = 'All > '+parent_details.name;
   var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
