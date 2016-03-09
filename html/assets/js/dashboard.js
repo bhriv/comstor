@@ -1090,7 +1090,7 @@ function loadAllCategories(visibility_type){
     var switch_url = base_url +'lumiousreports/coursecategories/';
   }
   var item_url = base_url +'lumiousreports/'+visibility_type+'categories/';
-  console.log('%c loadAllCategories ENDPOINT url '+item_url, 'background: #ddd; color: #fff');
+  cc('loadAllCategories '+visibility_type+' ENDPOINT url '+item_url, 'info');
   // Populate and extract data
   var item_data_from_array = [];
   var itemdata = $.getJSON(item_url);
@@ -1101,16 +1101,6 @@ function loadAllCategories(visibility_type){
       // Process all courses within the category
       var d = item_data_from_array[0];
       if (d != undefined) {
-        // var this_item_ID = cdata.id;
-        // cc('Category ID('+this_item_ID+')','success');
-        // Get data from JSON
-        // var this_item_ID = cdata['id'];
-        // var hide_this_item_ID = switch_url + this_item_ID;
-        // var show_this_item_ID = switch_url + this_item_ID;
-        // var name        = cdata['name'];
-        // var timemodified = cdata['timemodified'];
-        // var readable_date = dateMoment(timemodified);
-        // var path      = cdata['path'];
         var depth       = cdata['depth'];
         if (visibility_type == 'visible' || visibility_type == 'course') {
           switch(depth){
@@ -1126,23 +1116,11 @@ function loadAllCategories(visibility_type){
             default:
               category_grandchildren.push(cdata);
           }
-          // if (depth == '1') {
-          //   category_grandparents.push(cdata);
-          // };
-          // if (depth == '2') {
-          //   category_parents.push(cdata);
-          // };
-          // if (depth == '3') {
-          //   category_children.push(cdata);
-          // };
-          // if (depth == '4' || depth == '5' || depth == '6' || depth == '7' || depth == '8') {
-          //   category_grandchildren.push(cdata);
-          // };
         };
         itemdata_count++;
         // cc('CATEGORY COUNT '+itemdata_count+' name '+name+' timemodified '+timemodified+ ' readable_date '+readable_date+ ' depth '+depth+ ' path '+path+ ' switch_url '+ switch_url, 'done' );
         if (itemdata_count == result_count) {
-          cc('loadAllCategories done','success');
+          cc('loadAllCategories '+visibility_type+' done','success');
           processGrandparents(visibility_type);
           // processParents();
           // processChildren();
