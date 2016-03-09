@@ -1296,6 +1296,8 @@ function processParents(visibility_type){
 function processChildren(visibility_type){
   // var visibility_type = localStorage.getItem('visibility_type')
   cc('processChildren('+visibility_type+')','done')
+  var level = 'processChildren';
+
   var itemdata_count = 0;
   var visible_category_children = [];
   var visible_category_children_data = [];
@@ -1328,7 +1330,8 @@ function processChildren(visibility_type){
       var filtered_data  = _.omit(cdata,keys);
       visible_category_children_data.push(filtered_data);
       // visible_category_children.push(this_item_ID_int);
-      displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id);
+      displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level);
+      buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level);
       // cc('CHILD: '+name+'('+this_item_ID+') depth('+depth+') path('+path+') parent_ID('+parent_ID+') Parent: '+parent_details.name+'('+parent_details.id+')', 'success' );
     }
     else{
@@ -1408,6 +1411,50 @@ function updateGrandparents(){
   }); // end $.each
 }
 
+var sorted_category_data = [];
+
+function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level){
+  var item = [];
+  var name         = cdata['name'];
+  var depth        = cdata['depth'];
+  var path         = cdata['path'];
+  var timemodified = cdata['timemodified'];
+  var this_item_ID = cdata['id'];
+  var this_item_ID_int = parseInt(this_item_ID);
+  var readable_date = dateMoment(timemodified);
+  var hide_this_item_ID = switch_url + this_item_ID;
+  var show_this_item_ID = switch_url + this_item_ID;
+  // Get parent details
+  if (level == 'processChildren') {
+    var parent_ID    = getParentID(path);
+    var g = localStorage.getItem('parents');
+  };
+  if (level == 'processParents') {
+    var parent_ID    = getGrandparentID(path);
+    var g = localStorage.getItem('grandparents');
+  };
+  var gp = dataType(g,'object');
+  var parent_details = findItemByID(gp,parent_ID,'parent_ID');
+  // Push to display table
+  var levelup_name = 'All > '+parent_details.name;
+  var item = {
+      "id": this_item_ID,
+      "this_item_ID_int": this_item_ID_int,
+      "name": name,
+      "depth": depth,
+      "path": path,
+      "parent_ID": parent_ID,
+      "timemodified": timemodified,
+      "readable_date": readable_date,
+      "hide_this_item_ID": hide_this_item_ID,
+      "show_this_item_ID": show_this_item_ID,
+      "levelup_name": 'All > '+parent_details.name
+  }
+  // var item_object = dataType(item,'object')
+  sorted_category_data.push(item);
+  cc('sorted_category_data','fatal')
+  console.log(sorted_category_data);
+}
 
 function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id){
   var name         = cdata['name'];
