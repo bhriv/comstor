@@ -940,6 +940,11 @@ var category_grandparents = [];
 var category_parents = [];
 var category_children = [];
 var category_grandchildren = [];
+var category_greatgrandchildren = [];
+var category_greatgreatgrandchildren = [];
+var category_greatgreatgreatgrandchildren = [];
+var category_greatgreatgreatgrandchildren = [];
+var category_orphans = [];
 
 var visible_category_grandparents = [];
 var visible_category_grandparents_data = [];
@@ -1071,37 +1076,43 @@ function getAllHiddenCategories(){
 
 // Display the course categories grouped by visibility type for Admin
 
-function loadAllCategories(visibility_type){  
+function loadAllCategories(visibility_type,level){  
+
   if (visibility_type == undefined) {
     visibility_type = 'visible';
   };
   cc('loadAllCategories('+visibility_type+')','info');
   var itemdata_count = 0;
   // Setup ids and labels
-  var switch_label = 'Show';
-  var count_id = '#'+visibility_type+'_count';
-  var table_id = '#'+visibility_type+'_categories';
-  // cc('table_id '+table_id, 'warning');
   if (visibility_type == 'visible') {
-    visibility_type = 'course';
+    var item_url = base_url +'lumiousreports/coursecategories/';
     var switch_url = base_url +'lumiousreports/hiddencategories/';
     var switch_label = 'Hide';
+    var count_id = '#'+visibility_type+'_count';
+    var table_id = '#'+visibility_type+'_categories';
   }else{
+    var item_url = base_url +'lumiousreports/hiddencategories/';
     var switch_url = base_url +'lumiousreports/coursecategories/';
+    var switch_label = 'Show';
+    var count_id = '#'+visibility_type+'_count';
+    var table_id = '#'+visibility_type+'_categories';
   }
-  var item_url = base_url +'lumiousreports/'+visibility_type+'categories/';
   cc('loadAllCategories '+visibility_type+' ENDPOINT url '+item_url, 'info');
   // Populate and extract data
   var item_data_from_array = [];
   var itemdata = $.getJSON(item_url);
-
   $.when(itemdata).done(function(item_data_from_array) {
     var result_count = getResponseSize(itemdata,'JSON');
     jQuery.each(item_data_from_array, function(i, cdata) {
       // Process all courses within the category
+      cc('LOOP','info')
+      console.log(cdata);
+
       var d = item_data_from_array[0];
       if (d != undefined) {
         var depth       = cdata['depth'];
+        cc('DEPTH for current: '+depth,'info');
+
         if (visibility_type == 'visible' || visibility_type == 'course') {
           switch(depth){
             case '1': 
@@ -1113,15 +1124,36 @@ function loadAllCategories(visibility_type){
             case '3':
               category_children.push(cdata);
               break;
-            default:
+            case '4':
               category_grandchildren.push(cdata);
+              break;
+            case '5':
+              category_greatgrandchildren.push(cdata);
+              break;
+            case '6':
+              category_greatgreatgrandchildren.push(cdata);
+              break;
+            case '7':
+              category_greatgreatgreatgrandchildren.push(cdata);
+              break;
+            default:
+              category_orphans.push(cdata);
           }
         };
         itemdata_count++;
         // cc('CATEGORY COUNT '+itemdata_count+' name '+name+' timemodified '+timemodified+ ' readable_date '+readable_date+ ' depth '+depth+ ' path '+path+ ' switch_url '+ switch_url, 'done' );
         if (itemdata_count == result_count) {
-          cc('loadAllCategories '+visibility_type+' done','success');
-          processGrandparents(visibility_type);
+          cc('loadAllCategories '+visibility_type+' done. Total '+visibility_type+' categories = '+itemdata_count,'success');
+          var itemdata_count_display = '('+itemdata_count+ ')';
+          $(count_id).append(itemdata_count_display);
+          processCategory(visibility_type,'grandparents');
+          processCategory(visibility_type,'parents');
+          processCategory(visibility_type,'children');
+          processCategory(visibility_type,'grandchildren');
+          processCategory(visibility_type,'greatgrandchildren');
+          processCategory(visibility_type,'greatgreatgrandchildren');
+          processCategory(visibility_type,'greatgreatgreatgrandchildren');
+          processCategory(visibility_type,'orphans');
           // processParents();
           // processChildren();
           // processGrandchildren();
@@ -1133,47 +1165,98 @@ function loadAllCategories(visibility_type){
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
       }
     }); // end $.each
-    var itemdata_count_display = '('+itemdata_count+ ')';
-    cc('count_id '+count_id, 'success');
-    $(count_id).append(itemdata_count_display);
-
   }); // end $.when
 }
 
+var all_nested_category_data = [];
+// var test_obj = {"test":"foo"};
 
 /*****************************************************************************/
 /********************************* GROUP CATEGORIES **************************/
 /*****************************************************************************/
 
-function processGrandparents(visibility_type){
-  cc('processGrandparents','run');
-  var child_details = [];
-  var nestled_categories = [];
+function processCategory(visibility_type,level){
+  cc('processCategory','run');
+  
   var itemdata_count = 0;
-  var visible_category_grandparents = [];
+  var result_count = 0;
   var visible_category_grandparents_data = [];
   var item_data_from_array = category_grandparents;
-  // Visibility Type
 
+  var visible_category_data = [];
+  switch(level){
+    case "grandparents" :
+      var item_data_from_array = category_grandparents;
+      break;
+    case "parents" :
+      var item_data_from_array = category_parents;
+      break;
+    case "children" :
+      var item_data_from_array = category_children;
+      break;
+    case "grandchildren" :
+      var item_data_from_array = category_grandchildren;
+      break;
+    case "greatgrandchildren" :
+      var item_data_from_array = category_greatgrandchildren;
+      break;
+    case "greatgreatgrandchildren" :
+      var item_data_from_array = category_greatgreatgrandchildren;
+      break;
+    case "greatgreatgreatgrandchildren" :
+      var item_data_from_array = category_greatgreatgreatgrandchildren;
+      break;
+    default: 
+      var item_data_from_array = category_orphans;
+      break;
+  }
+  
+  var result_count = getResponseSize(item_data_from_array);
+  cc('Total '+level+': '+result_count,'highlight');
   jQuery.each(item_data_from_array, function(i, cdata) {
-    var result_count = getResponseSize(category_grandparents);
-    cc('results COUNT returned: '+result_count,'highlight');
     // Process all courses within the category
     var d = item_data_from_array[0];
     if (d != undefined) {
-      // Get data from JSON
-      var name         = cdata['name'];
-      var depth        = cdata['depth'];
-      var path         = cdata['path'];
-      var this_item_ID = cdata['id'];
-      var this_item_ID_int = parseInt(this_item_ID);
-      visible_category_grandparents.push(this_item_ID_int);
-      var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','display','sortorder']
+      // Store core data
+      var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','sortorder']
       var filtered_data  = _.omit(cdata,keys);
-      visible_category_grandparents_data.push(filtered_data);
-      // cc('GRANDPARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'highlight' );
-      // cc(cdata, 'warning');
-      // Push to display table
+      visible_category_data.push(filtered_data);
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All process '+level+' complete','success');
+      console.log(visible_category_data)
+      all_nested_category_data.push(visible_category_data);
+      cc('all_nested_category_data UPDATED','info')
+      console.log(all_nested_category_data);
+
+      localStorage.removeItem(level);
+      setLocalStorage(visible_category_data,level);
+      // Once Data complete Process next set
+      // processParents(visibility_type);
+    };
+  }); // end $.each
+}
+
+function processParents(visibility_type){
+  cc('processParents','run');
+  var itemdata_count = 0;
+  var result_count = 0;
+  var visible_category_parents_data = [];
+  var item_data_from_array = category_parents;
+  var result_count = getResponseSize(category_parents);
+  cc('Total parents: '+result_count,'highlight');
+  jQuery.each(item_data_from_array, function(i, cdata) {
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Store core data
+      var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','sortorder']
+      var filtered_data  = _.omit(cdata,keys);
+      visible_category_parents_data.push(filtered_data);
     }
     else{
       cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -1181,107 +1264,15 @@ function processGrandparents(visibility_type){
     itemdata_count++;
     if (itemdata_count == result_count) {
       cc('All processGrandparents complete','success');
-      console.log(visible_category_grandparents_data)
-      localStorage.removeItem('grandparents');
-      setLocalStorage(visible_category_grandparents_data,'grandparents');
-      // Once Data complete Process next set
-      processParents(visibility_type);
-    };
-  }); // end $.each
-}
-
-function processParents(visibility_type){
-  cc('processParents','run')
-  var level = 'processParents';
-
-  var itemdata_count = 0;
-  var result_count = null;
-  var visible_category_parents = [];
-  var visible_category_parents_data = [];
-  var item_data_from_array = category_parents;
-
-
-  // Visibility Type Processing
-  if (visibility_type == 'course') {
-    visibility_type = 'visible';
-  };
-  var switch_label = 'Show';
-  var count_id = '#'+visibility_type+'_count';
-  var table_id = '#'+visibility_type+'_categories';
-  if (visibility_type == 'visible') {
-    // visibility_type = 'course';
-    var switch_url = base_url +'lumiousreports/hiddencategories/';
-    var switch_label = 'Hide';
-  }else{
-    var switch_url = base_url +'lumiousreports/coursecategories/';
-  }
-  // end visibility 
-
-
-  jQuery.each(item_data_from_array, function(i, cdata) {
-    cc('test','fatal')
-    console.log(cdata)
-    var result_count = getResponseSize(item_data_from_array);
-    cc('processParents results COUNT returned: '+result_count,'done');
-    // cc('results COUNT returned: '+result_count,'highlight');
-    // Process all courses within the category
-    var d = item_data_from_array[0];
-    if (d != undefined) {
-      // Get data from JSON
-//       var name         = cdata['name'];
-//       var depth        = cdata['depth'];
-//       var path         = cdata['path'];
-//       // var parent_ID    = getGrandparentID(path);
-//       var this_item_ID = cdata['id'];
-//       var this_item_ID_int = parseInt(this_item_ID);
-//       visible_category_parents.push(this_item_ID_int);
-//       // Only store core info in object
-      var keys = ['idnumber','descriptionformat','visible','visibleold','theme','programcount','certifcount','display','sortorder']
-      var filtered_data  = _.omit(cdata,keys);
-      visible_category_parents_data.push(filtered_data);
-//       cc('PARENT: '+name+'('+this_item_ID+') depth('+depth+') path('+path+')', 'success' );
-// ////////////
-//         var name         = cdata['name'];
-//         var depth        = cdata['depth'];
-//         var path         = cdata['path'];
-//         var parent_ID    = getGrandparentID(path);
-//         var timemodified = cdata['timemodified'];
-//         var this_item_ID = cdata['id'];
-//         var this_item_ID_int = parseInt(this_item_ID);
-//         var readable_date = dateMoment(timemodified);
-//         var hide_this_item_ID = switch_url + this_item_ID;
-//         var show_this_item_ID = switch_url + this_item_ID;
-//         // Get parent details
-//         var g = localStorage.getItem('grandparents');
-//         var gp = dataType(g,'object');
-//         var parent_details = findItemByID(gp,parent_ID,'parent_ID');
-//         var levelup_name = parent_details.name;
-//         if (levelup_name == 'Miscellaneous') {
-//           levelup_name = 'All';
-//         };
-//         // Push to display table
-//         var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
-//         $(table_id).append(table_data);
-        displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level);
-        buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level);
-////////////        
-      // cc(cdata, 'warning');
-      // Push to display table
-    }
-    else{
-      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
-    }
-    itemdata_count++;
-    if (itemdata_count == result_count) {
-      cc('All processParents complete. visible_category_parents_data: ','highlight');
-      // console.log(visible_category_parents);
-      console.log(visible_category_parents_data);
+      console.log(visible_category_parents_data)
       localStorage.removeItem('parents');
       setLocalStorage(visible_category_parents_data,'parents');
-      processChildren(visibility_type);
+      // Once Data complete Process next set
+      // processParents(visibility_type);
     };
   }); // end $.each
 }
+
 
 function processChildren(visibility_type){
   // var visibility_type = localStorage.getItem('visibility_type')
