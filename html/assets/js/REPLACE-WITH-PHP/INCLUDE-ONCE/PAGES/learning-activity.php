@@ -10,8 +10,8 @@ Learning Activity - TOTARA
     <span id="getAllHiddenCategories">getAllHiddenCategories()</span>
     <hr>
     <h2>Build Table</h2>
-    <span id="displayCategories_visible">displayCategories(visible)</span>
-    <span id="displayCategories_hidden">displayCategories(hidden)</span>
+    <span id="loadAllCategories_visible">loadAllCategories(visible)</span>
+    <span id="loadAllCategories_hidden">loadAllCategories(hidden)</span>
     <hr>
 
     

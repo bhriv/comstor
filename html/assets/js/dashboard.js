@@ -81,11 +81,11 @@ $(document).ready(function() {
     work_in_progress();
   });
 
-  $("#displayCategories_visible").click(function() {
-    displayCategories('visible');
+  $("#loadAllCategories_visible").click(function() {
+    loadAllCategories('visible');
   });
-  $("#displayCategories_hidden").click(function() {
-    displayCategories('hidden');
+  $("#loadAllCategories_hidden").click(function() {
+    loadAllCategories('hidden');
   });
 
   $("#count_students").click(function() {
@@ -447,7 +447,7 @@ function findItemByID(data,item_ID,item_TYPE){
   if (item_TYPE == 'course' || item_TYPE == 'courses') {
     console.log('checking courses...');
     for(var i = 0; i < data.length; i++) {
-      cc('iterating through dataay COUNT = '+i, 'info');
+      cc('iterating through data COUNT = '+i, 'info');
       cc('data.length = '+data.length, 'info');
       
       cc('node = data['+i+']:','info' );
@@ -1071,14 +1071,17 @@ function getAllHiddenCategories(){
 
 // Display the course categories grouped by visibility type for Admin
 
-function displayCategories(visibility_type){  
-  cc('displayCategories('+visibility_type+')','info');
+function loadAllCategories(visibility_type){  
+  if (visibility_type == undefined) {
+    visibility_type = 'visible';
+  };
+  cc('loadAllCategories('+visibility_type+')','info');
   var itemdata_count = 0;
   // Setup ids and labels
   var switch_label = 'Show';
   var count_id = '#'+visibility_type+'_count';
   var table_id = '#'+visibility_type+'_categories';
-  cc('table_id '+table_id, 'warning');
+  // cc('table_id '+table_id, 'warning');
   if (visibility_type == 'visible') {
     visibility_type = 'course';
     var switch_url = base_url +'lumiousreports/hiddencategories/';
@@ -1087,54 +1090,59 @@ function displayCategories(visibility_type){
     var switch_url = base_url +'lumiousreports/coursecategories/';
   }
   var item_url = base_url +'lumiousreports/'+visibility_type+'categories/';
-  console.log('%c SWITCH ENDPOINT url '+switch_url, 'background: #ddd; color: #fff');
+  console.log('%c loadAllCategories ENDPOINT url '+item_url, 'background: #ddd; color: #fff');
   // Populate and extract data
   var item_data_from_array = [];
   var itemdata = $.getJSON(item_url);
 
   $.when(itemdata).done(function(item_data_from_array) {
     var result_count = getResponseSize(itemdata,'JSON');
-    
     jQuery.each(item_data_from_array, function(i, cdata) {
       // Process all courses within the category
       var d = item_data_from_array[0];
       if (d != undefined) {
-        var this_item_ID = cdata.id;
-        cc('Category ID('+this_item_ID+')','success');
+        // var this_item_ID = cdata.id;
+        // cc('Category ID('+this_item_ID+')','success');
         // Get data from JSON
-        var this_item_ID = cdata['id'];
-        var hide_this_item_ID = switch_url + this_item_ID;
-        var show_this_item_ID = switch_url + this_item_ID;
-        var name        = cdata['name'];
+        // var this_item_ID = cdata['id'];
+        // var hide_this_item_ID = switch_url + this_item_ID;
+        // var show_this_item_ID = switch_url + this_item_ID;
+        // var name        = cdata['name'];
+        // var timemodified = cdata['timemodified'];
+        // var readable_date = dateMoment(timemodified);
+        // var path      = cdata['path'];
         var depth       = cdata['depth'];
-        var timemodified = cdata['timemodified'];
-        var readable_date = dateMoment(timemodified);
-        var path      = cdata['path'];
-        cc('name '+name+' timemodified '+timemodified+ ' readable_date '+readable_date+ ' depth '+depth+ ' path '+path+ ' switch_url '+ switch_url, 'success' );
-        // Push to display table
-        // var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>' +name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
-        // $(table_id).append(table_data);
-        // Only deal with visible categories
-        if (visibility_type == 'course') {
-          if (depth == '1') {
-            category_grandparents.push(cdata);
-          };
-          if (depth == '2') {
-            category_parents.push(cdata);
-            // cc('COUNT category_parents','fatal')
-            // console.log(category_parents);
-          };
-          if (depth == '3') {
-            category_children.push(cdata);
-          };
-          if (depth == '4' || depth == '5' || depth == '6' || depth == '7' || depth == '8') {
-            category_grandchildren.push(cdata);
-          };
+        if (visibility_type == 'visible' || visibility_type == 'course') {
+          switch(depth){
+            case '1': 
+              category_grandparents.push(cdata);
+              break;
+            case '2':
+              category_parents.push(cdata);
+              break;
+            case '3':
+              category_children.push(cdata);
+              break;
+            default:
+              category_grandchildren.push(cdata);
+          }
+          // if (depth == '1') {
+          //   category_grandparents.push(cdata);
+          // };
+          // if (depth == '2') {
+          //   category_parents.push(cdata);
+          // };
+          // if (depth == '3') {
+          //   category_children.push(cdata);
+          // };
+          // if (depth == '4' || depth == '5' || depth == '6' || depth == '7' || depth == '8') {
+          //   category_grandchildren.push(cdata);
+          // };
         };
         itemdata_count++;
-        cc('COUNT '+itemdata_count,'warning')
+        // cc('CATEGORY COUNT '+itemdata_count+' name '+name+' timemodified '+timemodified+ ' readable_date '+readable_date+ ' depth '+depth+ ' path '+path+ ' switch_url '+ switch_url, 'done' );
         if (itemdata_count == result_count) {
-          cc('Display categories done','success');
+          cc('loadAllCategories done','success');
           processGrandparents(visibility_type);
           // processParents();
           // processChildren();

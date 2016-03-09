@@ -16,8 +16,8 @@ if (/dashboard/.test(window.location.href)){
           $('#show_hide_categories').removeClass('hidden');
           $(document).ready(function() {
             // localStorage.setItem('visibility_type','visible');
-            displayCategories('visible');
-            displayCategories('hidden');
+            loadAllCategories('visible');
+            // loadAllCategories('hidden');
 
           }); // end Doc Ready 
         }
