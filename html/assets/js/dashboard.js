@@ -1267,8 +1267,12 @@ function processParents(visibility_type){
         var g = localStorage.getItem('grandparents');
         var gp = dataType(g,'object');
         var parent_details = findItemByID(gp,parent_ID,'parent_ID');
+        var levelup_name = parent_details.name;
+        if (levelup_name == 'Miscellaneous') {
+          levelup_name = 'All';
+        };
         // Push to display table
-        var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+parent_details.name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
+        var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
         $(table_id).append(table_data);
 ////////////        
       // cc(cdata, 'warning');
@@ -1421,7 +1425,8 @@ function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,ta
   var gp = dataType(g,'object');
   var parent_details = findItemByID(gp,parent_ID,'parent_ID');
   // Push to display table
-  var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+parent_details.name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
+  var levelup_name = 'All > '+parent_details.name;
+  var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';
   $(table_id).append(table_data);
 }
 
