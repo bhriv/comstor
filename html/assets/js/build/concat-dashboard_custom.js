@@ -96,8 +96,36 @@ console.log(urlParams);
 // console.log('apiKey +': urlParams["apiKey"]);
 console.log('apiKey from URL: '+urlParams['apiKey']);
 var this_page_apiKey = urlParams['apiKey'];
-localStorage.setItem( 'apiKey',this_page_apiKey);
+if (this_page_apiKey != undefined) {
+  localStorage.setItem( 'apiKey',this_page_apiKey);  
+};
 
+var this_page_filter_mode = urlParams['cat_name'];
+if (this_page_filter_mode != undefined) {
+  localStorage.setItem( 'cat_name',this_page_filter_mode);  
+};
+
+var this_page_current_cat = urlParams['current_cat'];
+if (this_page_current_cat != undefined) {
+  localStorage.setItem( 'current_cat',this_page_current_cat);
+};
+//https://css-tricks.com/snippets/javascript/get-url-variables/
+/* Example:
+http://www.example.com/index.php?id=1&image=awesome.jpg
+
+Calling getQueryVariable("id") - would return "1".
+Calling getQueryVariable("image") - would return "awesome.jpg".
+*/
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
 
 // Return API Key from Storage
 function checkApiKey(){

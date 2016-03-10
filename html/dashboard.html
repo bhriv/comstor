@@ -91,23 +91,23 @@
                     span.indent_6::before { content: "-";}*/
                     </style>
 
-                    <div class="row sixteen columns" id="content_loader">
+                    <div class="row nine columns" id="content_loader">
                      <!--  <div id="admin_category_control">
                         <a id="getCategories_visible">visible</a>
                         <a id="getCategories_hidden">hidden</a>
                       </div> -->
                       <div class="widget-content active hidden" id="show_hide_categories">
-                        <h3>Visible Categories <span id="visible_count"></span></h3>
+                        <!-- <h3>Visible Categories <span id="visible_count"></span></h3> -->
                         <div class="row">
                           <table class="tablesorter">
                             <thead>
                               <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Categories <span id="visible_count"></span></th>
                                 <th>Last Modified</th>
                                 <th>Courses</th>
                                 <th>Depth</th>
-                                <th>Path</th>
+                                <th class="hidden">Path</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -117,7 +117,7 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="row">
+                        <div class="row hidden">
                           <h3>Hidden Categories <span id="hidden_count"></span></h3>
                           <table class="tablesorter">
                             <thead>

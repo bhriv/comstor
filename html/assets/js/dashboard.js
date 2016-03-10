@@ -106,6 +106,17 @@ $(document).ready(function() {
     getAllVisibleCategories();
   });
 
+  if (urlParams['page'] == 'teacher-reports'){
+    if (urlParams['current_cat'] != undefined) {
+      var catid = urlParams['current_cat'];
+      // var catid = 41;
+      getAllCoursesInCategory(catid);
+      // getAllStudentsInCourse(catid);
+    }else{
+      cc('No current_cat found in URL','warning');
+    }
+  }
+  
 
   // $(".popup_link").click(function() {
   //   return pop_up(this, "Pop Up");
@@ -1593,6 +1604,7 @@ function displaySortedCategoryResults(sorted_category_data){
   var table_id = '#visible_categories';
   var itemdata_count = 0;
   var result_count = 0;
+  var hide_url = base_url +'lumiousreports/hiddencategories/';
   var visible_category_grandparents_data = [];
   var item_data_from_array = sorted_category_data;
   var result_count = getResponseSize(item_data_from_array);
@@ -1630,19 +1642,18 @@ function displaySortedCategoryResults(sorted_category_data){
       if (!isItemNullorUndefined(cdata["description"]) && cdata["description"] != "") {
         var description_details = '<small>'+cdata["description"]+'</small>';  
       };
-      
-      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+'<small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["hide_url"]+'" target="blank">Hide</a></strong></tr>';
-      $(table_id).append(table_data);
 
-      // if (cdata["depth"] == 1) {
-      //   // cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"],'info');
-      //   var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
-      //   $(table_id).append(table_data);
-      // }else{
-      //   // cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')','info');
-      //   var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["levelup_name"]+'<small>('+cdata["levelup_id"]+')</small> > '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
-      //   $(table_id).append(table_data);
-      // }
+      // var report_url = window.location.pathname + window.location.search;
+      var report_url = window.location.pathname;
+      var apiKey_localstorage = localStorage.getItem('apiKey');
+      
+      report_url = report_url + '?apiKey='+apiKey_localstorage+'&page=teacher-reports&current_cat='+cdata["id"];
+      var name_string = cdata["name"];
+      var safe_name = name_string.replace(/ /g,'-');
+      var safe_report_url = report_url + '&cat_name='+safe_name;
+
+      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a> <a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank">Hide</a></tr>';
+      $(table_id).append(table_data);
     }
     else{
       cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -1655,49 +1666,84 @@ function displaySortedCategoryResults(sorted_category_data){
   }); // end $.each
 }
 
-// function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level){
-//   var item = [];
-//   var name         = cdata['name'];
-//   var depth        = cdata['depth'];
-//   var path         = cdata['path'];
-//   var timemodified = cdata['timemodified'];
-//   var this_item_ID = cdata['id'];
-//   var this_item_ID_int = parseInt(this_item_ID);
-//   var readable_date = dateMoment(timemodified);
-//   var hide_this_item_ID = switch_url + this_item_ID;
-//   var show_this_item_ID = switch_url + this_item_ID;
-//   // Get parent details
-//   if (level == 'processChildren') {
-//     var parent_ID    = getParentID(path);
-//     var g = localStorage.getItem('parents');
-//   };
-//   if (level == 'processParents') {
-//     var parent_ID    = getGrandparentID(path);
-//     var g = localStorage.getItem('grandparents');
-//   };
-//   var gp = dataType(g,'object');
-//   var parent_details = findItemByID(gp,parent_ID,'parent_ID');
-//   // Push to display table
-//   var levelup_name = 'All > '+parent_details.name;
-//   var item = {
-//       "id": this_item_ID,
-//       "this_item_ID_int": this_item_ID_int,
-//       "name": name,
-//       "depth": depth,
-//       "path": path,
-//       "parent_ID": parent_ID,
-//       "timemodified": timemodified,
-//       "readable_date": readable_date,
-//       "hide_this_item_ID": hide_this_item_ID,
-//       "show_this_item_ID": show_this_item_ID,
-//       "levelup_name": 'All > '+parent_details.name
-//   }
-//   // var item_object = dataType(item,'object')
-//   all_category_data.push(item);
-//   cc('sorted_category_data','highlight')
-//   sorted_category_data = _.sortBy(all_category_data, 'path');
-//   console.log(sorted_category_data);
-// }
+var all_courses_in_category_ids = [];
+
+function getAllCoursesInCategory(id){
+  cc('getAllCoursesInCategory','run')
+  // alert('running getAllStudentsInCategory('+id+')')
+  var table_id = '#concatenated-results';
+  var itemdata_count = 0;
+  var result_count = 0;
+  var item_url = base_url +'lumiousreports/course/'+id;
+
+  var item_data_from_array = [];
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    var result_count = getResponseSize(itemdata,'JSON');
+
+    jQuery.each(item_data_from_array, function(i, cdata) {
+      // Process all courses within the category
+      var d = item_data_from_array[0];
+      if (d != undefined) {
+        var course_id = cdata["id"];
+        all_courses_in_category_ids.push(course_id);
+        cc('COURSE DETAILS: id('+course_id+')','info');
+        getAllStudentsInCourse(course_id);
+      }
+      else{
+        cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+      }
+      itemdata_count++;
+
+      if (itemdata_count == result_count) {
+        cc('All processing of getAllCoursesInCategory complete.','success');
+        console.log(all_courses_in_category_ids);
+      };
+    }); // end $.each
+  }); // end $.when
+}
+
+function getAllStudentsInCourse(id){
+  cc('getAllStudentsInCourse','run')
+
+  // alert('running getAllStudentsInCategory('+id+')')
+  var table_id = '#concatenated-results';
+  $(table_id).show();
+  var itemdata_count = 0;
+  var result_count = 0;
+  var item_url = base_url +'lumiousreports/students/'+id;
+
+  var item_data_from_array = [];
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    var result_count = getResponseSize(itemdata,'JSON');
+
+    jQuery.each(item_data_from_array, function(i, cdata) {
+      // Process all courses within the category
+      var d = item_data_from_array[0];
+      if (d != undefined) {
+        // Store core data
+        //push to table
+        var student_id = cdata["id"];
+        var student_username = cdata["username"];
+        cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info');
+        // var report_url = window.location.pathname + window.location.search;
+
+        // var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a> <a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank">Hide</a></tr>';
+        
+        // $(table_id).append(table_data);
+      }
+      else{
+        cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+      }
+      itemdata_count++;
+
+      if (itemdata_count == result_count) {
+        cc('All processing of getAllStudentsInCategory complete.','success');
+      };
+    }); // end $.each
+  }); // end $.when
+}
 
 function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level,breadcrumb){
   cc('displayCategoryResults','run');

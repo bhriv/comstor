@@ -91,20 +91,40 @@ $( window ).load(function() {
 	//Populate cat filter menu always
 	if(! searchRoles('ROLE_INSTRUCTOR') && ! searchRoles('ROLE_STUDENT') ){
 		$.getJSON( url_cat, function( json ) {
-			console.log('populating category menu...');
-			var selected = "";
-			var currentcat = checkLocalStorage('current_cat');
-			clearMenu(filter_cat_menu);
-			jQuery.each(json, function(i, val) {
-				if(currentcat == val.id){
-					selected = ' selected="selected"';
-					setLocalStorage('current_cat',val.id);
-					populateCourseMenu(val.id);
-				}else{
-					selected = "";
-				}
-				filter_cat_menu.append('<option value="'+$.trim(val.id)+'" '+selected+'>'+$.trim(val.name)+'</option>');
-			});
+            console.log('populating category menu...');
+			console.log('checking URL parameters for Category details...');
+            // check to see if Category passed via URL
+            var name_string = urlParams['cat_name'];
+            if (name_string != "" || !isItemNullorUndefined(name_string)) {
+                var cat_name = name_string.replace(/-/g,' ');
+                console.log('cat_name from URL: '+cat_name);
+                selected = ' selected="selected"';
+                var cat_id = urlParams['current_cat'];
+                setLocalStorage('current_cat',cat_id);
+                setLocalStorage('cat_name',cat_name);
+                populateCourseMenu(cat_id);
+                filter_cat_menu.append('<option value="'+urlParams["current_cat"]+'" '+selected+' disabled>'+cat_name+'</option>');
+            }
+            else{
+                // console.log('No URL parameters found, building Category details from json');
+                var selected = "";
+                var currentcat = checkLocalStorage('current_cat');
+                if (currentcat == undefined) {
+                    currentcat = urlParams['current_cat'];
+                };
+                clearMenu(filter_cat_menu);
+                jQuery.each(json, function(i, val) {
+                    if(currentcat == val.id){
+                        selected = ' selected="selected"';
+                        setLocalStorage('current_cat',val.id);
+                        populateCourseMenu(val.id);
+                    }else{
+                        selected = "";
+                    }
+                    filter_cat_menu.append('<option value="'+$.trim(val.id)+'" '+selected+'>'+$.trim(val.name)+'</option>');
+                });  
+            }
+			
 			
 			// @BHRIV
 			// after loading the options convert all select boxes into a selectBoxIt display
@@ -402,7 +422,14 @@ $( window ).load(function() {
 
 	// populate course menu options
 	function populateCourseMenu(catid){
-		thisurl = url_course+'/'+catid;
+        console.log('filter_mode from URL: '+urlParams['filter_mode']);
+        console.log('current_cat from URL: '+urlParams['current_cat']);
+        // localStorage.setItem(cat_name,'cat_name')
+        if (urlParams['current_cat'] != "" || !isItemNullorUndefined(urlParams['current_cat'])) {
+            thisurl = url_course+'/'+urlParams['current_cat'];
+        }else{
+            thisurl = url_course+'/'+catid;    
+        }
 		console.log('populating course menu for category '+catid);
 		$.getJSON(thisurl, function( json ) {
 			var selected = "";

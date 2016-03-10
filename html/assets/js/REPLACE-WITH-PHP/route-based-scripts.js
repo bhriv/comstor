@@ -14,12 +14,14 @@ if (/dashboard/.test(window.location.href)){
           $('#mobile_analytics_submenus').addClass('hidden');
           $('#mef_reports').addClass('hidden');
           $('#show_hide_categories').removeClass('hidden');
-          $(document).ready(function() {
-            // localStorage.setItem('visibility_type','visible');
-            loadAllCategories('visible');
-            // loadAllCategories('hidden');
+          $("#content_loader").removeClass('nine');
+          $("#content_loader").addClass('sixteen');
 
-          }); // end Doc Ready 
+          $(document).ready(function() {
+            loadAllCategories('visible');
+          // loadAllCategories('hidden');
+          }); // end Doc Ready
+           
         }
       })
       .fail(function( jqxhr, settings, exception ) {
@@ -63,9 +65,10 @@ if (urlParams['page'] == 'teacher-reports'){
   //   .fail(function( jqxhr, settings, exception ) {
   //     cc('concat-lumious_reports script not loaded','fatal');
   // }); 
-  $('#sidebar_widgets').addClass('hideme');
-  $('#mobile_analytics_submenus').addClass('hideme');
   
+  $('#sidebar_widgets').addClass('hidden');
+  $('#mobile_analytics_submenus').addClass('hidden');
+    
 }
 
 

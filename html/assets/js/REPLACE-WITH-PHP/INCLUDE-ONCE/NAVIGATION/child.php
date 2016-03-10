@@ -46,7 +46,7 @@
                     location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=learning-activity');
                 });
                 $("#teacher_reports_triggers li").click(function() {
-                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=teacher-reports');
+                    location.replace('/dashboard.html?apiKey=VW7Z3VDXXSK7HM6GKWZ3&page=admin');
                     $("#sidebar_widgets").hide();
                 });
                 
