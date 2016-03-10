@@ -646,8 +646,16 @@
                       </section> 
                     </div>
                     <div class="row five push_one columns" id="sidebar_widgets">
+                        <div class="picker_holder">
+                                <label for="start_date">Data Start Date</label><br>
+                                <input type="text" id="start_date" name="start_date" class="date_changer" value="2015-03-12">
+                            </div>
+                            <div class="picker_holder">
+                                <label for="end_date">Data End Date</label><br>
+                                <input type="text" id="end_date" name="end_date" class="date_changer" value="2015-03-10">
+                            </div>
                       <ul class="widget-grid full-width">
-                        <li data-type="video" id="widget-overview">
+                        <li data-type="video" id="widget-overview" style="margin-top:1em;">
                           <h2 style="background-color:#b6dbac;">
                             Overview: <span id="data_query"></span> <a class="toggle" gumby-trigger="#widget-overview .widget-content"><i class="icon-minus-squared"></i></a>
                           </h2>
@@ -687,6 +695,7 @@
                                                           <span><i class="icon-arrows-ccw"></i> Data Updated: <time id="overview_updated_date"></time></span> <span><i class="icon-arrows-ccw"></i> Last Usage: <time id="overview_updated_usage"></time></span>
                                                       </div> -->
                           </div>
+
                         </li>
                       </ul>
                       <ul class="widget-grid full-width">

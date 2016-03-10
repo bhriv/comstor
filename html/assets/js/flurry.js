@@ -565,7 +565,7 @@ function buildCustomEventDataTables(id){
   if (id == 'PDFDownloaded') { eventName = 'PDF%20Downloaded'};
   if (id == 'ModuleRated') { eventName = 'Module%20Rated'};
   // console.log('eventNameSpace: '+id);
-  var url_flurry_event_api = 'http://api.flurry.com/eventMetrics/Event?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-01-01&endDate=2015-12-08&eventName='+eventName;
+  var url_flurry_event_api = 'http://api.flurry.com/eventMetrics/Event?apiAccessCode=FX2FBFN9RQXW8DKJH4WB&apiKey=VW7Z3VDXXSK7HM6GKWZ3&startDate=2015-03-11&endDate=2016-03-10&eventName='+eventName;
   var flurry_event_data_loaded = $.getJSON( url_flurry_event_api);
 
   $.when(flurry_event_data_loaded).done(function(flurry_event_object) {
