@@ -1708,7 +1708,7 @@ function getAllStudentsInCourse(course_id,course_name){
   cc('getAllStudentsInCourse','run')
 
   // alert('running getAllStudentsInCategory('+id+')')
-  var table_id = '#concatenated-results';
+  var table_id = '#category-students';
   $(table_id).show();
   var itemdata_count = 0;
   var result_count = 0;
@@ -1730,14 +1730,17 @@ function getAllStudentsInCourse(course_id,course_name){
         var student_firstname = cdata["firstname"];
         var student_lastname = cdata["lastname"];
         var student_email = cdata["email"];
-        var student_firstaccess = cdata["firstname"];
+        var student_firstaccess = cdata["firstaccess"];
+        var student_firstaccess_readable_date = dateMoment(student_firstaccess);
         var student_lastaccess = cdata["lastaccess"];
+        var student_lastaccess_readable_date = dateMoment(student_lastaccess);
         var student_activity = base_url +'lumiousreports/studentdata/'+student_id;
-
+        var student_activity = '<a class="popup_link" href="'+student_activity+'" target="blank">View</a>';
+        var student_activity_modal = '<a class="action-item switch" gumby-trigger="#modal-student-activity" id="activate-student-activity"><i class="icon-tools"></i> Activity</a>';
         cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info');
         // // var report_url = window.location.pathname + window.location.search;
 
-        var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden"></span></strong>'+course_name+'('+course_id+') '+student_lastaccess+'</td><td>' +student_firstaccess+'</td><td>-</td><td class="hidden"></td><td><strong><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a></td><td><a class="popup_link" href="'+student_activity+'" target="blank">Activity</a></td></tr>';
+        var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden">'+student_lastaccess+'</span>'+student_lastaccess_readable_date+'</td><td><span class="hidden">'+student_firstaccess+'</span>'+student_firstaccess_readable_date+'</td><td>'+course_name+'('+course_id+')</td><td class="hidden"></td><td><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a></td><td>'+student_activity+' '+student_activity_modal+'</td></tr>';
         $(table_id).append(table_data);
       }
       else{
@@ -1774,4 +1777,7 @@ function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,ta
   $(table_id).append(table_data);
 }
 
-
+function getStudentActivity(data,id){
+  table_id = '#student-activity';                                                  
+  var table_data = '<tr><td>'+activity_course_id+'</td><td>'+activity_action+'</td><td>'+activity_action+'</td><td>'+activity_objectid+'</td><td>'+activity_target+'</td><td><span class="hidden">'+activity_timestamp+'</span>'+activity_timestamp_readable_date+'</td></tr>';
+}

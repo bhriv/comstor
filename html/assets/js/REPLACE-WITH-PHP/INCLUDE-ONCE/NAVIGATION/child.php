@@ -25,6 +25,7 @@
                     <li><span id="PageViews_" class="chart_trigger"><a>Page Views <i class="icon-play"></i></a></span></li>
                 </ul>
             </li>
+            <style>#root .subnav-bar ul#teacher_reports_triggers li a{margin-right: 0;}</style>
             <li>
                 <small><strong>Interactions</strong></small>
                 <ul>
@@ -59,7 +60,7 @@
 
         <ul id="teacher_reports_triggers">
             <li>
-                <small><strong>Teacher Reports</strong></small></li>
+                <small><strong><a>Teacher Reports</a></strong></small></li>
             <!-- <li><a onclick="work_in_progress();">TEST: work_in_progress();</a></li> -->
             <!-- <li><a class="get_item_data">TEST: get_item_data();</a></li> -->
         </ul>

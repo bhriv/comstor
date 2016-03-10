@@ -66,6 +66,9 @@ if (urlParams['page'] == 'teacher-reports'){
   //     cc('concat-lumious_reports script not loaded','fatal');
   // }); 
   
+  // $('#mobile_analytics_submenus li span a').removeClass('active');
+  // $('#teacher_reports_triggers li a').addClass('active');
+  // $('#mobile_analytics_submenus').addClass('hidden');
   $('#sidebar_widgets').addClass('hidden');
   $('#mobile_analytics_submenus').addClass('hidden');
     

@@ -385,37 +385,131 @@
 
                               <div class="row"></div>
 
-                              <div class="static">
-                                  <table class="tablesorter sortable hideme" id="concatenated-results">
-                                      <thead>
-                                        <tr>
-                                          <th>
-                                            ID
-                                          </th>
-                                          <th>
-                                            Student
-                                          </th>
-                                          <th>
-                                            Last Access
-                                          </th>
-                                          <th>
-                                            First Access
-                                          </th>
-                                          <th>
-                                            Stress
-                                          </th>
-                                          <th>
-                                            Actions
-                                          </th>
-                                          <th>
-                                            Quiz Attempt Details
-                                          </th>
-                                        </tr>
-                                      </thead>
+                                <!-- dashboard edit modal -->
+                              <div class="modal" id="modal-student-activity">
+                                  <div class="content">
+                                      <a class="close switch" gumby-trigger="|#modal-student-activity"><i class="icon-cancel" /></i></a>
+                                      <div class="row">
+                                        <div class="columns text-center">
+                                          <h3>Student Activity</h3>
+                                          <h5><span id="firstname"></span> <span id="lasttname"></span></h5>
+                                          <div class="row">
+                                              <div class="static">
+                                                <table class="tablesorter sortable" id="student-activity">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>
+                                                        Course ID
+                                                      </th>
+                                                      <th>
+                                                        Action
+                                                      </th>
+                                                      <th>
+                                                        Object ID
+                                                      </th>
+                                                      <th>
+                                                        Target
+                                                      </th>
+                                                      <th>
+                                                        Time
+                                                      </th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody id="tbody_quiz_result">
+                                                    <!-- "courseid": "0",
+                                                    "action": "assigned",
+                                                    "target": "competency",
+                                                    "objecttable": "org_competencies",
+                                                    "objectid": "13",
+                                                    "timecreated": "1450742900" -->
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="medium btn primary">
+                                                  <button class="switch" gumby-trigger="|#modal-student-activity">Close</button>
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                              </div>
+      <style>
+      /*#category-students tr td a{
+        pointer-events: auto !important;
+      }
+      div.main-filter{
+        pointer-events: none !important;
+      }*/
+      #analytics_triggers h2 i.icon-play{
+        display: none;
+      }
+      </style>
+                            <div class="static">
+                              <a href="#" class="action-item switch" gumby-trigger="#modal-student-activity" id="dash-edit"><i class="icon-tools"></i> Activity</a>
+                              <table class="tablesorter sortable" id="category-students">
+                                <thead>
+                                  <tr>
+                                    <th>
+                                      ID
+                                    </th>
+                                    <th>
+                                      Student
+                                    </th>
+                                    <th>
+                                      Last Access
+                                    </th>
+                                    <th>
+                                      First Access
+                                    </th>
+                                    <th>
+                                      Course
+                                    </th>
+                                    <th>
+                                      Actions
+                                    </th>
+                                    <th>
+                                      Activity
+                                    </th>
+                                  </tr>
+                                </thead>
 
-                                      <tbody id="tbody_quiz_result">
-                                      </tbody>
-                                  </table>
+                                <tbody id="tbody_quiz_result">
+                                </tbody>
+                              </table>
+                            </div>
+                          <div class="static">
+                                <table class="tablesorter sortable hideme" id="concatenated-results">
+                                  <thead>
+                                    <tr>
+                                      <th>
+                                        ID
+                                      </th>
+                                      <th>
+                                        Student
+                                      </th>
+                                      <th>
+                                        Last Access
+                                      </th>
+                                      <th>
+                                        First Access
+                                      </th>
+                                      <th>
+                                        Stress
+                                      </th>
+                                      <th>
+                                        Actions
+                                      </th>
+                                      <th>
+                                        Quiz Attempt Details
+                                      </th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody id="tbody_quiz_result">
+                                  </tbody>
+                              </table>
                           </div>  
 
                           <ul class="widget-grid full-width hideme" id="report_results_holder">
