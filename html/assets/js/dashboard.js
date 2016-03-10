@@ -1244,7 +1244,8 @@ function processCategory(visibility_type,level){
       if (category_loop_count == 6 ) {
         localStorage.removeItem('categories');
         setLocalStorage(all_nested_category_data,'categories');
-        nestleCategories(all_nested_category_data);
+        nestleCategories(all_nested_category_data,5);
+        // nestleCategories(all_nested_category_data,4);
       };
       
       // Once Data complete Process next set
@@ -1404,33 +1405,69 @@ function processCategory(visibility_type,level){
 //   }); // end $.each
 // }
 
-function nestleCategories (all_nested_category_data) {
+function nestleCategories (all_nested_category_data,level) {
   cc('nestleCategories','run');
+  cc('all_nested_category_data','info');
+  console.log(all_nested_category_data);
+  var visibility_type = 'visible',
+      switch_url = base_url +'lumiousreports/hiddencategories/',
+      switch_label = 'Hide',
+      table_id = '#visible_categories';
+      breadcrumb = null;
+
   var itemdata_count = 0;
   var result_count = 0;
-  var category_count = 5;
-  var category_parent_count = category_count - 1;
+  // var category_count = 5;
+  var category_parent_count = level - 1;
+  var category_up_2 = category_parent_count - 1;
 
-  var item_data_from_array = all_nested_category_data[category_count];
+  var item_data_from_array = all_nested_category_data[level];
+  cc('item_data_from_array['+level+']','fatal');
+  console.log(item_data_from_array);
+  
   var result_count = getResponseSize(item_data_from_array);
 
   jQuery.each(item_data_from_array, function(i, cdata) {
     // Process all courses within the category
     var d = item_data_from_array[0];
     if (d != undefined) {
+      console.log(d);
       // Store core data
-      cc('Name: '+cdata["name"]+' ID:'+cdata["id"],'info');
+      
       var parent_ID = cdata["parent"];
       var parent_data = all_nested_category_data[category_parent_count];
       var parent_details = findItemByID(parent_data,parent_ID,'parent_ID',true);
-      cc('PARENT DETAILS: '+parent_details.name,'success')
+      // var levelup_data = {"levelupname" : parent_details.name, "levelupid" : parent_details.id, "levelcoursecount" : parent_details.coursecount }
+      if (!isItemNullorUndefined(parent_details)) {
+        cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')','info');
+        var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+parent_details.name+'<small>('+parent_details.id+')</small> > '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
+      $(table_id).append(table_data);
+        // var breadcrumb = parent_details.name+'('+parent_details.id+' > ' +cdata["name"]+'('+cdata["id"]+') Depth:'+cdata["depth"];
+        // displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level,breadcrumb);
+      };
+      
+      
+      // var grandparent_ID = parent_ID;
+      // var grandparent_data = all_nested_category_data[category_up_2];
+      // var grandparent_details = findItemByID(grandparent_data,grandparent_ID,'parent_ID',true);
+      // if (!isItemNullorUndefined(grandparent_details)) {
+      //   cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')'+ ' Grandparent Name:'+grandparent_details.name+'('+grandparent_details.id+')','info');
+      // };
+      
+
+      // cc('PARENT DETAILS:','success')
+      // console.log(levelup_data);
+      // cc('Extended','info')
+      // var extended = _.extend(levelup_data,d);
+      // console.log(extended);
+
     }
     else{
       cc('There was an error getting data. It seems that the endpoint does not return data.','error');
     }
     itemdata_count++;
     if (itemdata_count == result_count) {
-      cc('All processing of complete for loop['+category_count+']','success');
+      cc('All processing of complete for loop['+level+']','success');
     };
   }); // end $.each
 }
@@ -1439,51 +1476,56 @@ function nestleCategories (all_nested_category_data) {
 var all_category_data = [];
 var sorted_category_data = [];
 
-function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level){
-  var item = [];
-  var name         = cdata['name'];
-  var depth        = cdata['depth'];
-  var path         = cdata['path'];
-  var timemodified = cdata['timemodified'];
-  var this_item_ID = cdata['id'];
-  var this_item_ID_int = parseInt(this_item_ID);
-  var readable_date = dateMoment(timemodified);
-  var hide_this_item_ID = switch_url + this_item_ID;
-  var show_this_item_ID = switch_url + this_item_ID;
-  // Get parent details
-  if (level == 'processChildren') {
-    var parent_ID    = getParentID(path);
-    var g = localStorage.getItem('parents');
-  };
-  if (level == 'processParents') {
-    var parent_ID    = getGrandparentID(path);
-    var g = localStorage.getItem('grandparents');
-  };
-  var gp = dataType(g,'object');
-  var parent_details = findItemByID(gp,parent_ID,'parent_ID');
-  // Push to display table
-  var levelup_name = 'All > '+parent_details.name;
-  var item = {
-      "id": this_item_ID,
-      "this_item_ID_int": this_item_ID_int,
-      "name": name,
-      "depth": depth,
-      "path": path,
-      "parent_ID": parent_ID,
-      "timemodified": timemodified,
-      "readable_date": readable_date,
-      "hide_this_item_ID": hide_this_item_ID,
-      "show_this_item_ID": show_this_item_ID,
-      "levelup_name": 'All > '+parent_details.name
-  }
-  // var item_object = dataType(item,'object')
-  all_category_data.push(item);
-  cc('sorted_category_data','highlight')
-  sorted_category_data = _.sortBy(all_category_data, 'path');
-  console.log(sorted_category_data);
-}
+// function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level){
+//   var item = [];
+//   var name         = cdata['name'];
+//   var depth        = cdata['depth'];
+//   var path         = cdata['path'];
+//   var timemodified = cdata['timemodified'];
+//   var this_item_ID = cdata['id'];
+//   var this_item_ID_int = parseInt(this_item_ID);
+//   var readable_date = dateMoment(timemodified);
+//   var hide_this_item_ID = switch_url + this_item_ID;
+//   var show_this_item_ID = switch_url + this_item_ID;
+//   // Get parent details
+//   if (level == 'processChildren') {
+//     var parent_ID    = getParentID(path);
+//     var g = localStorage.getItem('parents');
+//   };
+//   if (level == 'processParents') {
+//     var parent_ID    = getGrandparentID(path);
+//     var g = localStorage.getItem('grandparents');
+//   };
+//   var gp = dataType(g,'object');
+//   var parent_details = findItemByID(gp,parent_ID,'parent_ID');
+//   // Push to display table
+//   var levelup_name = 'All > '+parent_details.name;
+//   var item = {
+//       "id": this_item_ID,
+//       "this_item_ID_int": this_item_ID_int,
+//       "name": name,
+//       "depth": depth,
+//       "path": path,
+//       "parent_ID": parent_ID,
+//       "timemodified": timemodified,
+//       "readable_date": readable_date,
+//       "hide_this_item_ID": hide_this_item_ID,
+//       "show_this_item_ID": show_this_item_ID,
+//       "levelup_name": 'All > '+parent_details.name
+//   }
+//   // var item_object = dataType(item,'object')
+//   all_category_data.push(item);
+//   cc('sorted_category_data','highlight')
+//   sorted_category_data = _.sortBy(all_category_data, 'path');
+//   console.log(sorted_category_data);
+// }
 
-function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level){
+function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level,breadcrumb){
+  cc('displayCategoryResults','run');
+  
+  // if (level == undefined) {
+  //   level = 0;
+  // };
   var name         = cdata['name'];
   var depth        = cdata['depth'];
   var path         = cdata['path'];
@@ -1491,19 +1533,19 @@ function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,ta
   var this_item_ID = cdata['id'];
   var this_item_ID_int = parseInt(this_item_ID);
   var readable_date = dateMoment(timemodified);
-  var hide_this_item_ID = switch_url + this_item_ID;
-  var show_this_item_ID = switch_url + this_item_ID;
+  // var hide_this_item_ID = switch_url + this_item_ID;
+  // var show_this_item_ID = switch_url + this_item_ID;
   // Get parent details
-  if (level == 'processChildren') {
-    var parent_ID    = getParentID(path);
-    var g = localStorage.getItem('parents');
-  };
-  if (level == 'processParents') {
-    var parent_ID    = getGrandparentID(path);
-    var g = localStorage.getItem('grandparents');
-  };
-  var gp = dataType(g,'object');
-  var parent_details = findItemByID(gp,parent_ID,'parent_ID');
+  // if (level == 'processChildren') {
+  //   var parent_ID    = getParentID(path);
+  //   var g = localStorage.getItem('parents');
+  // };
+  // if (level == 'processParents') {
+  //   var parent_ID    = getGrandparentID(path);
+  //   var g = localStorage.getItem('grandparents');
+  // };
+  // var gp = dataType(g,'object');
+  // var parent_details = findItemByID(gp,parent_ID,'parent_ID');
 
   // Push to display table
   var levelup_name = 'All > '+parent_details.name;
