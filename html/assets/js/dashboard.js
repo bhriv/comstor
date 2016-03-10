@@ -1244,8 +1244,15 @@ function processCategory(visibility_type,level){
       if (category_loop_count == 6 ) {
         localStorage.removeItem('categories');
         setLocalStorage(all_nested_category_data,'categories');
+        nestleCategories(all_nested_category_data,0);
+        nestleCategories(all_nested_category_data,1);
+        nestleCategories(all_nested_category_data,2);
+        nestleCategories(all_nested_category_data,3);
+        nestleCategories(all_nested_category_data,4);
         nestleCategories(all_nested_category_data,5);
-        // nestleCategories(all_nested_category_data,4);
+        cc('sorted_category_data','highlight')
+        console.log(sorted_category_data);
+        displaySortedCategoryResults(sorted_category_data);
       };
       
       // Once Data complete Process next set
@@ -1410,7 +1417,8 @@ function nestleCategories (all_nested_category_data,level) {
   cc('all_nested_category_data','info');
   console.log(all_nested_category_data);
   var visibility_type = 'visible',
-      switch_url = base_url +'lumiousreports/hiddencategories/',
+      show_url = base_url +'lumiousreports/coursecategories/',
+      hide_url = base_url +'lumiousreports/hiddencategories/',
       switch_label = 'Hide',
       table_id = '#visible_categories';
       breadcrumb = null;
@@ -1418,9 +1426,12 @@ function nestleCategories (all_nested_category_data,level) {
   var itemdata_count = 0;
   var result_count = 0;
   // var category_count = 5;
-  var category_parent_count = level - 1;
-  var category_up_2 = category_parent_count - 1;
-
+  var category_parent_count = level;
+  if (level != 0) {
+    var category_parent_count = level - 1;
+    // var category_up_2 = category_parent_count - 1;  
+  };
+  
   var item_data_from_array = all_nested_category_data[level];
   cc('item_data_from_array['+level+']','fatal');
   console.log(item_data_from_array);
@@ -1433,34 +1444,96 @@ function nestleCategories (all_nested_category_data,level) {
     if (d != undefined) {
       console.log(d);
       // Store core data
-      
-      var parent_ID = cdata["parent"];
-      var parent_data = all_nested_category_data[category_parent_count];
-      var parent_details = findItemByID(parent_data,parent_ID,'parent_ID',true);
-      // var levelup_data = {"levelupname" : parent_details.name, "levelupid" : parent_details.id, "levelcoursecount" : parent_details.coursecount }
-      if (!isItemNullorUndefined(parent_details)) {
-        cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')','info');
-        var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+parent_details.name+'<small>('+parent_details.id+')</small> > '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
-      $(table_id).append(table_data);
-        // var breadcrumb = parent_details.name+'('+parent_details.id+' > ' +cdata["name"]+'('+cdata["id"]+') Depth:'+cdata["depth"];
-        // displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level,breadcrumb);
-      };
-      
-      
-      // var grandparent_ID = parent_ID;
-      // var grandparent_data = all_nested_category_data[category_up_2];
-      // var grandparent_details = findItemByID(grandparent_data,grandparent_ID,'parent_ID',true);
-      // if (!isItemNullorUndefined(grandparent_details)) {
-      //   cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')'+ ' Grandparent Name:'+grandparent_details.name+'('+grandparent_details.id+')','info');
-      // };
-      
-
-      // cc('PARENT DETAILS:','success')
-      // console.log(levelup_data);
-      // cc('Extended','info')
-      // var extended = _.extend(levelup_data,d);
-      // console.log(extended);
-
+      if (level != 0) {
+        var parent_ID = cdata["parent"];
+        var parent_data = all_nested_category_data[category_parent_count];
+        var parent_details = findItemByID(parent_data,parent_ID,'parent_ID',true);
+        // var levelup_data = {"levelupname" : parent_details.name, "levelupid" : parent_details.id, "levelcoursecount" : parent_details.coursecount }
+        if (!isItemNullorUndefined(parent_details)) {
+          cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')','info');
+          // var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+parent_details.name+'<small>('+parent_details.id+')</small> > '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
+          // $(table_id).append(table_data);
+          // var breadcrumb = parent_details.name+'('+parent_details.id+' > ' +cdata["name"]+'('+cdata["id"]+') Depth:'+cdata["depth"];
+          var item = [];
+          var coursecount         = cdata['coursecount'];
+          var name         = cdata['name'];
+          var description         = cdata['description'];
+          var depth        = cdata['depth'];
+          var path         = cdata['path'];
+          var timemodified = cdata['timemodified'];
+          var this_item_ID = cdata['id'];
+          var this_item_ID_int = parseInt(this_item_ID);
+          var readable_date = dateMoment(timemodified);
+          var hide_url = hide_url + this_item_ID;
+          var show_url = show_url + this_item_ID;
+          // Push to display table
+          var levelup_name = parent_details.name;
+          var levelup_id = parent_details.id;
+          var this_courses = [];
+          if (coursecount != 0) {
+            this_courses = getCourseDetails(this_item_ID_int);
+          };
+          var item = {
+              "id": this_item_ID,
+              "coursecount": coursecount,
+              "courses": this_courses,
+              "this_item_ID_int": this_item_ID_int,
+              "name": name,
+              "description": description,
+              "depth": depth,
+              "path": path,
+              "levelup_name": levelup_name,
+              "levelup_id": levelup_id,
+              "timemodified": timemodified,
+              "readable_date": readable_date,
+              "hide_url": hide_url,
+              "show_url": show_url
+          }
+          // var item_object = dataType(item,'object')
+          all_category_data.push(item);
+          cc('sorted_category_data','highlight')
+          sorted_category_data = _.sortBy(all_category_data, 'path');
+        };
+      }else{
+        cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"],'info');
+        // var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
+        // $(table_id).append(table_data);
+        var item = [];
+          var coursecount  = cdata['coursecount'];
+          var name         = cdata['name'];
+          var description  = cdata['description'];
+          var depth        = cdata['depth'];
+          var path         = cdata['path'];
+          var timemodified = cdata['timemodified'];
+          var this_item_ID = cdata['id'];
+          var this_item_ID_int = parseInt(this_item_ID);
+          var readable_date = dateMoment(timemodified);
+          var hide_url = hide_url + this_item_ID;
+          var show_url = show_url + this_item_ID;
+          var this_courses = [];
+          if (coursecount != 0) {
+            this_courses = getCourseDetails(this_item_ID_int);
+          };
+          // Push to display table
+          var item = {
+              "id": this_item_ID,
+              "this_item_ID_int": this_item_ID_int,
+              "name": name,
+              "coursecount": coursecount,
+              "courses": this_courses,
+              "description": description,
+              "depth": depth,
+              "path": path,
+              "timemodified": timemodified,
+              "readable_date": readable_date,
+              "hide_url": hide_url,
+              "show_url": show_url
+          }
+          // var item_object = dataType(item,'object')
+          all_category_data.push(item);
+          cc('sorted_category_data','highlight')
+          sorted_category_data = _.sortBy(all_category_data, 'path');
+      }
     }
     else{
       cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -1471,10 +1544,116 @@ function nestleCategories (all_nested_category_data,level) {
     };
   }); // end $.each
 }
+var all_course_data = [];
 
-
+function getCourseDetails(id){  
+  cc('getCourseDetails('+id+')','run');
+  var itemdata_count = 0;
+  var item = [];
+  var all_course_data = [];
+  var item_url = base_url +'lumiousreports/course/'+id;
+  // Populate and extract data
+  var item_data_from_array = [];
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    var result_count = getResponseSize(itemdata,'JSON');
+    jQuery.each(item_data_from_array, function(i, cdata) {
+      // Process all courses within the category
+      var d = item_data_from_array[0];
+      if (d != undefined) {
+        var courseid       = cdata['id'];
+        var fullname       = cdata['fullname'];
+        var shortname       = cdata['shortname'];
+        var startdate       = cdata['startdate'];
+        var item = {
+              "id": courseid,
+              "fullname": fullname,
+              "startdate": startdate
+          }
+          // var item_object = dataType(item,'object')
+        all_course_data.push(item);
+        itemdata_count++;
+        if (itemdata_count == result_count) {
+          cc('getCourseDetails done('+id+'). Total courses = '+itemdata_count,'success');
+          console.log(all_course_data);
+          return all_course_data;
+        };
+      }
+      else{
+        cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+      }
+    }); // end $.each
+  }); // end $.when
+}
 var all_category_data = [];
 var sorted_category_data = [];
+
+function displaySortedCategoryResults(sorted_category_data){
+  cc('displaySortedCategoryResults','run');
+  var table_id = '#visible_categories';
+  var itemdata_count = 0;
+  var result_count = 0;
+  var visible_category_grandparents_data = [];
+  var item_data_from_array = sorted_category_data;
+  var result_count = getResponseSize(item_data_from_array);
+  cc('Total '+result_count,'highlight');
+  jQuery.each(item_data_from_array, function(i, cdata) {
+    // Process all courses within the category
+    var d = item_data_from_array[0];
+    if (d != undefined) {
+      // Store core data
+      //push to table
+      var indent_depth = cdata["depth"];
+      var indent_depth_int = parseInt(indent_depth);
+      var indent = "<span class='indent indent_"+indent_depth+"'></span>";
+      switch(indent_depth_int){
+        case 1:
+          var indent = "";
+          break;
+        case 2:
+          var indent = "<span class='indent'></span>";
+          break;
+        case 3:
+          var indent = "<span class='indent'></span><span class='indent'></span>";
+          break;
+        case 4:
+          var indent = "<span class='indent'></span><span class='indent'></span><span class='indent'></span>";
+          break;
+        case 5:
+          var indent = "<span class='indent'></span><span class='indent'></span><span class='indent'></span><span class='indent'></span>";
+          break;
+        case 6:
+          var indent = "<span class='indent'></span><span class='indent'></span><span class='indent'></span><span class='indent'></span><span class='indent'></span>";
+          break;
+      }
+      var description_details = '';
+      if (!isItemNullorUndefined(cdata["description"]) && cdata["description"] != "") {
+        var description_details = '<small>'+cdata["description"]+'</small>';  
+      };
+      
+      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+'<small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["hide_url"]+'" target="blank">Hide</a></strong></tr>';
+      $(table_id).append(table_data);
+
+      // if (cdata["depth"] == 1) {
+      //   // cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"],'info');
+      //   var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
+      //   $(table_id).append(table_data);
+      // }else{
+      //   // cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')','info');
+      //   var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["levelup_name"]+'<small>('+cdata["levelup_id"]+')</small> > '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
+      //   $(table_id).append(table_data);
+      // }
+    }
+    else{
+      cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+    }
+    itemdata_count++;
+
+    if (itemdata_count == result_count) {
+      cc('All processing of displaySortedCategoryResults complete.','success');
+    };
+  }); // end $.each
+}
 
 // function buildSortedCategoryData(cdata,visibility_type,switch_url,switch_label,table_id,level){
 //   var item = [];
@@ -1536,17 +1715,6 @@ function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,ta
   // var hide_this_item_ID = switch_url + this_item_ID;
   // var show_this_item_ID = switch_url + this_item_ID;
   // Get parent details
-  // if (level == 'processChildren') {
-  //   var parent_ID    = getParentID(path);
-  //   var g = localStorage.getItem('parents');
-  // };
-  // if (level == 'processParents') {
-  //   var parent_ID    = getGrandparentID(path);
-  //   var g = localStorage.getItem('grandparents');
-  // };
-  // var gp = dataType(g,'object');
-  // var parent_details = findItemByID(gp,parent_ID,'parent_ID');
-
   // Push to display table
   var levelup_name = 'All > '+parent_details.name;
   var table_data = '<tr><td>'+this_item_ID+'</td><td><h5>'+levelup_name+'<small>('+parent_details.id+')</small> > '+name+ '</h5></td><td><span class="hidden">'+timemodified+'</span></strong> ' +readable_date+ '</td><td>' +depth+ '</td><td>' +path +'</td><td><strong><a class="popup_link" href="'+hide_this_item_ID+'" target="blank">'+switch_label+'</a></strong></tr>';

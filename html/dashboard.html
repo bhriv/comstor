@@ -75,7 +75,23 @@
                 <div class="row content">
                     <!-- flash messages -->
                     <!-- / flash messages -->
-                    <div class="row ten columns" id="content_loader">
+                    <style>
+                    span.indent{width: 5%; display: block; float: left;border-bottom: solid 1px #ccc;height: 2px;margin-top: 0.6em;margin-right: 5px;}
+
+                    /*span.indent::before { content: "-";}*/
+                    /*span.indent_3{width: 15%;}
+                    span.indent_4{width: 20%;}
+                    span.indent_5{width: 25%;}
+                    span.indent_6{width: 30%;}
+                    
+                    span.indent_2::before { content: "-";}
+                    span.indent_3::before { content: "-";}
+                    span.indent_4::before { content: "-";}
+                    span.indent_5::before { content: "-";}
+                    span.indent_6::before { content: "-";}*/
+                    </style>
+
+                    <div class="row sixteen columns" id="content_loader">
                      <!--  <div id="admin_category_control">
                         <a id="getCategories_visible">visible</a>
                         <a id="getCategories_hidden">hidden</a>
@@ -89,6 +105,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Last Modified</th>
+                                <th>Courses</th>
                                 <th>Depth</th>
                                 <th>Path</th>
                                 <th>Action</th>
@@ -108,6 +125,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Last Modified</th>
+                                <th>Courses</th>
                                 <th>Depth</th>
                                 <th>Path</th>
                                 <th>Action</th>
@@ -115,25 +133,6 @@
                             </thead>
 
                             <tbody id="hidden_categories">
-                              <!-- Filled by Javascript Dynamically -->
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="row">
-                          <h3>Parent Categories <span id="parent_count"></span></h3>
-                          <table class="tablesorter">
-                            <thead>
-                              <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Last Modified</th>
-                                <th>Depth</th>
-                                <th>Path</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-
-                            <tbody id="parent_categories">
                               <!-- Filled by Javascript Dynamically -->
                             </tbody>
                           </table>
