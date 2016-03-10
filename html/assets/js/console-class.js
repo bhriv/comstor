@@ -63,51 +63,53 @@ switch(theme){
     theme_data    = 'color: #000000; padding: 2px 5px; border: dotted 1px #777; font-family: "Courier New", Courier, monospace;';
 }
 
-function cc(message,console_class){
-  var c = null;
-  var m = message;
-  switch(console_class){
-    case "run":
-      m = 'RUNNING: '+m;
-      c = theme_run;
-      break;
-    case "ready":
-      c = theme_ready;
-      break;
-    case "done":
-      c = theme_done;
-      break;
-    case "success":
-      c = theme_success;
-      break;
-    case "info":
-      c = theme_info;
-      break;
-    case "warning":
-      m = 'WARNING: '+m;
-      c = theme_warning;
-      break;
-    case "error":
-      m = 'ERROR: '+m;
-      c = theme_error;
-      break;
-    case "fatal":
-      m = 'FATAL ERROR: '+m;
-      c = theme_fatal;
-      break;
-    case "data":
-      m = m;
-      c = theme_data;
-      break;
-    case "highlight":
-      m = m;
-      c = theme_highlight;
-      break;
-    default:
-      c = theme_default;
-  }
-  if (console_class) {
-    console.log('%c '+m,c);  
+function cc(message,console_class,disable_console_log){
+  if (!disable_console_log) {
+    var c = null;
+    var m = message;
+    switch(console_class){
+      case "run":
+        m = 'RUNNING: '+m;
+        c = theme_run;
+        break;
+      case "ready":
+        c = theme_ready;
+        break;
+      case "done":
+        c = theme_done;
+        break;
+      case "success":
+        c = theme_success;
+        break;
+      case "info":
+        c = theme_info;
+        break;
+      case "warning":
+        m = 'WARNING: '+m;
+        c = theme_warning;
+        break;
+      case "error":
+        m = 'ERROR: '+m;
+        c = theme_error;
+        break;
+      case "fatal":
+        m = 'FATAL ERROR: '+m;
+        c = theme_fatal;
+        break;
+      case "data":
+        m = m;
+        c = theme_data;
+        break;
+      case "highlight":
+        m = m;
+        c = theme_highlight;
+        break;
+      default:
+        c = theme_default;
+    }
+    if (console_class) {
+      console.log('%c '+m,c);  
+    };
   };
 }
 
