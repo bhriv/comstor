@@ -560,6 +560,7 @@ function getCustomEventSummaryData(){
 }
 
 function buildCustomEventDataTables(id){
+  console.log('DOING buildCustomEventDataTables');
   var eventNameTrimmed = id.replace(/\s/g, '');
   var eventName = id;
   if (id == 'PDFDownloaded') { eventName = 'PDF%20Downloaded'};
@@ -638,6 +639,17 @@ function buildCustomEventDataTables(id){
           $(widget_c).append(a_row);
         });  // end each value
 
+      var Summary_Options = {
+          //Boolean - Whether we should show a stroke on each segment
+          segmentShowStroke : true,
+          segmentStrokeColor : "#eee",
+          segmentStrokeWidth : 2,
+          percentageInnerCutout : 50, // This is 0 for Pie charts
+          animationSteps : 100,
+          animationEasing : "easeOut",
+          animateRotate : true,
+          animateScale : true
+      };
       //Chart Data
       var canvas_id = 'flurry-chart-' +id;
         var canvas = document.getElementById(canvas_id),
@@ -657,6 +669,8 @@ function buildCustomEventDataTables(id){
         latestLabel = startingData.labels[6];
         // Reduce the animation steps for demo clarity.
         var myLiveChart = new Chart(ctx).Bar(startingData);
+        // var myLiveChart = new Chart(ctx).Line(startingData);
+        // var myLiveChart = new Chart(ctx).Doughnut(startingData,Summary_Options);
       });  // end each event day
     } // endif
     // Log 
