@@ -164,6 +164,8 @@ $( window ).load(function() {
 	// event listener for course menu changes
 	filter_course_menu.on('change',function(){
 		var thiscourse = $(this).val();
+        $('#category-students').addClass('hidden');
+        $('#concatenated-results').hide();
 		if(thiscourse !== 'NULL' && thiscourse > 0){
 			setLocalStorage('current_course',thiscourse);
 			setLocalStorage('filter_mode','course');
@@ -194,6 +196,7 @@ $( window ).load(function() {
 	// report filter event listeners moved from footer-js
 	 $('#report-basis-criteria select').on('change', function() {
         var _report_basis_criteria = $(this).val();
+        // $('#concatenated-results').hide();
         console.log('_report_basis_criteria: ' +_report_basis_criteria);
 
         switch(_report_basis_criteria) {

@@ -98,8 +98,6 @@ console.log('apiKey from URL: '+urlParams['apiKey']);
 var this_page_apiKey = urlParams['apiKey'];
 if (this_page_apiKey != undefined) {
   localStorage.setItem( 'apiKey',this_page_apiKey);  
-}else{
-  alert('An API key is required to run the Dashboard. Try logging in again.')
 }
 
 var this_page_filter_mode = urlParams['cat_name'];

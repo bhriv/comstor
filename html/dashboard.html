@@ -386,7 +386,7 @@
                               <div class="row"></div>
 
                                 <!-- dashboard edit modal -->
-                              <div class="modal" id="modal-student-activity">
+                              <!-- <div class="modalXXX" id="modal-student-activity">
                                   <div class="content">
                                       <a class="close switch" gumby-trigger="|#modal-student-activity"><i class="icon-cancel" /></i></a>
                                       <div class="row">
@@ -416,12 +416,6 @@
                                                     </tr>
                                                   </thead>
                                                   <tbody id="tbody_quiz_result">
-                                                    <!-- "courseid": "0",
-                                                    "action": "assigned",
-                                                    "target": "competency",
-                                                    "objecttable": "org_competencies",
-                                                    "objectid": "13",
-                                                    "timecreated": "1450742900" -->
                                                   </tbody>
                                                 </table>
                                               </div>
@@ -434,18 +428,34 @@
                                         </div>
                                       </div>
                                     </div>
-                              </div>
-      <style>
-      /*#category-students tr td a{
-        pointer-events: auto !important;
-      }
-      div.main-filter{
-        pointer-events: none !important;
-      }*/
-      #analytics_triggers h2 i.icon-play{
-        display: none;
-      }
-      </style>
+                              </div> -->
+                            <div class="static">
+                              <table class="tablesorter sortable" id="student-activity">
+                                    <thead>
+                                      <tr>
+                                        <th>
+                                          Activity for Course ID
+                                        </th>
+                                        <th>
+                                          Action
+                                        </th>
+                                        <th>
+                                          Object ID
+                                        </th>
+                                        <th>
+                                          Target
+                                        </th>
+                                        <th>
+                                          Time
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="tbody_quiz_result">
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+
                             <div class="static">
                               <a href="#" class="action-item switch" gumby-trigger="#modal-student-activity" id="dash-edit"><i class="icon-tools"></i> Activity</a>
                               <table class="tablesorter sortable" id="category-students">
@@ -738,15 +748,14 @@
                           </div>
                         </div>
                       </section> 
-                    </div>
-                    <div class="row five push_one columns" id="sidebar_widgets">
+                      <div class="row five push_one columns" id="sidebar_widgets">
                         <div class="picker_holder">
                                 <label for="start_date">Data Start Date</label><br>
                                 <input type="text" id="start_date" name="start_date" class="date_changer" value="2015-03-12">
                             </div>
                             <div class="picker_holder">
                                 <label for="end_date">Data End Date</label><br>
-                                <input type="text" id="end_date" name="end_date" class="date_changer" value="2015-03-10">
+                                <input type="text" id="end_date" name="end_date" class="date_changer" value="2016-03-10">
                             </div>
                       <ul class="widget-grid full-width">
                         <li data-type="video" id="widget-overview" style="margin-top:1em;">
@@ -828,6 +837,8 @@
                         </li>
                       </ul>
                     </div>
+                    </div>
+                    
                 </div>
             </div><!-- / main content -->
         </div><!-- / #root -->
@@ -1037,7 +1048,9 @@ section#mef_reports ul.widget-grid li .widget-content {
 #show_hide_categories h3 {
   margin-top: 0.5em;
 }
-
+#analytics_triggers h2 i.icon-play{
+        display: none;
+      }
     </style>
         <!-- Dev Only -->
         <script src="assets/js/testing-only.js"></script>
