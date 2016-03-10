@@ -23,7 +23,7 @@ function show_all_single_question_data(){
     console.log('Current Quiz: ' +selected_quiz_id);
     
     // ajax URL
-    var url_questions = 'http://www.akronzip.com/lumiousreports/quizquestionscores/'+selected_quiz_id;
+    var url_questions = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizquestionscores/'+selected_quiz_id;
 
     // question variables
     var qid = null;
@@ -117,7 +117,7 @@ function show_questions_that_the_majority_of_students_pass(){
     console.log('Current Quiz: ' +selected_quiz_id);
     
     // ajax URL
-    var url_questions = 'http://www.akronzip.com/lumiousreports/quizquestionscores/'+selected_quiz_id;
+    var url_questions = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizquestionscores/'+selected_quiz_id;
 
     // question variables
     var qid = null;
@@ -215,7 +215,7 @@ function show_questions_that_the_majority_of_students_do_not_pass(){
     console.log('Current Quiz: ' +selected_quiz_id);
     
     // ajax URL
-    var url_questions = 'http://www.akronzip.com/lumiousreports/quizquestionscores/'+selected_quiz_id;
+    var url_questions = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizquestionscores/'+selected_quiz_id;
 
     // question variables
     var qid = null;

@@ -98,17 +98,23 @@ console.log('apiKey from URL: '+urlParams['apiKey']);
 var this_page_apiKey = urlParams['apiKey'];
 if (this_page_apiKey != undefined) {
   localStorage.setItem( 'apiKey',this_page_apiKey);  
-};
+}else{
+  alert('An API key is required to run the Dashboard. Try logging in again.')
+}
 
 var this_page_filter_mode = urlParams['cat_name'];
 if (this_page_filter_mode != undefined) {
   localStorage.setItem( 'cat_name',this_page_filter_mode);  
-};
+}else{
+  localStorage.setItem( 'cat_name','Miscellaneous');  
+}
 
 var this_page_current_cat = urlParams['current_cat'];
 if (this_page_current_cat != undefined) {
   localStorage.setItem( 'current_cat',this_page_current_cat);
-};
+}else{
+  localStorage.setItem( 'current_cat','1');
+}
 //https://css-tricks.com/snippets/javascript/get-url-variables/
 /* Example:
 http://www.example.com/index.php?id=1&image=awesome.jpg

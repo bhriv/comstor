@@ -903,7 +903,7 @@ function displayItemData(d,item_TYPE,item_ACTION){
   http://www.privacyvector.com/api/lumiousreports/course/1 (all courses in Category = 1)
   http://www.privacyvector.com/api/lumiousreports/students/2 (all students in Course ID = 2)
   http://www.privacyvector.com/api/lumiousreports/quiz/2 (all quizzes in Course ID = 2)
-  http://www.privacyvector.com/api/lumiousreports/quizattempts/2 (all quizzes attempt of Quiz ID = 2), http://www.akronzip.com/lumiousreports/quizattempts/2
+  http://www.privacyvector.com/api/lumiousreports/quizattempts/2 (all quizzes attempt of Quiz ID = 2), http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/2
 
   http://www.privacyvector.com/api/lumiousreports/courselookup/1
   http://www.privacyvector.com/api/lumiousreports/studentdata/4
@@ -1652,7 +1652,7 @@ function displaySortedCategoryResults(sorted_category_data){
       var safe_name = name_string.replace(/ /g,'-');
       var safe_report_url = report_url + '&cat_name='+safe_name;
 
-      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a> <a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank">Hide</a></tr>';
+      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a> <a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank">Hide</a></td></tr>';
       $(table_id).append(table_data);
     }
     else{
@@ -1686,9 +1686,10 @@ function getAllCoursesInCategory(id){
       var d = item_data_from_array[0];
       if (d != undefined) {
         var course_id = cdata["id"];
+        var course_name = cdata["fullname"];
         all_courses_in_category_ids.push(course_id);
         cc('COURSE DETAILS: id('+course_id+')','info');
-        getAllStudentsInCourse(course_id);
+        getAllStudentsInCourse(course_id,course_name);
       }
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -1703,7 +1704,7 @@ function getAllCoursesInCategory(id){
   }); // end $.when
 }
 
-function getAllStudentsInCourse(id){
+function getAllStudentsInCourse(course_id,course_name){
   cc('getAllStudentsInCourse','run')
 
   // alert('running getAllStudentsInCategory('+id+')')
@@ -1711,7 +1712,7 @@ function getAllStudentsInCourse(id){
   $(table_id).show();
   var itemdata_count = 0;
   var result_count = 0;
-  var item_url = base_url +'lumiousreports/students/'+id;
+  var item_url = base_url +'lumiousreports/students/'+course_id;
 
   var item_data_from_array = [];
   var itemdata = $.getJSON(item_url);
@@ -1726,12 +1727,18 @@ function getAllStudentsInCourse(id){
         //push to table
         var student_id = cdata["id"];
         var student_username = cdata["username"];
-        cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info');
-        // var report_url = window.location.pathname + window.location.search;
+        var student_firstname = cdata["firstname"];
+        var student_lastname = cdata["lastname"];
+        var student_email = cdata["email"];
+        var student_firstaccess = cdata["firstname"];
+        var student_lastaccess = cdata["lastaccess"];
+        var student_activity = base_url +'lumiousreports/studentdata/'+student_id;
 
-        // var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a> <a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank">Hide</a></tr>';
-        
-        // $(table_id).append(table_data);
+        cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info');
+        // // var report_url = window.location.pathname + window.location.search;
+
+        var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden"></span></strong>'+course_name+'('+course_id+') '+student_lastaccess+'</td><td>' +student_firstaccess+'</td><td>-</td><td class="hidden"></td><td><strong><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a></td><td><a class="popup_link" href="'+student_activity+'" target="blank">Activity</a></td></tr>';
+        $(table_id).append(table_data);
       }
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');

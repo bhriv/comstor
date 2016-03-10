@@ -229,10 +229,10 @@ function show_students_who_are_not_doing_well_on_their_prework(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -420,10 +420,10 @@ function show_students_who_are_doing_well_on_their_homework(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -613,10 +613,10 @@ function show_students_who_are_not_doing_well_on_their_homework(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -808,10 +808,10 @@ function show_students_who_are_not_going_to_pass(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);

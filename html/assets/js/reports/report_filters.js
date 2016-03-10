@@ -95,7 +95,7 @@ $( window ).load(function() {
 			console.log('checking URL parameters for Category details...');
             // check to see if Category passed via URL
             var name_string = urlParams['cat_name'];
-            if (name_string != "" || !isItemNullorUndefined(name_string)) {
+            if (name_string != "" && !isItemNullorUndefined(name_string) && name_string != undefined) {
                 var cat_name = name_string.replace(/-/g,' ');
                 console.log('cat_name from URL: '+cat_name);
                 selected = ' selected="selected"';
@@ -566,10 +566,10 @@ function get_endpoint_data(){
     widget_quiz_reports_performance.hide();
     
     // ajax URLs
-    // url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    // url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    // url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    // url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    // url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    // url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    // url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    // url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     var reports_url = urls.reports;
     cc('REPORTS URL: '+reports_url, 'info');

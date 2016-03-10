@@ -31,7 +31,7 @@
                     <li><span id="Summary_" class="chart_trigger"><a>Summary <i class="icon-play"></i></a></span></li>
                     <li><span id="ModuleViewed_" class="chart_trigger"><a>Module Viewed <i class="icon-play"></i></a></span></li>
                     <li><span id="CourseViewed_" class="chart_trigger"><a>Course Viewed <i class="icon-play"></i></a></span></li>
-                    <li><span id="ModuleRated_" class="chart_trigger"><a>Module Rated <i class="icon-play"></i></a></span></li>
+                    <li><span id="ModuleRated_" class="chart_trigger"><a>Item Rated <i class="icon-play"></i></a></span></li>
                     <li><span id="PDFDownloaded_" class="chart_trigger"><a>PDF Downloaded <i class="icon-play"></i></a></span></li>
                     <!-- <li><span id="ItemBookmarked_" class="chart_trigger"><a>Item Bookmarked <i class="icon-play"></i></a></span></li> -->
                     <!-- <li><span id="TwitterHandleEnabled_" class="chart_trigger"><a>Twitter Handle Enabled <i class="icon-play"></i></a></span></li> -->

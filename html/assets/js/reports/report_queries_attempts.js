@@ -131,7 +131,7 @@ function concatenated_results(){
                 // console.log("Student Name: " + student_firstname + " " + student_lastname);
                 
                 // Get the Data for the single student
-                url_student_extended_data = 'http://www.akronzip.com/lumiousreports/studentdata/' +student_id;
+                url_student_extended_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/' +student_id;
                 // console.log(url_student_extended_data);
                 $.getJSON( url_student_extended_data, function( extended_students_data ) {
                     console.log(extended_students_data);

@@ -95,7 +95,7 @@ $( window ).load(function() {
 			console.log('checking URL parameters for Category details...');
             // check to see if Category passed via URL
             var name_string = urlParams['cat_name'];
-            if (name_string != "" || !isItemNullorUndefined(name_string)) {
+            if (name_string != "" && !isItemNullorUndefined(name_string) && name_string != undefined) {
                 var cat_name = name_string.replace(/-/g,' ');
                 console.log('cat_name from URL: '+cat_name);
                 selected = ' selected="selected"';
@@ -566,10 +566,10 @@ function get_endpoint_data(){
     widget_quiz_reports_performance.hide();
     
     // ajax URLs
-    // url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    // url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    // url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    // url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    // url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    // url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    // url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    // url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     var reports_url = urls.reports;
     cc('REPORTS URL: '+reports_url, 'info');
@@ -612,8 +612,8 @@ function show_all_students(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -781,7 +781,7 @@ function show_students_that_have_logged_in(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
 
     // reset the Results table
     dna.empty('results-body-access', { fade: true });
@@ -889,7 +889,7 @@ function show_students_that_have_not_logged_in(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
 
      // reset the Results table
      dna.empty('results-body-access', { fade: true });
@@ -1005,7 +1005,7 @@ function show_students_that_have_not_logged_in_two_days_before_start_date(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
     
     // reset the Results table
     dna.empty('results-body-access', { fade: true });
@@ -1121,7 +1121,7 @@ function show_students_that_have_not_logged_in_within_the_last_two_days(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
 
     // reset the Results table
     dna.empty('results-body-access', { fade: true });
@@ -1451,10 +1451,10 @@ function show_students_who_are_not_doing_well_on_their_prework(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -1642,10 +1642,10 @@ function show_students_who_are_doing_well_on_their_homework(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -1835,10 +1835,10 @@ function show_students_who_are_not_doing_well_on_their_homework(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -2030,10 +2030,10 @@ function show_students_who_are_not_going_to_pass(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_quiz = 'http://www.akronzip.com/lumiousreports/quiz/'    +selected_course_id;
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_quiz_attempts = 'http://www.akronzip.com/lumiousreports/quizattempts/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quiz/'    +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_quiz_attempts = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizattempts/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -2231,7 +2231,7 @@ function show_all_single_question_data(){
     console.log('Current Quiz: ' +selected_quiz_id);
     
     // ajax URL
-    var url_questions = 'http://www.akronzip.com/lumiousreports/quizquestionscores/'+selected_quiz_id;
+    var url_questions = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizquestionscores/'+selected_quiz_id;
 
     // question variables
     var qid = null;
@@ -2325,7 +2325,7 @@ function show_questions_that_the_majority_of_students_pass(){
     console.log('Current Quiz: ' +selected_quiz_id);
     
     // ajax URL
-    var url_questions = 'http://www.akronzip.com/lumiousreports/quizquestionscores/'+selected_quiz_id;
+    var url_questions = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizquestionscores/'+selected_quiz_id;
 
     // question variables
     var qid = null;
@@ -2423,7 +2423,7 @@ function show_questions_that_the_majority_of_students_do_not_pass(){
     console.log('Current Quiz: ' +selected_quiz_id);
     
     // ajax URL
-    var url_questions = 'http://www.akronzip.com/lumiousreports/quizquestionscores/'+selected_quiz_id;
+    var url_questions = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizquestionscores/'+selected_quiz_id;
 
     // question variables
     var qid = null;
@@ -2629,7 +2629,7 @@ function concatenated_results(){
                 // console.log("Student Name: " + student_firstname + " " + student_lastname);
                 
                 // Get the Data for the single student
-                url_student_extended_data = 'http://www.akronzip.com/lumiousreports/studentdata/' +student_id;
+                url_student_extended_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/' +student_id;
                 // console.log(url_student_extended_data);
                 $.getJSON( url_student_extended_data, function( extended_students_data ) {
                     console.log(extended_students_data);

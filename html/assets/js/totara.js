@@ -22,8 +22,8 @@ function getAllData(){
   var selected_course_id = 33;
   // ajax URLs
 
-  url_course_students = 'http://www.akronzip.com/lumiousreports/studentdata/628';
-  url_course_quiz = 'http://www.akronzip.com/lumiousreports/quizlookup/55';
+  url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/628';
+  url_course_quiz = 'http://comstor.lumiousanalytics.com/api/lumiousreports/quizlookup/55';
 
   // store results from these static URLs as objects to use with promises
   var students = $.getJSON(url_course_students);

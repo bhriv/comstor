@@ -21,8 +21,8 @@ function show_all_students(){
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
     
     // ajax URLs
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/'+selected_course_id;
-    url_student_data = 'http://www.akronzip.com/lumiousreports/studentdata/';
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/'+selected_course_id;
+    url_student_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/';
 
     // store results from these static URLs as objects to use with promises
     var students = $.getJSON(url_course_students);
@@ -190,7 +190,7 @@ function show_students_that_have_logged_in(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
 
     // reset the Results table
     dna.empty('results-body-access', { fade: true });
@@ -298,7 +298,7 @@ function show_students_that_have_not_logged_in(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
 
      // reset the Results table
      dna.empty('results-body-access', { fade: true });
@@ -414,7 +414,7 @@ function show_students_that_have_not_logged_in_two_days_before_start_date(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
     
     // reset the Results table
     dna.empty('results-body-access', { fade: true });
@@ -530,7 +530,7 @@ function show_students_that_have_not_logged_in_within_the_last_two_days(){
     // POPULATE DATA to RESULTS TABLE
     var selected_course_id = checkLocalStorage('current_course');
     console.log('LOCAL STORAGE current_course ' +selected_course_id);
-    url_course_students = 'http://www.akronzip.com/lumiousreports/students/' +selected_course_id;
+    url_course_students = 'http://comstor.lumiousanalytics.com/api/lumiousreports/students/' +selected_course_id;
 
     // reset the Results table
     dna.empty('results-body-access', { fade: true });

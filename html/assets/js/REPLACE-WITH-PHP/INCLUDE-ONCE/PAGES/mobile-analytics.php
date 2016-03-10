@@ -189,7 +189,7 @@
         </li>
         <li id="widget-ModuleRated" class="">
             <h2 class="yellow">
-                Module Rated <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleRated .widget-content"><i class="icon-minus-squared"></i></a>
+                Item Rated <a class="ttip" data-tooltip="Total number of module views."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ModuleRated .widget-content"><i class="icon-minus-squared"></i></a>
             </h2>
             <div class="widget-content">
                 <label>Summary</label>

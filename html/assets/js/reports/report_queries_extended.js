@@ -180,7 +180,7 @@ function lumiousreports_single_student_data(){
 // 	var selected_course_id = checkLocalStorage('current_course');
 // 	console.log('LOCAL STORAGE current_course ' +selected_course_id);
 	
-// 	// url_student_extended_data = 'http://www.akronzip.com/lumiousreports/studentdata/66';
+// 	// url_student_extended_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/66';
 //     url_student_extended_data = 'https://akronzip.com/studentdata.txt';
 //     console.log('STUDENT LOOKUP ' +url_student_extended_data);
 
@@ -266,7 +266,7 @@ function lumiousreports_single_student_extended_data(){
 	dna.empty('results-body', { fade: true });
 
     var current_student_id = 94; // @FIXME - need to loop through students
-    url_student_extended_data = 'http://www.akronzip.com/lumiousreports/studentdata/' +current_student_id;
+    url_student_extended_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/' +current_student_id;
     console.log(url_student_extended_data);
 
 	// Get the Data for the single student
@@ -313,7 +313,7 @@ function lumiousreports_single_student_extended_data(){
 			*	
 			*/
 	        // Total Student Grade Entries - get array values, count total for debugging
-	        	var student_quizgrades = i.quizgrades;
+	        	var student_quizgragrdes = i.quizgrades;
 	        	var total_student_quizgrades_count = 0; // Count Student Quiz Grades
 	            $.each(student_quizgrades, function (count, value) {
 	            	total_student_quizgrades_count++;
@@ -478,8 +478,8 @@ function lumiousreports_single_student_extended_data(){
 
 // 	console.log('===XXX   BEGIN  lumiousreports_question_extended_data  XXX====');
 
-//     // url_student_extended_data = 'http://www.akronzip.com/lumiousreports/studentdata/' +current_student_id;
-//     // url_question_extended_data = 'http://www.akronzip.com/questionendpoint.php';
+//     // url_student_extended_data = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/' +current_student_id;
+//     // url_question_extended_data = 'http://comstor.lumiousanalytics.com/api/questionendpoint.php';
 
 //     console.log('url_question_extended_data');
 //     console.log(url_question_extended_data);
@@ -563,7 +563,7 @@ function lumiousreports_single_student_quiz_attempt_grades_data(){
     var current_student_id = 636;
 
     // New endpoint
-    // url_student_quizattempt = 'http://www.akronzip.com/lumiousreports/studentdata/' +current_student_id;
+    // url_student_quizattempt = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/' +current_student_id;
     // Old endpoint
     url_student_quizattempt = urls.reports + 'studentquizattempts/' +current_student_id;
     console.log('url_student_quizattempt: '+url_student_quizattempt);

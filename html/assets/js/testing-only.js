@@ -94,7 +94,7 @@ var student_result_id_17;
 var student_result_id_4;
 
 // var student_17_url = 'http://www.privacyvector.com/api/lumiousreports/studentdata/17';
-var student_17_url = 'http://www.akronzip.com/lumiousreports/studentdata/17';
+var student_17_url = 'http://comstor.lumiousanalytics.com/api/lumiousreports/studentdata/17';
 var student_4_url = 'http://www.privacyvector.com/api/lumiousreports/studentdata/4';
 
 $("#pull_student_data").click(function() {
