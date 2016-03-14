@@ -17,6 +17,36 @@ module.exports = function(grunt) {
                 // dest: '<%= dirs.sass_folder %>/assets/sass' 
         },
 
+        // Watch 
+        watch: {
+            options: {
+                livereload: true,
+            },
+            scripts: {
+                files: ['<%= dirs.js_folder %>*.js'],
+                tasks: ['concat', 'uglify'],
+                options: {
+                    spawn: false,
+                },
+            },
+            css: {
+                files: ['<%= dirs.css_folder %>*.{scss,sass,css}'],
+                // files: ['**/*.{scss,sass}'],
+                tasks: ['sass'],
+                options: {
+                    spawn: false,
+                }
+            },
+            // styles: {
+            //     files: ['<%= dirs.css_folder %>style.css'],
+            //     tasks: ['autoprefixer']
+            // },
+            compass: {
+                files: ['html/assets/**/*.{scss,sass}'],
+                tasks: ['compass:dev']
+            }
+        },
+
         pkg: grunt.file.readJSON('package.json'),
         // Concat JS into single production file
         concat: {
@@ -63,6 +93,13 @@ module.exports = function(grunt) {
                 ],
                 dest: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',
             },
+            global_custom: {
+                src: [
+                    '<%= dirs.js_folder %>/useful.js',  // This specific file
+                    '<%= dirs.js_folder %>/local-storage.js',  // This specific file
+                ],
+                dest: '<%= dirs.js_folder %>/build/concat-global_custom.js',
+            },
             lumious_reports: {
                 src: [
                     '<%= dirs.js_lumious_reports %>/report_filters.js',
@@ -74,10 +111,9 @@ module.exports = function(grunt) {
                 ],
                 dest: '<%= dirs.js_folder %>/build/concat-lumious_reports.js',
             },
+
             dashboard_custom: {
                 src: [
-                    '<%= dirs.js_folder %>/useful.js',  // This specific file
-                    '<%= dirs.js_folder %>/local-storage.js',  // This specific file
                     '<%= dirs.js_folder %>/settings.js',  // This specific file
                     '<%= dirs.js_folder %>/main.js',  // This specific file
                     '<%= dirs.js_folder %>/analytics.js',  // This specific file
@@ -93,6 +129,7 @@ module.exports = function(grunt) {
                 src: '<%= dirs.js_folder %>/build/concat-gumby.js',
                 src: '<%= dirs.js_folder %>/build/concat-ui_libs.js',
                 src: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',
+                src: '<%= dirs.js_folder %>/build/concat-global_custom.js',
                 src: '<%= dirs.js_folder %>/build/concat-reports.js',
                 src: '<%= dirs.js_folder %>/build/concat-dashboard_custom.js',
                 dest: '<%= dirs.production_build_folder %>/all-uglified.js'
@@ -194,36 +231,22 @@ module.exports = function(grunt) {
         //       src: 'css/*.css'
         //     }
         // },
-
-        // Watch 
-        watch: {
+        // livereload  : {
+        //     options: {
+        //       base: 'html',
+        //     },
+        //     files: ['html/assets/*']
+        // },
+        browserSync: {
+            bsFiles: {
+                src : 'html/assets/css/*.css'
+            },
             options: {
-                livereload: true,
-            },
-            scripts: {
-                files: ['<%= dirs.js_folder %>*.js'],
-                tasks: ['concat', 'uglify'],
-                options: {
-                    spawn: false,
-                },
-            },
-            css: {
-                files: ['<%= dirs.css_folder %>*.{scss,sass}'],
-                // files: ['**/*.{scss,sass}'],
-                tasks: ['sass'],
-                options: {
-                    spawn: false,
+                server: {
+                    baseDir: "./"
                 }
-            },
-            // styles: {
-            //     files: ['<%= dirs.css_folder %>style.css'],
-            //     tasks: ['autoprefixer']
-            // },
-            compass: {
-                files: ['html/assets/**/*.{scss,sass}'],
-                tasks: ['compass:dev']
             }
-        }   
+        }
 
     });
 
@@ -231,7 +254,11 @@ module.exports = function(grunt) {
 
     // General 
     grunt.loadNpmTasks('grunt-contrib-watch');
+    //https://www.browsersync.io/docs/grunt/
+    grunt.loadNpmTasks('grunt-browser-sync');
     
+    // grunt.loadNpmTasks('grunt-livereload');
+
     // JS
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');

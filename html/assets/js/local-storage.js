@@ -5,16 +5,19 @@
 
 function startSession(){
   cc('startSession','run');
-  setSessionID();
+  setupStorage();
+  // setSessionID();
+  // setSessionTime();
   setDefaultData();
 }
 
 function clearSession(){
   cc('clearSession','run');
-  localStorage.setItem( 'session_id','');
-  localStorage.setItem( 'start_date','');
-  localStorage.setItem( 'end_date','');
-  localStorage.setItem( 'apiKey','');
+  localStorage.removeItem( 'session_id');
+  localStorage.removeItem( 'session_id');
+  localStorage.removeItem( 'start_date');
+  localStorage.removeItem( 'end_date');
+  localStorage.removeItem( 'apiKey');
 }  
 
 function getStoredSessionData(data_name){
@@ -33,11 +36,56 @@ function saveLastAction(event){
   localStorage.setItem( 'last_action', event );
 }
 
+function resetSessionData(){
+  cc('resetSessionData','run')
+  localStorage.removeItem('session_id');
+  localStorage.removeItem('session_started');
+  localStorage.removeItem('session_timestamp');
+  setSessionID();
+  setSessionTime();
+  setDateRange();
+}
+
 function setSessionID(){
   // create new random ID
+  cc('setSessionID','run')
   var session_id = Math.random().toString(36).substr(2, 7);
   localStorage.setItem( 'session_id', session_id );
   console.log('session_id set: '+session_id);
+}
+
+function setSessionTime(){
+  // create new random ID
+  cc('setSessionTime','run')
+  var now = new Date();
+  now = moment().format("YYYY-MM-DD, h:mm:ss a");
+  var session_started = now;
+  localStorage.setItem( 'session_started', session_started );
+  var timestamp = moment().format("X");
+  localStorage.setItem( 'session_timestamp', timestamp );
+}
+
+function setupStorage(){
+  cc('checkSessionTime','run')
+  var stored_timestamp = localStorage.getItem('session_timestamp');
+  var stored_id = localStorage.getItem('session_id');
+  var session_started = localStorage.getItem('session_started');
+  if (stored_timestamp == undefined || stored_id == undefined || session_started == undefined ) {
+    resetSessionData();
+  }else{
+    cc('Session already set: id('+stored_id+') timestamp('+stored_timestamp+')','info');
+    var timestamp = moment().format("X");
+    var time_passed = timestamp - stored_timestamp;
+    // alert('time_passed passed(millisec): '+time_passed)
+    // alert('time_passed passed(mins): '+time_passed/60)
+    // alert('time_passed passed(hours): '+time_passed/60/60)
+
+    var hours_passed = time_passed/60/60;
+    if (hours_passed > 1) {
+      cc('Last session started over 1 hour ago, resetting session to get new data','warning')
+      resetSessionData();
+    };
+  }
 }
 
 function setDefaultData(){
@@ -49,11 +97,25 @@ function setDefaultData(){
   localStorage.setItem( 'all_students',null );
 }
 
+function setDateRange(){
+  // create new random ID
+  cc('setDateRange','run');
+  // var minus_90_Days = 90*24*60*60*1000;
+  // var timestamp = moment().format("X");
+  // var earlier = timestamp - minus_90_Days;
+  var earlier = moment().subtract(3, 'months');
+  earlier = moment(earlier).format("YYYY-MM-DD");
+  var today = moment().format("YYYY-MM-DD");
+
+  localStorage.setItem( 'start_date', earlier );
+  localStorage.setItem( 'end_date', today );
+}
+
 function setStartDate(){
   cc('setStartDate','run');
   var start_date = $('#start_date').val();
   if (isItemNullorUndefined(start_date)) {
-    start_date = '2015-01-01';
+    setDateRange();
   }
   localStorage.setItem( 'start_date', start_date );
   cc('start_date set: '+start_date,'info');
@@ -63,7 +125,7 @@ function setEndDate(){
   cc('setEndDate','run');
   var end_date = $('#end_date').val();
   if (isItemNullorUndefined(end_date)) {
-    end_date = '2015-12-31';
+    setDateRange();
   }
   localStorage.setItem( 'end_date', end_date );
   cc('end_date set: '+end_date,'info');
