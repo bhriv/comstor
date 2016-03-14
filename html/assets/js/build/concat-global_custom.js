@@ -398,11 +398,30 @@ function startSession(){
 function clearSession(){
   cc('clearSession','run');
   localStorage.removeItem( 'session_id');
-  localStorage.removeItem( 'session_id');
+  localStorage.removeItem( 'session_started');
+  localStorage.removeItem( 'session_timestamp');
   localStorage.removeItem( 'start_date');
   localStorage.removeItem( 'end_date');
-  localStorage.removeItem( 'apiKey');
+  setDefaultData();
 }  
+
+function setDefaultData(){
+  // create new random ID
+  cc('setDefaultData','run');
+  localStorage.removeItem('students');
+  localStorage.removeItem('quizzes');
+  localStorage.removeItem('courses');
+  localStorage.removeItem('all_students');
+}
+
+function resetSessionData(){
+  cc('resetSessionData','run')
+  clearSession();
+  setSessionID();
+  setSessionTime();
+  setDateRange();
+  setDefaultData();
+}
 
 function getStoredSessionData(data_name){
   cc('getStoredSessionData('+data_name+')','run');
@@ -418,16 +437,6 @@ function getStoredSessionData(data_name){
 
 function saveLastAction(event){
   localStorage.setItem( 'last_action', event );
-}
-
-function resetSessionData(){
-  cc('resetSessionData','run')
-  localStorage.removeItem('session_id');
-  localStorage.removeItem('session_started');
-  localStorage.removeItem('session_timestamp');
-  setSessionID();
-  setSessionTime();
-  setDateRange();
 }
 
 function setSessionID(){
@@ -463,7 +472,6 @@ function setupStorage(){
     // alert('time_passed passed(millisec): '+time_passed)
     // alert('time_passed passed(mins): '+time_passed/60)
     // alert('time_passed passed(hours): '+time_passed/60/60)
-
     var hours_passed = time_passed/60/60;
     if (hours_passed > 1) {
       cc('Last session started over 1 hour ago, resetting session to get new data','warning')
@@ -472,25 +480,12 @@ function setupStorage(){
   }
 }
 
-function setDefaultData(){
-  // create new random ID
-  cc('setDefaultData','run');
-  localStorage.setItem( 'students', null );
-  localStorage.setItem( 'quizzes', null );
-  localStorage.setItem( 'courses', null );
-  localStorage.setItem( 'all_students',null );
-}
-
 function setDateRange(){
   // create new random ID
   cc('setDateRange','run');
-  // var minus_90_Days = 90*24*60*60*1000;
-  // var timestamp = moment().format("X");
-  // var earlier = timestamp - minus_90_Days;
   var earlier = moment().subtract(3, 'months');
   earlier = moment(earlier).format("YYYY-MM-DD");
   var today = moment().format("YYYY-MM-DD");
-
   localStorage.setItem( 'start_date', earlier );
   localStorage.setItem( 'end_date', today );
 }
@@ -553,9 +548,9 @@ function checkUserSessionID(){
 function checkStartDate(){
   var start_date = localStorage.getItem( 'start_date' );
   if (isItemNullorUndefined(start_date)) {
-    start_date = '2015-01-01';
-    cc('No Start Date is set so the default date of '+start_date+' will be used');
-    setStartDate(start_date);
+    cc('No Start Date set;');
+    setDateRange();
+    var start_date = localStorage.getItem( 'start_date' );
   }
   return start_date;
 }
@@ -563,9 +558,9 @@ function checkStartDate(){
 function checkEndDate(){
   var end_date = localStorage.getItem( 'end_date' );
   if (isItemNullorUndefined(end_date)) {
-    end_date = '2015-12-31';
-    cc('No end_date is set so the default of '+end_date+' will be used');
-    setEndDate(end_date);
+    cc('No End Date set;');
+    setDateRange();
+    var end_date = localStorage.getItem( 'end_date' );
   };
   return end_date;
 }

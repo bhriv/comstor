@@ -35,56 +35,58 @@ $( document ).ready(function() {
   /**************** Trigger Events to Build Charts  **************/
   /*****************************************************************/
 
+  if (isItemNullorUndefined(localStorage.getItem('ChartData_period')) || isItemNullorUndefined(localStorage.getItem('ChartData_id'))) {
+   setChartDetails('NewUsers','days');
+  };
+  // Sidebar Navigation
   // Example: a#NewUsers_ 
   $("span.chart_trigger").click(function(event) {
-    event.stopPropagation();
+    
     var id = $(this).attr('id');
     id = id.slice(0, -1);
-    
     $('#graphs-holder li .widget-content').addClass('active');
     var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
     $(current_widget).removeClass('active');
 
-
+    // CUSTOM EVENT Charts
     if(id == 'Summary'){
       var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
       $(c).addClass('active');
       getCustomEventSummaryData();
     }
     if(id == 'ModuleViewed' || id == 'CourseViewed'  || id == 'ModuleRated'  || id == 'ModuleViewed'  || id == 'PDFDownloaded'  ){
-      
       buildCustomEventDataTables(id);
     }
-    
     if(id != 'Summary' && id != 'ModuleViewed' && id != 'CourseViewed' && id != 'ModuleRated' && id != 'PDFDownloaded' ){
       var app_metric_specific = id;
       setAppMetricSpecific(app_metric_specific);
-      getChartData(id);
+      var current_period = localStorage.getItem('ChartData_period')
+      getChartData(id,current_period);
       var c = '#graphs-holder widget-' +id+ ' li h2 span.days';
       $(c).addClass('active');
     }
   });
 
+  // Graph Filter Triggers
   // Example: span.months_
   $("#graphs-holder li h2 span").click(function(event) {
+
     event.stopPropagation();
     var id = $(this).attr('id');
     id = id.slice(0, -1);
     var period = $(this).attr('class');
-    // add active classes to subnav to match switch
-    var nav_trigger = 'nav ul li span#'+id+'_ a';
-    $('#analytics_triggers nav ul li span a').removeClass('active');
-    $(nav_trigger).addClass('active');
+    cc('span clicked: '+period,'info');
 
-    $('#graphs-holder li .widget-content').addClass('active');
-    var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
-    $(current_widget).removeClass('active');
-
-    var app_metric_specific = id;
-    setAppMetricSpecific(app_metric_specific);
+    localStorage.setItem('ChartData_id',id);
+    localStorage.setItem('ChartData_period',period);
+    
+    setAppMetricSpecific(id);
     getChartData(id,period);
+    displayChartData(id,period);
+
     $('#graphs-holder li h2 span').removeClass('active');
     $(this).addClass('active');
+    
   });
 
   // Set default widget displays
@@ -273,23 +275,50 @@ function showFlurryAppStats() {
 /**************** Construct Flurry Chart DATA  **************/
 /*****************************************************************/
 
+function setChartDetails(id,period){
+  localStorage.setItem('ChartData_id',id)
+  localStorage.setItem('ChartData_period',period)
+}
+
+function displayChartData(id,period){
+  cc('displayChartData id('+id+') period('+period+')','run')
+  // add active classes to subnav to match switch
+  $('#analytics_triggers nav ul li span a').removeClass('active');
+  var subnav_id = id+'_ a';
+  $(subnav_id).removeClass('active'); 
+
+  var nav_trigger = 'nav ul li span#'+id+'_ a';
+  $(nav_trigger).addClass('active');
+  // show selected widget
+  $('#graphs-holder li .widget-content').addClass('active');
+  var current_widget = '#graphs-holder li#widget-'+id +' .widget-content';
+  $(current_widget).removeClass('active');
+
+  //reset widget filter toggles
+  $('#graphs-holder li h2 span').removeClass('active');
+  var current_filter = '#graphs-holder li#widget-'+id +'h2 span.'+period; 
+  $(current_filter).addClass('active');
+}
+
+
 function getChartData(id,period){
   cc('getChartData','run');
 
   if (isItemNullorUndefined(period)) {
-    period = 'days';
+    var period = localStorage.getItem('ChartData_period')
+    cc('No period passed so localStorage('+period+') value will be used','warning');
     period_label = 'Change This<br>Week';
     growth_change_current = stats_label+'<br>This Week';
     growth_change_previous = stats_label+'<br>Last Week';
-    cc('No period is set so the default of '+period+' will be used','warning');
     }else{
-    console.log('period NOT updated. Period parameter: '+period);
+    console.log('Period parameter: '+period);
   }
   if (isItemNullorUndefined(id)) {
-    id = 'ActiveUsers';
-    cc('No id is set so the default of '+id+' will be used','warning');
+    var id = localStorage.getItem('ChartData_id')
+    cc('No id passed so localStorage('+id+') value will be used','warning');
+    id = 'NewUsers';
     }else{
-    console.log('id NOT updated. Id passed was: '+id);
+    console.log('id passed was: '+id);
   }
 
   // GROUP DATA by Period

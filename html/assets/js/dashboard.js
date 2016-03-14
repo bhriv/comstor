@@ -1723,7 +1723,11 @@ function getAllStudentsInCourse(course_id,course_name){
   var itemdata = $.getJSON(item_url);
   $.when(itemdata).done(function(item_data_from_array) {
     var result_count = getResponseSize(itemdata,'JSON');
-
+    cc('item_data_from_array ORIGINAL','highlight')
+    // console.log(item_data_from_array)
+    // var item_data_from_array = _.uniq(item_data_from_array);
+    // cc('item_data_from_array UNIQ','highlight')
+    // console.log(item_data_from_array)
     jQuery.each(item_data_from_array, function(i, cdata) {
       // Process all courses within the category
       var d = item_data_from_array[0];
@@ -1807,9 +1811,15 @@ function getStudentActivity(studentid){
     console.log(item_data_from_array);
     var user_data = item_data_from_array.user;
     logstore_data = user_data.logstore;
+    cc('-------oRIGINAL logstore_data','success');
     console.log(logstore_data);
+    
+    // cc('-------SORTED logstore_data','fatal');
+    // var sorted_logstore_data = dataType(logstore_data,'object');
+    // sorted_logstore_data = _.sortBy(logstore_data,'timecreated');
+    // console.log(sorted_logstore_data);
 
-    var result_count = getResponseSize(logstore_data,'JSON');
+    var result_count = getResponseSize(logstore_data,'JSON');    
 
     jQuery.each(logstore_data, function(i, cdata) {
       // Process all courses within the category
