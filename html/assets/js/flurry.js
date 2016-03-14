@@ -283,9 +283,9 @@ function setChartDetails(id,period){
 function displayChartData(id,period){
   cc('displayChartData id('+id+') period('+period+')','run')
   // add active classes to subnav to match switch
-  $('#analytics_triggers nav ul li span a').removeClass('active');
-  var subnav_id = id+'_ a';
-  $(subnav_id).removeClass('active'); 
+  $('#analytics_triggers ul li span a').removeClass('active');
+  // var subnav_id = id+'_ a';
+  // $(subnav_id).removeClass('active'); 
 
   var nav_trigger = 'nav ul li span#'+id+'_ a';
   $(nav_trigger).addClass('active');
