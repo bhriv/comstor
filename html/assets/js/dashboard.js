@@ -1800,6 +1800,7 @@ function getStudentActivity(studentid){
   var itemdata_count = 0;
   var result_count = 0;
   var item = [];
+  localStorage.removeItem('student_prev_activity');
 
   var item_url = base_url +'lumiousreports/studentdata/'+studentid;
   cc('Student Activity URL:'+item_url,'done')
@@ -1807,6 +1808,8 @@ function getStudentActivity(studentid){
   var itemdata = $.getJSON(item_url);
   $.when(itemdata).done(function(item_data_from_array) {
     cc(student_details,'info',true);
+    var active_flag = false;
+    var active_status = '';
     // console.log(item_data_from_array);
     var user_data = item_data_from_array.user;
     logstore_data = user_data.logstore;
@@ -1823,10 +1826,10 @@ function getStudentActivity(studentid){
     var timestamp = moment().format("X");
 
     jQuery.each(logstore_data, function(i, cdata) {
+if (itemdata_count < 10) {      
       // Process all courses within the category
       $('#student-activity-processing span').html(itemdata_count);
-      var d = logstore_data;
-      if (d != undefined) {
+      if (logstore_data != undefined) {
         var action       = cdata['action'];
         var target       = cdata['target'];
         var objectid       = cdata['objectid'];
@@ -1834,22 +1837,42 @@ function getStudentActivity(studentid){
         var courseid       = cdata['courseid'];
         var timecreated       = cdata['timecreated'];
         var timecreated_readable_date = dateMoment(timecreated);
-        // cc('ACTION DETAILS: courseid('+courseid+') action('+action+')','highlight');
-        var table_data = '<tr><td>'+courseid+'</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hidden">'+timecreated+'</span>'+timecreated_readable_date+'</td></tr>';
-        $(table_id).append(table_data);
-
-        var time_passed = timestamp - timecreated;
-        // alert('time_passed passed(millisec): '+time_passed)
-        // alert('time_passed passed(mins): '+time_passed/60)
-        // alert('time_passed passed(hours): '+time_passed/60/60)
-        var days_passed = time_passed/60/60/24;
-        if (days_passed > 15) {
-          cc('Last activity started over 15 days ago','warning')
-          // resetSessionData();
-          $('#student-activity-profile').append('<span>stalled</span>')
-        };
-
-      }
+        var student_current_activity = action+'-'+objectid+'-'+target;
+        var student_prev_activity = localStorage.getItem('student_prev_activity');
+        // Only add entry log to the table if the action is not a duplicate
+        if (student_prev_activity === student_current_activity) {
+          // cc('duplicate activity found. do not add this to the activity table ','warning',true);
+        }
+        else{
+          // cc('activity NOT duplicate. ADD this to the activity table ','success');
+          var table_data = '<tr><td>'+courseid+'</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hidden">'+timecreated+'</span>'+timecreated_readable_date+'</td></tr>';
+          $(table_id).append(table_data);
+          if (!active_flag) {
+            var time_passed = timestamp - timecreated;
+            var days_passed = parseInt(time_passed/60/60/24);
+            cc('days_passed: '+days_passed,'info')
+            if (days_passed > 19) {
+              active_status = 'dormant';
+            };
+            if (20 > days_passed > 14) {
+              active_status = 'stalled';
+            };
+            if (15 > days_passed > 6) {
+              active_status = 'almost stalled';
+            };
+            if (7 > days_passed ) {
+              active_status = 'active this week';
+            };
+            if (1 >= days_passed ) {
+              active_status = 'active today';
+            };
+            cc('Days passed ('+days_passed+') Activity Status: '+active_status,'highlight')
+            $('#student-activity-profile').append('<span>'+active_status+'</span>');
+            active_flag = true;
+          } // end activity flag
+        }// end check for duplicate
+        localStorage.setItem('student_prev_activity',student_current_activity);
+      }// end if d undefined
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
       }
@@ -1859,6 +1882,7 @@ function getStudentActivity(studentid){
         cc('All processing of getStudentActivity complete.','success');
 
       };
+}// TEMP DEBUG LIMIT OF LOG PROCESSING
     }); // end $.each
   }); // end $.when                                                  
 }
