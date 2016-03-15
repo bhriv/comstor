@@ -107,7 +107,11 @@ $(document).ready(function() {
   });
 
   if (urlParams['page'] == 'teacher-reports'){
-    if (urlParams['current_cat'] != undefined) {
+    if (urlParams['student_id'] != undefined) {
+      var studentid = urlParams['student_id'];
+      // var catid = 41;
+      getStudentActivity(studentid);
+    }else if (urlParams['current_cat'] != undefined) {
       var catid = urlParams['current_cat'];
       // var catid = 41;
       getAllCoursesInCategory(catid);
@@ -115,11 +119,7 @@ $(document).ready(function() {
     }else{
       cc('No current_cat found in URL','warning');
     }
-    if (urlParams['student_id'] != undefined) {
-      var studentid = urlParams['student_id'];
-      // var catid = 41;
-      getStudentActivity(studentid);
-    }
+    
   }
   
 
@@ -1657,7 +1657,7 @@ function displaySortedCategoryResults(sorted_category_data){
       var safe_name = name_string.replace(/ /g,'-');
       var safe_report_url = report_url + '&cat_name='+safe_name;
 
-      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a> <a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank">Hide</a></td></tr>';
+      var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+indent+' '+cdata["name"]+' <small>(ID:'+cdata["id"]+')</small></h5>'+description_details+'</td><td><span class="hidden">'+cdata["timemodified"]+'</span></strong>'+cdata["readable_date"]+'</td><td>' +cdata["coursecount"]+ '</td><td>' +cdata["depth"]+ '</td><td class="hidden">' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+safe_report_url+'" target="blank">Reports</a></strong><p><a class="popup_link" href="'+hide_url+cdata["id"]+'" target="blank"><small><i class="icon-minus-squared" style="min-width: 5px; margin: 0"></i> Hide Category</small></a></p></td></tr>';
       $(table_id).append(table_data);
     }
     else{
@@ -1751,7 +1751,7 @@ function getAllStudentsInCourse(course_id,course_name){
         var student_activity_url = report_url + '?apiKey='+apiKey_localstorage+'&page=teacher-reports&current_cat='+urlParams["current_cat"]+'&student_id='+student_id;
 
         // var student_activity_modal = '<a class="action-item switch" gumby-trigger="#modal-student-activity" id="activate-student-activity"><i class="icon-tools"></i> Activity</a>';
-        cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info');
+        cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info',true);
         // // var report_url = window.location.pathname + window.location.search;
 
         var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden">'+student_lastaccess+'</span>'+student_lastaccess_readable_date+'</td><td><span class="hidden">'+student_firstaccess+'</span>'+student_firstaccess_readable_date+'</td><td>'+course_name+'('+course_id+')</td><td class="hidden"></td><td><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a> <a class="popup_link" href="" target="blank">Challenge</a> <a class="popup_link" href="" target="blank">Badge</a></td><td><a class="popup_link" href="'+student_activity_url+'" target="blank">Activity</a></td></tr>';
@@ -1806,42 +1806,27 @@ function getStudentActivity(studentid){
   var item_data_from_array = [];
   var itemdata = $.getJSON(item_url);
   $.when(itemdata).done(function(item_data_from_array) {
-    cc('Student data:','fatal')
-
-    console.log(item_data_from_array);
+    cc(student_details,'info',true);
+    // console.log(item_data_from_array);
     var user_data = item_data_from_array.user;
     logstore_data = user_data.logstore;
-    cc('-------oRIGINAL logstore_data','success');
-    console.log(logstore_data);
-    
-    // cc('-------SORTED logstore_data','fatal');
-    // var sorted_logstore_data = dataType(logstore_data,'object');
-    // sorted_logstore_data = _.sortBy(logstore_data,'timecreated');
-    // console.log(sorted_logstore_data);
+    cc('Student data:','info')
+    var student_details = '<h3 style="margin:0;padding:0;">User: '+user_data.firstname+ ' '+user_data.lastname+'</h3>';
+    $('#student-activity-profile').html(student_details);
+    $('#student-activity-processing').removeClass('hidden');
 
-    var result_count = getResponseSize(logstore_data,'JSON');    
+    var sorted_logstore_data = sortByKey(logstore_data, 'timecreated');
+    sorted_logstore_data = sorted_logstore_data.reverse();
+    logstore_data = sorted_logstore_data;
+    
+    var result_count = getResponseSize(logstore_data,'JSON',true);    
+    var timestamp = moment().format("X");
 
     jQuery.each(logstore_data, function(i, cdata) {
       // Process all courses within the category
+      $('#student-activity-processing span').html(itemdata_count);
       var d = logstore_data;
-      // var d = item_data_from_array[0].log;
-      // cc('DDDDDD','fatal');
-      console.log(d);
       if (d != undefined) {
-        // cc('TEST','fatal')
-        
-        // Store core data
-        //push to table
-        // var student_id = cdata["id"];
-        // var student_username = cdata["username"];
-        // var student_firstname = cdata["firstname"];
-        // var student_lastname = cdata["lastname"];
-        // var student_email = cdata["email"];
-        // var student_firstaccess = cdata["firstaccess"];
-        // var student_firstaccess_readable_date = dateMoment(student_firstaccess);
-        // var student_lastaccess = cdata["lastaccess"];
-        // var student_lastaccess_readable_date = dateMoment(student_lastaccess);
-        
         var action       = cdata['action'];
         var target       = cdata['target'];
         var objectid       = cdata['objectid'];
@@ -1849,23 +1834,21 @@ function getStudentActivity(studentid){
         var courseid       = cdata['courseid'];
         var timecreated       = cdata['timecreated'];
         var timecreated_readable_date = dateMoment(timecreated);
-        cc('ACTION DETAILS: courseid('+courseid+') action('+action+')','highlight');
-        // var item = {
-        //       "action": activity_course_id,
-        //       "activity_action": activity_action,
-        //       "activity_objectid": activity_objectid,
-        //       "activity_timestamp": activity_timestamp
-        //   }
-        //   // var item_object = dataType(item,'object')
-        // all_course_data.push(item);
-
-        // // var student_activity_modal = '<a class="action-item switch" gumby-trigger="#modal-student-activity" id="activate-student-activity"><i class="icon-tools"></i> Activity</a>';
-        // cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info');
-        // // // var report_url = window.location.pathname + window.location.search;
-
-        // all_student_activity.push()
+        // cc('ACTION DETAILS: courseid('+courseid+') action('+action+')','highlight');
         var table_data = '<tr><td>'+courseid+'</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hidden">'+timecreated+'</span>'+timecreated_readable_date+'</td></tr>';
         $(table_id).append(table_data);
+
+        var time_passed = timestamp - timecreated;
+        // alert('time_passed passed(millisec): '+time_passed)
+        // alert('time_passed passed(mins): '+time_passed/60)
+        // alert('time_passed passed(hours): '+time_passed/60/60)
+        var days_passed = time_passed/60/60/24;
+        if (days_passed > 15) {
+          cc('Last activity started over 15 days ago','warning')
+          // resetSessionData();
+          $('#student-activity-profile').append('<span>stalled</span>')
+        };
+
       }
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');

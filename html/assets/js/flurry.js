@@ -70,7 +70,7 @@ $( document ).ready(function() {
   // Graph Filter Triggers
   // Example: span.months_
   $("#graphs-holder li h2 span").click(function(event) {
-
+    cc('#graphs-holder li h2 span clicked','info')
     event.stopPropagation();
     var id = $(this).attr('id');
     id = id.slice(0, -1);

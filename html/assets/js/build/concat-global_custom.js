@@ -71,6 +71,14 @@ function extend(obj, src) {
   }
 })();
 
+// http://stackoverflow.com/questions/8175093/simple-function-to-sort-an-array-of-objects
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
 
 /*****************************************************************/
 /****************** FIND parameters in URL string ****************/
@@ -289,14 +297,15 @@ function dataType(data,convert_to){
         console.log(...something else.....);  
       };
 */
-function getResponseSize(itemdata,data_type){
+function getResponseSize(itemdata,data_type,disable_console_log){
   if (data_type != undefined) {
-    cc('getResponseSize with data type('+data_type+')', 'run');  
+    cc('getResponseSize with data type('+data_type+')', 'run',disable_console_log);  
   }else{
-    cc('getResponseSize with data type', 'run');
+    cc('getResponseSize with data type', 'run',disable_console_log);
   }
-  
-  console.log(itemdata);
+  if (disable_console_log != true) {
+    console.log(itemdata);  
+  };
   if (data_type == 'JSON') {
     console.log(itemdata["responseJSON"]);
     var result_count_data = itemdata["responseJSON"];
@@ -304,7 +313,7 @@ function getResponseSize(itemdata,data_type){
   }else{
     var result_count = _.size(itemdata);
   }
-  cc('SIZE of result_count: '+result_count,'success');
+  cc('SIZE of result_count: '+result_count,'success',disable_console_log);
   return result_count;
 }
 

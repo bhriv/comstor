@@ -70,13 +70,10 @@ if (urlParams['page'] == 'teacher-reports'){
   // $('#teacher_reports_triggers li a').addClass('active');
   // $('#mobile_analytics_submenus').addClass('hidden');
   if (urlParams['student_id'] != undefined) {
-    // alert(urlParams['student_id']);
     $('#category-students').hide();
-    // $('#modal-student-activity').show();
     $('#student-activity').show();
   }else{
     $('#student-activity').hide();
-    // $('#modal-student-activity').hide();
   }
   $('#sidebar_widgets').addClass('hidden');
   $('#mobile_analytics_submenus').addClass('hidden');

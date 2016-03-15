@@ -29,8 +29,8 @@
         <li id="widget-ActiveUsers">
             <h2 class="yellow">
                 Active Users <a class="ttip" data-tooltip="Total number of unique users who accessed the application per day."><i class="icon-info"></i></a> <a class="toggle" gumby-trigger="#widget-ActiveUsers .widget-content"><i class="icon-minus-squared"></i></a>
-                <span id="ActiveUsersM" class="months">Months</span> 
-                <span id="ActiveUsersW" class="weeks">Weeks</span> 
+                <!-- <span id="ActiveUsersM" class="months">Months</span> 
+                <span id="ActiveUsersW" class="weeks">Weeks</span> --> 
                 <span id="ActiveUsersD" class="days">Days</span> 
             </h2>
             <div class="widget-content">

@@ -430,6 +430,8 @@
                                     </div>
                               </div> -->
                             <div class="static">
+                                <div id="student-activity-profile"></div>
+                                <div id="student-activity-processing" class="hidden"><i class="icon-tools"></i> Activities <span></span></div>
                               <table class="tablesorter sortable" id="student-activity">
                                     <thead>
                                       <tr>
@@ -1051,6 +1053,9 @@ section#mef_reports ul.widget-grid li .widget-content {
 #analytics_triggers h2 i.icon-play{
         display: none;
       }
+      #student-activity-processing{
+        text-align: right;
+      }
     </style>
         <!-- Dev Only -->
         <script src="assets/js/testing-only.js"></script>
@@ -1079,6 +1084,7 @@ section#mef_reports ul.widget-grid li .widget-content {
                     // $( "#content_loader" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/PAGES/teacher-reports.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
                 }
         </script>
+        
         <script type="text/javascript" src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
         <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>  
 
