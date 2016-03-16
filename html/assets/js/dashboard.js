@@ -1822,14 +1822,12 @@ function getStudentActivity(studentid){
     logstore_data = user_data.logstore;
     cc('logstore_data data:','info')
     dataType(logstore_data)
-    console.log(logstore_data)
-    // Sort by Timecreated
-    // var sorted_logstore_data = _.pluck(logstore_data, 'timecreated');
-    // cc('timecreated values','warning')
-    // console.log(sorted_logstore_data)
+    // console.log(logstore_data)
+    // var sorted_timestamp_logstore_data = _.sortBy(timestamp_logstore_data, 'timecreated');
+
     var logstore_data_json = dataType(logstore_data,'JSON');
-    cc('logstore_data_json','success')
-    console.log(logstore_data_json);
+    // cc('logstore_data_json','success')
+    // console.log(logstore_data_json);
 
     // sorted_logstore_data = _.sortBy(logstore_data, 'timecreated');
     // cc('sorted_logstore_data data:','info')
@@ -1845,7 +1843,6 @@ function getStudentActivity(studentid){
 
     var result_count = getResponseSize(logstore_data);    
     cc('result_count of logstore_data:'+result_count,'success')
-    var timestamp = moment().format("X");
 
     var student_details = '<h3 style="margin:0;padding:0;">User: '+user_data.firstname+ ' '+user_data.lastname+'</h3>';
     $('#student-activity-profile').html(student_details);
@@ -1901,9 +1898,22 @@ function getStudentActivity(studentid){
                   var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hiddenX">'+timecreated+'</span> -- '+timecreated_readable_date+'</td></tr>';
                   $(table_id).append(table_data);
                   if (!active_flag) {
-                    var time_passed = timestamp - timecreated;
+                    // var timestamp = moment().format("X");
+                    var now_timestamp = moment().unix();
+                    var last_log_timestamp = getLastTimestamp(logstore_data);
+                    var time_passed = now_timestamp - last_log_timestamp;
+                    // var time_passed = timestamp - timecreated;
+                    cc('time_passed: '+time_passed+ ', last_timestamp: '+last_log_timestamp+ ', timestamp: '+now_timestamp,'info')
+                    var minutes_passed = parseInt(time_passed/60);
+                    cc('minutes_passed: '+minutes_passed,'info')
                     var days_passed = parseInt(time_passed/60/60/24);
                     cc('days_passed: '+days_passed,'info')
+                    // var start = moment(now_timestamp);
+                    // var end   = moment(last_log_timestamp);
+                    // var time_passed_label = end.to(start);
+                    var last_moment = moment.unix(last_log_timestamp).format("YYYY/MM/DD hh:mm:ss");
+                    var time_passed_label = moment(last_moment).fromNow();
+
                     if (days_passed > 19) {
                       active_status = 'dormant';
                     };
@@ -1914,13 +1924,13 @@ function getStudentActivity(studentid){
                       active_status = 'almost stalled';
                     };
                     if (7 > days_passed ) {
-                      active_status = 'active this week';
+                      active_status = 'active';
                     };
                     if (1 >= days_passed ) {
-                      active_status = 'active today';
+                      active_status = 'recently active';
                     };
                     cc('Days passed ('+days_passed+') Activity Status: '+active_status,'highlight')
-                    $('#student-activity-profile').append('<span>'+active_status+'</span>');
+                    $('#student-activity-profile').append('<span>Status: '+active_status+'. Last Active '+time_passed_label+'</span>');
                     active_flag = true;
                   } // end activity flag
                 }); // end $.each
@@ -1940,6 +1950,13 @@ function getStudentActivity(studentid){
   }); // end $.when                                                  
 }
 
+function getLastTimestamp(logstore_data){
+  cc('getLastTimestamp','run')
+    var timestamp_logstore_data = _.pluck(logstore_data, 'timecreated');
+    var sorted = timestamp_logstore_data.sort(); 
+    var last_element = sorted[sorted.length - 1];
+    return last_element
+}
 // function getCourseNameById(id){
 //   var course_item_url = base_url +'lumiousreports/courselookup/'+id;
 //   var course_item_data_from_array = [];
