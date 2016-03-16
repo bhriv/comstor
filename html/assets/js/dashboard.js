@@ -1855,10 +1855,10 @@ function getStudentActivity(studentid){
         var v = i-1;
         var activity_v_label = 'student_activity_'+v;
         var activity_v = localStorage.getItem(activity_v_label);
-        cc(student_current_activity +' ? '+activity_v,'highlight')
+        // cc(student_current_activity +' ? '+activity_v,'highlight')
         // Only progress if not a duplicate action
           if (student_current_activity == activity_v) {
-                cc('duplicate activity found('+student_current_activity+ ' = '+activity_v+'). do not add this to the activity table ','warning',false);
+                // cc('duplicate activity found('+student_current_activity+ ' = '+activity_v+'). do not add this to the activity table ','warning',false);
           }
           // else{
           // localStorage.setItem('student_activity_'+i,student_current_activity);
@@ -1871,36 +1871,14 @@ function getStudentActivity(studentid){
           $.when(course_itemdata).done(function(course_item_data_from_array) {
             jQuery.each(course_item_data_from_array, function(i, course_cdata) {     
               var course_name = course_cdata.fullname
-              cc('course name:'+course_name,'highlight')
+              // cc('course name:'+course_name,'highlight')
               // Only add entry log to the table if the action is not a duplicate
               var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hiddenX">'+timecreated+'</span> -- '+timecreated_readable_date+'</td></tr>';
               $(table_id).append(table_data);
+              // ensure the process is only run once
               if (!active_flag) 
               {
-                var now_timestamp = moment().unix();
-                var last_log_timestamp = getLastTimestamp(logstore_data);
-                var time_passed = now_timestamp - last_log_timestamp;
-                var days_passed = parseInt(time_passed/60/60/24);
-                
-                // var time_passed = timestamp - timecreated;
-                // cc('time_passed: '+time_passed+ ', last_timestamp: '+last_log_timestamp+ ', timestamp: '+now_timestamp,'info')
-                // var minutes_passed = parseInt(time_passed/60);
-                // cc('minutes_passed: '+minutes_passed,'info')
-                
-                // cc('days_passed: '+days_passed,'info')
-                // var start = moment(now_timestamp);
-                // var end   = moment(last_log_timestamp);
-                // var time_passed_label = end.to(start);
-                var last_moment = moment.unix(last_log_timestamp).format("YYYY/MM/DD hh:mm:ss");
-                var time_passed_label = moment(last_moment).fromNow();
-
-                if (days_passed > 19) {active_status = 'dormant';};
-                if (20 > days_passed > 14) {active_status = 'stalled';};
-                if (15 > days_passed > 6) {active_status = 'almost stalled';};
-                if (7 > days_passed ) {active_status = 'active';};
-                if (1 >= days_passed ) {active_status = 'recently active';};
-                cc('Days passed ('+days_passed+') Activity Status: '+active_status,'highlight')
-                $('#student-activity-profile').append('<span>Status: '+active_status+'. Last Active '+time_passed_label+'</span>');
+                getLastActivityLabel(logstore_data);
                 active_flag = true;
               } // end activity flag
             }); // end $.each
@@ -1913,7 +1891,8 @@ function getStudentActivity(studentid){
       itemdata_count++;
 
       if (itemdata_count == result_count) {
-        alert('All processing of getStudentActivity complete.','success');
+        cc('All processing of getStudentActivity complete.','success');
+        // $('#timestamp-cell').click();
       };
 // } // TEMP END limit itemdata_loop responses      
     }); // end $.each
@@ -1926,6 +1905,27 @@ function getLastTimestamp(logstore_data){
     var sorted = timestamp_logstore_data.sort(); 
     var last_element = sorted[sorted.length - 1];
     return last_element
+}
+
+function getLastActivityLabel(logstore_data){
+  cc('getLastActivityLabel','run')
+  var active_status = null,
+      time_passed_label = null,
+      now_timestamp = moment().unix(),
+      last_log_timestamp = getLastTimestamp(logstore_data),
+      time_passed = now_timestamp - last_log_timestamp,
+      days_passed = parseInt(time_passed/60/60/24);
+
+    if (days_passed > 19) {active_status = '<span class="label error">very stalled</span>';};
+    if (20 > days_passed > 14) {active_status = '<span class="label warning">stalled</span>';};
+    if (15 > days_passed > 6) {active_status = '<span class="label info">almost stalled</span>';};
+    if (7 > days_passed ) {active_status = '<span class="label success">active</span>';};
+    if (1 >= days_passed ) {active_status = '<span class="label success">recently active</span>';};
+    cc('Days passed ('+days_passed+') Activity Status: '+active_status,'highlight')
+    // Add humanized label to status
+    var last_moment = moment.unix(last_log_timestamp).format("YYYY/MM/DD hh:mm:ss");
+    var time_passed_label = moment(last_moment).fromNow();
+    $('#student-activity-profile').append('<span>'+active_status+' Last Activity '+time_passed_label+'</span>');
 }
 // function getCourseNameById(id){
 //   var course_item_url = base_url +'lumiousreports/courselookup/'+id;
