@@ -256,7 +256,7 @@ function dataType(data,convert_to){
 
   if (_.isObject(data)) {
     cc('original data type is object','info');
-    if(convert_to == 'string'){
+    if(convert_to == 'string' || convert_to == 'JSON'){
       new_data_object = JSON.stringify(data);
       if (_.isString(new_data_object)) {
         cc('data is NOW converted from object to string','success');

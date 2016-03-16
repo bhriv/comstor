@@ -90,6 +90,7 @@ module.exports = function(grunt) {
                     '<%= dirs.js_vendor_folder %>/Pikaday-master/pikaday.js',
                     '<%= dirs.js_vendor_folder %>/ckeditor/ckeditor.js',
                     '<%= dirs.js_vendor_folder %>/jQuery-File-Upload-master/js/jquery.fileupload.js',
+                    '<%= dirs.js_vendor_folder %>/sorttable/sorttable.js',
                 ],
                 dest: '<%= dirs.js_folder %>/build/concat-ui_vendor.js',
             },

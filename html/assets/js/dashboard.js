@@ -1797,36 +1797,63 @@ function getStudentActivity(studentid){
   cc('getStudentActivity('+studentid+')','run')
   table_id = '#student-activity';
   $(table_id).show();
+
   var itemdata_count = 0;
-  var result_count = 0;
-  var item = [];
+      result_count = 0,
+      item = [],
+      student_current_activity = null,
+      student_prev_activity = null,
+      table_data = 'start';
+
   localStorage.removeItem('student_prev_activity');
+  localStorage.removeItem('student_current_activity');
+  localStorage.setItem('student_activity_0',null);
 
   var item_url = base_url +'lumiousreports/studentdata/'+studentid;
   cc('Student Activity URL:'+item_url,'done')
   var item_data_from_array = [];
   var itemdata = $.getJSON(item_url);
   $.when(itemdata).done(function(item_data_from_array) {
-    cc(student_details,'info',true);
+    cc(student_details,'info',false);
     var active_flag = false;
     var active_status = '';
     // console.log(item_data_from_array);
     var user_data = item_data_from_array.user;
     logstore_data = user_data.logstore;
-    cc('Student data:','info')
+    cc('logstore_data data:','info')
+    dataType(logstore_data)
+    console.log(logstore_data)
+    // Sort by Timecreated
+    // var sorted_logstore_data = _.pluck(logstore_data, 'timecreated');
+    // cc('timecreated values','warning')
+    // console.log(sorted_logstore_data)
+    var logstore_data_json = dataType(logstore_data,'JSON');
+    cc('logstore_data_json','success')
+    console.log(logstore_data_json);
+
+    // sorted_logstore_data = _.sortBy(logstore_data, 'timecreated');
+    // cc('sorted_logstore_data data:','info')
+    // dataType(sorted_logstore_data)
+    // console.log(sorted_logstore_data)
+
+    var sorted_logstore_data = logstore_data.reverse();
+    logstore_data = sorted_logstore_data;
+    // // var sorted_logstore_data = dataType(logstore_data,'object');
+    // cc('REVERSED logstore_data','done');
+    // console.log(logstore_data)
+
+
+    var result_count = getResponseSize(logstore_data);    
+    cc('result_count of logstore_data:'+result_count,'success')
+    var timestamp = moment().format("X");
+
     var student_details = '<h3 style="margin:0;padding:0;">User: '+user_data.firstname+ ' '+user_data.lastname+'</h3>';
     $('#student-activity-profile').html(student_details);
     $('#student-activity-processing').removeClass('hidden');
 
-    var sorted_logstore_data = sortByKey(logstore_data, 'timecreated');
-    sorted_logstore_data = sorted_logstore_data.reverse();
-    logstore_data = sorted_logstore_data;
-    
-    var result_count = getResponseSize(logstore_data,'JSON',true);    
-    var timestamp = moment().format("X");
-
     jQuery.each(logstore_data, function(i, cdata) {     
       // Process all courses within the category
+// if (itemdata_count < 8) {
       $('#student-activity-processing span').html(itemdata_count);
       if (logstore_data != undefined) {
         var action       = cdata['action'];
@@ -1837,12 +1864,27 @@ function getStudentActivity(studentid){
         var timecreated       = cdata['timecreated'];
         var timecreated_readable_date = dateMoment(timecreated);
         var student_current_activity = action+'-'+objectid+'-'+target;
-        var student_prev_activity = localStorage.getItem('student_prev_activity');
+        // var student_prev_activity = localStorage.getItem('student_activity');
+        localStorage.setItem('student_activity_'+i,student_current_activity);
+        
+        // var activity_i_label = 'student_activity_'+i;
+        // var activity_i = localStorage.getItem(activity_i_label);
+        
+
+        
+        var v = i-1;
+        var activity_v_label = 'student_activity_'+v;
+        var activity_v = localStorage.getItem(activity_v_label);
+
+        // var activity_i_prev = localStorage.getItem('student_activity_'+v);
+
+        cc(student_current_activity +' ? '+activity_v,'highlight')
         // Only progress if not a duplicate action
-            if (student_prev_activity === student_current_activity) {
-            localStorage.setItem('student_prev_activity',student_current_activity);
-                  // cc('duplicate activity found. do not add this to the activity table ','warning',true);
-            }else{
+            if (student_current_activity == activity_v) {
+                  cc('duplicate activity found('+student_current_activity+ ' = '+activity_v+'). do not add this to the activity table ','warning',false);
+            }
+            // else{
+              // localStorage.setItem('student_activity_'+i,student_current_activity);
             // var course_name = getCourseNameById(courseid);
               var course_item_url = base_url +'lumiousreports/courselookup/'+courseid;
               var course_item_data_from_array = [];
@@ -1856,7 +1898,7 @@ function getStudentActivity(studentid){
                   // Only add entry log to the table if the action is not a duplicate
                                     
                   // cc('activity NOT duplicate. ADD this to the activity table ','success');
-                  var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hidden">'+timecreated+'</span>'+timecreated_readable_date+'</td></tr>';
+                  var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hiddenX">'+timecreated+'</span> -- '+timecreated_readable_date+'</td></tr>';
                   $(table_id).append(table_data);
                   if (!active_flag) {
                     var time_passed = timestamp - timecreated;
@@ -1883,7 +1925,7 @@ function getStudentActivity(studentid){
                   } // end activity flag
                 }); // end $.each
               }); // end $.when
-            } // end else
+            // } // end else
       }// end if d undefined
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -1891,8 +1933,9 @@ function getStudentActivity(studentid){
       itemdata_count++;
 
       if (itemdata_count == result_count) {
-        cc('All processing of getStudentActivity complete.','success');
+        alert('All processing of getStudentActivity complete.','success');
       };
+// } // TEMP END limit itemdata_loop responses      
     }); // end $.each
   }); // end $.when                                                  
 }
