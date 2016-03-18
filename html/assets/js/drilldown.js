@@ -218,6 +218,8 @@ $( window ).load(function() {
 				setLocalStorage('filter_mode','courseplan');
 				populateSessionMenu(thiscourse);
 				filter_actor.fadeOut();
+				// BHRIV refresh table to filter student names
+				getAllStudentsInCourse(thiscourse);
 			}else{
 				setLocalStorage('current_course','');
 				setLocalStorage('current_session','');

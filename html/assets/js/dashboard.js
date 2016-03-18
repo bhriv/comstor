@@ -1714,6 +1714,7 @@ function getAllStudentsInCourse(course_id,course_name){
 
   // alert('running getAllStudentsInCategory('+id+')')
   var table_id = '#category-students';
+  $(table_id).html('');
   $(table_id).show();
   var itemdata_count = 0;
   var result_count = 0;
@@ -1734,6 +1735,9 @@ function getAllStudentsInCourse(course_id,course_name){
       if (d != undefined) {
         // Store core data
         //push to table
+        if (isItemNullorUndefined(course_name)) {
+          course_name = course_id;
+        };
         var student_id = cdata["id"];
         var student_username = cdata["username"];
         var student_firstname = cdata["firstname"];
@@ -1749,12 +1753,12 @@ function getAllStudentsInCourse(course_id,course_name){
         var report_url = window.location.pathname;
         var apiKey_localstorage = localStorage.getItem('apiKey');
         var student_activity_url = report_url + '?apiKey='+apiKey_localstorage+'&page=teacher-reports&current_cat='+urlParams["current_cat"]+'&student_id='+student_id;
-
+        // var student_last_log = null;
+        // var recent_log = _.first(student_last_log,2);
         // var student_activity_modal = '<a class="action-item switch" gumby-trigger="#modal-student-activity" id="activate-student-activity"><i class="icon-tools"></i> Activity</a>';
         cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info',true);
-        // // var report_url = window.location.pathname + window.location.search;
-
-        var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden">'+student_lastaccess+'</span>'+student_lastaccess_readable_date+'</td><td><span class="hidden">'+student_firstaccess+'</span>'+student_firstaccess_readable_date+'</td><td>'+course_name+'('+course_id+')</td><td class="hidden"></td><td><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a> <a class="popup_link" href="" target="blank">Challenge</a> <a class="popup_link" href="" target="blank">Badge</a></td><td><a class="popup_link" href="'+student_activity_url+'" target="blank">Activity</a></td></tr>';
+        
+        var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden">'+student_lastaccess+'</span>'+student_lastaccess_readable_date+'</td><td><span class="hidden">'+student_firstaccess+'</span>'+student_firstaccess_readable_date+'</td><td>'+course_name+'('+course_id+')</td><td class="hidden"></td><td><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a> <a class="popup_link" href="" target="blank">Challenge</a> <a class="popup_link" href="" target="blank">Badge</a></td><td><a class="popup_link" href="'+student_activity_url+'" target="blank">Activity</a></td><td></td></tr>';
         $(table_id).append(table_data);
       }
       else{
@@ -1772,9 +1776,6 @@ function getAllStudentsInCourse(course_id,course_name){
 function displayCategoryResults(cdata,visibility_type,switch_url,switch_label,table_id,level,breadcrumb){
   cc('displayCategoryResults','run');
   
-  // if (level == undefined) {
-  //   level = 0;
-  // };
   var name         = cdata['name'];
   var depth        = cdata['depth'];
   var path         = cdata['path'];
@@ -1821,18 +1822,18 @@ function getStudentActivity(studentid){
     var user_data = item_data_from_array.user;
     var logstore_data = user_data.logstore;
     cc('logstore_data data:','info')
-    dataType(logstore_data)
-    var logstore_data_json = dataType(logstore_data,'JSON');
+    // dataType(logstore_data)
+    // var logstore_data_json = dataType(logstore_data,'JSON');
     
-    var sorted_logstore_data = logstore_data.reverse();
-    logstore_data = sorted_logstore_data;
+    // var sorted_logstore_data = logstore_data.reverse();
+    // logstore_data = sorted_logstore_data;
     // cc('REVERSED logstore_data','done');
-    // console.log(logstore_data)
+    console.log(logstore_data)
 
     var result_count = getResponseSize(logstore_data);    
     cc('result_count of logstore_data:'+result_count,'success')
 
-    var student_details = '<h3 style="margin:0;padding:0;">User: '+user_data.firstname+ ' '+user_data.lastname+'</h3>';
+    var student_details = '<h3 style="margin:0;padding:0;">User: '+user_data.firstname+ ' '+user_data.lastname+' <small>(User ID:'+user_data.id+')</small></h3>';
     $('#student-activity-profile').html(student_details);
     $('#student-activity-processing').removeClass('hidden');
 
@@ -1866,15 +1867,23 @@ function getStudentActivity(studentid){
           var course_item_url = base_url +'lumiousreports/courselookup/'+courseid;
           var course_item_data_from_array = [];
           var course_itemdata = $.getJSON(course_item_url);
-          var course_name = '';
+          // var course_name = '';
+          // var course_name_prev = null;
           // Wait for the course name to load before adding to the table
           $.when(course_itemdata).done(function(course_item_data_from_array) {
             jQuery.each(course_item_data_from_array, function(i, course_cdata) {     
+              // alert('DONE');
               var course_name = course_cdata.fullname
+              // cc('course_name_prev: '+course_name_prev +' | course_name: '+course_name);
+              // if (course_name_prev == course_name) {
+              //   course_name = '';
+              //   course_id = '';
+              // };
               // cc('course name:'+course_name,'highlight')
               // Only add entry log to the table if the action is not a duplicate
               var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hiddenX">'+timecreated+'</span> -- '+timecreated_readable_date+'</td></tr>';
               $(table_id).append(table_data);
+              // course_name_prev = course_name;
               // ensure the process is only run once
               if (!active_flag) 
               {

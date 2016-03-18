@@ -167,9 +167,16 @@ $( window ).load(function() {
         $('#category-students').addClass('hidden');
         $('#concatenated-results').hide();
 		if(thiscourse !== 'NULL' && thiscourse > 0){
+            alert('new change');
+            getAllStudentsInCourse(thiscourse)
+            $('#content_loader div').removeClass('hidden');
+            $('#mef_reports').removeClass('hidden');
+            $('#category-students').removeClass('hidden');
+            
 			setLocalStorage('current_course',thiscourse);
 			setLocalStorage('filter_mode','course');
 			populateQuizMenu(thiscourse);
+            // BHRIV refresh table to filter student names;
 		}else{
 			setLocalStorage('filter_mode','');
 			setLocalStorage('current_cat','');
