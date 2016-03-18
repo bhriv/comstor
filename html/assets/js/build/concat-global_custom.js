@@ -208,9 +208,9 @@ $(function() {
 // Date Picker Processing Functions 
 /*****************************************************************/
 
-function isItemNullorUndefined(item){
+function isItemNullorUndefined(item,disable_console_log){
   // cc('isItemNullorUndefined: '+item,'run');
-  cc('isItemNullorUndefined: ','run')
+  cc('isItemNullorUndefined: ','run',disable_console_log)
   if (item == null || item == 'null' || item == undefined || item == 'undefined') {
     cc('ITEM is - '+item,'error');
     return true

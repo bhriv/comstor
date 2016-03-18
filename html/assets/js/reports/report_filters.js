@@ -168,11 +168,11 @@ $( window ).load(function() {
         $('#concatenated-results').hide();
 		if(thiscourse !== 'NULL' && thiscourse > 0){
             alert('new change');
-            getAllStudentsInCourse(thiscourse)
+            getAllStudentsInCourse(thiscourse,'temp')
             $('#content_loader div').removeClass('hidden');
             $('#mef_reports').removeClass('hidden');
             $('#category-students').removeClass('hidden');
-            
+
 			setLocalStorage('current_course',thiscourse);
 			setLocalStorage('filter_mode','course');
 			populateQuizMenu(thiscourse);
