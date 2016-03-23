@@ -109,7 +109,7 @@ function setDateRange(){
 function setStartDate(){
   cc('setStartDate','run');
   var start_date = $('#start_date').val();
-  if (isItemNullorUndefined(start_date)) {
+  if (isItemNullorUndefined(start_date,true)) {
     setDateRange();
   }
   localStorage.setItem( 'start_date', start_date );
@@ -119,7 +119,7 @@ function setStartDate(){
 function setEndDate(){
   cc('setEndDate','run');
   var end_date = $('#end_date').val();
-  if (isItemNullorUndefined(end_date)) {
+  if (isItemNullorUndefined(end_date,true)) {
     setDateRange();
   }
   localStorage.setItem( 'end_date', end_date );
@@ -153,7 +153,7 @@ function setApiKey(apiKey){
 
 function checkUserSessionID(){
   var session_id = localStorage.getItem( 'session_id' );
-  if (isItemNullorUndefined(session_id)) {
+  if (isItemNullorUndefined(session_id,true)) {
     session_id = '999999999_session_id_default';
     cc('No session_id is set so the default of '+session_id+' will be used');
     setSessionID(session_id);
@@ -163,7 +163,7 @@ function checkUserSessionID(){
 
 function checkStartDate(){
   var start_date = localStorage.getItem( 'start_date' );
-  if (isItemNullorUndefined(start_date)) {
+  if (isItemNullorUndefined(start_date,true)) {
     cc('No Start Date set;');
     setDateRange();
     var start_date = localStorage.getItem( 'start_date' );
@@ -173,7 +173,7 @@ function checkStartDate(){
 
 function checkEndDate(){
   var end_date = localStorage.getItem( 'end_date' );
-  if (isItemNullorUndefined(end_date)) {
+  if (isItemNullorUndefined(end_date,true)) {
     cc('No End Date set;');
     setDateRange();
     var end_date = localStorage.getItem( 'end_date' );
@@ -183,7 +183,7 @@ function checkEndDate(){
 
 function checkMetricType(){
   var metric_type = localStorage.getItem( 'metric_type' );
-  if (isItemNullorUndefined(metric_type)) {
+  if (isItemNullorUndefined(metric_type,true)) {
     metric_type = 'appMetrics';
     cc('No metric_type is set so the default of '+metric_type+' will be used');
     setMetricType(metric_type);
@@ -193,7 +193,7 @@ function checkMetricType(){
 
 function checkAppMetricSpecific(){
   var app_metric_specific = localStorage.getItem( 'app_metric_specific' );
-  if (isItemNullorUndefined(app_metric_specific)) {
+  if (isItemNullorUndefined(app_metric_specific,true)) {
     app_metric_specific = 'NewUsers';
     cc('No app_metric_specific is set so the default of '+app_metric_specific+' will be used');
     setAppMetricSpecific(app_metric_specific);
@@ -203,7 +203,7 @@ function checkAppMetricSpecific(){
 
 function checkEventMetricSpecific(){
   var event_metric_specific = localStorage.getItem( 'event_metric_specific' );
-  if (isItemNullorUndefined(event_metric_specific)) {
+  if (isItemNullorUndefined(event_metric_specific,true)) {
     event_metric_specific = 'CourseViewed';
     cc('No event_metric_specific is set so the default of '+event_metric_specific+' will be used');
     setEventMetricSpecific(event_metric_specific);
@@ -221,10 +221,10 @@ function checkStorageItem(item_NAME){
 function checkApiKey(){
   cc('checkApiKey','run');
   var apiKey = localStorage.getItem( 'apiKey');
-  if (isItemNullorUndefined(apiKey)) {
+  if (isItemNullorUndefined(apiKey,true)) {
     cc('No apiKey is set so check URL for parameter','warning');
     var this_page_apiKey = urlParams['apiKey'];
-    if (isItemNullorUndefined(this_page_apiKey)) {
+    if (isItemNullorUndefined(this_page_apiKey,true)) {
       cc('No apiKey is found in the URL. Queries will not find data.','fatal');
     }else{
       setApiKey(this_page_apiKey);

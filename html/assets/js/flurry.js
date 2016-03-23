@@ -35,7 +35,7 @@ $( document ).ready(function() {
   /**************** Trigger Events to Build Charts  **************/
   /*****************************************************************/
 
-  if (isItemNullorUndefined(localStorage.getItem('ChartData_period')) || isItemNullorUndefined(localStorage.getItem('ChartData_id'))) {
+  if (isItemNullorUndefined(localStorage.getItem('ChartData_period'),true) || isItemNullorUndefined(localStorage.getItem('ChartData_id'),true)) {
    setChartDetails('NewUsers','days');
   };
   // Sidebar Navigation
@@ -112,7 +112,7 @@ $( document ).ready(function() {
   $('#app_metric_specific select').on('change', function() {
       var app_metric_specific = $(this).val();
       cc('app_metric_specific: ' +app_metric_specific,'info');
-      if (isItemNullorUndefined('app_metric_specific')) {
+      if (isItemNullorUndefined('app_metric_specific'),true) {
         app_metric_specific = 'appMetrics';
         cc('app_metric_specific default used: ' +app_metric_specific,'info');
       }
@@ -304,7 +304,7 @@ function displayChartData(id,period){
 function getChartData(id,period){
   cc('getChartData','run');
 
-  if (isItemNullorUndefined(period)) {
+  if (isItemNullorUndefined(period,true)) {
     var period = localStorage.getItem('ChartData_period')
     cc('No period passed so localStorage('+period+') value will be used','warning');
     period_label = 'Change This<br>Week';
@@ -313,7 +313,7 @@ function getChartData(id,period){
     }else{
     console.log('Period parameter: '+period);
   }
-  if (isItemNullorUndefined(id)) {
+  if (isItemNullorUndefined(id,true)) {
     var id = localStorage.getItem('ChartData_id')
     cc('No id passed so localStorage('+id+') value will be used','warning');
     id = 'NewUsers';

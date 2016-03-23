@@ -382,7 +382,7 @@ function get_item_data(item_ID, item_TYPE, item_ACTION){
   cc('session_item_data_array('+data_name+') is: ','info');
   console.log(session_item_data_array);
 
-  if (isItemNullorUndefined(session_item_data_array)) {
+  if (isItemNullorUndefined(session_item_data_array,true)) {
     console.log('LINE 436: session_item_data_array is NULL or undefined');
     getItemDataFromEndpoint(item_ID,item_TYPE,item_ACTION);
     alert('434 Exiting - temp');
@@ -448,9 +448,9 @@ function findItemByID(data,item_ID,item_TYPE,disable_console_log){
   console.log('findItemByID - below is the value of the incoming data:');
   console.log(data);
   cc('is data NULL?','info');
-  isItemNullorUndefined(data);
+  isItemNullorUndefined(data,true);
   cc('is item NULL?','info');
-  isItemNullorUndefined(item_ID);
+  isItemNullorUndefined(item_ID,true);
   // ----- TEST TO ENSURE DATA IS WORKING ------ // 
   // var y = data[0];
   // console.log(y);
@@ -618,7 +618,7 @@ function processItemData(d,item_TYPE,item_ACTION){
     var updated_data_object = [];
     var storage_data = localStorage.getItem(item_TYPE);
 
-    if (isItemNullorUndefined(storage_data)) { 
+    if (isItemNullorUndefined(storage_data,true)) { 
       cc('INSIDE PROCESS LOOP FIRST RUN','success');
       // if no localstorage for item_TYPE, set this data as the storage data
       var data_object = dataType(d,'object');
@@ -1449,8 +1449,8 @@ function nestleCategories (all_nested_category_data,level) {
   };
   
   var item_data_from_array = all_nested_category_data[level];
-  cc('item_data_from_array['+level+']','fatal');
-  console.log(item_data_from_array);
+  // cc('item_data_from_array['+level+']','fatal');
+  // console.log(item_data_from_array);
   
   var result_count = getResponseSize(item_data_from_array);
 
@@ -1465,7 +1465,7 @@ function nestleCategories (all_nested_category_data,level) {
         var parent_data = all_nested_category_data[category_parent_count];
         var parent_details = findItemByID(parent_data,parent_ID,'parent_ID',true);
         // var levelup_data = {"levelupname" : parent_details.name, "levelupid" : parent_details.id, "levelcoursecount" : parent_details.coursecount }
-        if (!isItemNullorUndefined(parent_details)) {
+        if (!isItemNullorUndefined(parent_details,true)) {
           cc('Category Name: '+cdata["name"]+' ID:'+cdata["id"]+' Depth:'+cdata["depth"]+ ' cdata["parent"]:'+cdata["parent"]+ ' Parent Name:'+parent_details.name+'('+parent_details.id+')','info');
           // var table_data = '<tr><td>'+cdata["id"]+'</td><td><h5>'+parent_details.name+'<small>('+parent_details.id+')</small> > '+cdata["name"]+'<small>('+cdata["id"]+')</small></h5></td><td><span class="hidden">timehere</span></strong>date</td><td>' +cdata["depth"]+ '</td><td>' +cdata["path"] +'</td><td><strong><a class="popup_link" href="'+cdata["id"]+'" target="blank">switch</a></strong></tr>';
           // $(table_id).append(table_data);
@@ -1644,7 +1644,7 @@ function displaySortedCategoryResults(sorted_category_data){
           break;
       }
       var description_details = '';
-      if (!isItemNullorUndefined(cdata["description"]) && cdata["description"] != "") {
+      if (!isItemNullorUndefined(cdata["description"],true) && cdata["description"] != "") {
         var description_details = '<small>'+cdata["description"]+'</small>';  
       };
 
@@ -1744,11 +1744,6 @@ function getAllStudentsInCourse(course_id,course_name,action){
       // Process all courses within the category
       var d = item_data_from_array[0];
       if (d != undefined) {
-        // Store core data
-        //push to table
-        if (isItemNullorUndefined(course_name,true)) {
-          course_name = course_id;
-        };
         var student_id = cdata["id"];
         all_student_ids_in_course.push(student_id)
       }
@@ -1757,7 +1752,7 @@ function getAllStudentsInCourse(course_id,course_name,action){
       }
       itemdata_count++;
       if (itemdata_count == result_count) {
-        cc('All processing of getAllStudentsInCategory complete.','success');
+        cc('All processing of getAllStudentsInCourse complete.','success');
         cc('Here are all the unique IDs of students in this course','info')
         var uniq_student_ids = _.uniq(all_student_ids_in_course);
         console.log(uniq_student_ids);
@@ -1783,6 +1778,7 @@ function courseStudentData(uniq_student_ids,table_id,course_id,course_name){
     cc('Student Activity URL:'+item_url,'done')
     var item_data_from_array = [];
     var itemdata = $.getJSON(item_url);
+
     $.when(itemdata).done(function(item_data_from_array) {
       var cdata = item_data_from_array.user;
       var student_id = cdata["id"];
@@ -1799,13 +1795,56 @@ function courseStudentData(uniq_student_ids,table_id,course_id,course_name){
       var report_url = window.location.pathname;
       var apiKey_localstorage = localStorage.getItem('apiKey');
       var student_activity_url = report_url + '?apiKey='+apiKey_localstorage+'&page=teacher-reports&current_cat='+urlParams["current_cat"]+'&student_id='+student_id;
+      
+      var logstore_data = cdata["logstore"];
+      var user_last_activity = _.first(logstore_data);
+      // cc('logstore_data data:','info')
+      // console.log(user_last_activity);
+      var active_status = '';
+      var activity_details = '';
+
+      if (!isItemNullorUndefined(user_last_activity,true)) {
+        var user_activity_status = getLastActivityStatus(user_last_activity);
+        var now_timestamp = moment().unix(),
+            time_passed = now_timestamp - user_last_activity.timecreated,
+            days_passed = parseInt(time_passed/60/60/24);
+
+        if (days_passed > 20) { 
+          active_status = '<span class="label danger">very stalled</span>';
+        };
+        if (days_passed <= 20 && days_passed > 14) {
+          active_status = '<span class="label warning">stalled</span>';
+        };
+        if (days_passed <= 14 && days_passed > 7) {
+          active_status = '<span class="label info">almost stalled</span>';
+        };
+        if (days_passed <= 7 && days_passed > 1) {
+          active_status = '<span class="label success">active this week</span>';
+        };
+        if (days_passed <= 1 ) {
+          active_status = '<span class="label success">active today</span>';
+        };
+        // Get Activity Course ID
+        var activity_courseid = user_last_activity.courseid;
+        if (isItemNullorUndefined(activity_courseid,true)) {
+          activity_courseid = '';
+        }else{
+          activity_courseid = '('+activity_courseid+')';
+        }
+        // Setup Display for results
+        var formatted_date = formatDate(user_last_activity.timecreated);
+        activity_details = '<small>'+user_last_activity.action + ' '+user_last_activity.target+ ''+activity_courseid+' at '+formatted_date+'</small>';
+      }
+      else{
+        active_status = '<span class="danger">No Login</span>';
+      }
+
+
       cc('STUDENT DETAILS: id('+student_id+') username('+student_username+')','info',true);
       // Display Results
-      var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>('+student_username+')</small></h5>'+student_email+'</td><td><span class="hidden">'+student_lastaccess+'</span>'+student_lastaccess_readable_date+'</td><td><span class="hidden">'+student_firstaccess+'</span>'+student_firstaccess_readable_date+'</td><td>'+course_name+'('+course_id+')</td><td class="hidden"></td><td><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a> <a class="popup_link" href="" target="blank">Challenge</a> <a class="popup_link" href="" target="blank">Badge</a></td><td><a class="popup_link" href="'+student_activity_url+'" target="blank">Activity</a></td><td></td></tr>';
+      var action_list = '<ul class="short"><li><a class="popup_link" href="" target="blank">Contact</a></li><li><a class="popup_link" href="" target="blank">Remediation</a></li><li><a class="popup_link" href="" target="blank">Challenge</a></li><li><a class="popup_link" href="" target="blank">Badge</a></li></ul>';
+      var table_data = '<tr><td>'+student_id+'</td><td><h5>'+student_firstname+' '+student_lastname+' <small>(Username: '+student_username+')</small></h5>'+student_email+'</td><td>'+active_status+'</td><td><span class="hidden">'+student_lastaccess+'</span>'+student_lastaccess_readable_date+'</td><td><span class="hidden">'+student_firstaccess+'</span>'+student_firstaccess_readable_date+'</td><td class="hidden">'+course_name+'('+course_id+')</td><td class="hidden"></td><td>'+action_list+'</td><td>'+activity_details+'</td><td><a class="popup_link" href="'+student_activity_url+'" target="blank">View All Activity</a></td></tr>';
       $(table_id).append(table_data);
-
-      // var table_data = '<tr><td>'+user_data.id+'</td><td><h5>'+user_data.firstname+' '+user_data.lastname+' <small>('+user_data.username+')</small></h5>'+user_data.email+'</td><td><span class="hidden">'+user_data.lastaccess+'</span>'+user_data.lastaccess+'</td><td><span class="hidden">'+user_data.firstaccess+'</span>'+user_data.firstaccess+'</td><td></td><td class="hidden"></td><td><a class="popup_link" href="" target="blank">Contact</a> <a class="popup_link" href="" target="blank">Remediation</a> <a class="popup_link" href="" target="blank">Challenge</a> <a class="popup_link" href="" target="blank">Badge</a></td><td><a class="popup_link" href="'+user_data.url+'" target="blank">Activity</a></td><td></td></tr>';
-      // $(table_id).append(table_data);
     }); // end $.when  
     itemdata_count++;
 
@@ -1813,6 +1852,30 @@ function courseStudentData(uniq_student_ids,table_id,course_id,course_name){
       cc('All processing of courseStudentData complete.','success');
     };
   }); // end $.each
+}
+
+$('#query-filterstatus select').on('change', function() {
+    cc('query-filterstatus changed','info');
+    var _query = $(this).val();
+    filterStatus(_query);
+});
+
+function filterStatus(status){
+    cc('filterStatus','run');
+   switch(status) {
+            case 'active':
+                $('#category-students tbody tr td span').closest( "tr" ).hide();  
+                $('#category-students tbody tr td span.success').closest( "tr" ).show();  
+                $('#category-students tbody tr td span.info').closest( "tr" ).show();
+                break;
+            case 'stalled':
+                $('#category-students tbody tr td span').closest( "tr" ).hide();
+                $('#category-students tbody tr td span.danger').closest( "tr" ).show();
+                $('#category-students tbody tr td span.warning').closest( "tr" ).show();
+                break;
+            case 'all':
+                $('#category-students tbody tr').show();
+        }
 }
 
 var all_student_activity = [];
@@ -1845,23 +1908,16 @@ function getStudentActivity(studentid,action){
     var user_data = item_data_from_array.user;
     var logstore_data = user_data.logstore;
     cc('logstore_data data:','info')
-    // dataType(logstore_data)
-    // var logstore_data_json = dataType(logstore_data,'JSON');
-    
-    // var sorted_logstore_data = logstore_data.reverse();
-    // logstore_data = sorted_logstore_data;
-    // cc('REVERSED logstore_data','done');
-    
+
     var user_last_activity = _.first(logstore_data);
-    console.log(user_last_activity);
-    var result_count = getResponseSize(logstore_data); 
-    var activity_details = user_last_activity.action + ' '+user_last_activity.target+ ' at '+user_last_activity.timecreated;
+    // console.log(user_last_activity);
+    var formatted_date = formatDate(user_last_activity.timecreated);
+    var activity_details = user_last_activity.action + ' '+user_last_activity.target+ ' at '+formatted_date;
     $('#student-activity-profile').append(activity_details);   
     // cc('result_count of logstore_data:'+result_count,'success')
     // if (action == 'display') {
       var student_details = '<h3 style="margin:0;padding:0;">User: '+user_data.firstname+ ' '+user_data.lastname+' <small>(User ID:'+user_data.id+')</small></h3>';
       $('#student-activity-profile').html(student_details);
-
       $('#student-activity-processing').removeClass('hidden');  
     // };
     
@@ -1896,7 +1952,7 @@ function getStudentActivity(studentid,action){
           jQuery.each(course_item_data_from_array, function(i, course_cdata) {     
             var course_name = course_cdata.fullname
             // Only add entry log to the table if the action is not a duplicate
-            var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hiddenX">'+timecreated+'</span> -- '+timecreated_readable_date+'</td></tr>';
+            var table_data = '<tr><td>'+course_name+' ('+courseid+')</td><td>'+action+'</td><td>'+objectid+'</td><td>'+target+'</td><td><span class="hidden">'+timecreated+'</span>'+timecreated_readable_date+'</td></tr>';
             $(table_id).append(table_data);
             // ensure the process is only run once
             if (!active_flag) 
@@ -1930,6 +1986,35 @@ function getLastTimestamp(logstore_data){
     var sorted = timestamp_logstore_data.sort(); 
     var last_element = sorted[sorted.length - 1];
     return last_element
+}
+
+function formatDate(timestamp){
+  // cc('formatDate','run')
+    var formatted_date = moment.unix(timestamp).format("YYYY/MM/DD hh:mm:ss");
+    return formatted_date
+}
+
+
+function getLastActivityStatus(last_activity_timestamp){
+  cc('getLastActivityStatus','run')
+  var last_moment = moment.unix(last_activity_timestamp).format("YYYY/MM/DD hh:mm:ss");
+  var time_passed_label = moment(last_moment).fromNow();
+
+  var active_status = null,
+      now_timestamp = moment().unix(),
+      time_passed = now_timestamp - last_activity_timestamp,
+      days_passed = parseInt(time_passed/60/60/24);
+
+    if (days_passed > 19) {active_status = '<span class="label error">very stalled</span>';};
+    if (20 > days_passed > 14) {active_status = '<span class="label warning">stalled</span>';};
+    if (15 > days_passed > 6) {active_status = '<span class="label info">almost stalled</span>';};
+    if (7 > days_passed ) {active_status = '<span class="label success">active</span>';};
+    if (1 >= days_passed ) {active_status = '<span class="label success">recently active</span>';};
+    // cc('Days passed ('+days_passed+') Activity Status: '+active_status,'highlight')
+    // Add humanized label to status
+    
+    // return days_passed;
+    // $('#student-activity-profile').append('<span>'+active_status+' Last Activity '+time_passed_label+'</span>');
 }
 
 function getLastActivityLabel(logstore_data){

@@ -99,7 +99,7 @@
                       <div class="widget-content active hidden" id="show_hide_categories">
                         <!-- <h3>Visible Categories <span id="visible_count"></span></h3> -->
                         <div class="row">
-                          <table class="tablesorter">
+                          <table class="tablesorterX sortable">
                             <thead>
                               <tr>
                                 <th>ID</th>
@@ -117,7 +117,7 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="row hidden">
+                        <!-- <div class="row hidden">
                           <h3>Hidden Categories <span id="hidden_count"></span></h3>
                           <table class="tablesorter">
                             <thead>
@@ -133,10 +133,9 @@
                             </thead>
 
                             <tbody id="hidden_categories">
-                              <!-- Filled by Javascript Dynamically -->
                             </tbody>
                           </table>
-                        </div>
+                        </div> -->
                       </div>
 
                       <!-- dashboard - mobile (flurry)
@@ -459,34 +458,35 @@
                             </div>
 
                             <div class="static">
-                              <a href="#" class="action-item switch" gumby-trigger="#modal-student-activity" id="dash-edit"><i class="icon-tools"></i> Activity</a>
+                              <!-- <a href="#" class="action-item switch" gumby-trigger="#modal-student-activity" id="dash-edit"><i class="icon-tools"></i> Activity</a> -->
+                              <div class="field columns main-filter" id="query-filterstatus">
+                                    <label>Status Filter:</label>
+                                    <div class="picker">
+                                        <select id="filterstatus">
+                                            <option value="all">
+                                                <span data-type="type">Show All Students</span>
+                                            </option> 
+                                            <option value="active">
+                                                <span> Only show active students</span>
+                                            </option>
+                                            <option value="stalled">
+                                                <span> Only show stalled students</span>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                               <table class="tablesorter sortable" id="category-students">
                                 <thead>
                                   <tr>
-                                    <th>
-                                      ID
-                                    </th>
-                                    <th>
-                                      Student
-                                    </th>
-                                    <th>
-                                      Last Access
-                                    </th>
-                                    <th>
-                                      First Access
-                                    </th>
-                                    <th>
-                                      Course
-                                    </th>
-                                    <th>
-                                      Actions
-                                    </th>
-                                    <th>
-                                      Activity
-                                    </th>
-                                    <th>
-                                      Last Active
-                                    </th>
+                                    <th>ID</th>
+                                    <th>Student</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>First Login</th>
+                                    <th class="hidden">Course</th>
+                                    <th>Actions</th>
+                                    <th>Last Activity</th>
+                                    <th>Activity</th>
                                   </tr>
                                 </thead>
 
@@ -505,10 +505,10 @@
                                         Student
                                       </th>
                                       <th>
-                                        Last Access
+                                        Last Login
                                       </th>
                                       <th>
-                                        First Access
+                                        First Login
                                       </th>
                                       <th>
                                         Stress
@@ -1058,6 +1058,14 @@ section#mef_reports ul.widget-grid li .widget-content {
       }
       #student-activity-processing{
         text-align: right;
+      }
+      ul.short{
+        margin: 0;
+      }
+      ul.short li{
+        padding: 0;
+        font-size: 12px;
+        clear: left;
       }
     </style>
         <!-- Dev Only -->

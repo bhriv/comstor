@@ -95,7 +95,7 @@ $( window ).load(function() {
 			console.log('checking URL parameters for Category details...');
             // check to see if Category passed via URL
             var name_string = urlParams['cat_name'];
-            if (name_string != "" && !isItemNullorUndefined(name_string) && name_string != undefined) {
+            if (name_string != "" && !isItemNullorUndefined(name_string,true) && name_string != undefined) {
                 var cat_name = name_string.replace(/-/g,' ');
                 console.log('cat_name from URL: '+cat_name);
                 selected = ' selected="selected"';
@@ -167,8 +167,8 @@ $( window ).load(function() {
         $('#category-students').addClass('hidden');
         $('#concatenated-results').hide();
 		if(thiscourse !== 'NULL' && thiscourse > 0){
-            alert('new change');
-            getAllStudentsInCourse(thiscourse,'temp')
+            alert('A new report will be generated');
+            getAllStudentsInCourse(thiscourse)
             $('#content_loader div').removeClass('hidden');
             $('#mef_reports').removeClass('hidden');
             $('#category-students').removeClass('hidden');
@@ -370,7 +370,7 @@ $( window ).load(function() {
 
         filterFunction(_query_show_questions_report);
 
-		$('#report_results_holder').show();
+        $('#report_results_holder').show();
 
        /* switch(_query_show_students_performance) {
             case '1':
@@ -435,7 +435,7 @@ $( window ).load(function() {
         console.log('filter_mode from URL: '+urlParams['filter_mode']);
         console.log('current_cat from URL: '+urlParams['current_cat']);
         // localStorage.setItem(cat_name,'cat_name')
-        if (urlParams['current_cat'] != "" || !isItemNullorUndefined(urlParams['current_cat'])) {
+        if (urlParams['current_cat'] != "" || !isItemNullorUndefined(urlParams['current_cat'],true)) {
             thisurl = url_course+'/'+urlParams['current_cat'];
         }else{
             thisurl = url_course+'/'+catid;    
