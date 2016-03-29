@@ -391,6 +391,21 @@ $(document).ready(function() {
     getSKArtistDetails(artist_name,results_page);
     // $( "#who_to_host" ).submit();
   });
+
+  $( "td.name" ).click(function() {
+    var artist_name = localStorage.getItem('search_name');
+    var results_page = localStorage.getItem('results_page');
+    results_page = parseInt(results_page);
+    results_page++;
+    localStorage.setItem('results_page',results_page);
+
+    // var artist_name = 'Falls';
+    // getENArtistDetails(artist_name);
+    // getBITArtistDetails(artist_name);
+    
+    getSKArtistDetails(artist_name,results_page);
+    // $( "#who_to_host" ).submit();
+  });
 }); // end Doc Ready 
 
 
@@ -503,7 +518,7 @@ function getSKArtistDetails(artist_name,results_page){
             var thumb = '';            
           }
           current_result_row++;
-          var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+''+name+'</td><td>'+onTourUntil+'</td></tr>';
+          var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td>'+name+'</td><td>'+onTourUntil+'</td></tr>';
           $(table_id).append(table_data); 
         }); // end $.when  
 
