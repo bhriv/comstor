@@ -54,7 +54,7 @@
             $( "#header_loaded" ).load( "assets/js/REPLACE-WITH-PHP/INCLUDE-ONCE/header.php", function( response, status, xhr ) {if ( status == "error" )   {cc( xhr.status + " " + xhr.statusText,'error' );}if ( status == "success" ) {cc( xhr.status + " " + xhr.statusText,'ready' );}});
         </script>
     
-        <div class="row" id="root">
+          <div class="row" id="root">
             <!-- navbar column -->
             <!-- PARENT MENU populated with js REPLACE with PHP functions-->
             <div id="parent_menu_loaded"></div>
@@ -71,806 +71,50 @@
             </script>
             
             <!-- main content column -->
-            <div class="thirteen columns main-content">
-                <div class="row content">
-                    <!-- flash messages -->
-                    <!-- / flash messages -->
-                    <style>
-                    span.indent{width: 5%; display: block; float: left;border-bottom: solid 1px #ccc;height: 2px;margin-top: 0.6em;margin-right: 5px;}
-
-                    /*span.indent::before { content: "-";}*/
-                    /*span.indent_3{width: 15%;}
-                    span.indent_4{width: 20%;}
-                    span.indent_5{width: 25%;}
-                    span.indent_6{width: 30%;}
-                    
-                    span.indent_2::before { content: "-";}
-                    span.indent_3::before { content: "-";}
-                    span.indent_4::before { content: "-";}
-                    span.indent_5::before { content: "-";}
-                    span.indent_6::before { content: "-";}*/
-                    </style>
-
-                    <div class="row nine columns" id="content_loader">
-                     <!--  <div id="admin_category_control">
-                        <a id="getCategories_visible">visible</a>
-                        <a id="getCategories_hidden">hidden</a>
-                      </div> -->
-                      <div class="widget-content active hidden" id="show_hide_categories">
-                        <!-- <h3>Visible Categories <span id="visible_count"></span></h3> -->
-                        <div class="row">
-                          <table class="tablesorterX sortable">
-                            <thead>
-                              <tr>
-                                <th>ID</th>
-                                <th>Categories <span id="visible_count"></span></th>
-                                <th>Last Modified</th>
-                                <th>Courses</th>
-                                <th>Depth</th>
-                                <th class="hidden">Path</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-
-                            <tbody id="visible_categories">
-                              <!-- Filled by Javascript Dynamically -->
-                            </tbody>
-                          </table>
-                        </div>
-                        <!-- <div class="row hidden">
-                          <h3>Hidden Categories <span id="hidden_count"></span></h3>
-                          <table class="tablesorter">
-                            <thead>
-                              <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Last Modified</th>
-                                <th>Courses</th>
-                                <th>Depth</th>
-                                <th>Path</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-
-                            <tbody id="hidden_categories">
-                            </tbody>
-                          </table>
-                        </div> -->
-                      </div>
-
-                      <!-- dashboard - mobile (flurry)
-                      learning (activity)
-                      teacher (mef) -->
-                      <section id="mef_reports" class="report_display_switch">
-                          <div class="">
-                            <div class="field columns main-filter" id="mdl_course_categories">
-                                <label>Category:</label>
-                                <div class="picker">
-                                    <select id="catfilter">
-                                        <option value="null">
-                                            <span>- select -</span>
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="field columns main-filter" id="query-class">
-                                <label>Course:</label>
-                                <div class="picker">
-                                    <select id="coursefilter">
-                                        <option value="null">
-                                            <span data-type="type">- select -</span>
-                                        </option> 
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="field columns main-filter hidden" id="report-basis-criteria">
-                                <label>Report Basis:</label>
-                                <div class="picker">
-                                    <select id="basisfilter">
-                                        <option value="null">
-                                            <span>- select -</span>
-                                        </option>
-                                        <option value="student_based_report">
-                                            <span data-criteria="access">Student Based Report</span>
-                                        </option>
-                                        <option value="quiz_based_report">
-                                            <span data-criteria="performance">Quiz Based Report</span>
-                                        </option>
-                                        <!-- static -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div id="student_query" class="hideme">
-                                <div class="field columns main-filter" id="query-criteria">
-                                    <label>Report On:</label>
-                                    <div class="picker">
-                                        <select id="criteriafilter">
-                                            <option value="null">
-                                                <span>- select -</span>
-                                            </option>
-                                            <option value="performance">
-                                                <span data-criteria="performance">Performance</span>
-                                            </option>
-                                            <option value="access">
-                                                <span data-criteria="access">Access</span>
-                                            </option>
-                                            <!-- static -->
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="field columns main-filter hideme" id="query-show-students-access">
-                                    <label>Show Students:</label>
-                                    <div class="picker">
-                                        <select id="accessfilter">
-                                            <option value="null">
-                                                <span data-type="type">- select -</span>
-                                            </option> 
-                                            <option value="show_all_students">
-                                                <span data-type="type">- All Students -</span>
-                                            </option>
-                                            <option value="show_students_that_have_logged_in">
-                                                <span>That have logged in</span>
-                                            </option> 
-                                            <option value="show_students_that_have_not_logged_in">
-                                                <span>That have NOT logged in yet</span>
-                                            </option> 
-                                            <option value="show_students_that_have_not_logged_in_two_days_before_start_date">
-                                                <span>That have NOT logged in two days before the start date</span>
-                                            </option>
-                                            <option value="show_students_that_have_not_logged_in_within_the_last_two_days">
-                                                <span>Have NOT logged in within the last two days</span>
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="field columns main-filter hideme" id="query-show-students-performance">
-                                    <label>Show Students:</label>
-                                    <div class="picker">
-                                        <select id="performancefilter" data-id="parentvalue">
-                                            <option value="null">
-                                                <span data-type="type">- select -</span>
-                                            </option> 
-                                            <option value="concatenated_results" data-id="0">
-                                                <span> All Results</span>
-                                            </option>
-                                                        <option value="show_all_students_with_all_grades_attempt_1" data-id="1">
-                                                <span> -- By Attempt #1</span>
-                                            </option>
-                                            <option value="show_all_students_with_all_grades_attempt_2" data-id="2">
-                                                <span> -- By Attempt #2</span>
-                                            </option>
-                                            <option value="show_all_students_with_all_grades_attempt_3" data-id="3">
-                                                <span> -- By Attempt #3</span>
-                                            </option>
-                                            <option value="show_all_students_with_all_grades_attempt_4" data-id="4">
-                                                <span> -- By Attempt #4</span>
-                                            </option>
-                                            <option value="show_all_students_with_all_grades_attempt_5" data-id="5">
-                                                <span> -- By Attempt #5</span>
-                                            </option>
-
-                                            <option value="show_students_who_are_doing_well_on_their_prework">
-                                                <span> Who are doing well on their pre-work</span>
-                                            </option>
-                                            <option value="show_students_who_are_not_doing_well_on_their_prework">
-                                                <span> Who are NOT doing well on their pre-work</span>
-                                            </option>
-                                            <option value="show_students_who_are_doing_well_on_their_homework">
-                                                <span> Who are doing well on their homework</span>
-                                            </option>
-                                            <option value="show_students_who_are_not_doing_well_on_their_homework">
-                                                <span> Who are NOT doing well on their homework</span>
-                                            </option>
-                                            <option value="show_students_who_are_not_going_to_pass">
-                                                <span> Who are NOT going to pass</span>
-                                            </option>
-                                            <!-- static -->
-                                        </select>
-                                    </div>
-                                </div>
-                              </div>
-                              <!-- end #student_query -->
-                                          
-                              <div id="quiz_query" class="hideme">
-                                              
-                                <div class="field columns main-filter" id="query-criteria">
-                                    <label>Quiz:</label>
-                                    <div class="picker">
-                                        <select id="quizfilter">
-                                            <option value="null">
-                                                <span data-mdlquiz="type">- Select -</span>
-                                            </option> 
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="field columns main-filter hideme" id="report-type">
-                                    <label>Type of Report:</label>
-                                    <div class="picker">
-                                        <select id="typefilter">
-                                            <option value="null">
-                                                <span data-type="type">- select -</span>
-                                            </option> 
-                                            <option value="student-report">
-                                                <span data-type="type">Student Report</span>
-                                            </option>
-                                            <option value="question-report">
-                                                <span data-type="type">Question Report</span>
-                                            </option>
-                                            <option value="subject-report">
-                                                <span data-type="type">Subject Report</span>
-                                            </option>
-                                            <!-- static -->
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="field columns main-filter hideme" id="query-show-students-report">
-                                    <label>Show Students:</label>
-                                    <div class="picker">
-                                        <select id="studentfilter">
-                                            <option value="null">
-                                                <span data-type="type">- select -</span>
-                                            </option> 
-                                            <option value="">
-                                                <span>Who have completed the quiz</span>
-                                            </option>
-                                            <option value="">
-                                                <span>Who have NOT completed the quiz</span>
-                                            </option>
-                                            <!-- static -->
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="field columns main-filter hideme" id="query-show-questions-report">
-                                    <label>Show Questions:</label>
-                                    <div class="picker">
-                                        <select id="questionfilter">
-                                            <option value="null">
-                                                <span data-type="type">- select -</span>
-                                            </option> 
-                                            <option value="show_all_single_question_data">
-                                                <span> Show all single question data</span>
-                                            </option>
-                                            <option value="show_questions_that_the_majority_of_students_pass">
-                                                <span> That the majority of students pass</span>
-                                            </option>
-                                            <option value="show_questions_that_the_majority_of_students_do_not_pass">
-                                                <span> That the majority of students do NOT pass</span>
-                                            </option>
-                                            
-                                                       
-                                            <!-- static -->
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="field columns main-filter hideme" id="query-show-subjects-report">
-                                    <label>Show Subjects:</label>
-                                    <div class="picker">
-                                        <select id="subjectfilter">
-                                            <option value="null">
-                                                <span data-type="type">- select -</span>
-                                            </option> 
-                                            <option value="">
-                                                <span> That the majority of students pass</span>
-                                            </option>
-                                            <option value="">
-                                                <span> That the majority of students do NOT pass</span>
-                                            </option>
-                                            
-                                            <option value="">
-                                                <span> That students spend the MOST time on</span>
-                                            </option>
-                                            <option value="">
-                                                <span> That students spend the LEAST time on</span>
-                                            </option>
-                                            
-                                            <!-- static -->
-                                        </select>
-                                    </div>
-                                </div>
-                              </div>
-                              <!-- end #quiz_query -->
-                          
-
-                              <div class="row"></div>
-
-                                <!-- dashboard edit modal -->
-                              <!-- <div class="modalXXX" id="modal-student-activity">
-                                  <div class="content">
-                                      <a class="close switch" gumby-trigger="|#modal-student-activity"><i class="icon-cancel" /></i></a>
-                                      <div class="row">
-                                        <div class="columns text-center">
-                                          <h3>Student Activity</h3>
-                                          <h5><span id="firstname"></span> <span id="lasttname"></span></h5>
-                                          <div class="row">
-                                              <div class="static">
-                                                <table class="tablesorter sortable" id="student-activity">
-                                                  <thead>
-                                                    <tr>
-                                                      <th>
-                                                        Course ID
-                                                      </th>
-                                                      <th>
-                                                        Action
-                                                      </th>
-                                                      <th>
-                                                        Object ID
-                                                      </th>
-                                                      <th>
-                                                        Target
-                                                      </th>
-                                                      <th>
-                                                        Time
-                                                      </th>
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody id="tbody_quiz_result">
-                                                  </tbody>
-                                                </table>
-                                              </div>
-                                          </div>
-                                          <div class="row">
-                                              <div class="medium btn primary">
-                                                  <button class="switch" gumby-trigger="|#modal-student-activity">Close</button>
-                                              </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                              </div> -->
-                            <div class="static">
-                                <div id="student-activity-profile"></div>
-                                <div id="student-activity-processing" class="hidden"><i class="icon-tools"></i> Activities Processed <span></span></div>
-                              <table class="tablesorterX sortable" id="student-activity">
-                                    <thead>
-                                      <tr>
-                                        <th>
-                                          Course Name (ID)
-                                        </th>
-                                        <th>
-                                          Action
-                                        </th>
-                                        <th>
-                                          Object ID
-                                        </th>
-                                        <th>
-                                          Target
-                                        </th>
-                                        <th id="timestamp-cell">
-                                          Time / Timestamp
-                                        </th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="tbody_quiz_result">
-                                    </tbody>
-                                  </table>
-                                </div>
-                            </div>
-
-                            <div class="static">
-                              <!-- <a href="#" class="action-item switch" gumby-trigger="#modal-student-activity" id="dash-edit"><i class="icon-tools"></i> Activity</a> -->
-                              <div class="field columns main-filter" id="query-filterstatus">
-                                    <label>Filter by status:</label>
-                                    <div class="picker">
-                                        <select id="filterstatus">
-                                            <option value="all">
-                                                <span data-type="type">Show All Students</span>
-                                            </option> 
-                                            <option value="active">
-                                                <span> Only show active students</span>
-                                            </option>
-                                            <option value="stalled">
-                                                <span> Only show stalled students</span>
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                              <table class="tablesorter sortable" id="category-students">
-                                <thead>
-                                  <tr>
-                                    <th>ID</th>
-                                    <th>Student</th>
-                                    <th>Status</th>
-                                    <th>Last Login</th>
-                                    <th>First Login</th>
-                                    <th class="hidden">Course</th>
-                                    <th>Actions</th>
-                                    <th>Last Activity</th>
-                                    <th>Activity</th>
-                                  </tr>
-                                </thead>
-
-                                <tbody id="tbody_quiz_result">
-                                </tbody>
-                              </table>
-                            </div>
-                          <div class="static">
-                                <table class="tablesorter sortable hideme" id="concatenated-results">
-                                  <thead>
-                                    <tr>
-                                      <th>
-                                        ID
-                                      </th>
-                                      <th>
-                                        Student
-                                      </th>
-                                      <th>
-                                        Last Login
-                                      </th>
-                                      <th>
-                                        First Login
-                                      </th>
-                                      <th>
-                                        Stress
-                                      </th>
-                                      <th>
-                                        Actions
-                                      </th>
-                                      <th>
-                                        Quiz Attempt Details
-                                      </th>
-                                    </tr>
-                                  </thead>
-
-                                  <tbody id="tbody_quiz_result">
-                                  </tbody>
-                              </table>
-                          </div>  
-
-                          <ul class="widget-grid full-width hideme" id="report_results_holder">
-                            <li id="widget-quiz-reports-performance">
-                              <h2 class="yellow">
-                                Results<a class="toggle" gumby-trigger="#widget-quiz-reports .widget-content" href="#"><i class="icon-minus-squared"></i></a>
-                              </h2>
-
-                              <div class="widget-content">
-                                <div class="row widget">
-                                  <div class="sixteen columns detail" id="student-list-performance">
-                                    <!-- populated by js -->
-
-                                    <table class="tablesorter" id="sortable">
-                                      <thead>
-                                        <tr>
-                                          <th>
-                                            ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            STUDENT <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            ACTION <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            LAST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            FIRST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            QUIZ ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            ATTEMPT <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            GRADE %<i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                        </tr>
-                                      </thead>
-
-                                      <tbody id="tbody_quiz_result">
-                                        <!-- Filled by Javascript Dynamically -->
-
-                                        <tr class="dna-template" data-class="~~STATUS~~" id="results-body-performance">
-                                          <td>
-                                            <span class="student-id">~~ID~~</span>
-                                          </td>
-                                          <td class="user-details">
-                                            <span class="student-firstname">~~FIRSTNAME~~</span> <span class="student-lastname">~~LASTNAME~~</span> <span class="student-email">~~EMAIL~~</span>
-                                          </td>
-                                          <td class="dna-nucleotide user-actions" data-firstname="~~FIRSTNAME~~">
-                                            <p>
-                                              <a class="switch" gumby-trigger="#modal-challenge" href="quiz-reports#">Challenge</a>
-                                            </p>
-
-                                            <p>
-                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Remediation</a>
-                                            </p>
-
-                                            <p>
-                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Badge</a>
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <span class="hideme">~~LASTACCESS~~</span> <span>~~LASTACCESSFORMATTEDDATE~~</span>
-                                          </td>
-                                          <td>
-                                            <span class="hideme">~~FIRSTACCESS~~</span> <span>~~FIRSTACCESSFORMATTEDDATE~~</span>
-                                          </td>
-                                          <td>
-                                            <span>~~QID~~</span>
-                                          </td>
-                                          <td>
-                                            <span>~~QATTEMPT~~</span>
-                                          </td>
-                                          <td>
-                                            ~~QPERCENTAGE~~
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-
-                            <li class="hideme" id="widget-quiz-reports">
-                              <h2 class="yellow">
-                                Results<a class="toggle" gumby-trigger="#widget-quiz-reports .widget-content" href="#"><i class="icon-minus-squared"></i></a>
-                              </h2>
-
-                              <div class="widget-content">
-                                <div class="row widget">
-                                  <div class="sixteen columns detail" id="student-list">
-                                    <!-- populated by js -->
-
-                                    <table class="tablesorter" id="sortable">
-                                      <thead>
-                                        <tr>
-                                          <th>
-                                            ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            STUDENT <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            ACTION <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            LAST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            FIRST LOGIN <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            STRESS <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            COMMENTS <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                        </tr>
-                                      </thead>
-
-                                      <tbody id="tbody_quiz_result">
-                                        <!-- Filled by Javascript Dynamically -->
-
-                                        <tr class="dna-template" data-class="~~STATUS~~" id="results-body-access">
-                                          <td>
-                                            <span class="student-id">~~ID~~</span>
-                                          </td>
-                                          <td class="user-details">
-                                            <span class="student-firstname">~~FIRSTNAME~~</span> <span class="student-lastname">~~LASTNAME~~</span> <span class="student-email">~~EMAIL~~</span>
-                                          </td>
-                                          <td class="dna-nucleotide user-actions" data-firstname="~~FIRSTNAME~~">
-                                            <p>
-                                              <a class="switch" gumby-trigger="#modal-challenge" href="quiz-reports#">Challenge</a>
-                                            </p>
-
-                                            <p>
-                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Remediation</a>
-                                            </p>
-
-                                            <p>
-                                              <a class="switch" gumby-trigger="#modal-remediation" href="quiz-reports#">Badge</a>
-                                            </p>
-                                          </td>
-                                          <td>
-                                            <span class="hideme">~~LASTACCESS~~</span> <span>~~LASTACCESSFORMATTEDDATE~~</span>
-                                          </td>
-                                          <td>
-                                            <span class="hideme">~~FIRSTACCESS~~</span> <span>~~FIRSTACCESSFORMATTEDDATE~~</span>
-                                          </td>
-                                          <td>
-                                            ~~STUDENTSTRESS~~
-                                          </td>
-                                          <td>
-                                            ~~STUDENTINSTRUCTORCOMMENTS~~
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-
-                            <li class="hideme" id="widget-question-reports">
-                              <h2 class="yellow">
-                                Results<a class="toggle" gumby-trigger="#widget-quiz-reports .widget-content" href="#"><i class="icon-minus-squared"></i></a>
-                              </h2>
-
-                              <div class="widget-content">
-                                <div class="row widget">
-                                  <div class="sixteen columns detail" id="question-list">
-                                    <!-- populated by js -->
-
-                                    <table class="tablesorter" id="sortable">
-                                      <thead>
-                                        <tr>
-                                          <th>
-                                            ID <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            <small>TOTAL</small><br>
-                                            ATTEMPTS <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            AVE GRADE <i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                          <th>
-                                            QUESTION CONTENT<i class="icon-down-dir"></i><i class="icon-up-dir"></i>
-                                          </th>
-                                        </tr>
-                                      </thead>
-
-                                      <tbody id="tbody_quiz_result">
-                                        <!-- Filled by Javascript Dynamically -->
-
-                                        <tr class="dna-template" data-class="~~STATUS~~" id="results-body-questions">
-                                          <td>
-                                            <span class="student-id">~~ID~~</span>
-                                          </td>
-                                          <td class="user-total-attempts">
-                                            ~~TOTALATTEMPTS~~
-                                          </td>
-                                          <td class="user-ave-grade">
-                                            ~~AVERAGEGRADE~~
-                                          </td>
-                                          <td class="user-question-content">
-                                            ~~QUESTIONCONTENT~~
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
-
-                          <div class="loading" id="loading_gif" style="display: none;">
-                            <img alt="Loading..." src="/assets/images/loading.gif">
-                          </div>
-                        </div>
-                      </section> 
-                      <div class="row five push_one columns" id="sidebar_widgets">
-                        <div class="picker_holder">
-                                <label for="start_date">Report Start Date</label><br>
-                                <input type="text" id="start_date" name="start_date" class="date_changer">
-                            </div>
-                            <div class="picker_holder">
-                                <label for="end_date">Report End Date</label><br>
-                                <input type="text" id="end_date" name="end_date" class="date_changer">
-                            </div>
-                      <ul class="widget-grid full-width">
-                        <li data-type="video" id="widget-overview" style="margin-top:1em;">
-                          <h2 style="background-color:#b6dbac;">
-                            Overview: <span id="data_query"></span> <a class="toggle" gumby-trigger="#widget-overview .widget-content"><i class="icon-minus-squared"></i></a>
-                          </h2>
-                          <div class="widget-content">
-                            <ul>
-                              <li id="overview_stats">
-                                <div class="growth_factor">
-                                  <span class="badge"><span class="label"></span></span>
-                                </div>
-                                <div>
-                                  <p>
-                                    <span class="period"></span>
-                                  </p>
-                                </div><span class="current_val"></span> <span class="previous_val"></span>
-                              </li>
-                              <li class="current_val">
-                                <div class="growth_factor">
-                                  <span class="badge default"><span class="number"></span></span>
-                                </div>
-                                <div>
-                                  <p>
-                                    <span class="period"></span>
-                                  </p>
-                                </div>
-                              </li>
-                              <li class="previous_val">
-                                <div class="growth_factor">
-                                  <span class="badge default"><span class="number"></span></span>
-                                </div>
-                                <div>
-                                  <p>
-                                    <span class="period"></span>
-                                  </p>
-                                </div>
-                              </li>
-                            </ul><!-- <div id="overview_updated">
-                                                          <span><i class="icon-arrows-ccw"></i> Data Updated: <time id="overview_updated_date"></time></span> <span><i class="icon-arrows-ccw"></i> Last Usage: <time id="overview_updated_usage"></time></span>
-                                                      </div> -->
-                          </div>
-
-                        </li>
-                      </ul>
-                      <ul class="widget-grid full-width">
-                        <li id="widget-app-overview">
-                          <h2 style="background-color:#b6dbac;">
-                            App Overview <a class="toggle" onclick="showFlurryAppStats();"><i class="icon-minus-squared"></i></a>
-                          </h2>
-                          <div class="widget-content active" id="app_overview">
-                            <ul>
-                              <li>Name: <span class="app_name"></span>
-                              </li>
-                              <li>Platform: <span class="app_platform"></span>
-                              </li>
-                              <li>Category: <span class="app_category"></span>
-                              </li>
-                              <li>App Created: <span class="app_createdDate"></span>
-                              </li>
-                              <li>Report Generated: <span class="app_generatedDate"></span>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul class="widget-grid full-width">
-                        <li id="widget-app-version-history">
-                          <h2 style="background-color:#b6dbac;">
-                            App Version History <a class="toggle" gumby-trigger="#widget-app-version-history .widget-content"><i class="icon-minus-squared"></i></a>
-                          </h2>
-                          <div class="widget-content active">
-                            <div class="row">
-                              <ul class="app_version_history" style="margin:0; font-size:14px; line-height:1.5em;">
-                                <!-- populated by js -->
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
+            <div class="thirteen columns row content main-content">
+                  <div class="row nine columns" id="content_loader">
+                    <h1>Ben Dev Dashboard</h1>
+                    <form action="" id="who_to_host">
+                      <input type="text" placeholder="Type search name...">
+                    </form>
+                    <button id="search_trigger">Search</button>
+                    <div class="static" id="search_results">
+                      <div id="student-activity-processing" class="hidden"><i class="icon-tools"></i> Processed <span></span></div>
+                      <table class="sortable">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>On Tour Until</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
                     </div>
+                    <div class="loading" id="loading_gif" style="display: none;"><img alt="Loading..." src="/assets/images/loading.gif"></div>
+                    <div id="results_counter" class="hideme">
+                      <p>Total Results Found: <span></span></p>
                     </div>
-                    
-                </div>
+                    <div id="load_more">
+                      <p><button id="get_more_results">Load More</button></p>
+                    </div>
+                </div> <!-- content loader -->
             </div><!-- / main content -->
         </div><!-- / #root -->
-        <!-- global modals -->
-        
-        <footer id="footer">
-            <ul class="menu centered">
-                <li><a href="/feedback"><i class="icon-comment"></i>Feedback</a></li>
-                <li><a href="/help"><i class="icon-help-circled"></i>Help</a></li>
-                <li><a href="/support"><i class="icon-mail"></i>Support</a></li>
-                <li><a href="/contact"><i class="icon-mail"></i>Contact</a></li>
-                <li class="get_item_data">get_item_data()</li>
-            </ul>
-        </footer><!-- footer js -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">  
+<style>
+.report_display_switch {
+  display: block !important;
+}
 
-    <style>.report_display_switch{display: block !important;}</style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">  
-
-    <style>
-      #app_overview ul li, #app_version_history li {
+#app_overview ul li,#app_version_history li {
   margin-bottom: 0;
   font-size: 16px;
   line-height: 1.5em;
-  font-weight: bold;
+  font-weight: 700;
 }
 
-.icon-info.icon-left a:before, .icon-info.icon-right a:after, i.icon-info:before {
+.icon-info.icon-left a:before,.icon-info.icon-right a:after,i.icon-info:before {
   top: 0;
   position: absolute;
   left: 38%;
@@ -889,7 +133,7 @@
 }
 
 #root .subnav-bar ul li h2 i {
-  margin-top: 0.6em;
+  margin-top: .6em;
 }
 
 #root .subnav-bar ul li a .icon-play {
@@ -945,7 +189,7 @@
 }
 
 #graphs-holder li h2 span.active {
-  background-color: bisque;
+  background-color: #ffe4c4;
   color: gray;
 }
 
@@ -967,7 +211,7 @@
 }
 
 #app_overview ul li span {
-  font-weight: normal;
+  font-weight: 400;
 }
 
 #app_version_history {
@@ -976,7 +220,7 @@
 }
 
 #app_version_history li span {
-  font-weight: normal;
+  font-weight: 400;
 }
 
 input[type="text"].date_changer {
@@ -1004,13 +248,13 @@ header#site_header .logo {
 i.icon-info {
   border-radius: 50%;
   border: 1px solid #fff;
-  padding: 0.5em;
+  padding: .5em;
   position: relative;
   top: 2px;
 }
 
 .widget-grid li div.widget-content table th {
-  padding: 0.5em;
+  padding: .5em;
 }
 
 .widget-grid li div.widget-content table thead {
@@ -1041,7 +285,7 @@ i.icon-info {
 }
 
 section#mef_reports ul.widget-grid li .widget-content {
-  padding: 0.5em;
+  padding: .5em;
 }
 
 #mef_reports label {
@@ -1051,23 +295,27 @@ section#mef_reports ul.widget-grid li .widget-content {
 }
 
 #show_hide_categories h3 {
-  margin-top: 0.5em;
+  margin-top: .5em;
 }
-#analytics_triggers h2 i.icon-play{
-        display: none;
-      }
-      #student-activity-processing{
-        text-align: right;
-      }
-      ul.short{
-        margin: 0;
-      }
-      ul.short li{
-        padding: 0;
-        font-size: 12px;
-        clear: left;
-      }
-    </style>
+
+#analytics_triggers h2 i.icon-play {
+  display: none;
+}
+
+#student-activity-processing {
+  text-align: right;
+}
+
+ul.short {
+  margin: 0;
+}
+
+ul.short li {
+  padding: 0;
+  font-size: 12px;
+  clear: left;
+}
+</style>
         <!-- Dev Only -->
         <script src="assets/js/testing-only.js"></script>
         <script src="assets/js/build/urls.js"></script>
@@ -1098,6 +346,7 @@ section#mef_reports ul.widget-grid li .widget-content {
         
         <script type="text/javascript" src="assets/js/REPLACE-WITH-PHP/route-based-scripts.js"></script>
         <script type="text/javascript" src="assets/js/build/concat-lumious_reports.js"></script>  
+        <script type="text/javascript" src="assets/js/build/gr.js"></script>  
 
         <!-- Production Ready : All vendor and custom js compiled 
         <script type="text/javascript" src="production_build/all-uglified.js"></script>
@@ -1211,17 +460,5 @@ section#mef_reports ul.widget-grid li .widget-content {
         }           
         
     </script>
-        
-    <!-- hide courses ID = 35,38,42,43, from course categories -->
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            // e.src='//www.google-analytics.com/analytics.js';
-            // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            // ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script> 
     </body>
 </html>

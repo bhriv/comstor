@@ -151,6 +151,17 @@ function checkApiKey(){
   return apiKey_from_storage;
 }
 
+/*****************************************************************/
+/*************** SAFE URI for " ' " apostrophies  ****************/
+/*****************************************************************/
+// http://stackoverflow.com/questions/18251399/why-doesnt-encodeuricomponent-encode-single-quotes-apostrophes
+  // var find = ["<", ">", "\n","'", " ", "/", "?", "&"];
+  // var replace = ["&lt;", "&gt;", "<br/>","%27", "%20", "%252", "%252", "and"];
+  
+function customEncodeURIComponent(URI) {
+    return encodeURIComponent(URI).replace(/'/g, "%27");
+}
+
 
 /*****************************************************************/
 /****************************** Plugin Functions  ****************/

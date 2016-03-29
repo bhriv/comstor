@@ -122,6 +122,13 @@ module.exports = function(grunt) {
                 ],
                 dest: '<%= dirs.js_folder %>/build/concat-dashboard_custom.js',
             },
+
+            gr_custom: {
+                src: [
+                    '<%= dirs.js_folder %>/gr.js',  // This specific file
+                ],
+                dest: '<%= dirs.js_folder %>/build/gr.js',
+            },
         },
         // Uglify JS
         uglify: {
