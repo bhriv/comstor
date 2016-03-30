@@ -1,6 +1,61 @@
 // gr.js non-minified
 
 
+
+
+function findAreaByID(data,item_ID,item_TYPE,disable_console_log){
+  cc('findItemByID(data,'+item_ID+','+item_TYPE+') disable_console_log('+disable_console_log+')','run',false);
+  console.log('findItemByID - below is the value of the incoming data:');
+  console.log(data);
+  cc('is data NULL?','info');
+  isItemNullorUndefined(data,true);
+  cc('is item NULL?','info');
+  isItemNullorUndefined(item_ID,true);
+  // ----- TEST TO ENSURE DATA IS WORKING ------ // 
+  // var y = data[0];
+  // console.log(y);
+  // cc('data[0] ID = '+y.id,'success');
+  // cc('data[0] fullname = '+y.fullname,'success');
+  // ------------------------------------------ //
+
+  var found = false;
+  
+  if (item_TYPE == 'metroArea' || item_TYPE == 'metroAreas') {
+    console.log('checking metroAreas...');
+    for(var i = 0; i < data.length; i++) {
+      cc('iterating through data COUNT = '+i, 'info',disable_console_log);
+      cc('data.length = '+data.length, 'info',disable_console_log);
+      cc('node = data['+i+']:','info',disable_console_log);
+      console.log(data[i]);
+      if (data[i] != null && data[i] != undefined) {
+          if (data[i].id == item_ID) {
+              found = true;
+              cc('ID MATCHED!!!: '+found, 'success');
+              cc('Details: ID('+data[i].id+') Name('+data[i].name+')', 'success',disable_console_log);
+              return found;
+              // return { // return dataay of data including labels for access
+              //     id: data[i].id,
+              //     category: data[i].category,
+              //     fullname: data[i].fullname,
+              //     shortname: data[i].shortname,
+              //     startdate: data[i].startdate
+              // };
+              break;
+          }
+          else{
+            cc('ID not matched in data['+i+'], moving on to the next node', 'warning');
+          }
+      }else{
+          cc('data['+i+'] is NULL or undefined', 'error');
+      }
+    } // end for // iterate through dataay
+  } // end check for course or courses
+  else{
+    cc('Data type not found. Nothing specified to be done with the incoming data', 'error');
+  } 
+}
+
+
 /*******************************************************/
 /**************  Dashboard Functions  *************/
 /*******************************************************/
@@ -351,6 +406,14 @@ var bit_api_key = 'GIGROOM_BIT';
 // http://developer.echonest.com/api/v4/artist/profile?api_key=LPFVZKF9VAJEM1QMT&id=ARZ6IGY1187B98EB94&format=json&bucket=biographies&bucket=blogs&bucket=familiarity&bucket=hotttnesss&bucket=images&bucket=news&bucket=reviews&bucket=terms&bucket=urls&bucket=video&bucket=id:musicbrainz
 var en_api_key = 'LPFVZKF9VAJEM1QMT';
 
+// Spotify API
+// https://developer.spotify.com/web-api/console/get-search-item/#complete
+// http://developer.echonest.com/api/v4/artist/profile?api_key=LPFVZKF9VAJEM1QMT&id=ARZ6IGY1187B98EB94&format=json&bucket=biographies&bucket=blogs&bucket=familiarity&bucket=hotttnesss&bucket=images&bucket=news&bucket=reviews&bucket=terms&bucket=urls&bucket=video&bucket=id:musicbrainz
+var sp_api_client_id = 'a5240bdecaed47d9af61c32a7f10c54f';
+var sp_api_client_secret = '7b995b01d';
+
+// https://api.spotify.com/v1/search?q=%22daughter%22&type=artist
+
 // MB API
 
 
@@ -365,16 +428,39 @@ $(document).ready(function() {
     $( "#who_to_host input:first" ).attr("placeholder", artist_name_storage);
     $( "#who_to_host input:first" ).val(artist_name_storage);
   };
+  var location_search_name = localStorage.getItem('location_search_name');
+  if (!isItemNullorUndefined(location_search_name)) {
+    $( "#where_to_host" ).attr("placeholder", location_search_name);
+    $( "#where_to_host" ).val(location_search_name);
+  };
+
+  $( "#location_search_trigger" ).click(function() {
+    var location_name = $( "#where_to_host" ).val();
+    var table_id = '#location_search_results table tbody';
+    $(table_id).html('');
+    // var artist_name = 'Falls';
+    // getENArtistDetails(artist_name);
+    // getBITArtistDetails(artist_name);
+    localStorage.setItem('location_search_name',location_name);
+    localStorage.setItem('location_results_page',1);
+    localStorage.setItem('location_result_counter',0);
+    getSKMetroEvents(location_name);
+    // getSKArtistDetails(artist_name);
+    // $( "#who_to_host" ).submit();
+  });
 
   $( "#search_trigger" ).click(function() {
     var artist_name = $( "#who_to_host input:first" ).val();
+    var table_id = '#search_results table tbody';
+    $(table_id).html('');
     // var artist_name = 'Falls';
     // getENArtistDetails(artist_name);
     // getBITArtistDetails(artist_name);
     localStorage.setItem('search_name',artist_name);
     localStorage.setItem('results_page',1);
     localStorage.setItem('result_counter',0);
-    getSKArtistDetails(artist_name);
+    getSPArtistSearch(artist_name);
+    // getSKArtistDetails(artist_name);
     // $( "#who_to_host" ).submit();
   });
   $( "#get_more_results" ).click(function() {
@@ -391,10 +477,167 @@ $(document).ready(function() {
     getSKArtistDetails(artist_name,results_page);
     // $( "#who_to_host" ).submit();
   });
+
+  var construct_artist = urlParams["profile"]
+  if (!isItemNullorUndefined(construct_artist)) {
+    var artist_name = construct_artist;
+
+    localStorage.setItem('search_name',artist_name);
+    localStorage.setItem('results_page',1);
+    localStorage.setItem('result_counter',0);
+    getENArtistDetails(artist_name);
+  };
+
+  var sid = urlParams["sid"]
+  if (!isItemNullorUndefined(sid)) {
+    getSPArtistProfile(sid);
+  };
+
+  $( "a.name" ).click(function() {
+    var artist_name = $(this).text();
+    alert(artist_name);
+    var results_page = localStorage.setItem('results_page',1);
+    
+    getENArtistDetails(artist_name,results_page);
+    // $( "#who_to_host" ).submit();
+  });
 }); // end Doc Ready 
 
-
+var all_location_results = [];
 var current_result_row = 0;
+
+function getSKMetroEvents(location_name,results_page){
+  // Reset location results array
+  all_location_results = [];
+
+  if (isItemNullorUndefined(results_page,true)) {
+    var results_page = 1;
+  }
+  if (isItemNullorUndefined(location_name,true)) {
+    if (isItemNullorUndefined(location_name)) {
+      alert('Please enter a location name to search.')
+    };
+  };
+  cc('getSKMetroEvents('+location_name+') results_page('+results_page+')','run')
+  // Construct Query URL
+  // http://api.songkick.com/api/3.0/search/locations.json?query={search_query}&apikey={your_api_key}
+  var base_url = 'http://api.songkick.com/api/3.0/';  
+  var location_query_name = encodeURI(location_name);;
+  // var location_query_name = safeName(location_name);
+  cc('Seaching for '+location_query_name, 'info');
+  
+  var table_id = '#location_search_results table tbody',
+      itemdata_count = 0,
+      result_count = 0,
+      item = [],
+      artist_current_activity = null,
+      artist_prev_activity = null,
+      table_data = 'start';
+  $(table_id).show();
+  $(table_id).html('');
+
+  var item_url = base_url +'search/locations.json?query='+location_query_name + '&apikey='+sk_api_key +'&jsoncallback=?&page='+results_page;
+  cc('SK search URL:'+item_url,'done')
+  var itemdata = $.getJSON(item_url);
+  var item_data_from_array = [];
+
+  $.when(itemdata).done(function(item_data_from_array) {
+    cc('item_data_from_array','info')
+    // console.log(item_data_from_array);
+    
+    var results = item_data_from_array["resultsPage"];
+
+    var total_result_entries = results["totalEntries"];
+    total_result_entries = parseInt(total_result_entries);
+    cc('total_result_entries: '+total_result_entries,'info');
+    var results_counter = '#location_results_counter';
+    $(results_counter).show();
+    $(results_counter+ ' span').html(total_result_entries);
+
+    if (total_result_entries > 0) {
+      results = results["results"];
+      results = results["location"];
+
+      var result_count = getResponseSize(results);
+      cc('results count: '+result_count,'highlight')
+
+      jQuery.each(results, function(i, cdata) {     
+        if (results != undefined) {
+          var metroArea = cdata["metroArea"]
+          var this_item_ID  = metroArea['id'];
+          var name          = metroArea['displayName'];
+          var lat   = metroArea['lat'];
+          var lng   = metroArea['lng'];
+          var lat_lng = lat+','+lng;
+          var country        = metroArea['country'];
+          country        = country['displayName'];
+
+          cc('SK Location RESULT: '+this_item_ID+ ' '+name +' country: '+country,'success');
+          current_result_row++;
+          var item = {
+              "id": this_item_ID,
+              "name": name,
+              "country": country,
+              "lat_lng": lat_lng
+          }
+          // all_location_results.push(item);
+          // var duplicate_found = _.isMatch(all_location_results, item);
+          // cc('Duplicate found? '+duplicate_found,'highlight');
+          
+          var duplicate_location = findAreaByID(all_location_results,this_item_ID,'metroArea',false)
+          if (!duplicate_location) {
+            all_location_results.push(item);
+            cc('all_location_results','info');
+            console.log(all_location_results);  
+          }else{
+            cc('Duplicate found - do not add this location','info');
+          }
+          
+        }// end if results undefined
+        else{
+          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+        }
+        itemdata_count++;
+
+        if (itemdata_count == result_count) {
+          cc('All processing of getSKMetroEvents complete.','success');
+          displaySKMetroAreas(all_location_results);
+        };
+      }); // end $.each
+    };// end total_result_entries > 0
+  }); // end $.when                                                  
+} // end getSKMetroEvents
+
+function displaySKMetroAreas(results){
+  var table_id = '#location_search_results table tbody',
+      itemdata_count = 1,
+      result_count = 1,
+      item = [];
+  $(table_id).empty();
+  var result_count = getResponseSize(results);
+  cc('results count: '+result_count,'highlight')
+
+  jQuery.each(results, function(i, cdata) {
+    if (results != undefined) { 
+      var this_item_ID  = cdata['id'];
+      var name          = cdata['name'];
+      var lat_lng       = cdata['lat_lng'];
+      var country       = cdata['country'];
+      // var link = window.location.href+'?&profile='+link_name;
+      var link = 'http://localhost:8000/dashboard.html?metroid='+this_item_ID;
+      var table_data = '<tr><td>'+itemdata_count+'</td><td>'+this_item_ID+'</td><td>'+country+'</td><td class="name">'+name+'</td><td>'+lat_lng+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
+      $('#metroAreas tbody').append(table_data); 
+    }// end if results undefined
+    else{
+      cc('There was an error getting data. It seems that the funciton does not recieve data.','error');
+    }
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processing of displaySKMetroAreas complete.','success');
+    };
+  }); // end $.each
+}
+
 
 function getSKArtistDetails(artist_name,results_page){
   if (isItemNullorUndefined(artist_name,true)) {
@@ -403,25 +646,13 @@ function getSKArtistDetails(artist_name,results_page){
       alert('Please enter an artist name to search.')
     };
   };
-  // if (isItemNullorUndefined(results_page,true)) {
-  //   var artist_name = localStorage.getItem('results_page');
-  //   if (isItemNullorUndefined(results_page,true)) {
-  //     var results_page = 1;
-  //   };
-  // };
-
   cc('getSKArtistDetails('+artist_name+') results_page('+results_page+')','run')
 
   // Construct Query URL
-  var base_url = 'http://api.songkick.com/api/3.0/';
-  var lowercase_query_name = artist_name.toLowerCase();
-  var artist_query_name = encodeURI(lowercase_query_name);
-  customEncodeURIComponent(artist_query_name);
-
-
+  var base_url = 'http://api.songkick.com/api/3.0/';  
+  var artist_query_name = safeName(artist_name);
   cc('Seaching for '+artist_query_name, 'info');
-  // alert(artist_query_name);
-
+  
   var table_id = '#search_results table',
       itemdata_count = 0,
       result_count = 0,
@@ -429,14 +660,6 @@ function getSKArtistDetails(artist_name,results_page){
       artist_current_activity = null,
       artist_prev_activity = null,
       table_data = 'start';
-  /* Pagination 
-    on search set search name, 
-    if total_result_entries count > 50 
-    set addPagination = true
-    localStorage('page')
-    pagination link = page +1
-    more = search(artistName, page)
-  */
   $(table_id).show();
 
   var item_url = base_url +'search/artists.json?query='+artist_query_name + '&apikey='+sk_api_key +'&jsoncallback=?&page='+results_page;
@@ -452,14 +675,162 @@ function getSKArtistDetails(artist_name,results_page){
     cc('results json','info');
     console.log(results);
     var total_result_entries = results["totalEntries"];
+    total_result_entries = parseInt(total_result_entries);
+
     cc('total_result_entries: '+total_result_entries,'info');
     var results_counter = '#results_counter';
     $(results_counter).show();
     $(results_counter+ ' span').html(total_result_entries);
 
-    results = results["results"];
-    results = results["artist"];
+    if (total_result_entries > 0) {
+      results = results["results"];
+      results = results["artist"];
 
+      var result_count = getResponseSize(results);
+      cc('results count: '+result_count,'highlight')
+
+      jQuery.each(results, function(i, cdata) {     
+        if (results != undefined) {
+
+          var this_item_ID  = cdata['id'];
+          var name          = cdata['displayName'];
+          // var eventsHref          = cdata['identifier'];
+          //     eventsHref          = eventsHref[0];
+          //     eventsHref          = eventsHref["eventsHref"];
+          var onTourUntil   = cdata['onTourUntil'];
+          if (onTourUntil == null) {
+            onTourUntil = 'Not touring';
+          }
+          cc('SK RESULT: '+this_item_ID+ ' '+name,'success');
+          var bit_base_url = 'http://api.bandsintown.com/artists/';
+          var bit_artist_query_name = encodeURI(name);
+         
+          var bit_itemdata_count = 0;
+              bit_result_count = 0,
+              bit_item = [];
+
+          var bit_item_url = bit_base_url +bit_artist_query_name + '?api_version=2.0&app_id='+bit_api_key +'&format=json&callback=?';
+          // var item_url = 'http://api.bandsintown.com/artists/Lil%20Wayne?format=json&artist_id=fbid_6885814958&api_version=2.0&app_id=GIGROOM_BIT';
+          cc('BIT search URL:'+bit_item_url,'done')
+          var bit_item_data_from_array = [];
+          var bit_itemdata = $.getJSON(bit_item_url);
+          $.when(bit_itemdata).done(function(bit_item_data_from_array) {
+            cc('SUCCESS from BIT','success');
+            var bit_artist_details = bit_item_data_from_array;
+            cc(bit_artist_details,'info',false);
+            console.log(bit_artist_details);
+            if (!isItemNullorUndefined(bit_artist_details)) {
+              var thumb_url = bit_artist_details["image_url"];
+              var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
+
+            }else{
+              var thumb = '';            
+            }
+            current_result_row++;
+            var link_name = safeName(name);
+            var link = window.location.href+'?&profile='+link_name;
+            var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+onTourUntil+'</td><td>'+link+'</td></tr>';
+            $(table_id).append(table_data); 
+          }); // end $.when  
+
+        }// end if results undefined
+        else{
+          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+        }
+        itemdata_count++;
+
+        if (itemdata_count == result_count) {
+          cc('All processing of getSKArtistDetails complete.','success');
+        };
+      }); // end $.each
+    };// end total_result_entries > 0
+    
+  }); // end $.when                                                  
+}
+
+
+var all_artist_activity = [];
+
+function getSPArtistProfile(sid,action){
+  cc('getSPArtistProfile('+sid+') action('+action+')','run')
+  // var base_url = 'https://api.spotify.com/v1/search?q=%22daughter%22&type=artist';
+  var base_url = 'https://api.spotify.com/v1/artists/';
+  // var sid = urlParams["sid"];
+
+  var itemdata_count = 0;
+      result_count = 0,
+      item = [],
+      artist_current_activity = null,
+      artist_prev_activity = null,
+      table_data = 'start';
+
+  var item_url = base_url + sid;
+  // var item_url = 'http://api.bandsintown.com/artists/Lil%20Wayne?format=json&artist_id=fbid_6885814958&api_version=2.0&app_id=GIGROOM_BIT';
+  cc('SPOTIFY profile URL:'+item_url,'done')
+  var item_data_from_array = [];
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    var a = item_data_from_array;
+
+    var url = a.external_urls;
+    url = url.spotify;
+    var name = a.name;
+    var id = a.id;
+    var popularity = a.popularity;
+    var images = a.images;
+    var img_url = images[0].url;
+    var contructed_result_timestamp = localStorage.getItem('session_timestamp');
+    // Construct own object
+    item["id"] = id;
+    item["name"] = name;
+    item["popularity"] = popularity;
+    item["img_url"] = img_url;
+    item["url"] = url;
+    item["cached"] = contructed_result_timestamp;
+
+    cc('ARTIST DETAILS','done');
+    console.log(item);
+    if (!isItemNullorUndefined(img_url,true)) {
+      $(construct_img).css('background-image', 'url(' + img_url + ')');  
+    };
+    
+    if (!isItemNullorUndefined(name,true)) {
+      $(construct_title).html('<h1>'+name+'</h1>');
+      localStorage.setItem('search_name',name)
+    };
+    $('#construct_popularity').html('popularity: '+popularity);
+    getENArtistDetails(name,item);
+  }); // end $.when                                                  
+}
+
+
+function getSPArtistSearch(artist_name,action){
+  cc('getSPArtistSearch('+artist_name+') action('+action+')','run')
+  // var base_url = 'https://api.spotify.com/v1/search?q=%22daughter%22&type=artist';
+  var base_url = 'https://api.spotify.com/v1/';
+  var artist_query_name = encodeURI(artist_name);
+  table_id = '#search_results table tbody';
+  $(table_id).show();
+
+  var itemdata_count = 0;
+      result_count = 0,
+      item = [],
+      artist_current_activity = null,
+      artist_prev_activity = null,
+      table_data = 'start';
+
+  var item_url = base_url + 'search?q="'+artist_query_name +'"%20year:1990-2020&type=artist&client_id='+sp_api_client_id;
+  // var item_url = 'http://api.bandsintown.com/artists/Lil%20Wayne?format=json&artist_id=fbid_6885814958&api_version=2.0&app_id=GIGROOM_BIT';
+  cc('SPOTIFY search URL:'+item_url,'done')
+  var item_data_from_array = [];
+  var itemdata = $.getJSON(item_url);
+  $.when(itemdata).done(function(item_data_from_array) {
+    var artist_details = item_data_from_array;
+    var results = artist_details["artists"];
+    results = results["items"];
+
+    cc('SPOTIFY results','info',false);
+    console.log(results);
     var result_count = getResponseSize(results);
     cc('results count: '+result_count,'highlight')
 
@@ -467,46 +838,40 @@ function getSKArtistDetails(artist_name,results_page){
       if (results != undefined) {
 
         var this_item_ID  = cdata['id'];
-        var name          = cdata['displayName'];
-        // var eventsHref          = cdata['identifier'];
-        //     eventsHref          = eventsHref[0];
-        //     eventsHref          = eventsHref["eventsHref"];
-        var onTourUntil   = cdata['onTourUntil'];
-        if (onTourUntil == null) {
-          onTourUntil = 'Not touring';
-        }
+        var name          = cdata['name'];
+        var onTourUntil = 'NA';
+        var popularity    = cdata['popularity'];
+        var images        = cdata['images'];
+        var thumb = '';
+        var image_loaded = false;
+        // // Load one Thumb image
+        // jQuery.each(images, function(i, cdata) {    
+        //   if (images != undefined) {
+        //     if (!image_loaded) {
+        //       var thumb_url = cdata.url;
+        //       var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
+        //       image_loaded = true;
+        //     }
+        //   }// end if results undefined
+        // }); // end images $.each
+        current_result_row++;
         cc('SK RESULT: '+this_item_ID+ ' '+name,'success');
-
+        cc('images','info');
+        console.log(images);
         
-        var bit_base_url = 'http://api.bandsintown.com/artists/';
-        var bit_artist_query_name = encodeURI(name);
-       
-        var bit_itemdata_count = 0;
-            bit_result_count = 0,
-            bit_item = [];
-
-        var bit_item_url = bit_base_url +bit_artist_query_name + '?api_version=2.0&app_id='+bit_api_key +'&format=json&callback=?';
-        // var item_url = 'http://api.bandsintown.com/artists/Lil%20Wayne?format=json&artist_id=fbid_6885814958&api_version=2.0&app_id=GIGROOM_BIT';
-        cc('BIT search URL:'+bit_item_url,'done')
-        var bit_item_data_from_array = [];
-        var bit_itemdata = $.getJSON(bit_item_url);
-        $.when(bit_itemdata).done(function(bit_item_data_from_array) {
-          cc('SUCCESS from BIT','success');
-          var bit_artist_details = bit_item_data_from_array;
-          cc(bit_artist_details,'info',false);
-          console.log(bit_artist_details);
-          if (!isItemNullorUndefined(bit_artist_details)) {
-            var thumb_url = bit_artist_details["image_url"];
-            var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
-
-          }else{
-            var thumb = '';            
-          }
-          current_result_row++;
-          var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+''+name+'</td><td>'+onTourUntil+'</td></tr>';
-          $(table_id).append(table_data); 
-        }); // end $.when  
-
+        if (images[0] != undefined) {
+            if (!image_loaded) {
+              var thumb_url = images[0].url;
+              var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
+              localStorage.setItem('search_artist_thumb_url',thumb_url);
+              image_loaded = true;
+            }
+          }// end if results undefined
+        // var link_name = safeName(name);
+        var link = 'http://localhost:8000/dashboard.html?&sid='+this_item_ID;
+        // var link = 'http://localhost:8000/dashboard.html?&profile='+artist_query_name+'&sid='+this_item_ID;
+        var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+popularity+'</td><td>'+onTourUntil+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
+        $(table_id).append(table_data); 
       }// end if results undefined
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -519,9 +884,6 @@ function getSKArtistDetails(artist_name,results_page){
     }); // end $.each
   }); // end $.when                                                  
 }
-
-
-var all_artist_activity = [];
 
 function getBITArtistDetails(artist_name,action){
   cc('getBITArtistDetails('+artist_name+') action('+action+')','run')
@@ -551,9 +913,8 @@ function getBITArtistDetails(artist_name,action){
 
 
 
-function getENArtistDetails(artist_name,action){
-  cc('getENArtistDetails('+artist_name+') action('+action+')','run')
-  
+function getENArtistDetails(artist_name,artist_info){
+  cc('getENArtistDetails('+artist_name+')','run')
   var base_url = 'http://developer.echonest.com/api/v4/artist/';
 
   var lowercase_query_name = artist_name.toLowerCase();
@@ -594,24 +955,115 @@ function getENArtistDetails(artist_name,action){
       if (logstore_data != undefined) {
         var this_item_ID       = cdata['id'];
         var name       = cdata['name'];
-        cc('RESULT: '+this_item_ID+ ' '+name,'success');
+        if (name === artist_name) {
 
-        var artist_item_url = 'http://developer.echonest.com/api/v4/artist/profile?api_key='+en_api_key+'&id='+this_item_ID+'&format=json&bucket=familiarity&bucket=hotttnesss&bucket=images';
-        // var artist_item_url = 'http://developer.echonest.com/api/v4/artist/profile?api_key='+en_api_key+'&id='+artist_id+'&format=json&bucket=biographies&bucket=blogs&bucket=familiarity&bucket=hotttnesss&bucket=images&bucket=news&bucket=reviews&bucket=terms&bucket=urls&bucket=video&bucket=id:musicbrainz';
-        var artist_item_data_from_array = [];
-        var artist_itemdata = $.getJSON(artist_item_url);
 
-        $.when(artist_itemdata).done(function(artist_item_data_from_array) {
-          var artist_artist_details = artist_item_data_from_array;
-          cc(artist_artist_details,'info',false);
-          console.log(artist_artist_details);
-          
-          // var artist_details = artist_item_data_from_array;
-          var artist = artist_artist_details["response"];
-          artist = artist["artist"];
-          // alert('Artist Name:'+artist["name"]);
+          cc('RESULT: '+this_item_ID+ ' '+name,'success');
 
-        }); // end $.when 
+          var artist_item_url = 'http://developer.echonest.com/api/v4/artist/profile?api_key='+en_api_key+'&id='+this_item_ID+'&format=json&bucket=familiarity&bucket=hotttnesss&bucket=images&bucket=biographies';
+          // var artist_item_url = 'http://developer.echonest.com/api/v4/artist/profile?api_key='+en_api_key+'&id='+artist_id+'&format=json&bucket=biographies&bucket=blogs&bucket=familiarity&bucket=hotttnesss&bucket=images&bucket=news&bucket=reviews&bucket=terms&bucket=urls&bucket=video&bucket=id:musicbrainz';
+          var artist_item_data_from_array = [];
+          var artist_itemdata = $.getJSON(artist_item_url);
+
+          $.when(artist_itemdata).done(function(artist_item_data_from_array) {
+            var artist_artist_details = artist_item_data_from_array;
+            cc(artist_artist_details,'info',false);
+            console.log(artist_artist_details);
+            
+            // var artist_details = artist_item_data_from_array;
+            var artist = artist_artist_details["response"];
+            artist = artist["artist"];
+            cc('Artist familiarity:'+artist["familiarity"],'success');
+            
+            // only use Wikipedia bios
+            var bio_loaded = false;
+            var bio = artist["biographies"];
+            var bio_info = '';
+            var bio_result_count = getResponseSize(bio);
+            cc('# of Bios available '+bio_result_count,'info');
+
+            jQuery.each(bio, function(i, cdata) { 
+              if (bio != undefined) {
+                if (!bio_loaded) {
+                  var bio_site = cdata.site;
+                  if (bio_site === "last.fm" && !bio_loaded) {
+                    var bio_url = cdata.url;
+                    var bio_text = cdata.text;
+                    cc('BIO: '+bio_url+' '+bio_site,'highlight');
+                    cc(bio_text,'info');
+                    //trim the string to the maximum length
+                    var maxLength = 260 
+                    var trimmedBio = bio_text.substr(0, maxLength);
+                    //re-trim if we are in the middle of a word
+                    trimmedBio = trimmedBio.substr(0, Math.min(trimmedBio.length, trimmedBio.lastIndexOf(" ")))
+                    cc('trimmedBio: '+trimmedBio,'done');
+                    var bio_info = '<p>'+trimmedBio+'...<a href="'+bio_url+'" target="blank">Read More</a></p>';
+                    // alert(bio_info);
+                    var construct_bio = '#construct_bio';
+                    $(construct_bio).html(bio_info);
+                    bio_loaded = true;
+                  }
+                  else if (bio_site === "facebook" && !bio_loaded) {
+                    var bio_url = cdata.url;
+                    var bio_text = cdata.text;
+                    cc('BIO: '+bio_url+' '+bio_site,'highlight');
+                    cc(bio_text,'info');
+                    //trim the string to the maximum length
+                    var maxLength = 260 
+                    var trimmedBio = bio_text.substr(0, maxLength);
+                    //re-trim if we are in the middle of a word
+                    trimmedBio = trimmedBio.substr(0, Math.min(trimmedBio.length, trimmedBio.lastIndexOf(" ")))
+                    cc('trimmedBio: '+trimmedBio,'done');
+                    var bio_info = '<p>'+trimmedBio+'...<a href="'+bio_url+'" target="blank">Read More</a></p>';
+                    // alert(bio_info);
+                    var construct_bio = '#construct_bio';
+                    $(construct_bio).html(bio_info);
+                    bio_loaded = true;
+                  }
+                  else if (bio_site === "wikipedia" && !bio_loaded) {
+                    var bio_url = cdata.url;
+                    var bio_text = cdata.text;
+                    cc('BIO: '+bio_url+' '+bio_site,'highlight');
+                    cc(bio_text,'info');
+                    //trim the string to the maximum length
+                    var maxLength = 260 
+                    var trimmedBio = bio_text.substr(0, maxLength);
+                    //re-trim if we are in the middle of a word
+                    trimmedBio = trimmedBio.substr(0, Math.min(trimmedBio.length, trimmedBio.lastIndexOf(" ")))
+                    cc('trimmedBio: '+trimmedBio,'done');
+                    var bio_info = '<p>'+trimmedBio+'...<a href="'+bio_url+'" target="blank">Read More</a></p>';
+                    // alert(bio_info);
+                    var construct_bio = '#construct_bio';
+                    $(construct_bio).html(bio_info);
+                    bio_loaded = true;
+                  }
+                }
+              }// end if results undefined
+              // itemdata_count++;
+              // if (itemdata_count == bio_result_count) {
+              //   cc('All processing of bios complete.','success');
+              // };
+            }); // end $.each
+            
+            artist_info["familiarity"] = artist["familiarity"];
+            artist_info["hotttnesss"] = artist["hotttnesss"];
+            artist_info["bio_trimmed"] = bio_info;
+            cc('UPDATED Artist info object','success');
+            console.log(artist_info);
+            artist_cache.push(artist_info);
+            
+            cc('FULL Artist cache object','success');
+            console.log(artist_cache);
+
+            var profile_holder = '#construct_profile';
+            var profile_info = '<p>'+artist["id"]+'</p><p>'+artist["name"]+'</p>';
+            // var profile_info = 
+            $(profile_holder).html(profile_info);
+            $(profile_holder).append(bio_info);
+            $('#contruct_fee_factors').html('<p>familiarity: '+artist["familiarity"]+'</p><p>hotttnesss: '+artist["hotttnesss"]+'</p>');
+
+          }); // end $.when 
+        }; // end name === artist_name
       }// end if d undefined
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
@@ -626,7 +1078,7 @@ function getENArtistDetails(artist_name,action){
   }); // end $.when                                                  
 }
 
-
+var artist_cache = [];
 
 function getLastTimestamp(logstore_data){
   cc('getLastTimestamp','run')

@@ -74,6 +74,27 @@
             <div class="thirteen columns row content main-content">
                   <div class="row nine columns" id="content_loader">
                     <h1>Ben Dev Dashboard</h1>
+                    <style>
+                      #construct_img{
+                        height: 380px;
+                        width: 380px;
+                        background-size: cover;
+                        background-position: top center;
+                        background-color: #eee;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        overflow: hidden;
+                      }
+                    </style>
+                    <h2>Spotify Data</h2>
+                    <div id="construct_img"></div>
+                    <div id="construct_title"></div>
+                    <div id="construct_popularity"></div>
+                    <div id="contruct_fee_factors"></div>
+                    <h2>Echonest Data</h2>
+                    <div id="construct_profile"></div>
+                    <div id="construct_bio"></div>
+                    
                     <form action="" id="who_to_host">
                       <input type="text" placeholder="Type search name...">
                     </form>
@@ -87,7 +108,9 @@
                               <th>ID</th>
                               <th>image</th>
                               <th>Name</th>
+                              <th>Popularity</th>
                               <th>On Tour Until</th>
+                              <th>Link</th>
                             </tr>
                           </thead>
                           <tbody></tbody>
@@ -99,6 +122,34 @@
                     <div id="load_more">
                       <p><button id="get_more_results">Load More</button></p>
                     </div>
+
+
+                    <form action="">
+                      <input  id="where_to_host" type="text" placeholder="Type search location...">
+                    </form>
+                    <button id="location_search_trigger">Search</button>
+                    <div class="static" id="location_search_results">
+                      <table class="sortable" id="metroAreas">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>ID</th>
+                              <th>Country</th>
+                              <th>Name</th>
+                              <th>Lat,Lng</th>
+                              <th>Link</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                    </div>
+                    <div class="loading" id="loading_gif" style="display: none;"><img alt="Loading..." src="/assets/images/loading.gif"></div>
+                    <div id="location_results_counter" class="hideme">
+                      <p>Total Results Found: <span></span></p>
+                    </div>
+                    <div id="location_load_more">
+                      <p><button id="location_get_more_results">Load More</button></p>
+                    </div>
+                    
                 </div> <!-- content loader -->
             </div><!-- / main content -->
         </div><!-- / #root -->
@@ -107,7 +158,9 @@
 .report_display_switch {
   display: block !important;
 }
-
+a.name{
+  pointer-events: auto !important;
+}
 #app_overview ul li,#app_version_history li {
   margin-bottom: 0;
   font-size: 16px;

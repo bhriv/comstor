@@ -103,10 +103,11 @@ var urlParams;
 console.log('*************** urlParams ************');
 console.log(urlParams);
 // console.log('apiKey +': urlParams["apiKey"]);
-console.log('apiKey from URL: '+urlParams['apiKey']);
+
 var this_page_apiKey = urlParams['apiKey'];
 if (this_page_apiKey != undefined) {
   localStorage.setItem( 'apiKey',this_page_apiKey);  
+  console.log('apiKey from URL: '+urlParams['apiKey']);
 }else{
   localStorage.removeItem('start_date');
   localStorage.removeItem('end_date');
@@ -157,10 +158,18 @@ function checkApiKey(){
 // http://stackoverflow.com/questions/18251399/why-doesnt-encodeuricomponent-encode-single-quotes-apostrophes
   // var find = ["<", ">", "\n","'", " ", "/", "?", "&"];
   // var replace = ["&lt;", "&gt;", "<br/>","%27", "%20", "%252", "%252", "and"];
-  
+
 function customEncodeURIComponent(URI) {
     return encodeURIComponent(URI).replace(/'/g, "%27");
 }
+
+function safeName(artist_name){
+  var lowercase_query_name = artist_name.toLowerCase();
+  var artist_query_name = encodeURI(lowercase_query_name);
+  artist_query_name = customEncodeURIComponent(artist_query_name);  
+  return artist_query_name
+}
+
 
 
 /*****************************************************************/
