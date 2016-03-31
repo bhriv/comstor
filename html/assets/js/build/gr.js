@@ -444,9 +444,14 @@ $(document).ready(function() {
     localStorage.setItem('location_search_name',location_name);
     localStorage.setItem('location_results_page',1);
     localStorage.setItem('location_result_counter',0);
-    getSKMetroEvents(location_name);
+    getSKMetroAreas(location_name);
     // getSKArtistDetails(artist_name);
     // $( "#who_to_host" ).submit();
+  });
+
+  $( "#search_songkick_trigger" ).click(function() {
+    var artist_name = $( "#search_songkick" ).val();
+    getSKArtistDetails(artist_name);
   });
 
   $( "#search_trigger" ).click(function() {
@@ -459,7 +464,7 @@ $(document).ready(function() {
     localStorage.setItem('search_name',artist_name);
     localStorage.setItem('results_page',1);
     localStorage.setItem('result_counter',0);
-    getSPArtistSearch(artist_name);
+    getSPArtistSearch(artist_name,'display_results');
     // getSKArtistDetails(artist_name);
     // $( "#who_to_host" ).submit();
   });
@@ -493,6 +498,11 @@ $(document).ready(function() {
     getSPArtistProfile(sid);
   };
 
+  var metroarea_id = urlParams["metroarea_id"]
+  if (!isItemNullorUndefined(metroarea_id)) {
+    getSKMetroEvents(metroarea_id);
+  };
+
   $( "a.name" ).click(function() {
     var artist_name = $(this).text();
     alert(artist_name);
@@ -504,9 +514,12 @@ $(document).ready(function() {
 }); // end Doc Ready 
 
 var all_location_results = [];
+var all_metroevent_results = [];
 var current_result_row = 0;
 
-function getSKMetroEvents(location_name,results_page){
+
+
+function getSKMetroAreas(location_name,results_page){
   // Reset location results array
   all_location_results = [];
 
@@ -518,7 +531,7 @@ function getSKMetroEvents(location_name,results_page){
       alert('Please enter a location name to search.')
     };
   };
-  cc('getSKMetroEvents('+location_name+') results_page('+results_page+')','run')
+  cc('getSKMetroAreas('+location_name+') results_page('+results_page+')','run')
   // Construct Query URL
   // http://api.songkick.com/api/3.0/search/locations.json?query={search_query}&apikey={your_api_key}
   var base_url = 'http://api.songkick.com/api/3.0/';  
@@ -600,13 +613,13 @@ function getSKMetroEvents(location_name,results_page){
         itemdata_count++;
 
         if (itemdata_count == result_count) {
-          cc('All processing of getSKMetroEvents complete.','success');
+          cc('All processing of getSKMetroAreas complete.','success');
           displaySKMetroAreas(all_location_results);
         };
       }); // end $.each
     };// end total_result_entries > 0
   }); // end $.when                                                  
-} // end getSKMetroEvents
+} // end getSKMetroAreas
 
 function displaySKMetroAreas(results){
   var table_id = '#location_search_results table tbody',
@@ -624,7 +637,7 @@ function displaySKMetroAreas(results){
       var lat_lng       = cdata['lat_lng'];
       var country       = cdata['country'];
       // var link = window.location.href+'?&profile='+link_name;
-      var link = 'http://localhost:8000/dashboard.html?metroid='+this_item_ID;
+      var link = 'http://localhost:8000/dashboard.html?metroarea_id='+this_item_ID;
       var table_data = '<tr><td>'+itemdata_count+'</td><td>'+this_item_ID+'</td><td>'+country+'</td><td class="name">'+name+'</td><td>'+lat_lng+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
       $('#metroAreas tbody').append(table_data); 
     }// end if results undefined
@@ -639,6 +652,282 @@ function displaySKMetroAreas(results){
 }
 
 
+function getSKMetroEvents(metroarea_id,results_page){
+  // Reset location results array
+  all_metroevent_results = [];
+
+  if (isItemNullorUndefined(results_page,true)) {
+    var results_page = 1;
+  }
+  if (isItemNullorUndefined(metroarea_id,true)) {
+    if (isItemNullorUndefined(metroarea_id)) {
+      alert('No metro id found. Use the search box to find an area.')
+    };
+  };
+  cc('getSKMetroEvents('+metroarea_id+') results_page('+results_page+')','run')
+  // Construct Query URL
+  // http://api.songkick.com/api/3.0/metro_areas/{metro_area_id}/calendar.json?apikey={your_api_key}
+  var base_url = 'http://api.songkick.com/api/3.0/';  
+  // var metroarea_id = encodeURI(metroarea_id);;
+  // var location_query_name = safeName(location_name);
+  cc('Seaching for '+metroarea_id, 'info');
+  
+  var table_id = '#metroevents_search_results table tbody',
+      itemdata_count = 0,
+      result_count = 0,
+      item = [],
+      performance  = null,
+      artist = null,
+      artist_name = null,
+      location = null,
+      city = null,
+      lat = null,
+      lng = null,
+      lat_lng = null,
+      date = null,
+      thumb_url = '';
+      
+  $(table_id).show();
+  $(table_id).empty();
+
+  var item_url = base_url +'metro_areas/'+metroarea_id + '/calendar.json?apikey='+sk_api_key +'&jsoncallback=?&page='+results_page;
+  cc('SK metroarea search URL:'+item_url,'done')
+  var itemdata = $.getJSON(item_url);
+  var item_data_from_array = [];
+
+  $.when(itemdata).done(function(item_data_from_array) {
+    cc('item_data_from_array','info')
+    console.log(item_data_from_array);
+    
+    var results = item_data_from_array["resultsPage"];
+    var total_result_entries = results["totalEntries"];
+    total_result_entries = parseInt(total_result_entries);
+    cc('total_result_entries: '+total_result_entries,'info');
+    var results_counter = '#location_results_counter';
+    $(results_counter).show();
+    $(results_counter+ ' span').html(total_result_entries);
+
+    if (total_result_entries > 0) {
+      results = results["results"];
+      results = results["event"];
+
+      var result_count = getResponseSize(results);
+      cc('results count: '+result_count,'highlight')
+
+      jQuery.each(results, function(i, cdata) {     
+        if (results != undefined) {
+          // var metroArea = cdata["metroArea"]
+          var this_item_ID  = cdata['id'];
+          var name          = cdata['displayName'];
+
+          var performance   = cdata['performance'];
+              performance   = performance[0];
+              if (!isItemNullorUndefined(performance)) {
+                artist =  performance["artist"];
+                artist_name = artist["displayName"];
+              };
+          
+          var location   = cdata['location'];
+          var city =  location["city"];
+          var lat = location["lat"];
+          var lng = location["lng"];
+          var lat_lng = lat+','+lng;
+          var date   = cdata['start'];
+            date =  date["date"];
+
+          // only present Artists that are touring areas in 3 or more weeks to allow time to book. 
+          var gig_date_timestamp = moment(date).format("X");
+          var gig_date_test = moment().add(21, 'days');
+          var gig_cuttoffdate = moment(gig_date_test).format("X");
+          var gig_cuttoffdate_timestamp = moment(gig_cuttoffdate).format("X");
+
+          var dif = parseInt(gig_date_timestamp) - parseInt(gig_cuttoffdate);
+          var days_after_cuttoff = parseInt(dif/60/60/24);
+
+          var gig_date_label = moment(date).fromNow();
+
+          // cc('gig_date_timestamp: '+parseInt(gig_date_timestamp)+' gig_cuttoffdate: '+parseInt(gig_cuttoffdate) + ' dif = '+dif,'success');
+          if (days_after_cuttoff > 0) {
+            cc(gig_cuttoffdate+'(gig_date_timestamp: '+gig_date_timestamp+' days_after_cuttoff: '+days_after_cuttoff+') SK EVENT RESULT: '+this_item_ID+ ' '+city+ ' artist:'+artist_name+ ' on '+date+ ' which is '+gig_date_label ,'success');
+            current_result_row++;
+            // get SP thumb
+            var item = {
+                "id": this_item_ID,
+                "artist_displayName": artist_name,
+                "date": date,
+                "city": city,
+                "lat_lng": lat_lng
+            }
+            all_metroevent_results.push(item);
+          };
+           
+        }// end if results undefined
+        else{
+          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+        }
+        itemdata_count++;
+
+        if (itemdata_count == result_count) {
+          cc('All processing of getSKMetroAreas complete.','success');
+          cc('all_metroevent_results','info');
+          console.log(all_metroevent_results);
+          // getSPArtistDetails(all_metroevent_results);
+          addSPArtistInfo(all_metroevent_results);
+          // displaySKMetroAreaEvents(all_metroevent_results);
+        };
+      }); // end $.each
+    };// end total_result_entries > 0
+  }); // end $.when                                                  
+} // end getSKMetroAreas
+
+
+
+
+function getSPArtistDetails(results){
+  var itemdata_count = 1,
+      result_count = 1,
+      item = [];
+  
+  var result_count = getResponseSize(results);
+
+  jQuery.each(results, function(i, cdata) {
+    if (results != undefined) { 
+      // var this_item_ID  = cdata['id'];
+      var name          = cdata['artist_displayName'];
+      // send artist name to EN endpoint, get artist image
+      var sp_thumb = getSPArtistSearch(name,'get_thumb');
+      // should return a thumb URL
+      cc('Thumb from SP: '+sp_thumb,'highlight');
+      cdata["artist_thumb"] = sp_thumb;
+      console.log(cdata);
+    }// end if results undefined
+    else{
+      cc('There was an error getting data. It seems that the funciton does not recieve data.','error');
+    }
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processing of displaySKMetroAreaEvents complete.','success');
+    };
+  }); // end $.each
+}
+
+function displaySKMetroAreaEvents(results){
+  var table_id = '#metroevents_search_results table tbody',
+      itemdata_count = 1,
+      result_count = 1,
+      item = [];
+  $(table_id).empty();
+  var result_count = getResponseSize(results);
+  cc('results count: '+result_count,'highlight')
+
+  jQuery.each(results, function(i, cdata) {
+    if (results != undefined) { 
+      var this_item_ID  = cdata['id'];
+      var name          = cdata['artist_displayName'];
+      var lat_lng       = cdata['lat_lng'];
+      var city       = cdata['city'];
+      var date       = cdata['date'];
+      // send artist name to EN endpoint, get artist image
+      var sp_thumb = cdata['thumb_url'];
+
+      var link = 'http://localhost:8000/dashboard.html?metroarea_id='+this_item_ID;
+      var table_data = '<tr><td>'+itemdata_count+'</td><td>'+this_item_ID+'</td><td>'+city+'</td><td class="name"><img src="'+sp_thumb+'" width="50" height="50"> '+name+'</td><td>'+date+'</td><td>'+lat_lng+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
+      $('#metroArea_events tbody').append(table_data); 
+    }// end if results undefined
+    else{
+      cc('There was an error getting data. It seems that the funciton does not recieve data.','error');
+    }
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processing of displaySKMetroAreaEvents complete.','success');
+      // addSPArtistInfo(results);
+    };
+  }); // end $.each
+}
+
+
+function addSPArtistInfo(results){
+  var table_id = '#metroevents_search_results table tbody',
+      itemdata_count = 0,
+      result_count = 0,
+      item = [];
+  $(table_id).empty();
+  var result_count = getResponseSize(results);
+  cc('results count: '+result_count,'highlight')
+
+  var artists = [];
+  artists = results;
+  var loop_count = 0;
+  jQuery.each(results, function(i, cdata) { 
+
+    var sp_base_url = 'https://api.spotify.com/v1/';
+
+    var artist_name = cdata["artist_displayName"];
+    var sp_artist_query_name = encodeURI(artist_name);
+    var sp_item_url = sp_base_url + 'search?q="'+sp_artist_query_name +'"%20year:1990-2020&type=artist&client_id='+sp_api_client_id;
+    var sp_item_data_from_array = [];
+    var sp_itemdata = $.getJSON(sp_item_url);
+
+    $.when(sp_itemdata).done(function(sp_item_data_from_array) {
+      cc('FINDING Artist Thumb for: '+artist_name,'highlight')
+      var sp_artist_details = sp_item_data_from_array;
+      var sp_results = sp_artist_details["artists"];
+      sp_results = sp_results["items"];
+
+      jQuery.each(sp_results, function(i, cdata) {     
+        if (sp_results != undefined) {
+          var spotify_id    = cdata['id'];
+          artists[loop_count].spotify_id = spotify_id;
+
+          var images        = cdata['images'];
+          if (images[0] != undefined) {
+            var thumb_url = images[0].url;
+            cc('thumb_url: '+thumb_url,'success');
+            cc('artists['+loop_count+']','info');
+            artists[loop_count].thumb_url = thumb_url;
+          }else{
+            cc('No thumb found','warning');
+            var thumb_url = 'https://gigroom.com/apple-touch-icon-iphone4.png';
+            cc('artists['+loop_count+']','warning');
+            artists[loop_count].thumb_url = thumb_url;
+          }// end if results undefined
+          console.log(results[loop_count]);
+          
+          var this_item_ID  = results[loop_count].id;
+          var name          = results[loop_count].artist_displayName;
+          var lat_lng       = results[loop_count].lat_lng;
+          var city       = results[loop_count].city;
+          var date       = results[loop_count].date;
+          // send artist name to EN endpoint, get artist image
+          var sp_thumb = results[loop_count].thumb_url;
+          var sid = results[loop_count].spotify_id;
+
+          var link = 'http://localhost:8000/dashboard.html?sid='+sid;
+          var table_data = '<tr><td>'+itemdata_count+'</td><td>'+this_item_ID+'</td><td>'+city+'</td><td class="name"><img src="'+sp_thumb+'" width="50" height="50"> '+name+'</td><td>'+date+'</td><td>'+lat_lng+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
+          $('#metroArea_events tbody').append(table_data);
+        }// end if results undefined
+        else{
+          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+        }
+        loop_count++;
+      }); // end $.each
+    }); // end $.when 
+
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processing of addSPArtistInfo complete.','success');
+    }; 
+  }); // end $.each
+  
+     
+}
+
+
+
+
+
+
+
 function getSKArtistDetails(artist_name,results_page){
   if (isItemNullorUndefined(artist_name,true)) {
     var artist_name = localStorage.getItem('artist_name');
@@ -650,19 +939,15 @@ function getSKArtistDetails(artist_name,results_page){
 
   // Construct Query URL
   var base_url = 'http://api.songkick.com/api/3.0/';  
-  var artist_query_name = safeName(artist_name);
+  var artist_query_name = artist_name
   cc('Seaching for '+artist_query_name, 'info');
   
-  var table_id = '#search_results table',
+  var table_id = '#songkick_search_results',
       itemdata_count = 0,
       result_count = 0,
-      item = [],
-      artist_current_activity = null,
-      artist_prev_activity = null,
-      table_data = 'start';
-  $(table_id).show();
+      item = [];
 
-  var item_url = base_url +'search/artists.json?query='+artist_query_name + '&apikey='+sk_api_key +'&jsoncallback=?&page='+results_page;
+  var item_url = base_url +'search/artists.json?query='+artist_query_name +'&apikey='+sk_api_key +'&jsoncallback=?&page='+results_page;
   cc('SK search URL:'+item_url,'done')
   var itemdata = $.getJSON(item_url);
   var item_data_from_array = [];
@@ -697,51 +982,54 @@ function getSKArtistDetails(artist_name,results_page){
           // var eventsHref          = cdata['identifier'];
           //     eventsHref          = eventsHref[0];
           //     eventsHref          = eventsHref["eventsHref"];
-          var onTourUntil   = cdata['onTourUntil'];
-          if (onTourUntil == null) {
-            onTourUntil = 'Not touring';
-          }
-          cc('SK RESULT: '+this_item_ID+ ' '+name,'success');
-          var bit_base_url = 'http://api.bandsintown.com/artists/';
-          var bit_artist_query_name = encodeURI(name);
-         
-          var bit_itemdata_count = 0;
-              bit_result_count = 0,
-              bit_item = [];
-
-          var bit_item_url = bit_base_url +bit_artist_query_name + '?api_version=2.0&app_id='+bit_api_key +'&format=json&callback=?';
-          // var item_url = 'http://api.bandsintown.com/artists/Lil%20Wayne?format=json&artist_id=fbid_6885814958&api_version=2.0&app_id=GIGROOM_BIT';
-          cc('BIT search URL:'+bit_item_url,'done')
-          var bit_item_data_from_array = [];
-          var bit_itemdata = $.getJSON(bit_item_url);
-          $.when(bit_itemdata).done(function(bit_item_data_from_array) {
-            cc('SUCCESS from BIT','success');
-            var bit_artist_details = bit_item_data_from_array;
-            cc(bit_artist_details,'info',false);
-            console.log(bit_artist_details);
-            if (!isItemNullorUndefined(bit_artist_details)) {
-              var thumb_url = bit_artist_details["image_url"];
-              var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
-
-            }else{
-              var thumb = '';            
+          // ONLY show exact matches  
+          if (name === artist_name) {       
+            var onTourUntil   = cdata['onTourUntil'];
+            if (onTourUntil == null) {
+              onTourUntil = 'Not touring';
             }
-            current_result_row++;
-            var link_name = safeName(name);
-            var link = window.location.href+'?&profile='+link_name;
-            var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+onTourUntil+'</td><td>'+link+'</td></tr>';
-            $(table_id).append(table_data); 
-          }); // end $.when  
+            cc('SK RESULT: '+this_item_ID+ ' '+name,'success');
+            var bit_base_url = 'http://api.bandsintown.com/artists/';
+            var bit_artist_query_name = encodeURI(name);
+           
+            var bit_itemdata_count = 0;
+                bit_result_count = 0,
+                bit_item = [];
 
-        }// end if results undefined
-        else{
-          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
-        }
-        itemdata_count++;
+            var bit_item_url = bit_base_url +bit_artist_query_name + '?api_version=2.0&app_id='+bit_api_key +'&format=json&callback=?';
+            // var item_url = 'http://api.bandsintown.com/artists/Lil%20Wayne?format=json&artist_id=fbid_6885814958&api_version=2.0&app_id=GIGROOM_BIT';
+            cc('BIT search URL:'+bit_item_url,'done')
+            var bit_item_data_from_array = [];
+            var bit_itemdata = $.getJSON(bit_item_url);
+            $.when(bit_itemdata).done(function(bit_item_data_from_array) {
+              cc('SUCCESS from BIT','success');
+              var bit_artist_details = bit_item_data_from_array;
+              cc(bit_artist_details,'info',false);
+              console.log(bit_artist_details);
+              if (!isItemNullorUndefined(bit_artist_details)) {
+                var thumb_url = bit_artist_details["image_url"];
+                var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
 
-        if (itemdata_count == result_count) {
-          cc('All processing of getSKArtistDetails complete.','success');
-        };
+              }else{
+                var thumb = '';            
+              }
+              current_result_row++;
+              var link_name = bit_artist_query_name;
+              var link = window.location.href+'?&profile='+link_name;
+              var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+onTourUntil+'</td><td>'+link+'</td></tr>';
+              $(table_id).append(table_data); 
+            }); // end $.when  
+
+          }// end if results undefined
+          else{
+            cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+          }
+          itemdata_count++;
+
+          if (itemdata_count == result_count) {
+            cc('All processing of getSKArtistDetails complete.','success');
+          };
+        }; // end EXACT name match
       }); // end $.each
     };// end total_result_entries > 0
     
@@ -862,16 +1150,29 @@ function getSPArtistSearch(artist_name,action){
         if (images[0] != undefined) {
             if (!image_loaded) {
               var thumb_url = images[0].url;
-              var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
-              localStorage.setItem('search_artist_thumb_url',thumb_url);
-              image_loaded = true;
+              if (action === 'display_results') {
+                var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
+                localStorage.setItem('search_artist_thumb_url',thumb_url);
+                image_loaded = true;
+              }
+              if (action === 'get_details') {
+                var details = {
+                  "id" : id,
+                  "thumb_url": thumb_url,
+                  "name": name
+                }
+                return details;
+              };
+              if (action === 'get_thumb') {
+                return thumb_url;
+              };
             }
           }// end if results undefined
-        // var link_name = safeName(name);
-        var link = 'http://localhost:8000/dashboard.html?&sid='+this_item_ID;
-        // var link = 'http://localhost:8000/dashboard.html?&profile='+artist_query_name+'&sid='+this_item_ID;
-        var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+popularity+'</td><td>'+onTourUntil+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
-        $(table_id).append(table_data); 
+        if (action === 'display_results') {
+          var link = 'http://localhost:8000/dashboard.html?&sid='+this_item_ID;
+          var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+popularity+'</td><td>'+onTourUntil+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
+          $(table_id).append(table_data); 
+        } // end display_results
       }// end if results undefined
       else{
         cc('There was an error getting data. It seems that the endpoint does not return data.','error');
