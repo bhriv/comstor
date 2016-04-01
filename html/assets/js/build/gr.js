@@ -422,7 +422,6 @@ var sp_api_client_secret = '7b995b01d';
 $(document).ready(function() {
   // Set Input to previous search by Default
 
-
   var artist_name_storage = localStorage.getItem('search_name');
   if (!isItemNullorUndefined(artist_name_storage)) {
     $( "#who_to_host input:first" ).attr("placeholder", artist_name_storage);
@@ -686,7 +685,7 @@ function getSKMetroEvents(metroarea_id,results_page){
       lat_lng = null,
       date = null,
       thumb_url = '';
-      
+
   $(table_id).show();
   $(table_id).empty();
 
@@ -722,7 +721,7 @@ function getSKMetroEvents(metroarea_id,results_page){
 
           var performance   = cdata['performance'];
               performance   = performance[0];
-              if (!isItemNullorUndefined(performance)) {
+              if (!isItemNullorUndefined(performance,true)) {
                 artist =  performance["artist"];
                 artist_name = artist["displayName"];
               };
@@ -737,26 +736,28 @@ function getSKMetroEvents(metroarea_id,results_page){
 
           // only present Artists that are touring areas in 3 or more weeks to allow time to book. 
           var gig_date_timestamp = moment(date).format("X");
-          var gig_date_test = moment().add(21, 'days');
-          var gig_cuttoffdate = moment(gig_date_test).format("X");
-          var gig_cuttoffdate_timestamp = moment(gig_cuttoffdate).format("X");
+          var gig_date_min = moment().add(21, 'days');
+          var gig_cuttoffdate_min = moment(gig_date_min).format("X");
+          var gig_cuttoffdate_min_timestamp = moment(gig_cuttoffdate_min).format("X");
 
-          var dif = parseInt(gig_date_timestamp) - parseInt(gig_cuttoffdate);
+          var dif = parseInt(gig_date_timestamp) - parseInt(gig_cuttoffdate_min);
           var days_after_cuttoff = parseInt(dif/60/60/24);
 
           var gig_date_label = moment(date).fromNow();
 
           // cc('gig_date_timestamp: '+parseInt(gig_date_timestamp)+' gig_cuttoffdate: '+parseInt(gig_cuttoffdate) + ' dif = '+dif,'success');
-          if (days_after_cuttoff > 0) {
-            cc(gig_cuttoffdate+'(gig_date_timestamp: '+gig_date_timestamp+' days_after_cuttoff: '+days_after_cuttoff+') SK EVENT RESULT: '+this_item_ID+ ' '+city+ ' artist:'+artist_name+ ' on '+date+ ' which is '+gig_date_label ,'success');
+          // Only show gigs within 3-10 weeks
+          if (49 > days_after_cuttoff > 0) {
+            cc(gig_cuttoffdate_min+'(gig_date_timestamp: '+gig_date_timestamp+' days_after_cuttoff: '+days_after_cuttoff+') SK EVENT RESULT: '+this_item_ID+ ' '+city+ ' artist:'+artist_name+ ' on '+date+ ' which is '+gig_date_label ,'success');
             current_result_row++;
             // get SP thumb
             var item = {
-                "id": this_item_ID,
-                "artist_displayName": artist_name,
-                "date": date,
-                "city": city,
-                "lat_lng": lat_lng
+                "artist_displayName": artist_name
+                // "id": this_item_ID,
+                
+                // "date": date,
+                // "city": city,
+                // "lat_lng": lat_lng
             }
             all_metroevent_results.push(item);
           };
@@ -772,7 +773,8 @@ function getSKMetroEvents(metroarea_id,results_page){
           cc('all_metroevent_results','info');
           console.log(all_metroevent_results);
           // getSPArtistDetails(all_metroevent_results);
-          addSPArtistInfo(all_metroevent_results);
+          var ax = _.uniq(all_metroevent_results);
+          addSPArtistInfo(ax);
           // displaySKMetroAreaEvents(all_metroevent_results);
         };
       }); // end $.each
@@ -780,8 +782,126 @@ function getSKMetroEvents(metroarea_id,results_page){
   }); // end $.when                                                  
 } // end getSKMetroAreas
 
+function addSPArtistInfo(results){
+  var table_id = '#metroevents_search_results table tbody',
+      itemdata_count = 0,
+      result_count = 0,
+      item = [],
+      performance  = null,
+      artist = null,
+      artist_name = null,
+      location = null,
+      city = null,
+      lat = null,
+      lng = null,
+      lat_lng = null,
+      date = null,
+      thumb_url = '';
 
 
+  $(table_id).empty();
+  var result_count = getResponseSize(results);
+  cc('results count: '+result_count,'highlight')
+
+  var artists = [];
+  artists = results;
+  var loop_count = 0;
+  jQuery.each(results, function(i, cdata) { 
+
+    var sp_base_url = 'https://api.spotify.com/v1/';
+
+    var artist_name = cdata["artist_displayName"];
+    var sp_artist_query_name = encodeURI(artist_name);
+    var sp_item_url = sp_base_url + 'search?q="'+sp_artist_query_name +'"%20year:1990-2020&type=artist&client_id='+sp_api_client_id;
+    var sp_item_data_from_array = [];
+    var sp_itemdata = $.getJSON(sp_item_url);
+
+    $.when(sp_itemdata).done(function(sp_item_data_from_array) {
+      cc('FINDING Artist Thumb for: '+artist_name,'highlight')
+      var sp_artist_details = sp_item_data_from_array;
+      var sp_results = sp_artist_details["artists"];
+      sp_results = sp_results["items"];
+
+      jQuery.each(sp_results, function(i, cdata) {     
+        if (sp_results != undefined) {
+          // store spotify data
+          artists[loop_count].spotify_id = cdata.id;
+          artists[loop_count].spotify_name = cdata.name;
+          artists[loop_count].spotify_popularity = cdata.popularity;
+          artists[loop_count].gigroom_fee_min = calculateMinFee(cdata.popularity);
+          
+          artists[loop_count].spotify_cache_timestamp = localStorage.getItem('session_timestamp');
+          var spotify_url = cdata.external_urls;
+          artists[loop_count].spotify_url = spotify_url.spotify;
+
+          var images        = cdata['images'];
+          if (images[0] != undefined) {
+            var thumb_url = images[0].url;
+            cc('thumb_url: '+thumb_url,'success');
+            cc('artists['+loop_count+']','info');
+            artists[loop_count].thumb_url = thumb_url;
+          }else{
+            cc('No thumb found','warning');
+            var thumb_url = 'https://gigroom.com/apple-touch-icon-iphone4.png';
+            cc('artists['+loop_count+']','warning');
+            artists[loop_count].thumb_url = thumb_url;
+          }// end if results undefined
+          var spotify_profile_data = '<small>'+artists[loop_count].spotify_name+'<br>'+artists[loop_count].spotify_id+'<br>'+artists[loop_count].spotify_popularity+'<br>'+artists[loop_count].thumb_url+'<br>'+artists[loop_count].spotify_url+'</small>';
+          console.log(results[loop_count]);
+          var gigroom_fee_min = artists[loop_count].gigroom_fee_min;
+          
+          var this_item_ID  = results[loop_count].id;
+          var name          = results[loop_count].artist_displayName;
+          var lat_lng       = results[loop_count].lat_lng;
+          var city       = results[loop_count].city;
+          var date       = results[loop_count].date;
+          // send artist name to EN endpoint, get artist image
+
+          var spotify_thumb = results[loop_count].thumb_url;
+          var sid = results[loop_count].spotify_id;
+
+          var link = 'http://localhost:8000/dashboard.html?sid='+sid;
+          var table_data = '<tr><td>'+loop_count+'</td><td>'+this_item_ID+'</td><td>'+city+'</td><td class="name"><img src="'+spotify_thumb+'" width="50" height="50"> '+artists[loop_count].spotify_name+'</td><td>'+date+'</td><td>'+lat_lng+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td><td>'+spotify_profile_data+'</td><td>'+gigroom_fee_min+'</td></tr>';
+          $('#metroArea_events tbody').append(table_data);
+        }// end if results undefined
+        else{
+          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+        }
+        loop_count++;
+      }); // end $.each
+    }); // end $.when 
+
+    itemdata_count++;
+    if (itemdata_count == result_count) {
+      cc('All processing of addSPArtistInfo complete.','success');
+      console.log(artists);
+    }; 
+  }); // end $.each     
+}
+
+function calculateMinFee(popularity){
+  cc('calculateMinFee','run');
+  var min_fee = null;
+  var popularity = parseInt(popularity);
+  
+  if      ( popularity < 14)  { min_fee = 200;}
+  else if ( popularity < 20)  { min_fee = 250;}
+  else if ( popularity < 26)  { min_fee = 800;}
+  else if ( popularity < 35)  { min_fee = 1500;}
+  else if ( popularity < 40)  { min_fee = 3500;}
+  else if ( popularity < 50)  { min_fee = 5000;}
+  else if ( popularity < 60)  { min_fee = 7500;}
+  else if ( popularity < 66)  { min_fee = 10000;}
+  else if ( popularity < 70)  { min_fee = 12500;}
+  else if ( popularity < 75)  { min_fee = 15000;}
+  else if ( popularity < 80)  { min_fee = 20000;}
+  else if ( popularity < 86)  { min_fee = 40000;}
+  else if ( popularity < 91)  { min_fee = 50000;}
+  else if ( popularity < 96)  { min_fee = 100000;}
+  else if ( popularity < 101) { min_fee = 200000;}
+  else {min_fee = 'TBD'};
+  return min_fee;
+}
 
 function getSPArtistDetails(results){
   var itemdata_count = 1,
@@ -840,91 +960,9 @@ function displaySKMetroAreaEvents(results){
     itemdata_count++;
     if (itemdata_count == result_count) {
       cc('All processing of displaySKMetroAreaEvents complete.','success');
-      // addSPArtistInfo(results);
     };
   }); // end $.each
 }
-
-
-function addSPArtistInfo(results){
-  var table_id = '#metroevents_search_results table tbody',
-      itemdata_count = 0,
-      result_count = 0,
-      item = [];
-  $(table_id).empty();
-  var result_count = getResponseSize(results);
-  cc('results count: '+result_count,'highlight')
-
-  var artists = [];
-  artists = results;
-  var loop_count = 0;
-  jQuery.each(results, function(i, cdata) { 
-
-    var sp_base_url = 'https://api.spotify.com/v1/';
-
-    var artist_name = cdata["artist_displayName"];
-    var sp_artist_query_name = encodeURI(artist_name);
-    var sp_item_url = sp_base_url + 'search?q="'+sp_artist_query_name +'"%20year:1990-2020&type=artist&client_id='+sp_api_client_id;
-    var sp_item_data_from_array = [];
-    var sp_itemdata = $.getJSON(sp_item_url);
-
-    $.when(sp_itemdata).done(function(sp_item_data_from_array) {
-      cc('FINDING Artist Thumb for: '+artist_name,'highlight')
-      var sp_artist_details = sp_item_data_from_array;
-      var sp_results = sp_artist_details["artists"];
-      sp_results = sp_results["items"];
-
-      jQuery.each(sp_results, function(i, cdata) {     
-        if (sp_results != undefined) {
-          var spotify_id    = cdata['id'];
-          artists[loop_count].spotify_id = spotify_id;
-
-          var images        = cdata['images'];
-          if (images[0] != undefined) {
-            var thumb_url = images[0].url;
-            cc('thumb_url: '+thumb_url,'success');
-            cc('artists['+loop_count+']','info');
-            artists[loop_count].thumb_url = thumb_url;
-          }else{
-            cc('No thumb found','warning');
-            var thumb_url = 'https://gigroom.com/apple-touch-icon-iphone4.png';
-            cc('artists['+loop_count+']','warning');
-            artists[loop_count].thumb_url = thumb_url;
-          }// end if results undefined
-          console.log(results[loop_count]);
-          
-          var this_item_ID  = results[loop_count].id;
-          var name          = results[loop_count].artist_displayName;
-          var lat_lng       = results[loop_count].lat_lng;
-          var city       = results[loop_count].city;
-          var date       = results[loop_count].date;
-          // send artist name to EN endpoint, get artist image
-          var sp_thumb = results[loop_count].thumb_url;
-          var sid = results[loop_count].spotify_id;
-
-          var link = 'http://localhost:8000/dashboard.html?sid='+sid;
-          var table_data = '<tr><td>'+itemdata_count+'</td><td>'+this_item_ID+'</td><td>'+city+'</td><td class="name"><img src="'+sp_thumb+'" width="50" height="50"> '+name+'</td><td>'+date+'</td><td>'+lat_lng+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
-          $('#metroArea_events tbody').append(table_data);
-        }// end if results undefined
-        else{
-          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
-        }
-        loop_count++;
-      }); // end $.each
-    }); // end $.when 
-
-    itemdata_count++;
-    if (itemdata_count == result_count) {
-      cc('All processing of addSPArtistInfo complete.','success');
-    }; 
-  }); // end $.each
-  
-     
-}
-
-
-
-
 
 
 
@@ -1065,6 +1103,8 @@ function getSPArtistProfile(sid,action){
     var name = a.name;
     var id = a.id;
     var popularity = a.popularity;
+    popularity = parseInt(popularity);
+    var min_fee = calculateMinFee(popularity);
     var images = a.images;
     var img_url = images[0].url;
     var contructed_result_timestamp = localStorage.getItem('session_timestamp');
@@ -1072,6 +1112,7 @@ function getSPArtistProfile(sid,action){
     item["id"] = id;
     item["name"] = name;
     item["popularity"] = popularity;
+    item["min_fee"] = min_fee;
     item["img_url"] = img_url;
     item["url"] = url;
     item["cached"] = contructed_result_timestamp;
@@ -1084,6 +1125,7 @@ function getSPArtistProfile(sid,action){
     
     if (!isItemNullorUndefined(name,true)) {
       $(construct_title).html('<h1>'+name+'</h1>');
+      $(construct_title).append('<a href="'+url+'" target="blank">Listen</a>');
       localStorage.setItem('search_name',name)
     };
     $('#construct_popularity').html('popularity: '+popularity);
@@ -1121,68 +1163,72 @@ function getSPArtistSearch(artist_name,action){
     console.log(results);
     var result_count = getResponseSize(results);
     cc('results count: '+result_count,'highlight')
+    if (result_count > 0) {
+      jQuery.each(results, function(i, cdata) {     
+        if (results != undefined) {
 
-    jQuery.each(results, function(i, cdata) {     
-      if (results != undefined) {
-
-        var this_item_ID  = cdata['id'];
-        var name          = cdata['name'];
-        var onTourUntil = 'NA';
-        var popularity    = cdata['popularity'];
-        var images        = cdata['images'];
-        var thumb = '';
-        var image_loaded = false;
-        // // Load one Thumb image
-        // jQuery.each(images, function(i, cdata) {    
-        //   if (images != undefined) {
-        //     if (!image_loaded) {
-        //       var thumb_url = cdata.url;
-        //       var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
-        //       image_loaded = true;
-        //     }
-        //   }// end if results undefined
-        // }); // end images $.each
-        current_result_row++;
-        cc('SK RESULT: '+this_item_ID+ ' '+name,'success');
-        cc('images','info');
-        console.log(images);
-        
-        if (images[0] != undefined) {
-            if (!image_loaded) {
-              var thumb_url = images[0].url;
-              if (action === 'display_results') {
-                var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
-                localStorage.setItem('search_artist_thumb_url',thumb_url);
-                image_loaded = true;
-              }
-              if (action === 'get_details') {
-                var details = {
-                  "id" : id,
-                  "thumb_url": thumb_url,
-                  "name": name
+          var this_item_ID  = cdata['id'];
+          var name          = cdata['name'];
+          var onTourUntil = 'NA';
+          var popularity    = cdata['popularity'];
+          var images        = cdata['images'];
+          var thumb = '';
+          var image_loaded = false;
+          // // Load one Thumb image
+          // jQuery.each(images, function(i, cdata) {    
+          //   if (images != undefined) {
+          //     if (!image_loaded) {
+          //       var thumb_url = cdata.url;
+          //       var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
+          //       image_loaded = true;
+          //     }
+          //   }// end if results undefined
+          // }); // end images $.each
+          current_result_row++;
+          cc('SK RESULT: '+this_item_ID+ ' '+name,'success');
+          cc('images','info');
+          console.log(images);
+          
+          if (images[0] != undefined) {
+              if (!image_loaded) {
+                var thumb_url = images[0].url;
+                if (action === 'display_results') {
+                  var thumb = '<img src="'+thumb_url+'"" alt="" width="50" height="50">';
+                  localStorage.setItem('search_artist_thumb_url',thumb_url);
+                  image_loaded = true;
                 }
-                return details;
-              };
-              if (action === 'get_thumb') {
-                return thumb_url;
-              };
-            }
-          }// end if results undefined
-        if (action === 'display_results') {
-          var link = 'http://localhost:8000/dashboard.html?&sid='+this_item_ID;
-          var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+popularity+'</td><td>'+onTourUntil+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
-          $(table_id).append(table_data); 
-        } // end display_results
-      }// end if results undefined
-      else{
-        cc('There was an error getting data. It seems that the endpoint does not return data.','error');
-      }
-      itemdata_count++;
+                if (action === 'get_details') {
+                  var details = {
+                    "id" : id,
+                    "thumb_url": thumb_url,
+                    "name": name
+                  }
+                  return details;
+                };
+                if (action === 'get_thumb') {
+                  return thumb_url;
+                };
+              }
+            }// end if results undefined
+          if (action === 'display_results') {
+            var link = 'http://localhost:8000/dashboard.html?&sid='+this_item_ID;
+            var table_data = '<tr><td>'+current_result_row+'</td><td>'+this_item_ID+'</td><td>'+thumb+'</td><td class="name">'+name+'</td><td>'+popularity+'</td><td>'+onTourUntil+'</td><td><a href="'+link+'" class="name"><strong>GO</strong></a></td></tr>';
+            $(table_id).append(table_data); 
+          } // end display_results
+        }// end if results undefined
+        else{
+          cc('There was an error getting data. It seems that the endpoint does not return data.','error');
+        }
+        itemdata_count++;
 
-      if (itemdata_count == result_count) {
-        cc('All processing of getSKArtistDetails complete.','success');
-      };
-    }); // end $.each
+        if (itemdata_count == result_count) {
+          cc('All processing of getSKArtistDetails complete.','success');
+        };
+      }); // end $.each
+    } // end result_count > 0
+    else{
+      alert('Artist not found. Please try another artist or check that the spelling is correct. Note - words such as "the,and,in" contained in the artist name should be spelled in lowercase.')
+    }
   }); // end $.when                                                  
 }
 
@@ -1216,6 +1262,8 @@ function getBITArtistDetails(artist_name,action){
 
 function getENArtistDetails(artist_name,artist_info){
   cc('getENArtistDetails('+artist_name+')','run')
+  // console.log(artist_info);
+  cc('artist_info["popularity"] = '+artist_info["popularity"],'highlight');
   var base_url = 'http://developer.echonest.com/api/v4/artist/';
 
   var lowercase_query_name = artist_name.toLowerCase();
@@ -1275,7 +1323,55 @@ function getENArtistDetails(artist_name,artist_info){
             var artist = artist_artist_details["response"];
             artist = artist["artist"];
             cc('Artist familiarity:'+artist["familiarity"],'success');
+            cc('Artist hotttnesss:'+artist["hotttnesss"],'success');
             
+            // Consider familiarity and hotttness for ratings under 75 artist_info["popularity"], to adjust people like Mick Jagger.
+            var min_fee_adjusted = '';
+            if (artist_info["popularity"] < 66) {
+
+              artist_info["familiarity"] = artist["familiarity"];
+              artist_info["hotttnesss"] = artist["hotttnesss"];
+              cc('artist["hotttnesss"]: '+artist["hotttnesss"]+ ' artist["familiarity"]: '+artist["familiarity"],'error')
+              // if (!isItemNullorUndefined(artist["familiarity"]) && !isItemNullorUndefined(artist["hotttnesss"])) {
+                var familiarity_factor = artist["familiarity"]*100;
+                familiarity_factor = familiarity_factor-55;
+                cc('familiarity_factor: '+familiarity_factor,'error')
+                if (familiarity_factor <= 0) {
+                  familiarity_factor = 0;
+                }
+                else if (14 > familiarity_factor > 10) {
+                  familiarity_factor = 10;
+                }
+                else if (familiarity_factor >= 15) {
+                  familiarity_factor = 15;
+                }
+                
+                // else {familiarity_factor = ;}
+                
+                var hotttnesss_factor = artist["hotttnesss"]*100;
+                hotttnesss_factor = hotttnesss_factor-55;
+                cc('hotttnesss_factor: '+hotttnesss_factor,'error')
+                if (hotttnesss_factor <= 0) {
+                  hotttnesss_factor = 0;
+                }
+                else if (10 > hotttnesss_factor >= 5) {
+                  hotttnesss_factor = 5;
+                }
+                else if (hotttnesss_factor >= 10) {
+                  hotttnesss_factor = 10;
+                }
+                var popularity_adjusted = parseInt(artist_info["popularity"])+familiarity_factor+hotttnesss_factor;
+                
+                var min_fee_adjusted = calculateMinFee(popularity_adjusted);
+                cc('min_fee_adjusted: '+hotttnesss_factor+ ' '+familiarity_factor,'info' )
+              // };
+            
+            }else{
+              var hotttnesss_factor = 'ignored';
+              var familiarity_factor = 'ignored';
+            }// end popularity < 66 
+            var min_fee = calculateMinFee(artist_info["popularity"]);
+
             // only use Wikipedia bios
             var bio_loaded = false;
             var bio = artist["biographies"];
@@ -1345,9 +1441,11 @@ function getENArtistDetails(artist_name,artist_info){
               //   cc('All processing of bios complete.','success');
               // };
             }); // end $.each
+
             
-            artist_info["familiarity"] = artist["familiarity"];
-            artist_info["hotttnesss"] = artist["hotttnesss"];
+            
+            
+
             artist_info["bio_trimmed"] = bio_info;
             cc('UPDATED Artist info object','success');
             console.log(artist_info);
@@ -1361,7 +1459,7 @@ function getENArtistDetails(artist_name,artist_info){
             // var profile_info = 
             $(profile_holder).html(profile_info);
             $(profile_holder).append(bio_info);
-            $('#contruct_fee_factors').html('<p>familiarity: '+artist["familiarity"]+'</p><p>hotttnesss: '+artist["hotttnesss"]+'</p>');
+            $('#contruct_fee_factors').html('<p><strong>FEE: $'+min_fee+' / $'+min_fee_adjusted+'(hot: '+hotttnesss_factor+')(famil: '+familiarity_factor+') <small>adjusted</small></strong></p><p>familiarity: '+artist["familiarity"]+'</p><p>hotttnesss: '+artist["hotttnesss"]+'</p>');
 
           }); // end $.when 
         }; // end name === artist_name
